@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The First Fork: Bitcoin Cash vs. Bitcoin</title>
+<meta name="description" content="Why Bitcoin split in August 2017, what BCH proposed, and nine years of price, transaction, and hashrate data since.">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="History of Forks">
+<meta property="og:title" content="The First Fork: Bitcoin Cash vs. Bitcoin">
+<meta property="og:description" content="Why Bitcoin split in August 2017, what BCH proposed, and nine years of price, transaction, and hashrate data since.">
+<meta property="og:url" content="https://dave-rodt.github.io/fork-history/bch-vs-btc.html">
+<meta property="og:image" content="https://dave-rodt.github.io/fork-history/assets/og-bch-vs-btc.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bitcoin Cash vs. Bitcoin — History of Forks, Chapter 1">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The First Fork: Bitcoin Cash vs. Bitcoin">
+<meta name="twitter:description" content="Why Bitcoin split in August 2017, what BCH proposed, and nine years of price, transaction, and hashrate data since.">
+<meta name="twitter:image" content="https://dave-rodt.github.io/fork-history/assets/og-bch-vs-btc.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg:#EDEFEF; --panel:#FFFFFF; --ink:#1A1D22; --ink-soft:#4B5158; --ink-mute:#7A8087;
+    --rule:#C7CBCF; --rule-strong:#9AA0A6;
+    --bch:#B23A22; --btc:#00806B;
+    --brand-orange:#F08A1E; --brand-yellow:#FDCA1E;
+    --bch-fill:rgba(178,58,34,0.10); --btc-fill:rgba(0,128,107,0.10);
+    --tag-bg:#E4E2D8;
+    --shadow-sm:0 1px 2px rgba(20,22,25,0.06), 0 1px 1px rgba(20,22,25,0.04);
+    --shadow-md:0 6px 16px rgba(20,22,25,0.10), 0 2px 4px rgba(20,22,25,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
+      --rule:#33373E; --rule-strong:#4A4F57;
+      --bch:#E0603F; --btc:#3FAE9E;
+      --brand-orange:#F08A1E; --brand-yellow:#FDCA1E;
+      --bch-fill:rgba(224,96,63,0.14); --btc-fill:rgba(63,174,158,0.14);
+      --tag-bg:#262A31;
+      --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
+      --shadow-md:0 8px 20px rgba(0,0,0,0.38), 0 2px 6px rgba(0,0,0,0.28);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
+    --rule:#33373E; --rule-strong:#4A4F57;
+    --bch:#E0603F; --btc:#3FAE9E;
+    --bch-fill:rgba(224,96,63,0.14); --btc-fill:rgba(63,174,158,0.14);
+    --tag-bg:#262A31;
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
+    --shadow-md:0 8px 20px rgba(0,0,0,0.38), 0 2px 6px rgba(0,0,0,0.28);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px; margin:0 auto; padding:0 20px 100px;}
+  h1,h2,h3{font-family:'Source Serif 4',serif; font-weight:600; letter-spacing:-0.01em; margin:0; text-wrap:balance;}
+  .mono{font-family:'IBM Plex Mono',monospace; font-variant-numeric:tabular-nums;}
+
+  header.masthead{
+    display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
+    padding:26px 0 16px; border-bottom:1px solid var(--rule-strong);
+  }
+  .masthead-title{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.78rem; letter-spacing:0.04em;
+    color:var(--ink-soft); text-transform:uppercase; text-decoration:none;
+  }
+  .masthead-title:hover{color:var(--brand-orange);}
+  .brand-logo{width:22px; height:22px; border-radius:5px; display:block;}
+  .masthead-meta{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute);}
+
+  .top-nav{padding:14px 0 0; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .top-nav a{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--ink-soft); text-decoration:none;
+  }
+  .top-nav a:hover{color:var(--brand-orange);}
+
+  /* Language toggle — UI only for now, not wired to translated content yet. */
+  .lang-toggle{display:flex; border:1px solid var(--rule-strong); border-radius:20px; overflow:hidden;}
+  .lang-toggle button{
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; font-weight:600; letter-spacing:0.02em;
+    background:var(--panel); color:var(--ink-soft); border:none; padding:5px 12px; cursor:pointer;
+  }
+  .lang-toggle button + button{border-left:1px solid var(--rule-strong);}
+  .lang-toggle button.active{background:var(--brand-orange); color:#000;}
+  .lang-toggle button:hover:not(.active){color:var(--ink);}
+
+  .back-link{
+    display:inline-block; margin-top:34px; font-family:'IBM Plex Mono',monospace;
+    font-size:0.85rem; color:var(--ink-soft); text-decoration:none;
+  }
+  .back-link:hover{color:var(--brand-orange);}
+
+  .hero{padding:44px 0 30px; border-bottom:1px solid var(--rule);}
+  .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--brand-orange); letter-spacing:0.03em; margin-bottom:10px;}
+  .hero h1{font-size:clamp(1.9rem,4.4vw,2.9rem); line-height:1.14; max-width:18ch;}
+  .hero p.lede{max-width:62ch; font-size:1.08rem; color:var(--ink-soft); margin-top:16px;}
+  .read-time{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute); margin-top:14px;}
+
+  section.phase{padding:40px 0; border-bottom:1px solid var(--rule);}
+  section.phase:last-of-type{border-bottom:none;}
+  .phase-head{display:flex; align-items:baseline; gap:12px; margin-bottom:18px; flex-wrap:wrap;}
+  .phase-num{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--brand-orange); flex-shrink:0;}
+  .phase-head h2{font-size:1.5rem;}
+  .phase-time{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); margin-left:auto;}
+  .phase p{max-width:66ch; margin:0 0 14px;}
+  .phase p:last-child{margin-bottom:0;}
+  .phase ul{max-width:66ch; padding-left:20px; margin:0 0 14px;}
+  .phase li{margin-bottom:6px;}
+  .phase h3{font-size:1.05rem; margin:22px 0 8px;}
+  .phase h3:first-of-type{margin-top:0;}
+
+  .stat-inline{font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--ink);}
+
+  /* ---------- tweet cards ---------- */
+  .tweet-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:18px; margin-top:8px;}
+  .tweet-card{
+    background:var(--panel); border:1px solid var(--rule); border-radius:10px; overflow:hidden;
+    margin:0; display:flex; flex-direction:column;
+    box-shadow:var(--shadow-sm);
+    transition:transform 0.16s ease, box-shadow 0.16s ease;
+  }
+  .tweet-card:hover{transform:translateY(-3px); box-shadow:var(--shadow-md);}
+  .tweet-card .tweet-img-btn{
+    display:block; width:100%; height:240px; overflow:hidden; background:var(--tag-bg);
+    border:none; padding:0; margin:0; position:relative; cursor:zoom-in;
+    font:inherit; -webkit-appearance:none; appearance:none;
+  }
+  .tweet-card .tweet-img-btn::after{
+    content:''; position:absolute; inset:0; background:rgba(0,0,0,0); transition:background 0.15s ease;
+  }
+  .tweet-card .tweet-img-btn:hover::after{background:rgba(0,0,0,0.10);}
+  .tweet-card img{width:100%; height:100%; display:block; object-fit:contain;}
+
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position:fixed; inset:0; background:rgba(10,11,13,0.88);
+    display:none; align-items:center; justify-content:center;
+    padding:32px; z-index:1000; cursor:zoom-out;
+  }
+  .lightbox.active{display:flex;}
+  .lightbox img{max-width:100%; max-height:100%; border-radius:10px; box-shadow:0 20px 50px rgba(0,0,0,0.5);}
+  .lightbox-close{
+    position:fixed; top:18px; right:22px; width:40px; height:40px; border-radius:50%;
+    border:none; background:rgba(255,255,255,0.14); color:#fff; font-size:1.6rem; line-height:1;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .lightbox-close:hover{background:rgba(255,255,255,0.26);}
+  .tweet-footer{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:10px 12px; border-top:1px solid var(--rule);
+  }
+  .tweet-footer .view-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.74rem; font-weight:500;
+    color:var(--ink-soft); text-decoration:none;
+  }
+  .tweet-footer .view-link:hover{color:var(--brand-orange);}
+  .tweet-footer .view-link svg{width:12px; height:12px; fill:currentColor; flex-shrink:0;}
+  .tweet-footer .tweet-date{font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ink-mute); white-space:nowrap;}
+  .tweet-card figcaption{padding:0 12px 12px; font-size:0.82rem; color:var(--ink-soft);}
+  .tweet-placeholder-note{
+    font-size:0.82rem; color:var(--ink-mute); margin-top:14px; padding:10px 14px;
+    background:var(--tag-bg); border-radius:6px; max-width:66ch;
+  }
+
+  /* ---------- charts ---------- */
+  .chart-block{margin-top:28px;}
+  .chart-block:first-child{margin-top:0;}
+  .chart-title{font-size:1rem; font-weight:600; margin-bottom:2px;}
+  .chart-caption{font-size:0.84rem; color:var(--ink-soft); margin:0 0 12px; max-width:64ch;}
+  .chart-wrap{
+    position:relative; background:var(--panel); border:1px solid var(--rule); border-radius:10px;
+    padding:18px 18px 12px; box-shadow:var(--shadow-sm);
+  }
+  svg.chart{width:100%; height:auto; display:block; overflow:visible;}
+  .gridline{stroke:var(--rule); stroke-width:1;}
+  .axis-label{fill:var(--ink-mute); font-size:10.5px; font-family:'IBM Plex Mono',monospace;}
+  .series-bch{fill:none; stroke:var(--bch); stroke-width:2.25; stroke-linecap:round; stroke-linejoin:round;}
+  .series-btc{fill:none; stroke:var(--btc); stroke-width:2.25; stroke-linecap:round; stroke-linejoin:round;}
+  .series-area-bch{fill:var(--bch-fill); stroke:none;}
+  .series-area-btc{fill:var(--btc-fill); stroke:none;}
+  .end-dot{pointer-events:none;}
+  .end-dot.bch{fill:var(--bch); stroke:var(--panel); stroke-width:2;}
+  .end-dot.btc{fill:var(--btc); stroke:var(--panel); stroke-width:2;}
+  .crosshair-line{stroke:var(--ink-mute); stroke-width:1; opacity:0; pointer-events:none;}
+  .hover-dot{r:4.5; opacity:0; pointer-events:none;}
+  .hover-dot.bch{fill:var(--bch); stroke:var(--panel); stroke-width:1.5;}
+  .hover-dot.btc{fill:var(--btc); stroke:var(--panel); stroke-width:1.5;}
+  .capture-rect{fill:transparent; cursor:crosshair;}
+  .legend{display:flex; gap:16px; margin-top:12px; font-size:0.8rem; color:var(--ink-soft); flex-wrap:wrap;}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .swatch{width:13px; height:2.5px; border-radius:2px; display:inline-block;}
+  .annotation-line{stroke:var(--ink-mute); stroke-width:1; stroke-dasharray:2 3; opacity:0.55;}
+  .annotation-label{fill:var(--ink-mute); font-size:9px; font-family:'IBM Plex Mono',monospace;}
+  .tooltip{
+    position:absolute; pointer-events:none; opacity:0;
+    background:var(--panel); border:1px solid var(--rule-strong); border-radius:7px;
+    padding:8px 10px; font-size:0.76rem; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,0.14);
+    white-space:nowrap; transform:translate(-50%,-100%); top:-8px; z-index:5;
+  }
+  .tooltip .t-date{color:var(--ink-mute); font-size:0.7rem; margin-bottom:4px;}
+  .tooltip .row{display:flex; justify-content:space-between; gap:12px;}
+  .tooltip .row .k{display:flex; align-items:center; gap:5px; color:var(--ink-soft);}
+  .tooltip .dot{width:7px; height:7px; border-radius:50%; display:inline-block;}
+  .tooltip .v{font-family:'IBM Plex Mono',monospace;}
+
+  /* ---------- exchange listing timeline ---------- */
+  .timeline-baseline{stroke:var(--rule-strong); stroke-width:1.5;}
+  .timeline-arrow{fill:var(--rule-strong);}
+  .timeline-stem{stroke:var(--rule-strong); stroke-width:1;}
+  .timeline-marker{fill:var(--bch); stroke:var(--panel); stroke-width:2; pointer-events:none;}
+  .timeline-marker.proxy{fill:var(--panel); stroke:var(--bch); stroke-width:2;}
+  .timeline-hit{fill:transparent; cursor:pointer;}
+  .timeline-label{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; fill:var(--ink);}
+  .timeline-legend{display:flex; gap:16px; margin-top:10px; font-size:0.78rem; color:var(--ink-soft); flex-wrap:wrap;}
+  .timeline-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .timeline-legend .dot{width:9px; height:9px; border-radius:50%; display:inline-block; background:var(--bch);}
+  .timeline-legend .dot.proxy{background:var(--panel); border:2px solid var(--bch);}
+  .timeline-legend .square{width:9px; height:9px; border-radius:2px; display:inline-block; background:var(--bch);}
+
+  /* ---------- conclusions placeholder ---------- */
+  .placeholder-box{
+    border:1.5px dashed var(--rule-strong); border-radius:8px; padding:20px;
+    color:var(--ink-mute); font-style:italic; max-width:66ch;
+  }
+
+  footer{margin-top:30px; padding-top:18px; font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); line-height:1.7;}
+
+  .sources-note{margin-top:30px; padding-top:18px; border-top:1px solid var(--rule);}
+  .sources-note h3{font-size:0.9rem; margin:0 0 10px; color:var(--ink-soft);}
+  .sources-note ol{max-width:70ch; padding-left:20px; margin:0; font-size:0.78rem; color:var(--ink-mute); line-height:1.6;}
+  .sources-note li{margin-bottom:6px;}
+  .sources-note a{color:var(--ink-soft);}
+  .sources-note a:hover{color:var(--brand-orange);}
+
+  @media (max-width:600px){
+    section.phase{padding:30px 0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="top-nav">
+    <a href="index.html"><span id="nav-back">&larr; History of Forks</span></a>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" class="active" data-lang="en">EN</button>
+      <button type="button" data-lang="es">ES</button>
+    </div>
+  </nav>
+
+  <header class="masthead">
+    <a class="masthead-title" href="index.html"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo"><span id="masthead-title-text">History of Forks: Chapter 1</span></a>
+    <div class="masthead-meta" id="masthead-meta">Bitcoin Cash (BCH), forked Aug 1, 2017</div>
+  </header>
+
+  <div class="hero">
+    <div class="eyebrow" id="hero-eyebrow">THE FIRST FORK</div>
+    <h1>Bitcoin Cash vs. Bitcoin</h1>
+    <p class="lede" id="hero-lede">Full blocks, rising fees, and an increasingly bitter fight over what Bitcoin was actually meant to be. Nine years later, the data gives us a chance to see what happened next.</p>
+    <div class="read-time" id="read-time">~9 min read</div>
+  </div>
+
+  <!-- ================= PHASE 1: BACKGROUND ================= -->
+  <section class="phase" id="background">
+    <div class="phase-head">
+      <span class="phase-num">01</span>
+      <h2 id="bg-h2">Background</h2>
+      <span class="phase-time">~3 min</span>
+    </div>
+    <p id="bg1">In 2010, Satoshi Nakamoto added a 1 MB block size limit to Bitcoin. At the time, blocks were mostly empty, and the limit was largely a defensive measure designed to protect a young network from abuse.</p>
+    <p id="bg2">But Bitcoin was growing.</p>
+    <p id="bg3">By 2013, transaction volume had increased enough for developers to begin asking an uncomfortable question: what happens when Bitcoin actually reaches the limit? For the moment, it was a problem for the future. Within a few years, that future arrived.</p>
+    <p id="bg4">By 2016, congestion was no longer theoretical. Blocks were filling up, fees were rising, and the community faced a fundamental question: how should Bitcoin scale?</p>
+    <p id="bg5">The answer divided the ecosystem.</p>
+    <p id="bg6">Many of the largest mining pools, which collectively controlled most of Bitcoin's hash rate, favored the simplest solution: make the blocks bigger. From their perspective, larger blocks meant more transactions could be processed directly on the blockchain, preserving throughput and the fee revenue that came with it.</p>
+    <p id="bg7">They were also deeply skeptical of Segregated Witness (SegWit), which proposed increasing effective transaction capacity through a soft fork rather than simply raising the block size limit. Some miners considered SegWit's implementation unnecessarily complex and objected to changes that they believed would reduce their influence over the protocol. There was also a more technical source of opposition: SegWit threatened to undermine covert ASICBoost, a patented mining optimization that some miners considered commercially valuable.</p>
+    <p id="bg8">The disagreement was becoming dangerous. Bitcoin had no central authority capable of settling the dispute, so the major stakeholders tried to negotiate one.</p>
+    <p id="bg9">In February 2016, miners, businesses, and developers gathered at the Hong Kong Roundtable. The resulting agreement attempted to bridge the divide: activate SegWit as a soft fork while simultaneously preparing a hard fork that would increase the non-witness block capacity to roughly 2 MB, with a maximum block size of 4 MB.</p>
+    <p id="bg10">For a moment, compromise seemed possible.</p>
+    <p id="bg11">Then Bitcoin entered one of the most explosive growth periods in its history.</p>
+    <p id="bg12">In 2017, a powerful bull market brought an influx of users and transactions. Congestion intensified, and fees surged, eventually reaching an average of nearly $55 at the peak. The scaling debate was no longer about a problem that might eventually appear. It was happening in real time, and the Hong Kong agreement began to unravel.</p>
+    <p id="bg13">What had started as an engineering debate was becoming a struggle over something much bigger: what Bitcoin should become, and who had the authority to decide.</p>
+    <p id="bg14">In May 2017, major mining pools and businesses attempted another compromise through the New York Agreement, better known as SegWit2x. The proposal tied SegWit activation to a commitment to follow it with a 2 MB hard fork.</p>
+    <p id="bg15">But this time, another group entered the fight: users and node operators.</p>
+    <p id="bg16">Rather than negotiating with the miners, the grassroots User Activated Soft Fork (UASF) movement proposed enforcing SegWit directly from the economic side of the network. Under BIP 148, nodes would begin rejecting blocks that did not signal support for SegWit starting August 1.</p>
+    <p id="bg17">This created a very different kind of threat for miners. They could continue mining blocks that rejected SegWit, but if the economically significant portion of the network refused to accept those blocks, the rewards from that mining could become worthless.</p>
+    <p id="bg18">The balance of power was shifting.</p>
+    <p id="bg19">As the August 1 deadline approached, major mining pools began signaling for SegWit through BIP 91, effectively clearing the way for its activation. The immediate threat of a UASF-driven split receded, and SegWit was ultimately locked in on the main chain.</p>
+    <p id="bg20">For the big-block camp, however, the larger question remained unresolved. The promised 2 MB hard fork from SegWit2x was increasingly unlikely to happen, while the path toward scaling Bitcoin through larger base-layer blocks had lost the battle on the main chain.</p>
+    <p id="bg21">The disagreement did not disappear. It became a fork.</p>
+    <p id="bg22">On August 1, 2017, Bitcoin Cash split from Bitcoin, preserving the big-block approach and rejecting SegWit. On August 24, SegWit activated on the other chain.</p>
+    <p id="bg23">The block size debate had finally produced its answer, not through a vote or a central authority, but by creating two competing networks.</p>
+  </section>
+
+  <!-- ================= PHASE 2: THE WHY SPLIT ================= -->
+  <section class="phase" id="why-split">
+    <div class="phase-head">
+      <span class="phase-num">02</span>
+      <h2 id="wsplit-h2">Why Bigger Blocks?</h2>
+      <span class="phase-time">~1.5 min</span>
+    </div>
+
+    <h3 id="wh1">1. Fulfilling the "Electronic Cash" Vision</h3>
+    <p id="wp1">To the big-block camp, Satoshi's 1 MB limit, added in 2010 to guard against abuse, was always meant to be temporary, never a permanent ceiling. Their argument was that increasing block capacity would preserve Bitcoin as a globally accessible medium of exchange, keeping on-chain transactions affordable for everyday commerce, micro-payments, and users in developing economies.</p>
+
+    <h3 id="wh2">2. Avoiding the Friction and Centralization of Layer 2s</h3>
+    <p id="wp2">Proponents argued that moving transactions off-chain introduced additional complexity and could push liquidity and payment routing toward large, centralized hubs. Scaling the base layer instead would allow users to transact directly on Bitcoin without relying on additional infrastructure, custodians, or intermediaries.</p>
+
+    <h3 id="wh3">3. Simplicity and Direct Scaling</h3>
+    <p id="wp3">From their perspective, increasing the block size was the most direct solution: change the capacity limit through a hard fork and let the blockchain process more transactions. They viewed alternatives such as SegWit and Layer 2 systems as increasingly complex solutions built around preserving the 1 MB constraint. To the big-block camp, a straightforward increase in capacity was a cleaner and more transparent way to scale the network.</p>
+  </section>
+
+  <!-- ================= PHASE 3: HOW IT HAPPENED ================= -->
+  <section class="phase" id="how-it-happened">
+    <div class="phase-head">
+      <span class="phase-num">03</span>
+      <h2 id="how-h2">How It Happened?</h2>
+      <span class="phase-time">~2 min</span>
+    </div>
+    <p id="hp1">On August 1, 2017, Bitcoin's shared history split in two.</p>
+    <p id="hp2">At block 478,558, a user-activated hard fork created Bitcoin Cash (BCH). It was the last block shared by both chains. From there, BCH accepted blocks larger than Bitcoin's 1 MB limit, initially allowing up to 8 MB, while the other chain continued under the existing rules.</p>
+    <p id="hp3">BCH kept SHA-256 proof-of-work, so the same mining hardware could secure either chain. It also added replay protection, preventing transactions on one chain from being replayed on the other. The two networks now shared a history, but they no longer shared the same rules.</p>
+    <p id="hp4">Less than a month later, on August 24, the other chain activated SegWit at block 481,824, setting the two networks on different scaling paths. Over time, most of the market value, hash power, and liquidity remained there, while its scaling roadmap increasingly turned toward off-chain solutions such as the Lightning Network.</p>
+    <p id="hp5">BCH had its own problems to solve.</p>
+    <p id="hp6">Its first difficulty adjustment mechanism, the EDA, was designed to attract miners but instead created wild swings in hash power and block times as miners moved between the competing chains. The problem was serious enough to force BCH into its first major hard fork just three months after launch, replacing the EDA on November 13, 2017 with a new Difficulty Adjustment Algorithm (DAA) that recalculated difficulty after every block.</p>
+    <p id="hp7">Six months later, BCH increased its maximum block size from 8 MB to 32 MB and re-enabled several Satoshi-era opcodes, expanding its capacity for more complex transactions.</p>
+    <p id="hp8">But bigger blocks did not eliminate disagreements over governance.</p>
+    <p id="hp9">In November 2018, a dispute between Bitcoin ABC and a faction led by Craig Wright and Calvin Ayre escalated into a "hash war," producing another chain split. The Wright and Ayre-backed chain became Bitcoin SV (BSV), while the other chain retained the Bitcoin Cash name.</p>
+    <p id="hp10">Two years later, BCH split again. This time, the dispute centered on Bitcoin ABC's proposal to direct part of the block reward toward development funding. The chain rejecting the proposal kept the Bitcoin Cash name; the Bitcoin ABC chain became eCash.</p>
+    <p id="hp11">Nine years later, BCH is a much smaller network by price and market-cap ranking than it was at launch. Yet it remains active, with ongoing development, miners securing the chain, and a community still committed to the big-block approach.</p>
+    <p id="hp12">The block-size war didn't produce a simple winner. It produced competing experiments in scaling, mining economics, and decentralized governance. BCH is what happens when a disagreement over Bitcoin's rules stops being a debate and becomes a network.</p>
+  </section>
+
+  <!-- ================= PHASE 4: THE TWEETS ================= -->
+  <section class="phase" id="tweets">
+    <div class="phase-head">
+      <span class="phase-num">04</span>
+      <h2 id="tweets-h2">What people were saying about BCH vs. BTC</h2>
+      <span class="phase-time">~1 min</span>
+    </div>
+    <p id="tweets-intro">Five Twitter (X) posts from January 2018 through September 2023, showing how Bitcoin Cash supporters and observers argued the case for BCH over Bitcoin in the years after the fork.</p>
+
+    <div class="tweet-grid">
+      <!-- TWEET 1 — replace image src, href, and caption below -->
+      <figure class="tweet-card">
+        <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Roger Ver tweet, May 6, 2018">
+          <img src="tweets/993125898277699586.png" alt="Roger Ver tweet, May 6, 2018">
+        </button>
+        <div class="tweet-footer">
+          <a class="view-link" href="https://x.com/rogerkver/status/993125898277699586" target="_blank" rel="noopener">
+            <svg viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163Z"/></svg>
+            <span id="vp1">View post</span>
+          </a>
+          <span class="tweet-date" id="td1">May 6, 2018</span>
+        </div>
+      </figure>
+      <!-- TWEET 2 -->
+      <figure class="tweet-card">
+        <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Roger Ver tweet, June 2, 2022">
+          <img src="tweets/1532405409520181248.png" alt="Roger Ver tweet, June 2, 2022">
+        </button>
+        <div class="tweet-footer">
+          <a class="view-link" href="https://x.com/rogerkver/status/1532405409520181248" target="_blank" rel="noopener">
+            <svg viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163Z"/></svg>
+            <span id="vp2">View post</span>
+          </a>
+          <span class="tweet-date" id="td2">June 2, 2022</span>
+        </div>
+      </figure>
+      <!-- TWEET 3 -->
+      <figure class="tweet-card">
+        <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: DavidShares tweet, September 21, 2023">
+          <img src="tweets/1704870337463177517.png" alt="DavidShares tweet, September 21, 2023">
+        </button>
+        <div class="tweet-footer">
+          <a class="view-link" href="https://x.com/DavidShares/status/1704870337463177517" target="_blank" rel="noopener">
+            <svg viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163Z"/></svg>
+            <span id="vp3">View post</span>
+          </a>
+          <span class="tweet-date" id="td3">Sep 21, 2023</span>
+        </div>
+      </figure>
+      <!-- TWEET 4 -->
+      <figure class="tweet-card">
+        <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Kim Dotcom tweet, September 14, 2021">
+          <img src="tweets/1437614544512176132.png" alt="Kim Dotcom tweet, September 14, 2021">
+        </button>
+        <div class="tweet-footer">
+          <a class="view-link" href="https://x.com/KimDotcom/status/1437614544512176132" target="_blank" rel="noopener">
+            <svg viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163Z"/></svg>
+            <span id="vp4">View post</span>
+          </a>
+          <span class="tweet-date" id="td4">Sep 14, 2021</span>
+        </div>
+      </figure>
+      <!-- TWEET 5 -->
+      <figure class="tweet-card">
+        <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Ross Gerber tweet, January 29, 2018">
+          <img src="tweets/958127176053764096.png" alt="Ross Gerber tweet, January 29, 2018">
+        </button>
+        <div class="tweet-footer">
+          <a class="view-link" href="https://x.com/GerberKawasaki/status/958127176053764096" target="_blank" rel="noopener">
+            <svg viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163Z"/></svg>
+            <span id="vp5">View post</span>
+          </a>
+          <span class="tweet-date" id="td5">Jan 29, 2018</span>
+        </div>
+      </figure>
+    </div>  </section>
+
+  <!-- ================= PHASE 5: METRICS ================= -->
+  <section class="phase" id="metrics">
+    <div class="phase-head">
+      <span class="phase-num">05</span>
+      <h2 id="metrics-h2">Nine years of data</h2>
+      <span class="phase-time">~1.5 min</span>
+    </div>
+    <p id="metrics-intro">Monthly figures from CoinMetrics' public dataset, August 2017 through September 2026. All three charts share the same time axis and log-scaled y-axis, so a doubling always covers the same vertical distance whether it's early 2017 or today.</p>
+
+    <div class="chart-block">
+      <div class="chart-title" id="ct1">Price: BCH as % of Bitcoin's price</div>
+      <p class="chart-caption" id="cc1">BCH opened at roughly 11.6% of Bitcoin's price in its first month, briefly rose toward 16% by early 2018, then decayed steadily, and sits under 0.4% today.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-ratio" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-ratio"></div>
+      </div>
+      <div class="legend" id="legend-ratio"></div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title" id="ct2">Transaction volume: BCH vs. Bitcoin, monthly count</div>
+      <p class="chart-caption" id="cc2">Total transactions confirmed each month on each chain. Flagged points are known spam/stress-test floods, not organic usage. One such flood in March–April 2021 briefly pushed BCH's monthly transaction count past Bitcoin's own.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-tx" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-tx"></div>
+      </div>
+      <div class="legend" id="legend-tx"></div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title" id="ct3">Network hashrate: BCH as % of Bitcoin's, monthly average</div>
+      <p class="chart-caption" id="cc3">Both chains share the SHA-256 algorithm, so miners can point hardware at either. BCH's own hashrate has roughly tripled since launch, but shown against Bitcoin's it tells the opposite story: from 15.9% of Bitcoin's hashrate at the fork to under 0.4% today. Hover for the actual hashrate on each chain.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-hash" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-hash"></div>
+      </div>
+      <div class="legend" id="legend-hash"></div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title" id="ct4">Timeline: exchange listings and key network events</div>
+      <p class="chart-caption" id="cc4">Both sides of the split, from the fork itself through the first BCH split of its own, measured in days since Aug 1, 2017.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-timeline" viewBox="0 0 820 130" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-timeline"></div>
+      </div>
+      <div class="timeline-legend">
+        <span><span class="dot"></span><span id="tll1">Exchange listing</span></span>
+        <span><span class="dot proxy"></span><span id="tll2">Confirmed live by this date (exact listing date unconfirmed)</span></span>
+        <span><span class="square"></span><span id="tll3">Protocol / network event</span></span>
+        <span id="tll4">Hover a point for details</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PHASE 6: CONCLUSIONS ================= -->
+  <section class="phase" id="similarities">
+    <div class="phase-head">
+      <span class="phase-num">06</span>
+      <h2 id="sim-h2">BTCB2 Similarities with Each Chain</h2>
+      <span class="phase-time">~1.5 min</span>
+    </div>
+
+    <h3 id="sim-h3a">Parallels with the BCH Fork</h3>
+    <ul>
+      <li id="sim-a1"><strong>Contentious, Ideological Origins:</strong> Both emerged from bitter governance disputes involving factions that believed the main chain had moved away from Bitcoin's original vision.</li>
+      <li id="sim-a2"><strong>Minority-Chain Challenges:</strong> Both began with a minority share of hash power, creating a different security and mining dynamic from the established chain. Both introduced mining adjustments to make the new chain viable with less hash power.</li>
+      <li id="sim-a3"><strong>Exchange and Market Identity:</strong> Both had to establish a distinct market identity while competing against a chain that retained the original ticker, greater liquidity, and broader exchange support.</li>
+      <li id="sim-a4"><strong>Concentrated Leadership:</strong> With smaller communities and fewer participants involved in protocol development and governance, both ecosystems have relied on a relatively small group of prominent leaders to coordinate major decisions.</li>
+    </ul>
+
+    <h3 id="sim-h3b">Parallels with BTC During the BCH Fork</h3>
+    <ul>
+      <li id="sim-b1"><strong>Tighter Block Space Constraints:</strong> During the 2017 split, the BTC side rejected larger blocks and emphasized the tradeoffs between block size, decentralization, and the ability to run a full node. BTCB2 follows a similar approach, going further by temporarily restricting block weight to 800,000 units, roughly 300 KB serialized.</li>
+      <li id="sim-b2"><strong>A Narrower Role for the Base Layer:</strong> BTC emphasized the base chain as a monetary settlement layer while rejecting the idea that every type of activity needed to occur directly on-chain. BTCB2 similarly emphasizes the blockchain as a monetary ledger and places tighter restrictions on arbitrary data.</li>
+      <li id="sim-b3"><strong>Node-Enforced Consensus:</strong> During the 2017 conflict, BTC proponents emphasized that consensus ultimately depended on the nodes enforcing the rules, rather than simply on the preferences of mining pools. BTCB2 similarly emerged with significant support from users running nodes and enforcing its rules.</li>
+    </ul>
+  </section>
+
+  <div class="sources-note">
+    <h3 id="sources-h3">Sources</h3>
+    <ol>
+      <li id="src1">Bitcoin's original 1 MB block size limit, added in 2010 — <a href="https://en.bitcoin.it/wiki/Block_size_limit_controversy" target="_blank" rel="noopener">Block size limit controversy, Bitcoin Wiki</a></li>
+      <li id="src2">The Hong Kong Roundtable agreement, February 2016 — <a href="https://medium.com/@bitcoinroundtable/bitcoin-roundtable-consensus-266d475a61ff" target="_blank" rel="noopener">Bitcoin Roundtable Consensus (official statement)</a></li>
+      <li id="src3">Covert ASICBoost as a source of miner opposition to SegWit — <a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2017-April/013996.html" target="_blank" rel="noopener">Gregory Maxwell, bitcoin-dev mailing list</a></li>
+      <li id="src4">BIP 148, the User Activated Soft Fork — <a href="https://github.com/bitcoin/bips/blob/master/bip-0148.mediawiki" target="_blank" rel="noopener">bip-0148.mediawiki, bitcoin/bips</a></li>
+      <li id="src5">BIP 91, the miner-signaling mechanism — <a href="https://github.com/bitcoin/bips/blob/master/bip-0091.mediawiki" target="_blank" rel="noopener">bip-0091.mediawiki, bitcoin/bips</a></li>
+      <li id="src6">The New York Agreement / SegWit2x, May 2017 — <a href="https://www.bitmex.com/blog/the-segwit2x-hardfork-part-1-the-supporters-and-opponents" target="_blank" rel="noopener">BitMEX Research</a></li>
+      <li id="src7">Bitcoin Cash's fork block, 478,558 — <a href="https://www.blockchain.com/explorer/blocks/btc/478558" target="_blank" rel="noopener">Blockchain.com Explorer</a></li>
+      <li id="src8">Bitcoin's SegWit activation block, 481,824 — <a href="https://en.wikipedia.org/wiki/SegWit" target="_blank" rel="noopener">SegWit, Wikipedia</a></li>
+      <li id="src9">The EDA-to-DAA switch, November 13, 2017 — <a href="https://www.bitcoinabc.org/2017-11-01-DAA/" target="_blank" rel="noopener">Bitcoin ABC (official announcement)</a></li>
+      <li id="src10">The 8MB-to-32MB block size increase, May 2018 — <a href="https://github.com/bitcoincashorg/bitcoincash.org/blob/master/spec/may-2018-hardfork.md" target="_blank" rel="noopener">May 2018 hardfork specification, bitcoincash.org</a></li>
+      <li id="src11">The November 2018 hash war and the Bitcoin SV split — <a href="https://bitcoinmagazine.com/technical/week-2-how-bitcoin-cash-hash-war-came-and-went-and-not-much-happened" target="_blank" rel="noopener">Bitcoin Magazine</a></li>
+      <li id="src12">The November 2020 miner-tax dispute and the eCash split — <a href="https://bitcoin-takeover.com/bitcoin-cash-big-block-breakaway/" target="_blank" rel="noopener">Bitcoin Cash: The Big Block Breakaway</a></li>
+      <li id="src13">The average fee peak near $55 ($54.64 on Dec 22, 2017) — <a href="https://www.spark.money/tools/bitcoin-fee-rate-history" target="_blank" rel="noopener">Bitcoin Fee Rate History, Spark</a>; contemporaneous coverage: <a href="https://www.coindesk.com/markets/2017/12/18/bought-your-first-bitcoin-or-ether-brace-for-the-fees" target="_blank" rel="noopener">CoinDesk, Dec 18, 2017</a></li>
+    </ol>
+  </div>
+
+  <footer id="footer-text">
+    DATA: COINMETRICS COMMUNITY API (PRICE, TRANSACTION COUNT, HASHRATE), MONTHLY, AUG 2017–SEP 2026. PART OF THE "HISTORY OF FORKS" SERIES.
+  </footer>
+
+  <a class="back-link" href="index.html" id="backlink">&larr; Back to History of Forks</a>
+
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged tweet screenshot">
+  <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+const DATA = [{"month": "2017-08", "bch_tx": 595279.0, "btc_tx": 7766907.0, "bch_hashrate": 1003714.4690174183, "btc_hashrate": 6329180.437551022, "bch_price": 451.17884036925955, "btc_price": 3874.592791512227, "ratio_pct": 11.644548592502996}, {"month": "2017-09", "bch_tx": 222504.0, "btc_tx": 7337062.0, "bch_hashrate": 1112517.4435619859, "btc_hashrate": 7934257.163695552, "bch_price": 506.9905241799825, "btc_price": 4102.380564416521, "ratio_pct": 12.35844691196004}, {"month": "2017-10", "bch_tx": 307451.0, "btc_tx": 8987682.0, "bch_hashrate": 1033271.7499622678, "btc_hashrate": 9262138.966293411, "bch_price": 353.9154447893917, "btc_price": 5348.37761608944, "ratio_pct": 6.617248634889082}, {"month": "2017-11", "bch_tx": 747393.0, "btc_tx": 9341003.0, "bch_hashrate": 1570486.218858906, "btc_hashrate": 10058917.679225842, "bch_price": 1120.3259127772549, "btc_price": 7781.03213700565, "ratio_pct": 14.398165860916059}, {"month": "2017-12", "bch_tx": 1080709.0, "btc_tx": 11182855.0, "bch_hashrate": 1347512.4296840806, "btc_hashrate": 13336655.022771232, "bch_price": 2087.1911770932306, "btc_price": 15194.10497518901, "ratio_pct": 13.736848471834826}, {"month": "2018-01", "bch_tx": 1175092.0, "btc_tx": 8869570.0, "bch_hashrate": 2072833.4279117705, "btc_hashrate": 17694162.840874474, "bch_price": 2070.991771415465, "btc_price": 12891.060519588613, "ratio_pct": 16.0653327805613}, {"month": "2018-02", "bch_tx": 575065.0, "btc_tx": 5345436.0, "bch_hashrate": 2717147.6423764178, "btc_hashrate": 22126331.383773632, "bch_price": 1255.883263169188, "btc_price": 9396.599650507222, "ratio_pct": 13.36529499904145}, {"month": "2018-03", "bch_tx": 615339.0, "btc_tx": 5690766.0, "bch_hashrate": 2657342.7840533233, "btc_hashrate": 24798584.08815783, "bch_price": 1017.8769526453028, "btc_price": 8992.046454912237, "ratio_pct": 11.31974748739482}, {"month": "2018-04", "bch_tx": 533659.0, "btc_tx": 5751589.0, "bch_hashrate": 3040556.9865785083, "btc_hashrate": 28359005.9228431, "bch_price": 935.2246128826181, "btc_price": 8018.054271692968, "ratio_pct": 11.663984567731674}, {"month": "2018-05", "bch_tx": 542826.0, "btc_tx": 6130989.0, "bch_hashrate": 4335550.309884297, "btc_hashrate": 31370271.845444616, "bch_price": 1295.3357422202416, "btc_price": 8423.247831234328, "ratio_pct": 15.378103175558891}, {"month": "2018-06", "bch_tx": 435672.0, "btc_tx": 5747745.0, "bch_hashrate": 4585262.046801268, "btc_hashrate": 37218404.95247715, "bch_price": 903.2530519273922, "btc_price": 6769.3244134619135, "ratio_pct": 13.343326405381386}, {"month": "2018-07", "bch_tx": 1108793.0, "btc_tx": 6391313.0, "bch_hashrate": 4542264.81607714, "btc_hashrate": 39608747.968638405, "bch_price": 771.3560450940187, "btc_price": 7118.681239927603, "ratio_pct": 10.835659289920157}, {"month": "2018-08", "bch_tx": 2141555.0, "btc_tx": 6725607.0, "bch_hashrate": 3972207.4097670666, "btc_hashrate": 48676974.833614595, "bch_price": 584.0868974030958, "btc_price": 6677.730917346958, "ratio_pct": 8.74678696450308}, {"month": "2018-09", "bch_tx": 8336231.0, "btc_tx": 6863878.0, "bch_hashrate": 3823162.7160622114, "btc_hashrate": 51316996.614649884, "bch_price": 499.0744144132235, "btc_price": 6590.200040190922, "ratio_pct": 7.572978230851472}, {"month": "2018-10", "bch_tx": 978932.0, "btc_tx": 7576746.0, "bch_hashrate": 3761166.377042077, "btc_hashrate": 51294250.026072174, "bch_price": 462.70697551451457, "btc_price": 6415.1142316698415, "ratio_pct": 7.212762841076843}, {"month": "2018-11", "bch_tx": 5464790.0, "btc_tx": 8055798.0, "bch_hashrate": 3884937.580615863, "btc_hashrate": 44556001.380952395, "bch_price": 373.2650340449578, "btc_price": 5345.764674878239, "ratio_pct": 6.982444173030489}, {"month": "2018-12", "bch_tx": 330438.0, "btc_tx": 8191030.0, "bch_hashrate": 1368880.425487227, "btc_hashrate": 38341235.60337647, "bch_price": 135.91427872676257, "btc_price": 3665.740837408797, "ratio_pct": 3.7076892435973825}, {"month": "2019-01", "bch_tx": 302882.0, "btc_tx": 9222189.0, "bch_hashrate": 1460994.3010471156, "btc_hashrate": 41797115.366665535, "bch_price": 135.34057765665418, "btc_price": 3659.232663750683, "ratio_pct": 3.6986054206766728}, {"month": "2019-02", "bch_tx": 366955.0, "btc_tx": 9260134.0, "bch_hashrate": 1427752.9855468364, "btc_hashrate": 43756042.26572494, "bch_price": 126.88308037737193, "btc_price": 3659.201131282874, "ratio_pct": 3.467507683374818}, {"month": "2019-03", "bch_tx": 470725.0, "btc_tx": 9458396.0, "bch_hashrate": 1574752.847470992, "btc_hashrate": 44859654.39200757, "bch_price": 146.2957449157535, "btc_price": 3923.4174107501753, "ratio_pct": 3.728783598576657}, {"month": "2019-04", "bch_tx": 1201636.0, "btc_tx": 10996420.0, "bch_hashrate": 2405476.37142303, "btc_hashrate": 45837408.347017795, "bch_price": 282.4078419190466, "btc_price": 5145.797054693162, "ratio_pct": 5.488126308080493}, {"month": "2019-05", "bch_tx": 1815018.0, "btc_tx": 11500508.0, "bch_hashrate": 2257352.3290162534, "btc_hashrate": 50592744.29504935, "bch_price": 365.7833295344172, "btc_price": 7292.919984257462, "ratio_pct": 5.0155949924584275}, {"month": "2019-06", "bch_tx": 1541637.0, "btc_tx": 10481484.0, "bch_hashrate": 2331371.3356332756, "btc_hashrate": 56176746.89594555, "bch_price": 422.6621671489154, "btc_price": 9393.020061772837, "ratio_pct": 4.499747305651365}, {"month": "2019-07", "bch_tx": 1546351.0, "btc_tx": 10302567.0, "bch_hashrate": 1973641.5304712106, "btc_hashrate": 66689967.407924555, "bch_price": 344.50477418495933, "btc_price": 10659.624927258157, "ratio_pct": 3.2318658164417426}, {"month": "2019-08", "bch_tx": 1429454.0, "btc_tx": 10157607.0, "bch_hashrate": 2061110.5799177592, "btc_hashrate": 74479674.8098925, "bch_price": 316.7115496758873, "btc_price": 10628.744097537749, "ratio_pct": 2.9797645589120596}, {"month": "2019-09", "bch_tx": 2096181.0, "btc_tx": 9800953.0, "bch_hashrate": 2305964.791527397, "btc_hashrate": 88386076.50146979, "bch_price": 284.3665109971086, "btc_price": 9792.419261390021, "ratio_pct": 2.9039454235616864}, {"month": "2019-10", "bch_tx": 1323785.0, "btc_tx": 9890188.0, "bch_hashrate": 2514638.2056582575, "btc_hashrate": 94980613.11483392, "bch_price": 234.28294783529952, "btc_price": 8387.15982785581, "ratio_pct": 2.79335260855753}, {"month": "2019-11", "bch_tx": 1165162.0, "btc_tx": 9240225.0, "bch_hashrate": 2719572.291073734, "btc_hashrate": 91544512.94308195, "bch_price": 257.08551114238367, "btc_price": 8339.688379551919, "ratio_pct": 3.082675268451656}, {"month": "2019-12", "bch_tx": 1140910.0, "btc_tx": 9418563.0, "bch_hashrate": 2506455.021587504, "btc_hashrate": 95372425.77767725, "bch_price": 201.6328857005919, "btc_price": 7246.166450772044, "ratio_pct": 2.78261460139532}, {"month": "2020-01", "bch_tx": 1408086.0, "btc_tx": 9605536.0, "bch_hashrate": 3536545.38508493, "btc_hashrate": 109247849.14994262, "bch_price": 302.87246579243515, "btc_price": 8365.7359320865, "ratio_pct": 3.6203923749347373}, {"month": "2020-02", "bch_tx": 1266723.0, "btc_tx": 9437431.0, "bch_hashrate": 4367946.989044491, "btc_hashrate": 110430179.12632582, "bch_price": 403.36435895740806, "btc_price": 9646.19281580645, "ratio_pct": 4.181591293680621}, {"month": "2020-03", "bch_tx": 1282067.0, "btc_tx": 8897428.0, "bch_hashrate": 3710141.5554774413, "btc_hashrate": 106848363.5843344, "bch_price": 240.66738445552582, "btc_price": 6885.037264610397, "ratio_pct": 3.4955131716218015}, {"month": "2020-04", "bch_tx": 1211019.0, "btc_tx": 8703117.0, "bch_hashrate": 2176411.844392461, "btc_hashrate": 111395834.33877946, "bch_price": 237.7290907936151, "btc_price": 7224.347704104812, "ratio_pct": 3.2906651303416563}, {"month": "2020-05", "bch_tx": 1194826.0, "btc_tx": 9088147.0, "bch_hashrate": 2179842.984767934, "btc_hashrate": 105723163.20273826, "bch_price": 241.84380319802375, "btc_price": 9264.668143189232, "ratio_pct": 2.6103881915706957}, {"month": "2020-06", "bch_tx": 679267.0, "btc_tx": 9189828.0, "bch_hashrate": 2574728.399623914, "btc_hashrate": 111613940.96729173, "bch_price": 240.13535634361835, "btc_price": 9478.762561918955, "ratio_pct": 2.5334040680411714}, {"month": "2020-07", "bch_tx": 506141.0, "btc_tx": 10152857.0, "bch_hashrate": 2753192.292688516, "btc_hashrate": 122218376.20925349, "bch_price": 241.33126642521518, "btc_price": 9597.276008946852, "ratio_pct": 2.514580868573951}, {"month": "2020-08", "bch_tx": 527861.0, "btc_tx": 9789543.0, "bch_hashrate": 2772791.2894641194, "btc_hashrate": 123700702.43441826, "bch_price": 291.2728924554962, "btc_price": 11648.209951568604, "ratio_pct": 2.5005807215577533}, {"month": "2020-09", "bch_tx": 545290.0, "btc_tx": 9488466.0, "bch_hashrate": 2609206.999343813, "btc_hashrate": 135729244.14191872, "bch_price": 228.63008208374382, "btc_price": 10647.193640549383, "ratio_pct": 2.147327171856966}, {"month": "2020-10", "bch_tx": 624522.0, "btc_tx": 9280893.0, "bch_hashrate": 2682879.0057710344, "btc_hashrate": 131980586.28740278, "bch_price": 247.58464929372772, "btc_price": 11895.126609905547, "ratio_pct": 2.081395662384578}, {"month": "2020-11", "bch_tx": 607787.0, "btc_tx": 9141753.0, "bch_hashrate": 1849254.9818793884, "btc_hashrate": 129004193.3039937, "bch_price": 269.8573059850676, "btc_price": 16670.627445129558, "ratio_pct": 1.618759143129363}, {"month": "2020-12", "bch_tx": 884415.0, "btc_tx": 9723135.0, "bch_hashrate": 1701441.88274752, "btc_hashrate": 136509190.200406, "bch_price": 302.92503285638674, "btc_price": 21995.8736749326, "ratio_pct": 1.377190273653974}, {"month": "2021-01", "bch_tx": 4766194.0, "btc_tx": 10071413.0, "bch_hashrate": 1698602.5004063766, "btc_hashrate": 149214802.7081887, "bch_price": 451.19943543182245, "btc_price": 34752.85856475368, "ratio_pct": 1.2983088415334803}, {"month": "2021-02", "bch_tx": 8839333.0, "btc_tx": 8967168.0, "bch_hashrate": 1578808.1077729773, "btc_hashrate": 155108111.0462022, "bch_price": 556.9149562744891, "btc_price": 46316.12198772021, "ratio_pct": 1.2024213867088094}, {"month": "2021-03", "bch_tx": 11058704.0, "btc_tx": 9337574.0, "bch_hashrate": 1350559.341181829, "btc_hashrate": 159602758.88496402, "bch_price": 522.9663499372533, "btc_price": 54933.491410035625, "ratio_pct": 0.9519991111318917}, {"month": "2021-04", "bch_tx": 9752205.0, "btc_tx": 8346904.0, "bch_hashrate": 2040753.026022262, "btc_hashrate": 157248799.9704838, "bch_price": 782.9853926528663, "btc_price": 57105.45609389246, "ratio_pct": 1.371121861570436}, {"month": "2021-05", "bch_tx": 3674100.0, "btc_tx": 7786747.0, "bch_hashrate": 3196127.976655761, "btc_hashrate": 161224803.71456084, "bch_price": 1010.2030056235105, "btc_price": 46507.35033992572, "ratio_pct": 2.172136228445312}, {"month": "2021-06", "bch_tx": 2685414.0, "btc_tx": 6510722.0, "bch_hashrate": 2109587.17718726, "btc_hashrate": 120055752.7003312, "bch_price": 573.4971177627118, "btc_price": 35811.81382305475, "ratio_pct": 1.6014187960329136}, {"month": "2021-07", "bch_tx": 2340087.0, "btc_tx": 6803948.0, "bch_hashrate": 1351217.9390684806, "btc_hashrate": 100343766.57471906, "bch_price": 480.8422871294594, "btc_price": 34412.27598575064, "ratio_pct": 1.3972987062191573}, {"month": "2021-08", "bch_tx": 2704023.0, "btc_tx": 7455990.0, "bch_hashrate": 1510953.444248879, "btc_hashrate": 120734408.55774477, "bch_price": 622.8113826332843, "btc_price": 45746.96164301578, "ratio_pct": 1.361426770794885}, {"month": "2021-09", "bch_tx": 2995092.0, "btc_tx": 7603386.0, "bch_hashrate": 1673759.7317263444, "btc_hashrate": 136618469.38119832, "bch_price": 607.2265622798666, "btc_price": 45927.461348433666, "ratio_pct": 1.3221426668308018}, {"month": "2021-10", "bch_tx": 3238844.0, "btc_tx": 8449029.0, "bch_hashrate": 1428932.7341684098, "btc_hashrate": 149131297.07846, "bch_price": 599.4496242219625, "btc_price": 57915.467306096216, "ratio_pct": 1.035042367963185}, {"month": "2021-11", "bch_tx": 2987794.0, "btc_tx": 8300559.0, "bch_hashrate": 1541024.6625432365, "btc_hashrate": 160891728.14345807, "bch_price": 607.9431073696826, "btc_price": 60684.55066210988, "ratio_pct": 1.0018086988147858}, {"month": "2021-12", "bch_tx": 2092012.0, "btc_tx": 8108023.0, "bch_hashrate": 1535456.732815969, "btc_hashrate": 173207416.45942086, "bch_price": 458.21195032986446, "btc_price": 49356.9545744311, "ratio_pct": 0.9283634986815755}, {"month": "2022-01", "bch_tx": 1447816.0, "btc_tx": 7739847.0, "bch_hashrate": 1502419.735766506, "btc_hashrate": 187556312.01986808, "bch_price": 357.689583054624, "btc_price": 41113.14966322278, "ratio_pct": 0.8700126017700619}, {"month": "2022-02", "bch_tx": 1434467.0, "btc_tx": 6996693.0, "bch_hashrate": 1509849.807070731, "btc_hashrate": 197761830.54587677, "bch_price": 315.4104167346535, "btc_price": 40756.41008039158, "ratio_pct": 0.7738915574568758}, {"month": "2022-03", "bch_tx": 1731900.0, "btc_tx": 7972122.0, "bch_hashrate": 1511182.7327373556, "btc_hashrate": 200793531.65293634, "bch_price": 323.7010793778796, "btc_price": 41973.92290655153, "ratio_pct": 0.7711956780845814}, {"month": "2022-04", "bch_tx": 1875983.0, "btc_tx": 7817057.0, "bch_hashrate": 1590732.4995053639, "btc_hashrate": 209062531.10049444, "bch_price": 328.93237745822825, "btc_price": 41441.3370125229, "ratio_pct": 0.7937301283470422}, {"month": "2022-05", "bch_tx": 1721187.0, "btc_tx": 8054790.0, "bch_hashrate": 1455945.0641559502, "btc_hashrate": 218666476.28192952, "bch_price": 218.28576069812325, "btc_price": 31706.786788099776, "ratio_pct": 0.6884512207337594}, {"month": "2022-06", "bch_tx": 1263950.0, "btc_tx": 7512554.0, "bch_hashrate": 1194081.1707100682, "btc_hashrate": 213559764.38377827, "bch_price": 139.75192029961542, "btc_price": 24352.584424611352, "ratio_pct": 0.5738689490318675}, {"month": "2022-07", "bch_tx": 982302.0, "btc_tx": 7680059.0, "bch_hashrate": 1107356.7518852553, "btc_hashrate": 199931492.65277004, "bch_price": 117.16376923585075, "btc_price": 21545.18048662921, "ratio_pct": 0.5438050022767819}, {"month": "2022-08", "bch_tx": 978316.0, "btc_tx": 7811692.0, "bch_hashrate": 1173558.8591694625, "btc_hashrate": 210641730.1597896, "bch_price": 130.71543358522442, "btc_price": 22362.41746393733, "ratio_pct": 0.5845317653872717}, {"month": "2022-09", "bch_tx": 703277.0, "btc_tx": 7683921.0, "bch_hashrate": 1344847.6548198862, "btc_hashrate": 228320035.98580885, "bch_price": 118.97827605982518, "btc_price": 19792.869884293774, "ratio_pct": 0.6011168504383386}, {"month": "2022-10", "bch_tx": 653007.0, "btc_tx": 7968474.0, "bch_hashrate": 1417002.643721558, "btc_hashrate": 262486431.52069667, "bch_price": 112.94645312109526, "btc_price": 19647.71690510737, "ratio_pct": 0.5748579016411578}, {"month": "2022-11", "bch_tx": 511107.0, "btc_tx": 7868100.0, "bch_hashrate": 1619198.5835238483, "btc_hashrate": 255261668.21925014, "bch_price": 108.88874509014445, "btc_price": 17579.60670669784, "ratio_pct": 0.6194037608853774}, {"month": "2022-12", "bch_tx": 507378.0, "btc_tx": 7950408.0, "bch_hashrate": 1498785.275018699, "btc_hashrate": 248417169.9090423, "bch_price": 104.90032774429636, "btc_price": 16937.163565426752, "ratio_pct": 0.6193500307124965}, {"month": "2023-01", "bch_tx": 367285.0, "btc_tx": 8758990.0, "bch_hashrate": 1524507.6816650499, "btc_hashrate": 273484649.61362946, "bch_price": 119.07722642062902, "btc_price": 20239.865773646812, "ratio_pct": 0.5883301191437383}, {"month": "2023-02", "bch_tx": 355819.0, "btc_tx": 8385176.0, "bch_hashrate": 1615666.032291035, "btc_hashrate": 296976639.46329004, "bch_price": 133.58336940393323, "btc_price": 23303.395567149542, "ratio_pct": 0.573235642930268}, {"month": "2023-03", "bch_tx": 901075.0, "btc_tx": 9770106.0, "bch_hashrate": 1517544.4962196888, "btc_hashrate": 331548785.4169282, "bch_price": 125.01203536035842, "btc_price": 25123.182304581365, "ratio_pct": 0.4975963388904029}, {"month": "2023-04", "bch_tx": 317579.0, "btc_tx": 10720736.0, "bch_hashrate": 1442216.74419013, "btc_hashrate": 342505560.6029686, "bch_price": 125.13498331568766, "btc_price": 28855.591357253063, "ratio_pct": 0.43365939642832546}, {"month": "2023-05", "bch_tx": 1372225.0, "btc_tx": 16298437.0, "bch_hashrate": 1342366.2050127883, "btc_hashrate": 360816860.56557906, "bch_price": 115.74768692478254, "btc_price": 27516.26549124262, "ratio_pct": 0.4206518757482574}, {"month": "2023-06", "bch_tx": 1415099.0, "btc_tx": 12141700.0, "bch_hashrate": 1951430.6391647595, "btc_hashrate": 369576799.971686, "bch_price": 142.32785955247664, "btc_price": 27760.893140541597, "ratio_pct": 0.5126919326115742}, {"month": "2023-07", "bch_tx": 1043521.0, "btc_tx": 14130344.0, "bch_hashrate": 3116081.266233169, "btc_hashrate": 378214201.9668189, "bch_price": 259.43220427605024, "btc_price": 30050.34557770404, "ratio_pct": 0.8633251940654448}, {"month": "2023-08", "bch_tx": 1769662.0, "btc_tx": 14405888.0, "bch_hashrate": 2838080.6729423837, "btc_hashrate": 386289197.5703994, "bch_price": 212.79750722639056, "btc_price": 27845.168167370524, "ratio_pct": 0.7642169942997528}, {"month": "2023-09", "bch_tx": 1928824.0, "btc_tx": 14672694.0, "bch_hashrate": 3056918.900225834, "btc_hashrate": 407147398.84581953, "bch_price": 207.18167610681408, "btc_price": 26306.336479271373, "ratio_pct": 0.7875732763855857}, {"month": "2023-10", "bch_tx": 2897612.0, "btc_tx": 10136497.0, "bch_hashrate": 3277493.901111558, "btc_hashrate": 443619669.5013559, "bch_price": 233.98854154595597, "btc_price": 29748.8713124187, "ratio_pct": 0.7865459468651409}, {"month": "2023-11", "bch_tx": 1831661.0, "btc_tx": 16411243.0, "bch_hashrate": 2685171.790680749, "btc_hashrate": 473080386.1504687, "bch_price": 232.37977606070652, "btc_price": 36604.63068173582, "ratio_pct": 0.634837100478258}, {"month": "2023-12", "bch_tx": 2286127.0, "btc_tx": 17539793.0, "bch_hashrate": 2314158.74811805, "btc_hashrate": 507264043.5680349, "bch_price": 239.98595754889527, "btc_price": 42548.02586179559, "ratio_pct": 0.5640354697734207}, {"month": "2024-01", "bch_tx": 2358890.0, "btc_tx": 14735261.0, "bch_hashrate": 2710242.773382166, "btc_hashrate": 521315204.62298834, "bch_price": 243.9580173532494, "btc_price": 42911.79087259855, "ratio_pct": 0.5685104545683959}, {"month": "2024-02", "bch_tx": 2146884.0, "btc_tx": 10565915.0, "bch_hashrate": 2861647.1570222746, "btc_hashrate": 575046541.4632782, "bch_price": 262.65731259473245, "btc_price": 49872.90727605353, "ratio_pct": 0.52665330124207}, {"month": "2024-03", "bch_tx": 2021287.0, "btc_tx": 11622871.0, "bch_hashrate": 4018063.3934784667, "btc_hashrate": 598557151.1484561, "bch_price": 457.75461056772826, "btc_price": 67711.85272275221, "ratio_pct": 0.6760332086053167}, {"month": "2024-04", "bch_tx": 2488283.0, "btc_tx": 14478233.0, "bch_hashrate": 3154947.86146648, "btc_hashrate": 625388905.38882, "bch_price": 548.8795136318707, "btc_price": 65915.19861520553, "ratio_pct": 0.8327055446439229}, {"month": "2024-05", "bch_tx": 2121471.0, "btc_tx": 18202551.0, "bch_hashrate": 4041885.7523140437, "btc_hashrate": 599365148.8127012, "bch_price": 465.0222197302415, "btc_price": 65255.59593221282, "ratio_pct": 0.7126166163792362}, {"month": "2024-06", "bch_tx": 2307102.0, "btc_tx": 17413013.0, "bch_hashrate": 3564528.2559170867, "btc_hashrate": 580417129.8952601, "bch_price": 425.72113110215577, "btc_price": 65903.24148341126, "ratio_pct": 0.6459790467352287}, {"month": "2024-07", "bch_tx": 2652189.0, "btc_tx": 19506505.0, "bch_hashrate": 3566830.549576888, "btc_hashrate": 614526193.0002846, "bch_price": 374.6713443385004, "btc_price": 62837.6423336287, "ratio_pct": 0.5962530267275611}, {"month": "2024-08", "bch_tx": 2538739.0, "btc_tx": 18538105.0, "bch_hashrate": 3568288.072143135, "btc_hashrate": 630861757.4169673, "bch_price": 342.76530951964514, "btc_price": 59963.00688085632, "ratio_pct": 0.5716279542163449}, {"month": "2024-09", "bch_tx": 1821085.0, "btc_tx": 17757745.0, "bch_hashrate": 3495494.0486110942, "btc_hashrate": 641423369.7672575, "bch_price": 328.8754143314322, "btc_price": 60337.91305350672, "ratio_pct": 0.5450559982739055}, {"month": "2024-10", "bch_tx": 1810890.0, "btc_tx": 20477350.0, "bch_hashrate": 3382334.2216659957, "btc_hashrate": 703633857.6735197, "bch_price": 345.68980159945727, "btc_price": 65582.58307140702, "ratio_pct": 0.5271061086799014}, {"month": "2024-11", "bch_tx": 512657.0, "btc_tx": 16097068.0, "bch_hashrate": 3633127.969067875, "btc_hashrate": 731174197.3405006, "bch_price": 439.33551403300174, "btc_price": 86569.09437550165, "ratio_pct": 0.507496950502153}, {"month": "2024-12", "bch_tx": 1007815.0, "btc_tx": 12793058.0, "bch_hashrate": 3840868.5400182065, "btc_hashrate": 778512250.2582968, "bch_price": 510.5095245895885, "btc_price": 98246.95644894513, "ratio_pct": 0.5196186661058342}, {"month": "2025-01", "bch_tx": 734151.0, "btc_tx": 11544592.0, "bch_hashrate": 3461150.7853368223, "btc_hashrate": 780836720.3560163, "bch_price": 444.6117765991627, "btc_price": 100008.38356327183, "ratio_pct": 0.44457450541421084}, {"month": "2025-02", "bch_tx": 499779.0, "btc_tx": 11384544.0, "bch_hashrate": 2742142.512386944, "btc_hashrate": 810213807.9249653, "bch_price": 326.19838429905485, "btc_price": 95251.19750017741, "ratio_pct": 0.34246118984325347}, {"month": "2025-03", "bch_tx": 645841.0, "btc_tx": 12033581.0, "bch_hashrate": 3167254.3139889147, "btc_hashrate": 816758284.1314796, "bch_price": 336.4883192782119, "btc_price": 85064.30919960975, "ratio_pct": 0.3955693315378804}, {"month": "2025-04", "bch_tx": 517629.0, "btc_tx": 12427851.0, "bch_hashrate": 3298962.081365975, "btc_hashrate": 869627350.6427575, "bch_price": 327.0514522035933, "btc_price": 86436.3487561952, "ratio_pct": 0.3783725908252833}, {"month": "2025-05", "bch_tx": 717903.0, "btc_tx": 12145551.0, "bch_hashrate": 3300989.0931842662, "btc_hashrate": 897144738.6874185, "bch_price": 401.1506727241409, "btc_price": 103629.43386172956, "ratio_pct": 0.3871010945204886}, {"month": "2025-06", "bch_tx": 492035.0, "btc_tx": 10278854.0, "bch_hashrate": 3694989.948095406, "btc_hashrate": 868131152.8153558, "bch_price": 448.4012619617389, "btc_price": 105806.69944625947, "ratio_pct": 0.42379288297286644}, {"month": "2025-07", "bch_tx": 975621.0, "btc_tx": 12981028.0, "bch_hashrate": 3902446.8914536624, "btc_hashrate": 902216502.8085016, "bch_price": 522.564715766704, "btc_price": 115353.56446927854, "ratio_pct": 0.45301132927355336}, {"month": "2025-08", "bch_tx": 527331.0, "btc_tx": 14115655.0, "bch_hashrate": 4431873.802868231, "btc_hashrate": 949418374.0989659, "bch_price": 568.391811811541, "btc_price": 114845.93707753062, "ratio_pct": 0.4949167783165276}, {"month": "2025-09", "bch_tx": 746768.0, "btc_tx": 15185649.0, "bch_hashrate": 4948953.6886652745, "btc_hashrate": 1034761641.3706341, "bch_price": 582.5770945580824, "btc_price": 113170.91745874342, "ratio_pct": 0.514776329148751}, {"month": "2025-10", "bch_tx": 812594.0, "btc_tx": 14490047.0, "bch_hashrate": 5014863.206635991, "btc_hashrate": 1084730995.7456284, "bch_price": 537.0366260520373, "btc_price": 114119.52504498413, "ratio_pct": 0.47059136097906634}, {"month": "2025-11", "bch_tx": 786158.0, "btc_tx": 12861163.0, "bch_hashrate": 5757068.963087066, "btc_hashrate": 1081206568.5870166, "bch_price": 514.4086960018792, "btc_price": 96282.01454801293, "ratio_pct": 0.534272884106885}, {"month": "2025-12", "bch_tx": 543475.0, "btc_tx": 14237003.0, "bch_hashrate": 6775274.8134005945, "btc_hashrate": 1048459541.3757728, "bch_price": 579.433415494222, "btc_price": 88915.91901772215, "ratio_pct": 0.6516644284795989}, {"month": "2026-01", "bch_tx": 360524.0, "btc_tx": 12112239.0, "bch_hashrate": 6805698.650895918, "btc_hashrate": 980939162.4401828, "bch_price": 601.900050188347, "btc_price": 90477.77406900324, "ratio_pct": 0.6652463064899292}, {"month": "2026-02", "bch_tx": 399411.0, "btc_tx": 13116990.0, "bch_hashrate": 7348446.83860939, "btc_hashrate": 1016124412.531847, "bch_price": 526.0254808426178, "btc_price": 68855.45190982717, "ratio_pct": 0.7639561810319664}, {"month": "2026-03", "bch_tx": 639204.0, "btc_tx": 14725053.0, "bch_hashrate": 6469051.085481723, "btc_hashrate": 980815592.692403, "bch_price": 461.1019614332664, "btc_price": 69532.57664804584, "ratio_pct": 0.6631452243848716}, {"month": "2026-04", "bch_tx": 596867.0, "btc_tx": 16801905.0, "bch_hashrate": 5953957.156624655, "btc_hashrate": 958143436.8490138, "bch_price": 445.0135121184674, "btc_price": 73725.33581697839, "ratio_pct": 0.6036100170817861}, {"month": "2026-05", "bch_tx": 529583.0, "btc_tx": 20004548.0, "bch_hashrate": 4953654.430749978, "btc_hashrate": 987741124.1851797, "bch_price": 397.79450622466766, "btc_price": 77985.6057137653, "ratio_pct": 0.5100870892568481}, {"month": "2026-06", "bch_tx": 413165.0, "btc_tx": 19553416.0, "bch_hashrate": 3450100.7395620956, "btc_hashrate": 921689541.4216765, "bch_price": 211.30244361011802, "btc_price": 62972.21526557511, "ratio_pct": 0.33554869035333157}, {"month": "2026-07", "bch_tx": 394089.0, "btc_tx": 20345941.0, "bch_hashrate": 3303815.0761786727, "btc_hashrate": 899547639.7730763, "bch_price": 224.8777223791461, "btc_price": 63867.633603806484, "ratio_pct": 0.3520996625209917}, {"month": "2026-08", "bch_tx": 376624.0, "btc_tx": 20837153.0, "bch_hashrate": 3215134.4235970853, "btc_hashrate": 909169996.2393597, "bch_price": 229.62024412386998, "btc_price": 69472.36112530269, "ratio_pct": 0.3305202823173365}, {"month": "2026-09", "bch_tx": 330685.0, "btc_tx": 18000691.0, "bch_hashrate": 3304955.1984363873, "btc_hashrate": 935012354.5638751, "bch_price": 261.68661754850115, "btc_price": 79962.64657466012, "ratio_pct": 0.3272610759627217}];
+
+let CURRENT_LANG = 'en';
+function fmtMonth(m){
+  const [y, mo] = m.split('-');
+  const namesEn = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const namesEs = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const names = CURRENT_LANG === 'es' ? namesEs : namesEn;
+  return names[parseInt(mo,10)-1] + ' ' + y;
+}
+function fmtInt(n){ return Math.round(n).toLocaleString(CURRENT_LANG === 'es' ? 'es-ES' : 'en-US'); }
+function fmtPct(n){ return n.toFixed(3) + '%'; }
+function fmtEH(n){ return (n/1e6).toFixed(2) + ' EH/s'; }
+// axis ticks land on "nice" round numbers (1/2/5 * 10^n) already — this just
+// strips the forced decimal padding those nice numbers don't need, without
+// touching the full-precision tooltip formatters above.
+function trimNum(v){
+  if (v === 0) return '0';
+  return parseFloat(v.toPrecision(3)).toString();
+}
+function axisPct(v){ return trimNum(v) + '%'; }
+function axisEH(v){ return trimNum(v/1e6) + ' EH/s'; }
+
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+// generic log-scale line chart, 1 or 2 series
+// yFmt: full-precision formatter, used in the hover tooltip
+// axisFmt: compact formatter for the left-axis tick labels (defaults to yFmt)
+function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts){
+  axisFmt = axisFmt || yFmt;
+  opts = opts || {};
+  const svg = document.getElementById(svgId);
+  const vb = svg.viewBox.baseVal;
+  const W = vb.width, H = vb.height;
+  const mL = 58, mR = 14, mT = 12, mB = 26;
+  const plotW = W - mL - mR, plotH = H - mT - mB;
+  const n = DATA.length;
+  const xStep = plotW / (n - 1);
+  function xAt(i){ return mL + i * xStep; }
+
+  let yMax = 0, yMinPos = Infinity;
+  seriesDefs.forEach(s => DATA.forEach(d => {
+    const v = s.get(d);
+    if (v > 0){ yMax = Math.max(yMax, v); yMinPos = Math.min(yMinPos, v); }
+  }));
+  yMax *= 1.15;
+  const logMin = Math.log10(yMinPos * 0.85);
+  const logMax = Math.log10(yMax);
+  function yAt(v){
+    if (v <= 0) return null;
+    return mT + plotH - ((Math.log10(v) - logMin) / (logMax - logMin)) * plotH;
+  }
+
+  svg.innerHTML = '';
+
+  const NICE = [];
+  for (let e = -4; e <= 12; e++) [1,2,5].forEach(m => NICE.push(m * Math.pow(10, e)));
+  NICE.filter(v => Math.log10(v) >= logMin - 0.001 && Math.log10(v) <= logMax + 0.001).forEach(v => {
+    const y = yAt(v);
+    svg.appendChild(el('line', {x1:mL, y1:y, x2:mL+plotW, y2:y, class:'gridline'}));
+    const lbl = svg.appendChild(el('text', {x:mL-6, y:y+3, class:'axis-label', 'text-anchor':'end'}));
+    lbl.textContent = axisFmt(v);
+  });
+
+  const yearTicks = [];
+  let lastYear = null;
+  DATA.forEach((d,i) => {
+    const yr = d.month.slice(0,4);
+    if (yr !== lastYear){ yearTicks.push(i); lastYear = yr; }
+  });
+  yearTicks.forEach(i => {
+    const lbl = svg.appendChild(el('text', {x:xAt(i), y:H-6, class:'axis-label', 'text-anchor':'middle'}));
+    lbl.textContent = DATA[i].month.slice(0,4);
+  });
+
+  // optional flagged points — a dashed guide + short label calling out a
+  // month worth a second look (e.g. a known spam/stress-test spike), so it
+  // reads as "flagged, hover for the number" rather than an unexplained jump
+  (opts.annotations || []).forEach(a => {
+    const i = DATA.findIndex(d => d.month === a.month);
+    if (i < 0) return;
+    const x = xAt(i);
+    svg.appendChild(el('line', {x1:x, x2:x, y1:mT, y2:mT+plotH, class:'annotation-line'}));
+    const lbl = svg.appendChild(el('text', {x, y:mT + 9, class:'annotation-label', 'text-anchor': i < n/2 ? 'start' : 'end'}));
+    lbl.textContent = a.label;
+  });
+
+  const baseline = mT + plotH;
+  seriesDefs.forEach(s => {
+    let path = ''; let started = false;
+    let firstX = null, lastX = null;
+    DATA.forEach((d,i) => {
+      const y = yAt(s.get(d));
+      const x = xAt(i);
+      if (y === null){ started = false; return; }
+      path += (!started ? 'M' : 'L') + x.toFixed(2) + ' ' + y.toFixed(2) + ' ';
+      started = true;
+      if (firstX === null) firstX = x;
+      lastX = x;
+    });
+    // a single-series chart gets a soft area fill under the line; with two
+    // series, overlapping fills would just muddy the comparison, so those
+    // stay line-only and lean on the end-point markers below instead.
+    if (seriesDefs.length === 1 && firstX !== null){
+      const area = path + `L${lastX.toFixed(2)} ${baseline.toFixed(2)} L${firstX.toFixed(2)} ${baseline.toFixed(2)} Z`;
+      svg.appendChild(el('path', {d:area, class:'series-area-' + s.key}));
+    }
+    svg.appendChild(el('path', {d:path, class:'series-' + s.key}));
+  });
+
+  // persistent marker on each series' last plotted point — a finished chart
+  // reads its own headline number without needing to hover first
+  seriesDefs.forEach(s => {
+    for (let i = n - 1; i >= 0; i--){
+      const y = yAt(s.get(DATA[i]));
+      if (y !== null){
+        svg.appendChild(el('circle', {cx:xAt(i), cy:y, r:3.5, class:'end-dot ' + s.key}));
+        break;
+      }
+    }
+  });
+
+  const crosshair = el('line', {class:'crosshair-line', y1:mT, y2:mT+plotH, x1:mL, x2:mL});
+  svg.appendChild(crosshair);
+  const dots = seriesDefs.map(s => {
+    const c = el('circle', {class:'hover-dot ' + s.key});
+    svg.appendChild(c);
+    return c;
+  });
+  const overlay = el('rect', {x:mL, y:mT, width:plotW, height:plotH, class:'capture-rect'});
+  svg.appendChild(overlay);
+
+  const tooltip = document.getElementById(tooltipId);
+  function show(i){
+    const d = DATA[i];
+    const x = xAt(i);
+    crosshair.setAttribute('x1', x); crosshair.setAttribute('x2', x); crosshair.style.opacity = 1;
+    let tipY = mT + plotH/2;
+    const rows = seriesDefs.map((s, si) => {
+      const v = s.get(d);
+      const y = yAt(v);
+      if (y === null){ dots[si].style.opacity = 0; return ''; }
+      dots[si].setAttribute('cx', x); dots[si].setAttribute('cy', y); dots[si].style.opacity = 1;
+      tipY = y;
+      return `<div class="row"><span class="k"><span class="dot" style="background:var(--${s.key})"></span>${s.label}</span><span class="v">${yFmt(v)}</span></div>`;
+    }).join('');
+    const extraRows = opts.tooltipExtra
+      ? opts.tooltipExtra(d).map(r => `<div class="row"><span class="k">${r.label}</span><span class="v">${r.value}</span></div>`).join('')
+      : '';
+    tooltip.innerHTML = `<div class="t-date">${fmtMonth(d.month)}</div>${rows}${extraRows}`;
+    tooltip.style.left = ((x / W) * 100) + '%';
+    tooltip.style.opacity = 1;
+  }
+  function hide(){
+    crosshair.style.opacity = 0;
+    dots.forEach(dot => dot.style.opacity = 0);
+    tooltip.style.opacity = 0;
+  }
+  function onMove(clientX){
+    const rect = svg.getBoundingClientRect();
+    const px = ((clientX - rect.left) / rect.width) * W;
+    let i = Math.round((px - mL) / xStep);
+    i = Math.max(0, Math.min(n-1, i));
+    show(i);
+  }
+  overlay.addEventListener('mousemove', e => onMove(e.clientX));
+  overlay.addEventListener('mouseleave', hide);
+  overlay.addEventListener('touchmove', e => { onMove(e.touches[0].clientX); e.preventDefault(); }, {passive:false});
+  overlay.addEventListener('touchend', hide);
+
+  const legend = document.getElementById(legendId);
+  legend.innerHTML = seriesDefs.map(s =>
+    `<span><span class="swatch" style="background:var(--${s.key})"></span>${s.label}</span>`
+  ).join('');
+}
+
+const CHART_TEXT = {
+  en: {
+    ratio: 'BCH % of BTC price',
+    txBtc: 'Bitcoin transactions/month',
+    txBch: 'BCH transactions/month',
+    annStress: 'Stress test',
+    annSpam: 'Spam flood: BCH tx count tops BTC',
+    hash: "BCH hashrate as % of Bitcoin's",
+    hashBch: 'BCH hashrate',
+    hashBtc: 'Bitcoin hashrate',
+  },
+  es: {
+    ratio: 'BCH como % del precio de BTC',
+    txBtc: 'Transacciones de Bitcoin/mes',
+    txBch: 'Transacciones de BCH/mes',
+    annStress: 'Prueba de estrés',
+    annSpam: 'Inundación de spam: BCH supera a BTC en transacciones',
+    hash: 'Hashrate de BCH como % del de Bitcoin',
+    hashBch: 'Hashrate de BCH',
+    hashBtc: 'Hashrate de Bitcoin',
+  },
+};
+
+function renderMainCharts(lang){
+  const t = CHART_TEXT[lang] || CHART_TEXT.en;
+
+  renderChart('chart-ratio', 'tooltip-ratio', 'legend-ratio',
+    [{key:'bch', label:t.ratio, get:d=>d.ratio_pct}],
+    fmtPct, axisPct
+  );
+
+  renderChart('chart-tx', 'tooltip-tx', 'legend-tx',
+    [
+      {key:'btc', label:t.txBtc, get:d=>d.btc_tx},
+      {key:'bch', label:t.txBch, get:d=>d.bch_tx},
+    ],
+    fmtInt, null,
+    {annotations: [
+      {month:'2018-09', label:t.annStress},
+      {month:'2021-03', label:t.annSpam},
+    ]}
+  );
+
+  renderChart('chart-hash', 'tooltip-hash', 'legend-hash',
+    [{key:'bch', label:t.hash, get:d=>d.bch_hashrate/d.btc_hashrate*100}],
+    fmtPct, axisPct,
+    {tooltipExtra: d => [
+      {label:t.hashBch, value:fmtEH(d.bch_hashrate)},
+      {label:t.hashBtc, value:fmtEH(d.btc_hashrate)},
+    ]}
+  );
+}
+
+// ---------------- exchange listing timeline ----------------
+// A data-driven point-in-time timeline, not a table: add a new exchange by
+// adding one object here (title, date, detail, and `proxy: true` if the date
+// is a lower bound rather than the confirmed listing date itself) — position
+// on the line is computed automatically from the date.
+// Only exchanges that already existed on the fork date belong on this
+// timeline — an exchange founded after Aug 1, 2017 (e.g. Upbit, Oct 24 2017)
+// didn't "delay" adding BCH just because it opened later than day 0; it's not
+// a comparable data point on a "days since fork" axis, so it's left off
+// entirely rather than shown looking like a slow adopter.
+const TIMELINE_EVENTS = {
+  en: [
+    {
+      label: 'Fork day',
+      title: 'Fork day / Kraken / Binance',
+      date: '2017-08-01',
+      detail: 'BCH activates at block 478,558. Kraken credits BTC holders 1:1 same-day; Binance opens BCC/BTC trading the next day, Aug 2 (deposits/withdrawals follow Sept 11).',
+    },
+    {
+      label: 'SegWit',
+      title: 'Bitcoin activates SegWit',
+      date: '2017-08-24',
+      detail: 'Segregated Witness activates on Bitcoin at block 481,824 — the parallel event on the other side of the split.',
+    },
+    {
+      label: 'OKX',
+      title: 'OKX (OKCoin/OKEx)',
+      date: '2017-11-07',
+      detail: 'Confirmed listed by this date, via a BCC-to-BCH ticker rename. Original listing date unconfirmed, likely earlier.',
+      proxy: true,
+      listing: true,
+    },
+    {
+      label: 'Diff. fix',
+      title: 'Difficulty algorithm hard fork',
+      date: '2017-11-13',
+      detail: 'Replaces the original Emergency Difficulty Adjustment with a smoother algorithm, at block 504,032.',
+    },
+    {
+      label: 'Coinbase',
+      title: 'Coinbase / GDAX',
+      date: '2017-12-19',
+      detail: 'Announces support; BCH-USD/EUR/BTC trading follows within weeks.',
+      listing: true,
+    },
+    {
+      label: '32MB fork',
+      title: 'Block size increase to 32MB',
+      date: '2018-05-15',
+      detail: 'Hard fork raises the block size limit from 8MB to 32MB and reactivates several original Bitcoin opcodes.',
+    },
+    {
+      label: 'BSV split',
+      title: 'Bitcoin SV splits from BCH',
+      date: '2018-11-15',
+      detail: 'The "hash war" with Craig Wright and Calvin Ayre’s faction ends with Bitcoin SV breaking away as its own chain.',
+    },
+  ],
+  es: [
+    {
+      label: 'Día del fork',
+      title: 'Día del fork / Kraken / Binance',
+      date: '2017-08-01',
+      detail: 'BCH se activa en el bloque 478,558. Kraken acredita a los tenedores de BTC 1:1 el mismo día; Binance abre el trading de BCC/BTC al día siguiente, el 2 de agosto (los depósitos/retiros llegan el 11 de septiembre).',
+    },
+    {
+      label: 'SegWit',
+      title: 'Bitcoin activa SegWit',
+      date: '2017-08-24',
+      detail: 'Segregated Witness se activa en Bitcoin en el bloque 481,824, el evento paralelo al otro lado de la división.',
+    },
+    {
+      label: 'OKX',
+      title: 'OKX (OKCoin/OKEx)',
+      date: '2017-11-07',
+      detail: 'Confirmado como listado para esta fecha, mediante un cambio de ticker de BCC a BCH. La fecha de listado original no está confirmada, probablemente sea anterior.',
+      proxy: true,
+      listing: true,
+    },
+    {
+      label: 'Ajuste dif.',
+      title: 'Hard fork del algoritmo de dificultad',
+      date: '2017-11-13',
+      detail: 'Reemplaza el Ajuste de Dificultad de Emergencia original por un algoritmo más gradual, en el bloque 504,032.',
+    },
+    {
+      label: 'Coinbase',
+      title: 'Coinbase / GDAX',
+      date: '2017-12-19',
+      detail: 'Anuncia soporte; el trading de BCH-USD/EUR/BTC llega semanas después.',
+      listing: true,
+    },
+    {
+      label: 'Fork de 32MB',
+      title: 'Aumento del tamaño de bloque a 32MB',
+      date: '2018-05-15',
+      detail: 'Un hard fork eleva el límite de tamaño de bloque de 8MB a 32MB y reactiva varios opcodes originales de Bitcoin.',
+    },
+    {
+      label: 'División de BSV',
+      title: 'Bitcoin SV se separa de BCH',
+      date: '2018-11-15',
+      detail: 'La "guerra de hash" con la facción de Craig Wright y Calvin Ayre termina con Bitcoin SV separándose como su propia cadena.',
+    },
+  ],
+};
+
+function fmtLongDate(iso){
+  const [y, m, d] = iso.split('-').map(Number);
+  if (CURRENT_LANG === 'es'){
+    const namesEs = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    return d + ' de ' + namesEs[m - 1] + ' de ' + y;
+  }
+  const names = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return names[m - 1] + ' ' + d + ', ' + y;
+}
+
+// labels only ever show on hover (a shared tooltip, same pattern as the
+// charts above) — with the always-visible text gone, points close together
+// in time no longer risk colliding.
+function renderTimeline(svgId, tooltipId, events){
+  const svg = document.getElementById(svgId);
+  const tooltip = document.getElementById(tooltipId);
+  const vb = svg.viewBox.baseVal;
+  const W = vb.width;
+  const mL = 24, mR = 32;
+  const plotW = W - mL - mR;
+  const baseline = 75;
+  const LANE_Y = [baseline - 17, baseline + 17];   // stems end here: above / below the line
+  const LABEL_Y = [baseline - 25, baseline + 33];  // label text sits past the stem end
+  const MIN_GAP = 90; // px a label needs before the next same-lane label risks touching it
+
+  const DAY_MS = 86400000;
+  const times = events.map(e => Date.parse(e.date + 'T00:00:00Z'));
+  const forkTime = Math.min(...times);
+  const dayOffsets = times.map(t => Math.round((t - forkTime) / DAY_MS));
+  const maxDay = Math.max(...dayOffsets, 1);
+  const domainMax = maxDay + Math.max(10, Math.round(maxDay * 0.08));
+  const xAt = day => mL + (day / domainMax) * plotW;
+
+  svg.innerHTML = '';
+  svg.appendChild(el('line', {x1:mL, x2:mL + plotW, y1:baseline, y2:baseline, class:'timeline-baseline'}));
+  const arrowX = mL + plotW;
+  svg.appendChild(el('path', {
+    d:`M${(arrowX-8).toFixed(1)},${(baseline-5).toFixed(1)} L${(arrowX+7).toFixed(1)},${baseline} L${(arrowX-8).toFixed(1)},${(baseline+5).toFixed(1)} Z`,
+    class:'timeline-arrow'
+  }));
+
+  // Each event's short label is always visible, alternating above/below the
+  // line (a "lane" per event) so two events close in time don't collide —
+  // whichever lane has more room since its last label wins. When both lanes
+  // are tight, the label points forward (into whatever's next) instead of
+  // its usual backward-pointing default, since a tight spot is more likely
+  // to have room ahead than immediately behind. Full detail stays hover-only.
+  const lastLaneX = [-Infinity, -Infinity];
+  events.forEach((e, i) => {
+    const x = xAt(dayOffsets[i]);
+
+    let lane, anchor;
+    if (x - lastLaneX[0] >= MIN_GAP){ lane = 0; anchor = 'end'; }
+    else if (x - lastLaneX[1] >= MIN_GAP){ lane = 1; anchor = 'end'; }
+    else { lane = (x - lastLaneX[0]) >= (x - lastLaneX[1]) ? 0 : 1; anchor = 'start'; }
+    lastLaneX[lane] = x;
+    if (anchor === 'end' && x < mL + 50) anchor = 'start';
+    if (anchor === 'start' && x > mL + plotW - 50) anchor = 'end';
+
+    svg.appendChild(el('line', {x1:x, x2:x, y1:baseline, y2:LANE_Y[lane], class:'timeline-stem'}));
+    const lbl = svg.appendChild(el('text', {x, y:LABEL_Y[lane], class:'timeline-label', 'text-anchor':anchor}));
+    lbl.textContent = e.label;
+
+    if (e.listing){
+      svg.appendChild(el('circle', {cx:x, cy:baseline, r:6, class:'timeline-marker' + (e.proxy ? ' proxy' : '')}));
+    } else {
+      svg.appendChild(el('rect', {x:x - 5, y:baseline - 5, width:10, height:10, rx:1.5, class:'timeline-marker'}));
+    }
+    // a larger invisible circle, easier to hover/tap than the visible 6px marker
+    const hit = svg.appendChild(el('circle', {cx:x, cy:baseline, r:16, class:'timeline-hit'}));
+
+    function show(){
+      const orEarlier = CURRENT_LANG === 'es' ? ' (o antes)' : ' (or earlier)';
+      const dayWord = CURRENT_LANG === 'es' ? 'Día' : 'Day';
+      tooltip.innerHTML = `<div class="t-date">${e.title}</div>`
+        + `<div class="row"><span class="k">${fmtLongDate(e.date)}${e.proxy ? orEarlier : ''} · ${dayWord} ${dayOffsets[i]}</span></div>`
+        + `<div class="row" style="max-width:220px; white-space:normal;"><span class="k">${e.detail}</span></div>`;
+      tooltip.style.left = ((x / W) * 100) + '%';
+      tooltip.style.opacity = 1;
+    }
+    function hide(){ tooltip.style.opacity = 0; }
+    hit.addEventListener('mouseenter', show);
+    hit.addEventListener('mouseleave', hide);
+    hit.addEventListener('touchstart', e2 => { e2.preventDefault(); show(); }, {passive:false});
+  });
+}
+
+renderMainCharts('en');
+renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS.en);
+
+// ---------------- tweet screenshot lightbox ----------------
+(function(){
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('lightbox-close');
+
+  function open(src, alt){
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    lightbox.classList.remove('active');
+    lightboxImg.src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.tweet-img-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const img = btn.querySelector('img');
+      open(img.src, img.alt);
+    });
+  });
+  lightbox.addEventListener('click', close);
+  closeBtn.addEventListener('click', e => { e.stopPropagation(); close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+})();
+
+// ---------------- language toggle ----------------
+(function(){
+  const IDS = [
+    'nav-back','masthead-title-text','masthead-meta','hero-eyebrow','hero-lede','read-time',
+    'bg-h2','bg1','bg2','bg3','bg4','bg5','bg6','bg7','bg8','bg9','bg10','bg11','bg12','bg13','bg14',
+    'bg15','bg16','bg17','bg18','bg19','bg20','bg21','bg22','bg23',
+    'wsplit-h2','wh1','wp1','wh2','wp2','wh3','wp3',
+    'how-h2','hp1','hp2','hp3','hp4','hp5','hp6','hp7','hp8','hp9','hp10','hp11','hp12',
+    'tweets-h2','tweets-intro','vp1','vp2','vp3','vp4','vp5','td1','td2','td3','td4','td5',
+    'metrics-h2','metrics-intro','ct1','cc1','ct2','cc2','ct3','cc3','ct4','cc4',
+    'tll1','tll2','tll3','tll4',
+    'sim-h2','sim-h3a','sim-a1','sim-a2','sim-a3','sim-a4','sim-h3b','sim-b1','sim-b2','sim-b3',
+    'sources-h3','src1','src2','src3','src4','src5','src6','src7','src8','src9','src10','src11','src12','src13',
+    'footer-text','backlink',
+  ];
+
+  const EN = {};
+  IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) EN[id] = el.innerHTML;
+  });
+
+  const ES = {
+    'nav-back': '&larr; Una historia de Forks',
+    'masthead-title-text': 'Una historia de Forks: Capítulo 1',
+    'masthead-meta': 'Bitcoin Cash (BCH), bifurcado el 1 de agosto de 2017',
+    'hero-eyebrow': 'EL PRIMER FORK',
+    'hero-lede': 'Bloques llenos, comisiones al alza y una disputa cada vez más intensa sobre lo que Bitcoin realmente debía ser. Nueve años después, los datos nos permiten ver qué pasó después.',
+    'read-time': '~9 min de lectura',
+
+    'bg-h2': 'Contexto',
+    'bg1': 'En 2010, Satoshi Nakamoto añadió un límite de tamaño de bloque de 1 MB a Bitcoin. En ese momento, los bloques estaban en su mayoría vacíos, y el límite era sobre todo una medida defensiva pensada para proteger a una red joven de abusos.',
+    'bg2': 'Pero Bitcoin estaba creciendo.',
+    'bg3': 'Para 2013, el volumen de transacciones había crecido lo suficiente como para que los desarrolladores empezaran a hacerse una pregunta incómoda: ¿qué pasa cuando Bitcoin realmente alcance el límite? Por el momento, era un problema para el futuro. Pocos años después, ese futuro llegó.',
+    'bg4': 'Para 2016, la congestión ya no era teórica. Los bloques se estaban llenando, las comisiones subían, y la comunidad enfrentaba una pregunta fundamental: ¿cómo debía escalar Bitcoin?',
+    'bg5': 'La respuesta dividió al ecosistema.',
+    'bg6': 'Muchos de los mayores pools de minería, que en conjunto controlaban la mayor parte del hash rate de Bitcoin, favorecían la solución más simple: hacer los bloques más grandes. Desde su perspectiva, bloques más grandes significaban que se podían procesar más transacciones directamente en la blockchain, preservando el rendimiento y los ingresos por comisiones que venían con él.',
+    'bg7': 'También eran profundamente escépticos de Segregated Witness (SegWit), que proponía aumentar la capacidad efectiva de transacciones mediante un soft fork en lugar de simplemente elevar el límite de tamaño de bloque. Algunos mineros consideraban que la implementación de SegWit era innecesariamente compleja y se oponían a cambios que, según creían, reducirían su influencia sobre el protocolo. También había una fuente de oposición más técnica: SegWit amenazaba con socavar el covert ASICBoost, una optimización de minería patentada que algunos mineros consideraban comercialmente valiosa.',
+    'bg8': 'El desacuerdo se estaba volviendo peligroso. Bitcoin no tenía una autoridad central capaz de resolver la disputa, así que los principales actores intentaron negociar una salida.',
+    'bg9': 'En febrero de 2016, mineros, empresas y desarrolladores se reunieron en la Mesa Redonda de Hong Kong. El acuerdo resultante intentó tender un puente entre las posturas: activar SegWit como soft fork mientras se preparaba simultáneamente un hard fork que aumentaría la capacidad de bloque sin contar los datos de testigo a aproximadamente 2 MB, con un tamaño máximo de bloque de 4 MB.',
+    'bg10': 'Por un momento, el compromiso pareció posible.',
+    'bg11': 'Entonces Bitcoin entró en uno de los períodos de crecimiento más explosivos de su historia.',
+    'bg12': 'En 2017, un poderoso mercado alcista trajo una oleada de usuarios y transacciones. La congestión se intensificó, y las comisiones se dispararon, llegando a un promedio de casi 55 dólares en su punto máximo. El debate sobre escalabilidad ya no trataba de un problema que quizás aparecería algún día. Estaba ocurriendo en tiempo real, y el acuerdo de Hong Kong empezó a desmoronarse.',
+    'bg13': 'Lo que había comenzado como un debate de ingeniería se estaba convirtiendo en una lucha por algo mucho más grande: en qué debía convertirse Bitcoin, y quién tenía la autoridad para decidirlo.',
+    'bg14': 'En mayo de 2017, los principales pools de minería y empresas intentaron otro compromiso mediante el Acuerdo de Nueva York, más conocido como SegWit2x. La propuesta ataba la activación de SegWit a un compromiso de seguirla con un hard fork de 2 MB.',
+    'bg15': 'Pero esta vez, otro grupo entró en la pelea: los usuarios y los operadores de nodos.',
+    'bg16': 'En lugar de negociar con los mineros, el movimiento de base User Activated Soft Fork (UASF) propuso hacer cumplir SegWit directamente desde el lado económico de la red. Bajo BIP 148, los nodos comenzarían a rechazar los bloques que no señalizaran soporte para SegWit a partir del 1 de agosto.',
+    'bg17': 'Esto creó un tipo de amenaza muy distinto para los mineros. Podían seguir minando bloques que rechazaran SegWit, pero si la parte económicamente significativa de la red se negaba a aceptar esos bloques, las recompensas de esa minería podían quedar sin valor.',
+    'bg18': 'El equilibrio de poder estaba cambiando.',
+    'bg19': 'A medida que se acercaba el plazo del 1 de agosto, los principales pools de minería comenzaron a señalizar a favor de SegWit mediante BIP 91, despejando efectivamente el camino para su activación. La amenaza inmediata de una división impulsada por el UASF retrocedió, y SegWit finalmente quedó fijado en la cadena principal.',
+    'bg20': 'Para el bando de los bloques grandes, sin embargo, la pregunta más grande seguía sin resolverse. El prometido hard fork de 2 MB de SegWit2x era cada vez menos probable, mientras que el camino para escalar Bitcoin mediante bloques base más grandes había perdido la batalla en la cadena principal.',
+    'bg21': 'El desacuerdo no desapareció. Se convirtió en un fork.',
+    'bg22': 'El 1 de agosto de 2017, Bitcoin Cash se separó de Bitcoin, preservando el enfoque de bloques grandes y rechazando SegWit. El 24 de agosto, SegWit se activó en la otra cadena.',
+    'bg23': 'El debate sobre el tamaño de bloque finalmente produjo su respuesta, no mediante una votación o una autoridad central, sino creando dos redes que compiten entre sí.',
+
+    'wsplit-h2': '¿Por qué aumentar el tamaño de los Bloques?',
+    'wh1': '1. Cumplir la Visión de "Efectivo Electrónico"',
+    'wp1': 'Para el bando de los bloques grandes, el límite de 1 MB de Satoshi, añadido en 2010 para protegerse de abusos, siempre estuvo pensado como algo temporal, nunca como un techo permanente. Su argumento era que aumentar la capacidad de bloque preservaría a Bitcoin como un medio de intercambio accesible globalmente, manteniendo las transacciones on-chain asequibles para el comercio cotidiano, los micropagos y los usuarios en economías en desarrollo.',
+    'wh2': '2. Evitar la Fricción y la Centralización de las Capas 2',
+    'wp2': 'Sus defensores argumentaban que mover las transacciones fuera de la cadena introducía complejidad adicional y podía empujar la liquidez y el enrutamiento de pagos hacia grandes centros centralizados. Escalar la capa base, en cambio, permitiría a los usuarios transaccionar directamente en Bitcoin sin depender de infraestructura adicional, custodios o intermediarios.',
+    'wh3': '3. Simplicidad y Escalado Directo',
+    'wp3': 'Desde su perspectiva, aumentar el tamaño de bloque era la solución más directa: cambiar el límite de capacidad mediante un hard fork y dejar que la blockchain procesara más transacciones. Veían alternativas como SegWit y los sistemas de Capa 2 como soluciones cada vez más complejas construidas en torno a preservar la restricción de 1 MB. Para el bando de los bloques grandes, un aumento directo de la capacidad era una forma más limpia y transparente de escalar la red.',
+
+    'how-h2': '¿Cómo sucedió?',
+    'hp1': 'El 1 de agosto de 2017, la historia compartida de Bitcoin se dividió en dos.',
+    'hp2': 'En el bloque 478,558, un hard fork activado por los usuarios dio origen a Bitcoin Cash (BCH). Fue el último bloque compartido por ambas cadenas. A partir de ahí, BCH comenzó a aceptar bloques mayores que el límite de 1 MB, inicialmente de hasta 8 MB, mientras la otra cadena continuó bajo las reglas existentes.',
+    'hp3': 'BCH mantuvo la prueba de trabajo SHA-256, por lo que el mismo hardware de minería podía asegurar cualquiera de las dos cadenas. También incorporó protección contra <em>replay</em>, evitando que una transacción emitida en una cadena pudiera repetirse automáticamente en la otra. Las dos redes ahora compartían una historia, pero ya no compartían las mismas reglas.',
+    'hp4': 'Menos de un mes después, el 24 de agosto, la otra cadena activó SegWit en el bloque 481,824, colocando a ambas redes en caminos de escalabilidad diferentes. Con el tiempo, la mayor parte del valor de mercado, poder de cómputo y liquidez permaneció allí, mientras su estrategia de escalabilidad se orientaba cada vez más hacia soluciones fuera de la cadena, como Lightning Network.',
+    'hp5': 'BCH tenía sus propios problemas que resolver.',
+    'hp6': 'Su primer mecanismo de ajuste de dificultad, el EDA, fue diseñado para atraer mineros, pero terminó provocando fuertes oscilaciones en el poder de cómputo y en los tiempos entre bloques a medida que los mineros se movían entre las cadenas en competencia. El problema fue lo suficientemente grave como para obligar a BCH a realizar su primer gran hard fork apenas tres meses después de su lanzamiento. El 13 de noviembre de 2017, reemplazó el EDA por un nuevo Algoritmo de Ajuste de Dificultad (DAA) que recalculaba la dificultad después de cada bloque.',
+    'hp7': 'Seis meses después, BCH volvió a modificar sus reglas: aumentó el tamaño máximo de los bloques de 8 MB a 32 MB y reactivó varios <em>opcodes</em> de la era de Satoshi, ampliando su capacidad para procesar transacciones más complejas.',
+    'hp8': 'Pero los bloques más grandes no eliminaron los desacuerdos sobre cómo debía gobernarse la red.',
+    'hp9': 'En noviembre de 2018, una disputa entre Bitcoin ABC y una facción liderada por Craig Wright y Calvin Ayre escaló hasta convertirse en una "guerra de hash", provocando otra división de la cadena. La cadena respaldada por Wright y Ayre se convirtió en Bitcoin SV (BSV), mientras la otra conservó el nombre de Bitcoin Cash.',
+    'hp10': 'Dos años después, BCH volvió a dividirse. Esta vez, la disputa giró en torno a la propuesta de Bitcoin ABC de destinar una parte de la recompensa por bloque a financiar el desarrollo. La cadena que rechazó la propuesta conservó el nombre de Bitcoin Cash; la cadena de Bitcoin ABC pasó a llamarse eCash.',
+    'hp11': 'Nueve años después, BCH es una red mucho más pequeña en términos de precio y posición por capitalización de mercado que cuando fue lanzada. Aun así, continúa activa, con desarrollo constante, mineros asegurando la red y una comunidad que sigue apostando por el enfoque de bloques grandes.',
+    'hp12': 'La guerra por el tamaño de los bloques no produjo un ganador sencillo. Produjo experimentos en competencia sobre escalabilidad, economía de la minería y gobernanza descentralizada. BCH es lo que ocurre cuando un desacuerdo sobre las reglas de Bitcoin deja de ser un debate y se convierte en una red.',
+
+    'tweets-h2': 'Qué decía la gente sobre BCH vs. BTC',
+    'tweets-intro': 'Cinco publicaciones de Twitter (X) de enero de 2018 a septiembre de 2023, que muestran cómo los defensores y observadores de Bitcoin Cash argumentaron a favor de BCH sobre Bitcoin en los años posteriores al fork.',
+    'vp1': 'Ver publicación', 'vp2': 'Ver publicación', 'vp3': 'Ver publicación', 'vp4': 'Ver publicación', 'vp5': 'Ver publicación',
+    'td1': '6 de mayo de 2018',
+    'td2': '2 de junio de 2022',
+    'td3': '21 de septiembre de 2023',
+    'td4': '14 de septiembre de 2021',
+    'td5': '29 de enero de 2018',
+
+    'metrics-h2': 'Nueve años de datos',
+    'metrics-intro': 'Cifras mensuales del conjunto de datos público de CoinMetrics, de agosto de 2017 a septiembre de 2026. Los tres gráficos comparten el mismo eje temporal y un eje Y en escala logarítmica, de modo que una duplicación siempre cubre la misma distancia vertical, ya sea a inicios de 2017 o en la actualidad.',
+    'ct1': 'Precio: BCH como % del precio de Bitcoin',
+    'cc1': 'BCH abrió en aproximadamente el 11.6% del precio de Bitcoin en su primer mes, subió brevemente hacia el 16% a inicios de 2018, luego decayó de forma constante, y hoy se sitúa por debajo del 0.4%.',
+    'ct2': 'Volumen de transacciones: BCH vs. Bitcoin, conteo mensual',
+    'cc2': 'Total de transacciones confirmadas cada mes en cada cadena. Los puntos señalados son inundaciones conocidas de spam o pruebas de estrés, no uso orgánico. Una de esas inundaciones, entre marzo y abril de 2021, hizo que el conteo mensual de transacciones de BCH superara brevemente al de Bitcoin.',
+    'ct3': 'Hashrate de la red: BCH como % del de Bitcoin, promedio mensual',
+    'cc3': 'Ambas cadenas comparten el algoritmo SHA-256, así que los mineros pueden apuntar su hardware a cualquiera de las dos. El hashrate propio de BCH se ha triplicado aproximadamente desde su lanzamiento, pero comparado con el de Bitcoin cuenta la historia opuesta: del 15.9% del hashrate de Bitcoin en el fork a menos del 0.4% hoy. Pasa el cursor para ver el hashrate real de cada cadena.',
+    'ct4': 'Cronología: listados en exchanges y eventos clave de la red',
+    'cc4': 'Ambos lados de la división, desde el fork mismo hasta la primera división propia de BCH, medidos en días desde el 1 de agosto de 2017.',
+    'tll1': 'Listado en exchange',
+    'tll2': 'Confirmado activo para esta fecha (fecha exacta de listado no confirmada)',
+    'tll3': 'Evento de protocolo / red',
+    'tll4': 'Pasa el cursor sobre un punto para más detalles',
+
+    'sim-h2': 'Similitudes de BTCB2 con Cada Cadena',
+    'sim-h3a': 'Paralelismos con el Fork de BCH',
+    'sim-a1': '<strong>Orígenes Ideológicos y Conflictivos:</strong> Ambos surgieron de disputas de gobernanza, con facciones que creían que la cadena principal se había alejado de la visión original de Bitcoin.',
+    'sim-a2': '<strong>Desafíos como Cadena Minoritaria:</strong> Ambas comenzaron con una porción minoritaria del poder de hash, creando una dinámica de seguridad y minería distinta a la de la cadena establecida. Ambas introdujeron ajustes de minería para hacer viable la nueva cadena con menos poder de hash.',
+    'sim-a3': '<strong>Identidad en Exchanges y Mercado:</strong> Ambas tuvieron que establecer una identidad de mercado propia mientras competían contra una cadena que conservaba el ticker original, mayor liquidez y un respaldo más amplio en exchanges.',
+    'sim-a4': '<strong>Liderazgo Concentrado:</strong> Con comunidades más pequeñas y menos participantes involucrados en el desarrollo y la gobernanza del protocolo, ambos ecosistemas han dependido de un grupo relativamente reducido de líderes destacados para coordinar las decisiones importantes.',
+    'sim-h3b': 'Paralelismos con BTC Durante el Fork de BCH',
+    'sim-b1': '<strong>Restricciones Más Estrictas de Espacio de Bloque:</strong> Durante la división de 2017, el bando de BTC rechazó los bloques más grandes y enfatizó las contrapartidas entre el tamaño de bloque, la descentralización y la capacidad de correr un nodo completo. BTCB2 sigue un enfoque similar, yendo más lejos al restringir temporalmente el peso de bloque a 800,000 unidades, aproximadamente 300 KB serializados.',
+    'sim-b2': '<strong>Un Rol Más Acotado para la Capa Base:</strong> BTC enfatizó la cadena base como una capa de liquidación monetaria, rechazando la idea de que todo tipo de actividad debía ocurrir directamente on-chain. BTCB2 enfatiza de forma similar la blockchain como un libro contable monetario y aplica restricciones más estrictas a los datos arbitrarios.',
+    'sim-b3': '<strong>Consenso Impuesto por los Nodos:</strong> Durante el conflicto de 2017, los defensores de BTC enfatizaron que el consenso dependía en última instancia de los nodos que hacían cumplir las reglas, y no simplemente de las preferencias de los pools de minería. BTCB2 surgió de forma similar con un respaldo importante de usuarios que corren nodos y hacen cumplir sus reglas.',
+
+    'sources-h3': 'Fuentes',
+    'src1': 'El límite original de 1 MB por bloque de Bitcoin, añadido en 2010 — <a href="https://en.bitcoin.it/wiki/Block_size_limit_controversy" target="_blank" rel="noopener">Block size limit controversy, Bitcoin Wiki</a>',
+    'src2': 'El acuerdo de la Mesa Redonda de Hong Kong, febrero de 2016 — <a href="https://medium.com/@bitcoinroundtable/bitcoin-roundtable-consensus-266d475a61ff" target="_blank" rel="noopener">Bitcoin Roundtable Consensus (comunicado oficial)</a>',
+    'src3': 'El covert ASICBoost como fuente de oposición minera a SegWit — <a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2017-April/013996.html" target="_blank" rel="noopener">Gregory Maxwell, lista de correo bitcoin-dev</a>',
+    'src4': 'BIP 148, el User Activated Soft Fork — <a href="https://github.com/bitcoin/bips/blob/master/bip-0148.mediawiki" target="_blank" rel="noopener">bip-0148.mediawiki, bitcoin/bips</a>',
+    'src5': 'BIP 91, el mecanismo de señalización de mineros — <a href="https://github.com/bitcoin/bips/blob/master/bip-0091.mediawiki" target="_blank" rel="noopener">bip-0091.mediawiki, bitcoin/bips</a>',
+    'src6': 'El Acuerdo de Nueva York / SegWit2x, mayo de 2017 — <a href="https://www.bitmex.com/blog/the-segwit2x-hardfork-part-1-the-supporters-and-opponents" target="_blank" rel="noopener">BitMEX Research</a>',
+    'src7': 'El bloque del fork de Bitcoin Cash, 478,558 — <a href="https://www.blockchain.com/explorer/blocks/btc/478558" target="_blank" rel="noopener">Blockchain.com Explorer</a>',
+    'src8': 'El bloque de activación de SegWit en Bitcoin, 481,824 — <a href="https://en.wikipedia.org/wiki/SegWit" target="_blank" rel="noopener">SegWit, Wikipedia</a>',
+    'src9': 'El cambio del EDA al DAA, 13 de noviembre de 2017 — <a href="https://www.bitcoinabc.org/2017-11-01-DAA/" target="_blank" rel="noopener">Bitcoin ABC (anuncio oficial)</a>',
+    'src10': 'El aumento del tamaño de bloque de 8MB a 32MB, mayo de 2018 — <a href="https://github.com/bitcoincashorg/bitcoincash.org/blob/master/spec/may-2018-hardfork.md" target="_blank" rel="noopener">Especificación del hardfork de mayo de 2018, bitcoincash.org</a>',
+    'src11': 'La "guerra de hash" de noviembre de 2018 y la división de Bitcoin SV — <a href="https://bitcoinmagazine.com/technical/week-2-how-bitcoin-cash-hash-war-came-and-went-and-not-much-happened" target="_blank" rel="noopener">Bitcoin Magazine</a>',
+    'src12': 'La disputa sobre el impuesto a mineros de noviembre de 2020 y la división de eCash — <a href="https://bitcoin-takeover.com/bitcoin-cash-big-block-breakaway/" target="_blank" rel="noopener">Bitcoin Cash: The Big Block Breakaway</a>',
+    'src13': 'El pico promedio de comisiones cerca de 55 dólares (54.64 dólares el 22 de dic. de 2017) — <a href="https://www.spark.money/tools/bitcoin-fee-rate-history" target="_blank" rel="noopener">Bitcoin Fee Rate History, Spark</a>; cobertura de la época: <a href="https://www.coindesk.com/markets/2017/12/18/bought-your-first-bitcoin-or-ether-brace-for-the-fees" target="_blank" rel="noopener">CoinDesk, 18 de dic. de 2017</a>',
+    'footer-text': 'DATOS: API COMUNITARIA DE COINMETRICS (PRECIO, CONTEO DE TRANSACCIONES, HASHRATE), MENSUAL, AGO 2017–SEP 2026. PARTE DE LA SERIE "UNA HISTORIA DE FORKS".',
+    'backlink': '&larr; Volver a Una historia de Forks',
+  };
+
+  const META = {
+    en: {title:'The First Fork: Bitcoin Cash vs. Bitcoin', desc:"Why Bitcoin split in August 2017, what BCH proposed, and nine years of price, transaction, and hashrate data since."},
+    es: {title:'El Primer Fork: Bitcoin Cash vs. Bitcoin', desc:'Por qué Bitcoin se dividió en agosto de 2017, qué propuso BCH, y nueve años de datos de precio, transacciones y hashrate desde entonces.'},
+  };
+
+  function applyLang(lang){
+    CURRENT_LANG = lang;
+    const dict = lang === 'es' ? ES : EN;
+    IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && dict[id] != null) el.innerHTML = dict[id];
+    });
+    document.title = META[lang].title;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', META[lang].desc);
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-toggle button').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    renderMainCharts(lang);
+    renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS[lang]);
+    try { localStorage.setItem('site-lang', lang); } catch(e){}
+  }
+
+  document.querySelectorAll('.lang-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+  });
+
+  let saved = null;
+  try { saved = localStorage.getItem('site-lang'); } catch(e){}
+  if (saved === 'es') applyLang('es');
+})();
+</script>
+</body>
+</html>
