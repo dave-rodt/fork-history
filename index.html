@@ -100,7 +100,7 @@
 <div class="wrap">
 
   <header class="masthead">
-    <div class="masthead-brand"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo">History of Forks</div>
+    <div class="masthead-brand"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo"><span id="brand-name">History of Forks</span></div>
     <div class="masthead-right">
       <div id="masthead-sub">A quantitative series</div>
       <div class="lang-toggle" role="group" aria-label="Language">
@@ -112,7 +112,7 @@
 
   <div class="hero">
     <div class="eyebrow" id="eyebrow">ON-CHAIN AND MARKET DATA, NOT NARRATIVE</div>
-    <h1>History of Forks</h1>
+    <h1 id="hero-h1">History of Forks</h1>
     <p id="hero-p">Five case studies in why blockchain splits succeed or fail, told through price, transaction, and hashrate data rather than after-the-fact storytelling.</p>
   </div>
 
@@ -170,7 +170,7 @@
 </div>
 <script>
 (function(){
-  var IDS = ['eyebrow','hero-p','masthead-sub','pref-h2','pref-p','ch1-p','soon1',
+  var IDS = ['brand-name','hero-h1','eyebrow','hero-p','masthead-sub','pref-h2','pref-p','ch1-p','soon1',
     'ch2-p','soon2','ch3-p','soon3','ch4-h2','ch4-p','soon4','footer-text'];
 
   var EN = {};
@@ -180,6 +180,8 @@
   });
 
   var ES = {
+    'brand-name': 'Una historia de Forks',
+    'hero-h1': 'Una historia de Forks',
     'eyebrow': 'DATOS ON-CHAIN Y DE MERCADO, NO NARRATIVA',
     'hero-p': 'Cinco casos de estudio sobre por qué las divisiones de blockchain triunfan o fracasan, contados a través de datos de precio, transacciones y hashrate, en lugar de narrativas construidas después de los hechos.',
     'masthead-sub': 'Una serie cuantitativa',
@@ -199,7 +201,7 @@
 
   var META = {
     en: {title:'History of Forks', desc:'Five case studies in why blockchain forks succeed or fail, built from on-chain and market data.'},
-    es: {title:'History of Forks', desc:'Cinco casos de estudio sobre por qué los forks de blockchain triunfan o fracasan, construidos a partir de datos on-chain y de mercado.'}
+    es: {title:'Una historia de Forks', desc:'Cinco casos de estudio sobre por qué los forks de blockchain triunfan o fracasan, construidos a partir de datos on-chain y de mercado.'}
   };
 
   function applyLang(lang){
