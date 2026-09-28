@@ -39,6 +39,14 @@
   header.masthead a:hover{color:var(--accent);}
   .masthead-brand{display:inline-flex; align-items:center; gap:8px;}
   .brand-logo{width:22px; height:22px; border-radius:5px; display:block;}
+  .masthead-right{display:flex; align-items:center; gap:14px;}
+  .lang-toggle{display:flex; border:1px solid var(--rule-strong); border-radius:20px; overflow:hidden;}
+  .lang-toggle button{
+    font-family:'IBM Plex Mono',monospace; font-size:0.7rem; letter-spacing:0.04em;
+    padding:4px 10px; border:none; background:transparent; color:var(--ink-mute);
+    cursor:pointer; text-transform:uppercase;
+  }
+  .lang-toggle button.active{background:var(--accent); color:#fff;}
   .hero{padding:56px 0 24px;}
   .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--accent); letter-spacing:0.03em; margin-bottom:10px;}
   .hero h1{font-size:clamp(1.8rem,4.4vw,2.6rem); line-height:1.14;}
@@ -76,56 +84,130 @@
 
   <header class="masthead">
     <a href="index.html" class="masthead-brand"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo">History of Forks</a>
-    <div>Preface</div>
+    <div class="masthead-right">
+      <div id="masthead-label">Preface</div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" class="active" data-lang="en">EN</button>
+        <button type="button" data-lang="es">ES</button>
+      </div>
+    </div>
   </header>
 
   <div class="hero">
-    <div class="eyebrow">BEFORE CHAPTER ONE</div>
-    <h1>Preface: The Chain Multiverse</h1>
+    <div class="eyebrow" id="eyebrow">BEFORE CHAPTER ONE</div>
+    <h1 id="h1t">Preface: The Chain Multiverse</h1>
   </div>
 
   <div class="body-copy">
-    <p>Blockchain was built around the idea that thousands of independent participants could agree on a single shared history. Yet again and again, that history has split in two.</p>
+    <p id="p1">Blockchain was built around the idea that thousands of independent participants could agree on a single shared history. Yet again and again, that history has split in two.</p>
 
-    <p>A fork is rarely just a software update. It is a philosophical battleground and a multi-billion-dollar experiment in human coordination. When a community fundamentally disagrees about where a protocol should go, it doesn't simply argue. It splits the network and lets both visions compete for users, miners, developers, and capital.</p>
+    <p id="p2">A fork is rarely just a software update. It is a philosophical battleground and a multi-billion-dollar experiment in human coordination. When a community fundamentally disagrees about where a protocol should go, it doesn't simply argue. It splits the network and lets both visions compete for users, miners, developers, and capital.</p>
 
-    <p>I've been thinking about this constantly since August 8th. The temporary soft fork activated on Bitcoin that day was supposed to be a temporary change. Instead, in barely two months, it has already been followed by a hard fork and yet another soft fork. People in my community have strong, and often conflicting, views about each chain. I wanted to step back from the noise and ask a simpler question: what can history actually tell us about what comes next?</p>
+    <p id="p3">I've been thinking about this constantly since August 8th. The temporary soft fork activated on Bitcoin that day was supposed to be a temporary change. Instead, in barely two months, it has already been followed by a hard fork and yet another soft fork. People in my community have strong, and often conflicting, views about each chain. I wanted to step back from the noise and ask a simpler question: what can history actually tell us about what comes next?</p>
 
-    <p>&ldquo;History doesn't repeat itself, but it rhymes&rdquo;. That idea drives this series. I'll look at some of the most famous forks in crypto history, trace how they unfolded, examine what happened to the resulting chains, and end each one with my own conclusions.</p>
+    <p id="p4">&ldquo;History doesn't repeat itself, but it rhymes&rdquo;. That idea drives this series. I'll look at some of the most famous forks in crypto history, trace how they unfolded, examine what happened to the resulting chains, and end each one with my own conclusions.</p>
 
-    <p class="schisms-lead">Three fractures stand out.</p>
+    <p class="schisms-lead" id="schisms-lead">Three fractures stand out.</p>
 
     <div class="schisms">
-      <div class="schism"><strong>Bitcoin vs. Bitcoin Cash: The Block Size War.</strong> A technical debate over scalability became Bitcoin's first major existential conflict. At its core were two questions: How should Bitcoin scale, and who gets to decide?</div>
-      <div class="schism"><strong>Ethereum vs. Ethereum Classic: The DAO Hack.</strong> After an exploit that drained millions of dollars, Ethereum faced a brutal choice: rewrite history to recover the funds, or let the theft stand and uphold the principle that code is law.</div>
-      <div class="schism"><strong>Bitcoin vs. Bitcoin Gold: The GPU Rebellion.</strong> Convinced that capital-intensive ASIC mining had concentrated too much power, a rebel faction changed Bitcoin's mining algorithm in an attempt to return mining to ordinary users.</div>
+      <div class="schism" id="schism1"><strong>Bitcoin vs. Bitcoin Cash: The Block Size War.</strong> A technical debate over scalability became Bitcoin's first major existential conflict. At its core were two questions: How should Bitcoin scale, and who gets to decide?</div>
+      <div class="schism" id="schism2"><strong>Ethereum vs. Ethereum Classic: The DAO Hack.</strong> After an exploit that drained millions of dollars, Ethereum faced a brutal choice: rewrite history to recover the funds, or let the theft stand and uphold the principle that code is law.</div>
+      <div class="schism" id="schism3"><strong>Bitcoin vs. Bitcoin Gold: The GPU Rebellion.</strong> Convinced that capital-intensive ASIC mining had concentrated too much power, a rebel faction changed Bitcoin's mining algorithm in an attempt to return mining to ordinary users.</div>
     </div>
 
-    <p>Each split reveals something about how decentralized governance actually works: the competing power of developers, node operators, miners, markets, and users, and the often unexpected cost of rejecting consensus.</p>
+    <p id="p5">Each split reveals something about how decentralized governance actually works: the competing power of developers, node operators, miners, markets, and users, and the often unexpected cost of rejecting consensus.</p>
 
-    <p>And each one offers a potential glimpse into what is happening today.</p>
+    <p id="p6">And each one offers a potential glimpse into what is happening today.</p>
 
-    <p>The newest chapter is Bitcoin BLAKE2b. Emerging from the BIP-110 movement, it represents the latest attempt to reshape Bitcoin around a different set of priorities, including restricting arbitrary data such as inscriptions and replacing SHA-256 proof-of-work with BLAKE2b.</p>
+    <p id="p7">The newest chapter is Bitcoin BLAKE2b. Emerging from the BIP-110 movement, it represents the latest attempt to reshape Bitcoin around a different set of priorities, including restricting arbitrary data such as inscriptions and replacing SHA-256 proof-of-work with BLAKE2b.</p>
 
-    <p>The result is a fascinating live experiment.</p>
+    <p id="p8">The result is a fascinating live experiment.</p>
 
-    <p>By making existing Bitcoin ASICs obsolete, BLAKE2b effectively reset the mining landscape and triggered a scramble for older compatible hardware, including Sia-family ASICs. The goal is to create a more accessible and decentralized mining ecosystem. The tradeoff is a security budget that, so far, is dramatically smaller than Bitcoin's main network.</p>
+    <p id="p9">By making existing Bitcoin ASICs obsolete, BLAKE2b effectively reset the mining landscape and triggered a scramble for older compatible hardware, including Sia-family ASICs. The goal is to create a more accessible and decentralized mining ecosystem. The tradeoff is a security budget that, so far, is dramatically smaller than Bitcoin's main network.</p>
 
-    <p>The market has been just as volatile. With thin liquidity and limited exchange support, BTCB2 has experienced enormous price swings, including an 84% drawdown after its initial surge.</p>
+    <p id="p10">The market has been just as volatile. With thin liquidity and limited exchange support, BTCB2 has experienced enormous price swings, including an 84% drawdown after its initial surge.</p>
 
-    <p>Bitcoin on BLAKE2b is therefore more than another fork. It is a real-time test of ideological conviction.</p>
+    <p id="p11">Bitcoin on BLAKE2b is therefore more than another fork. It is a real-time test of ideological conviction.</p>
 
-    <p>Can a smaller community build a durable network around a different set of principles, especially as BLAKE2b continues to evolve and improve, or will the network effects, liquidity, and entrenched SHA-256 ecosystem of the larger network ultimately prove too difficult to overcome?</p>
+    <p id="p12">Can a smaller community build a durable network around a different set of principles, especially as BLAKE2b continues to evolve and improve, or will the network effects, liquidity, and entrenched SHA-256 ecosystem of the larger network ultimately prove too difficult to overcome?</p>
 
-    <p>History can't answer that question for us. But it can give us a framework for asking it.</p>
+    <p id="p13">History can't answer that question for us. But it can give us a framework for asking it.</p>
 
-    <p>That's where this series begins. We may not agree on the conclusions, but hopefully, by the end, we'll have a sharper understanding of what these forks actually tell us about Bitcoin, consensus, and the communities built around them.</p>
+    <p id="p14">That's where this series begins. We may not agree on the conclusions, but hopefully, by the end, we'll have a sharper understanding of what these forks actually tell us about Bitcoin, consensus, and the communities built around them.</p>
 
-    <p class="data-note"><strong>On the data:</strong> prices, transaction counts, and hashrate come from CoinMetrics' public API; exchange listing dates come from each exchange's own announcements or archived coverage; the BLAKE2b chapter also draws on a first-party block-by-block crawl of both chains and its own market data pulled directly from its one listed exchange.</p>
+    <p class="data-note" id="datanote"><strong>On the data:</strong> prices, transaction counts, and hashrate come from CoinMetrics' public API; exchange listing dates come from each exchange's own announcements or archived coverage; the BLAKE2b chapter also draws on a first-party block-by-block crawl of both chains and its own market data pulled directly from its one listed exchange.</p>
   </div>
 
-  <a class="back-link" href="index.html">&larr; Back to History of Forks</a>
+  <a class="back-link" href="index.html" id="backlink">&larr; Back to History of Forks</a>
 
 </div>
+<script>
+(function(){
+  var IDS = ['eyebrow','h1t','masthead-label','p1','p2','p3','p4','schisms-lead',
+    'schism1','schism2','schism3','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14',
+    'datanote','backlink'];
+
+  var EN = {};
+  IDS.forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) EN[id] = el.innerHTML;
+  });
+
+  var ES = {
+    'eyebrow': 'ANTES DEL CAPÍTULO UNO',
+    'h1t': 'Prólogo: El Multiverso de Cadenas',
+    'masthead-label': 'Prólogo',
+    'p1': 'La cadena de bloques (blockchain) se construyó sobre la idea de que miles de participantes independientes podían ponerse de acuerdo sobre una única historia compartida. Sin embargo, una y otra vez, esa historia se ha dividido en dos.',
+    'p2': 'Un fork rara vez es solo una actualización de software. Es un campo de batalla filosófico y un experimento multimillonario de coordinación humana. Cuando una comunidad discrepa de manera fundamental sobre el rumbo que debe tomar un protocolo, no se limita a discutir. Divide la red y deja que ambas visiones compitan por usuarios, mineros, desarrolladores y capital.',
+    'p3': 'Llevo pensando en esto constantemente desde el 8 de agosto. El soft fork temporal que se activó en Bitcoin ese día debía ser un cambio pasajero. En cambio, en apenas dos meses, ya ha sido seguido por un hard fork y otro soft fork más. En mi comunidad hay opiniones firmes, y a menudo contradictorias, sobre cada cadena. Quise alejarme del ruido y plantear una pregunta más simple: ¿qué puede decirnos realmente la historia sobre lo que viene?',
+    'p4': '“La historia no se repite, pero rima”. Esa idea impulsa esta serie. Analizaré algunos de los forks más famosos de la historia cripto, seguiré cómo se desarrollaron, examinaré qué pasó con las cadenas resultantes y cerraré cada uno con mis propias conclusiones.',
+    'schisms-lead': 'Tres fracturas destacan.',
+    'schism1': '<strong>Bitcoin vs. Bitcoin Cash: La Guerra del Tamaño de Bloque.</strong> Un debate técnico sobre escalabilidad se convirtió en el primer gran conflicto existencial de Bitcoin. En su núcleo había dos preguntas: ¿cómo debía escalar Bitcoin, y quién tenía el derecho a decidirlo?',
+    'schism2': '<strong>Ethereum vs. Ethereum Classic: El Hackeo de The DAO.</strong> Tras un exploit que drenó millones de dólares, Ethereum enfrentó una decisión brutal: reescribir la historia para recuperar los fondos, o dejar que el robo se mantuviera y defender el principio de que el código es ley.',
+    'schism3': '<strong>Bitcoin vs. Bitcoin Gold: La Rebelión de las GPU.</strong> Convencidos de que la minería con ASIC, intensiva en capital, había concentrado demasiado poder, los rebeldes cambiaron el algoritmo de minería de Bitcoin en un intento de devolver la minería a los usuarios comunes.',
+    'p5': 'Cada división revela algo sobre cómo funciona realmente la gobernanza descentralizada: el poder en disputa entre los desarrolladores, operadores de nodos, mineros, mercados y usuarios, y el costo, a menudo inesperado, de rechazar el consenso.',
+    'p6': 'Y cada una ofrece un posible vistazo de lo que está ocurriendo hoy.',
+    'p7': 'El capítulo más reciente es Bitcoin BLAKE2b. Surgido del movimiento BIP-110, representa el intento más reciente de remodelar Bitcoin en torno a un conjunto distinto de prioridades, incluida la restricción de datos arbitrarios como las inscripciones y la sustitución de la prueba de trabajo SHA-256 por BLAKE2b.',
+    'p8': 'El resultado es un fascinante experimento en vivo.',
+    'p9': 'Al volver obsoletos los ASIC existentes de Bitcoin, BLAKE2b reinició de hecho el panorama minero y desató una carrera por hardware compatible más antiguo, incluidos los ASIC de la familia Sia. El objetivo es crear un ecosistema de minería más accesible y descentralizado. La contrapartida es un presupuesto de seguridad que, por ahora, es drásticamente menor que el de la red principal de Bitcoin.',
+    'p10': 'El mercado ha sido igual de volátil. Con poca liquidez y un respaldo limitado de los exchanges, BTCB2 ha experimentado enormes oscilaciones de precio, incluida una caída del 84% tras su repunte inicial.',
+    'p11': 'Bitcoin sobre BLAKE2b es, por lo tanto, algo más que otro fork. Es una prueba en tiempo real de convicción ideológica.',
+    'p12': '¿Puede una comunidad más pequeña construir una red duradera en torno a un conjunto distinto de principios, especialmente a medida que BLAKE2b continúa evolucionando y mejorando, o los efectos de red, la liquidez y el ecosistema SHA-256 ya consolidado de la red más grande resultarán, al final, demasiado difíciles de superar?',
+    'p13': 'La historia no puede responder esa pregunta por nosotros. Pero puede darnos un marco para plantearla.',
+    'p14': 'Ahí es donde comienza esta serie. Puede que no estemos de acuerdo en las conclusiones, pero espero que, al final, tengamos una comprensión más clara de lo que estos forks realmente nos dicen sobre Bitcoin, el consenso y las comunidades construidas a su alrededor.',
+    'datanote': '<strong>Sobre los datos:</strong> los precios, el número de transacciones y el hashrate provienen de la API pública de CoinMetrics; las fechas de listado en exchanges provienen de los anuncios de cada exchange o de coberturas de prensa archivadas; el capítulo de BLAKE2b también se basa en un rastreo propio, bloque por bloque, de ambas cadenas, y en sus propios datos de mercado obtenidos directamente de su único exchange listado.',
+    'backlink': '&larr; Volver a History of Forks'
+  };
+
+  var META = {
+    en: {title:'Preface: The Chain Multiverse', desc:"Why this series exists and how to read it."},
+    es: {title:'Prólogo: El Multiverso de Cadenas', desc:'Por qué existe esta serie y cómo leerla.'}
+  };
+
+  function applyLang(lang){
+    var dict = lang === 'es' ? ES : EN;
+    IDS.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && dict[id] != null) el.innerHTML = dict[id];
+    });
+    document.title = META[lang].title;
+    var metaDesc = document.querySelector('meta[name="description"]');
+    if(metaDesc) metaDesc.setAttribute('content', META[lang].desc);
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-toggle button').forEach(function(b){
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    try{ localStorage.setItem('preface-lang', lang); }catch(e){}
+  }
+
+  document.querySelectorAll('.lang-toggle button').forEach(function(b){
+    b.addEventListener('click', function(){ applyLang(b.dataset.lang); });
+  });
+
+  var saved = null;
+  try{ saved = localStorage.getItem('preface-lang'); }catch(e){}
+  if(saved === 'es') applyLang('es');
+})();
+</script>
 </body>
 </html>
