@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>History of Forks</title>
+<meta name="description" content="Five case studies in why blockchain forks succeed or fail, built from on-chain and market data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg:#EDEFEF; --panel:#FFFFFF; --ink:#1A1D22; --ink-soft:#4B5158; --ink-mute:#7A8087;
+    --rule:#C7CBCF; --rule-strong:#9AA0A6; --accent:#F08A1E;
+    --shadow-sm:0 1px 2px rgba(20,22,25,0.06), 0 1px 1px rgba(20,22,25,0.04);
+    --shadow-md:0 6px 16px rgba(20,22,25,0.10), 0 2px 4px rgba(20,22,25,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
+      --rule:#33373E; --rule-strong:#4A4F57; --accent:#F08A1E;
+      --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
+      --shadow-md:0 8px 20px rgba(0,0,0,0.38), 0 2px 6px rgba(0,0,0,0.28);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
+    --rule:#33373E; --rule-strong:#4A4F57; --accent:#F08A1E;
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
+    --shadow-md:0 8px 20px rgba(0,0,0,0.38), 0 2px 6px rgba(0,0,0,0.28);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:0 20px 100px;}
+  h1,h2{font-family:'Source Serif 4',serif; font-weight:600; letter-spacing:-0.01em; margin:0; text-wrap:balance;}
+
+  header.masthead{
+    display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
+    padding:26px 0 16px; border-bottom:1px solid var(--rule-strong);
+    font-family:'IBM Plex Mono',monospace; font-size:0.78rem; letter-spacing:0.04em;
+    color:var(--ink-soft); text-transform:uppercase;
+  }
+  .masthead-brand{display:inline-flex; align-items:center; gap:8px;}
+  .brand-logo{width:22px; height:22px; border-radius:5px; display:block;}
+
+  .hero{padding:52px 0 36px; border-bottom:1px solid var(--rule);}
+  .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--accent); letter-spacing:0.03em; margin-bottom:10px;}
+  .hero h1{font-size:clamp(2rem,4.6vw,3rem); line-height:1.12;}
+  .hero p{max-width:60ch; color:var(--ink-soft); font-size:1.08rem; margin-top:16px;}
+
+  .chapters{display:flex; flex-direction:column; gap:14px; margin-top:32px;}
+  .chapter-card{
+    display:flex; align-items:center; gap:18px;
+    background:var(--panel); border:1px solid var(--rule); border-radius:10px;
+    padding:18px 20px; text-decoration:none; color:inherit;
+    box-shadow:var(--shadow-sm);
+    transition:transform 0.16s ease, box-shadow 0.16s ease;
+  }
+  .chapter-card:hover{transform:translateY(-2px); box-shadow:var(--shadow-md);}
+  .chapter-num{
+    font-family:'IBM Plex Mono',monospace; font-size:0.82rem; font-weight:600; color:var(--accent);
+    width:30px; flex-shrink:0;
+  }
+  .chapter-body{flex:1; min-width:0;}
+  .chapter-body h2{font-size:1.08rem; margin-bottom:4px;}
+  .chapter-body p{margin:0; font-size:0.86rem; color:var(--ink-soft); max-width:56ch;}
+  .chapter-meta{
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute);
+    text-align:right; flex-shrink:0; white-space:nowrap;
+  }
+  .chapter-meta .soon{
+    display:inline-block; padding:2px 8px; border-radius:20px;
+    background:var(--rule); color:var(--ink-soft); font-size:0.68rem;
+  }
+  .preface-card{border-style:dashed;}
+
+  footer{margin-top:40px; padding-top:18px; border-top:1px solid var(--rule); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); line-height:1.7;}
+
+  @media (max-width:520px){
+    .chapter-card{flex-wrap:wrap;}
+    .chapter-meta{width:100%; text-align:left; margin-top:4px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="masthead-brand"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo">History of Forks</div>
+    <div>A quantitative series</div>
+  </header>
+
+  <div class="hero">
+    <div class="eyebrow">ON-CHAIN AND MARKET DATA, NOT NARRATIVE</div>
+    <h1>History of Forks</h1>
+    <p>Five case studies in why blockchain splits succeed or fail, told through price, transaction, and hashrate data rather than after-the-fact storytelling.</p>
+  </div>
+
+  <div class="chapters">
+    <a class="chapter-card preface-card" href="preface.html">
+      <div class="chapter-num">P</div>
+      <div class="chapter-body">
+        <h2>Preface</h2>
+        <p>Why this series exists, the methodology behind it, and how to read each chapter.</p>
+      </div>
+      <div class="chapter-meta"></div>
+    </a>
+
+    <a class="chapter-card" href="bch-vs-btc.html">
+      <div class="chapter-num">01</div>
+      <div class="chapter-body">
+        <h2>Bitcoin Cash vs. Bitcoin</h2>
+        <p>The first fork. A bull-market fee crisis, a proposal to scale on-chain, and the split that started it all.</p>
+      </div>
+      <div class="chapter-meta"><span class="soon">Coming soon</span></div>
+    </a>
+
+    <a class="chapter-card" href="eth-vs-etc.html">
+      <div class="chapter-num">02</div>
+      <div class="chapter-body">
+        <h2>Ethereum vs. Ethereum Classic</h2>
+        <p>The one fork in this series that succeeded: the DAO hack, the hard fork that reversed it, and the minority chain that refused.</p>
+      </div>
+      <div class="chapter-meta"><span class="soon">Coming soon</span></div>
+    </a>
+
+    <a class="chapter-card" href="btg-vs-btc.html">
+      <div class="chapter-num">03</div>
+      <div class="chapter-body">
+        <h2>Bitcoin Gold vs. Bitcoin</h2>
+        <p>The anti-ASIC fork built on rentable hardware, attacked twice, cheaper the second time.</p>
+      </div>
+      <div class="chapter-meta"><span class="soon">Coming soon</span></div>
+    </a>
+
+    <a class="chapter-card" href="blake2b-retrospective.html">
+      <div class="chapter-num">04</div>
+      <div class="chapter-body">
+        <h2>Bitcoin BLAKE2b: One Month Retrospective</h2>
+        <p>The newest fork in the series, one month after its own hard fork &mdash; measured against every chapter before it.</p>
+      </div>
+      <div class="chapter-meta"><span class="soon">Coming soon</span></div>
+    </a>
+  </div>
+
+  <footer>
+    DATA: COINMETRICS COMMUNITY API, DIRECT EXCHANGE APIS, AND A FIRST-PARTY ON-CHAIN CRAWL. EACH CHAPTER STATES ITS OWN SOURCES.
+  </footer>
+
+</div>
+</body>
+</html>
