@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="assets/quantbitcoin-logo-rounded.png">
+<title>Ethereum vs. Ethereum Classic</title>
+<meta name="description" content="The DAO hack, the hard fork that reversed it, and the minority chain that refused.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg:#EDEFEF; --panel:#FFFFFF; --ink:#1A1D22; --ink-soft:#4B5158; --ink-mute:#7A8087;
+    --rule:#C7CBCF; --rule-strong:#9AA0A6;
+    /* Official brand colors: ETH #627EEA is ethereum.org's widely-recognized
+       brand blue-purple; ETC #008000 ("ETC Green") is from Ethereum Classic's
+       own 2025 brand guide (ethereumclassic/Media_Kit). Validated as a
+       CVD-safe categorical pair via the dataviz skill's validator (deutan
+       ΔE 28.1, normal-vision ΔE 32.4 — both well clear of the floors) and
+       kept identical across light/dark since that pair alone already clears
+       every check in both modes. */
+    --eth:#627EEA; --etc:#008000;
+    --eth-fill:rgba(98,126,234,0.10); --etc-fill:rgba(0,128,0,0.10);
+    --brand-orange:#F08A1E; --brand-yellow:#FDCA1E;
+    --shadow-sm:0 1px 2px rgba(20,22,25,0.06), 0 1px 1px rgba(20,22,25,0.04);
+    --shadow-md:0 6px 16px rgba(20,22,25,0.10), 0 2px 4px rgba(20,22,25,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
+      --rule:#33373E; --rule-strong:#4A4F57;
+      --eth:#627EEA; --etc:#008000;
+      --eth-fill:rgba(98,126,234,0.14); --etc-fill:rgba(0,128,0,0.14);
+      --brand-orange:#F08A1E; --brand-yellow:#FDCA1E;
+      --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
+      --shadow-md:0 8px 20px rgba(0,0,0,0.38), 0 2px 6px rgba(0,0,0,0.28);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
+    --rule:#33373E; --rule-strong:#4A4F57;
+    --eth:#627EEA; --etc:#008000;
+    --eth-fill:rgba(98,126,234,0.14); --etc-fill:rgba(0,128,0,0.14);
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
+    --shadow-md:0 8px 20px rgba(0,0,0,0.38), 0 2px 6px rgba(0,0,0,0.28);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:880px; margin:0 auto; padding:0 20px 100px;}
+  h1,h2,h3{font-family:'Source Serif 4',serif; font-weight:600; letter-spacing:-0.01em; margin:0; text-wrap:balance;}
+
+  header.masthead{
+    display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
+    padding:26px 0 16px; border-bottom:1px solid var(--rule-strong);
+  }
+  .masthead-title{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.78rem; letter-spacing:0.04em;
+    color:var(--ink-soft); text-transform:uppercase; text-decoration:none;
+  }
+  .masthead-title:hover{color:var(--brand-orange);}
+  .brand-logo{width:22px; height:22px; border-radius:5px; display:block;}
+  .masthead-meta{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute);}
+
+  .top-nav{padding:14px 0 0; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .top-nav a{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--ink-soft); text-decoration:none;
+  }
+  .top-nav a:hover{color:var(--brand-orange);}
+
+  /* Language toggle — UI only for now, not wired to translated content yet.
+     Wire this up once the chapter's English copy is final (same pattern as
+     bch-vs-btc.html): capture EN from the DOM, hand-write an ES dict, swap
+     on click. Translating now would just mean re-translating after edits. */
+  .lang-toggle{display:flex; border:1px solid var(--rule-strong); border-radius:20px; overflow:hidden;}
+  .lang-toggle button{
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; font-weight:600; letter-spacing:0.02em;
+    background:var(--panel); color:var(--ink-soft); border:none; padding:5px 12px; cursor:pointer;
+  }
+  .lang-toggle button + button{border-left:1px solid var(--rule-strong);}
+  .lang-toggle button.active{background:var(--brand-orange); color:#000;}
+  .lang-toggle button:hover:not(.active){color:var(--ink);}
+
+  .chapter-nav{
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:baseline;
+    margin-top:34px; gap:12px;
+  }
+  .chapter-nav a:nth-child(1){justify-self:start;}
+  .chapter-nav a:nth-child(2){justify-self:center;}
+  .chapter-nav a:nth-child(3){justify-self:end;}
+  @media (max-width:600px){
+    .chapter-nav{grid-template-columns:1fr; text-align:center;}
+    .chapter-nav a{justify-self:center !important;}
+  }
+  .back-link{
+    display:inline-block; font-family:'IBM Plex Mono',monospace;
+    font-size:0.85rem; color:var(--ink-soft); text-decoration:none;
+  }
+  .back-link:hover{color:var(--brand-orange);}
+  .home-link{display:inline-flex; align-items:center; padding:4px;}
+  .home-link svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block;}
+
+  .hero{padding:44px 0 30px; border-bottom:1px solid var(--rule);}
+  .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--brand-orange); letter-spacing:0.03em; margin-bottom:10px;}
+  .hero h1{font-size:clamp(1.9rem,4.4vw,2.9rem); line-height:1.14; max-width:20ch;}
+  .hero p.lede{max-width:62ch; font-size:1.08rem; color:var(--ink-soft); margin-top:16px;}
+  .read-time{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute); margin-top:14px;}
+
+  section.phase{padding:40px 0; border-bottom:1px solid var(--rule);}
+  section.phase:last-of-type{border-bottom:none;}
+  .phase-head{display:flex; align-items:baseline; gap:12px; margin-bottom:18px; flex-wrap:wrap;}
+  .phase-num{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--brand-orange); flex-shrink:0;}
+  .phase-head h2{font-size:1.5rem;}
+  .phase-time{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); margin-left:auto;}
+  .phase p{max-width:66ch; margin:0 0 14px;}
+  .phase p:last-child{margin-bottom:0;}
+  .phase ul{max-width:66ch; padding-left:20px; margin:0 0 14px;}
+  .phase li{margin-bottom:6px;}
+  .phase h3{font-size:1.05rem; margin:22px 0 8px;}
+  .phase h3:first-of-type{margin-top:0;}
+
+  .placeholder-box{
+    border:1.5px dashed var(--rule-strong); border-radius:8px; padding:20px;
+    color:var(--ink-mute); font-style:italic; max-width:66ch;
+  }
+
+  /* ---------- charts ---------- */
+  .chart-block{margin-top:28px;}
+  .chart-block:first-child{margin-top:0;}
+  .chart-title{font-size:1rem; font-weight:600; margin-bottom:2px;}
+  .view-toggle-row{display:flex; align-items:center; gap:10px; margin:-4px 0 20px;}
+  .view-toggle-label{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute);}
+  .view-toggle{display:flex; border:1px solid var(--rule-strong); border-radius:20px; overflow:hidden; flex-shrink:0;}
+  .view-toggle button{
+    font-family:'IBM Plex Mono',monospace; font-size:0.68rem; font-weight:600; letter-spacing:0.02em;
+    background:var(--panel); color:var(--ink-soft); border:none; padding:4px 10px; cursor:pointer;
+  }
+  .view-toggle button + button{border-left:1px solid var(--rule-strong);}
+  .view-toggle button.active{background:var(--brand-orange); color:#000;}
+  .view-toggle button:hover:not(.active){color:var(--ink);}
+  .chart-caption{font-size:0.84rem; color:var(--ink-soft); margin:0 0 12px; max-width:64ch;}
+  .chart-wrap{
+    position:relative; background:var(--panel); border:1px solid var(--rule); border-radius:10px;
+    padding:18px 18px 12px; box-shadow:var(--shadow-sm);
+  }
+  svg.chart{width:100%; height:auto; display:block; overflow:visible;}
+  .gridline{stroke:var(--rule); stroke-width:1;}
+  .axis-label{fill:var(--ink-mute); font-size:10.5px; font-family:'IBM Plex Mono',monospace;}
+  .series-eth{fill:none; stroke:var(--eth); stroke-width:2.25; stroke-linecap:round; stroke-linejoin:round;}
+  .series-etc{fill:none; stroke:var(--etc); stroke-width:2.25; stroke-linecap:round; stroke-linejoin:round;}
+  .series-area-eth{fill:var(--eth-fill); stroke:none;}
+  .series-area-etc{fill:var(--etc-fill); stroke:none;}
+  .end-dot{pointer-events:none;}
+  .end-dot.eth{fill:var(--eth); stroke:var(--panel); stroke-width:2;}
+  .end-dot.etc{fill:var(--etc); stroke:var(--panel); stroke-width:2;}
+  .crosshair-line{stroke:var(--ink-mute); stroke-width:1; opacity:0; pointer-events:none;}
+  .hover-dot{r:4.5; opacity:0; pointer-events:none;}
+  .hover-dot.eth{fill:var(--eth); stroke:var(--panel); stroke-width:1.5;}
+  .hover-dot.etc{fill:var(--etc); stroke:var(--panel); stroke-width:1.5;}
+  .capture-rect{fill:transparent; cursor:crosshair;}
+  .legend{display:flex; gap:16px; margin-top:12px; font-size:0.8rem; color:var(--ink-soft); flex-wrap:wrap;}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .swatch{width:13px; height:2.5px; border-radius:2px; display:inline-block;}
+  .tooltip{
+    position:absolute; pointer-events:none; opacity:0;
+    background:var(--panel); border:1px solid var(--rule-strong); border-radius:7px;
+    padding:8px 10px; font-size:0.76rem; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,0.14);
+    white-space:nowrap; transform:translate(-50%,-100%); top:-8px; z-index:5;
+  }
+  .tooltip .t-date{color:var(--ink-mute); font-size:0.7rem; margin-bottom:4px;}
+  .tooltip .row{display:flex; justify-content:space-between; gap:12px;}
+  .tooltip .row .k{display:flex; align-items:center; gap:5px; color:var(--ink-soft);}
+  .tooltip .dot{width:7px; height:7px; border-radius:50%; display:inline-block;}
+  .tooltip .v{font-family:'IBM Plex Mono',monospace;}
+
+  footer{margin-top:30px; padding-top:18px; font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); line-height:1.7;}
+
+  @media (max-width:600px){
+    section.phase{padding:30px 0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="top-nav">
+    <a href="index.html">&larr; History of Forks</a>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" class="active" data-lang="en">EN</button>
+      <button type="button" data-lang="es">ES</button>
+    </div>
+  </nav>
+
+  <header class="masthead">
+    <a class="masthead-title" href="index.html"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo">History of Forks: Chapter 2</a>
+    <div class="masthead-meta">Ethereum Classic (ETC), forked July 20, 2016</div>
+  </header>
+
+  <div class="hero">
+    <div class="eyebrow">THE ONE THAT SUCCEEDED</div>
+    <h1>Ethereum vs. Ethereum Classic</h1>
+    <p class="lede">In 2016, an attacker drained The DAO of roughly 3.6 million ETH. Ethereum's core team executed a hard fork to reverse the theft. A minority kept mining the original, unaltered chain on principle, and it became Ethereum Classic. This is the only fork in the series where the side that changed the protocol won decisively.</p>
+    <div class="read-time">~? min read</div>
+  </div>
+
+  <!-- ================= PHASE 1: BACKGROUND ================= -->
+  <section class="phase" id="background">
+    <div class="phase-head">
+      <span class="phase-num">01</span>
+      <h2>Background</h2>
+      <span class="phase-time">~3 min</span>
+    </div>
+    <p>When Ethereum launched in July 2015, it arrived with a radically broader ambition than Bitcoin. It didn't just want to be digital money; it wanted to be a "world computer."</p>
+    <p>While Bitcoin was built as a highly secure digital ledger, Vitalik Buterin's 2013 whitepaper proposed something closer to a decentralized computing platform. Ethereum featured a built-in programming language capable of running arbitrary computations. The goal wasn't just to transfer value, but to build an entirely new foundation for applications where anyone could deploy custom tokens, decentralized insurance, and financial contracts directly onto the blockchain.</p>
+    <p>Much of the early community rallied around a simple creed: code is law. These applications, called smart contracts, would execute automatically across thousands of nodes. Ethereum promised applications resistant to downtime, censorship, and third-party interference.</p>
+    <p>That uncompromising promise was about to face its first catastrophic test.</p>
+    <p>By spring 2016, a project called The DAO emerged as a showcase for the world computer idea. Designed as a decentralized venture capital fund, it allowed anyone to send ETH in exchange for voting rights over future project funding. Its crowdsale raised roughly 11.5 million ETH, worth about $150 million at the time.</p>
+    <p>The scale was extraordinary. Roughly 14&ndash;15% of all ETH in circulation was now locked inside a single, experimental smart contract.</p>
+    <p>Then, on June 17, 2016, an attacker exploited a re-entrancy vulnerability in The DAO's code. In simple terms, the attacker could trigger another withdrawal before the contract updated its balance, repeating the process until approximately 3.6 million ETH, worth around $50&ndash;60 million, had been moved into a child DAO.</p>
+    <p>The Ethereum protocol itself hadn't been hacked. The attacker exploited a flaw in The DAO's code, and the blockchain kept processing transactions exactly as designed. The incident exposed a fundamental tension: if smart contracts were supposed to execute exactly as written, what would happen when the code produced an outcome the community considered unacceptable?</p>
+    <p>The attacker still faced one obstacle. The DAO's rules imposed a 28-day withdrawal delay on child DAOs, creating a window for intervention.</p>
+    <p>Suddenly, a ticking clock hung over the entire Ethereum ecosystem. Panic spread, ETH's price fell sharply, and developers, miners, investors, and exchanges were thrown into frantic debate.</p>
+    <p>As the countdown approached zero, Ethereum faced an existential question:</p>
+    <p>If "Code is Law," what happens when the law allows a hacker to walk away with a fortune, and the network's credibility with it?</p>
+  </section>
+
+  <!-- ================= PHASE 2: THE WHY ================= -->
+  <section class="phase" id="why-fork">
+    <div class="phase-head">
+      <span class="phase-num">02</span>
+      <h2>Why Reverse the Hack?</h2>
+      <span class="phase-time">~2 min</span>
+    </div>
+    <h3><strong>The Case for the Fork: ETH</strong></h3>
+    <ul>
+      <li><strong>The spirit of the contract:</strong> The DAO was built to pool money for investment. The exploit was a bug, not the intended outcome. Recovering the funds, supporters argued, restored the contract's purpose rather than rewarding someone for exploiting its code.</li>
+      <li><strong>Protecting trust and the network:</strong> Ethereum was barely a year old. Roughly 15% of all ETH was locked in The DAO, and the attacker drained nearly a third of it, about 5% of the entire supply. Letting that stand could damage confidence and create serious systemic risk, particularly for a network planning to move toward Proof of Stake.</li>
+      <li><strong>Social consensus decides:</strong> A blockchain ultimately depends on people choosing which software to run. Miners, developers, and users could coordinate around the fork, making the chain with the strongest economic and social support the one that continued as Ethereum.</li>
+    </ul>
+
+    <h3><strong>The Case for Keeping the Original Chain: ETC</strong></h3>
+    <ul>
+      <li><strong>Code is law:</strong> Ethereum itself was never hacked. The network ran The DAO's code as written, and the exploit followed the rules of that contract. Changing the base layer to fix one application's bug, opponents argued, punished the part of the system that had worked and made finality depend on majority approval.</li>
+      <li><strong>A bailout with a threshold:</strong> Critics saw the fork as a bailout for The DAO's investors. If the network would not rewrite history for a small project's $1,000 loss, but would intervene when millions were at stake, what principle determines the threshold? For ETC supporters, that meant the rules were effectively negotiable when enough money or influential participants were involved.</li>
+      <li><strong>Principles over majority:</strong> The fork showed that developers, foundation members, miners, and other influential participants could coordinate to change the ledger. For ETC, this raised a fundamental question: does consensus mean following the rules, or following the majority?</li>
+    </ul>
+
+    <h3><strong>The Philosophical Divide</strong></h3>
+    <ul>
+      <li><strong>Ethereum:</strong> Consensus is the community's ability to coordinate and adapt the rules when the network's future is at stake.</li>
+      <li><strong>Ethereum Classic:</strong> Consensus means preserving the original rules, even at a short-term cost, because a ledger's long-term value depends on preserving the principles on which the chain was built.</li>
+    </ul>
+  </section>
+
+  <!-- ================= PHASE 3: HOW IT HAPPENED ================= -->
+  <section class="phase" id="how-it-happened">
+    <div class="phase-head">
+      <span class="phase-num">03</span>
+      <h2>How It Happened?</h2>
+      <span class="phase-time">~2 min</span>
+    </div>
+    <h3><strong>The 28-Day Clock</strong></h3>
+    <p>The DAO's code gave Ethereum four weeks. Any ETH moved into a child DAO was locked for 28 days, so the attacker couldn't touch the 3.6 million ETH right away.</p>
+
+    <h3><strong>Plan A: Freeze it</strong></h3>
+    <p>Vitalik Buterin and other core developers proposed a soft fork that would blacklist the attacker's addresses. The funds would remain frozen without changing Ethereum's history.</p>
+
+    <h3><strong>Then the Flaw</strong></h3>
+    <p>Researchers, including Cornell's Emin Gün Sirer, found a problem: enforcing the blacklist meant miners had to check every transaction for links to the frozen funds. Because rejected transactions pay no fees, an attacker could flood the network with them at no cost, forcing miners to waste resources on spam and potentially bringing Ethereum to a halt.</p>
+
+    <h3><strong>Plan B: Move it</strong></h3>
+    <p>With the soft fork abandoned and the clock running down, Ethereum took the more radical option: a hard fork. Instead of freezing the stolen ETH, the new rules moved it, along with the rest of The DAO's funds, into a recovery contract, allowing the original DAO investors to withdraw their money.</p>
+    <p>But a hard fork requires more than code. It requires people to run it.</p>
+
+    <h3><strong>July 20, 2016: The Split</strong></h3>
+    <p>Most developers, exchanges, miners, and users upgraded. The new chain recovered the funds and continued as Ethereum.</p>
+    <p>A minority refused. They believed no amount of money justified rewriting the ledger. They kept mining the original chain, which survived as Ethereum Classic.</p>
+  </section>
+
+  <!-- ================= PHASE 4: THE TWEETS ================= -->
+  <section class="phase" id="tweets">
+    <div class="phase-head">
+      <span class="phase-num">04</span>
+      <h2>What people were saying about ETH vs. ETC</h2>
+      <span class="phase-time">~? min</span>
+    </div>
+    <div class="placeholder-box">Coming soon: contemporaneous and later posts on "code is law" vs. the fork, screenshots to follow the same click-to-enlarge format as Chapter 1.</div>
+  </section>
+
+  <!-- ================= PHASE 5: METRICS ================= -->
+  <section class="phase" id="metrics">
+    <div class="phase-head">
+      <span class="phase-num">05</span>
+      <h2>Years of data</h2>
+      <span class="phase-time">~1 min</span>
+    </div>
+    <p>Monthly figures since ETC's fork (July 2016) through September 2026. Price and fees come from CoinMetrics' public dataset; developer activity is a first-party count of monthly unique commit authors across each chain's GitHub ecosystem (per Electric Capital's open taxonomy of which repos belong to which chain). A network-decentralization measure (Nakamoto coefficient) is still in progress and not yet included below.</p>
+
+    <div class="view-toggle-row">
+      <span class="view-toggle-label">Chart view:</span>
+      <div class="view-toggle" id="global-view-toggle">
+        <button type="button" class="active" data-mode="absolute">Absolute</button>
+        <button type="button" data-mode="ratio">ETC as % of ETH</button>
+      </div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title">Price: ETH vs. ETC, monthly (USD)</div>
+      <p class="chart-caption">Average daily close per month, log-scaled so both chains' full range stays readable on one chart.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-price" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-price"></div>
+      </div>
+      <div class="legend" id="legend-price"></div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title">Fees paid: ETH vs. ETC, monthly (USD)</div>
+      <p class="chart-caption">Total network fees paid each month, converted to USD day-by-day (native fee &times; that day's price, summed) rather than applying one month-end price to the whole month.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-fees" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-fees"></div>
+      </div>
+      <div class="legend" id="legend-fees"></div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title">Monthly active developers: ETH vs. ETC</div>
+      <p class="chart-caption">Distinct GitHub accounts committing to each chain's tagged repositories that month. ETH is capped to its 300 most-starred repos (its full ecosystem is far too large to crawl in full); ETC's much smaller repo list is used in full, uncapped.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-devs" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-devs"></div>
+      </div>
+      <div class="legend" id="legend-devs"></div>
+    </div>
+  </section>
+
+  <!-- ================= PHASE 6: SIMILARITIES ================= -->
+  <section class="phase" id="similarities">
+    <div class="phase-head">
+      <span class="phase-num">06</span>
+      <h2>Similarities with Each Chain</h2>
+      <span class="phase-time">~? min</span>
+    </div>
+    <div class="placeholder-box">Coming soon: parallels between this fork and the BTCB2 split — on one side, a minority chain persisting on principle; on the other, a majority chain intervening to change the rules.</div>
+  </section>
+
+  <div class="sources-note" style="margin-top:30px; padding-top:18px; border-top:1px solid var(--rule);">
+    <h3 style="font-size:0.9rem; margin:0 0 10px; color:var(--ink-soft);">Sources</h3>
+    <div class="placeholder-box">Coming soon.</div>
+  </div>
+
+  <footer>
+    DATA: COINMETRICS COMMUNITY API (PRICE, FEES), FIRST-PARTY GITHUB CRAWL (DEVELOPER ACTIVITY). PART OF THE "HISTORY OF FORKS" SERIES.
+  </footer>
+
+  <div class="chapter-nav">
+    <a class="back-link" href="bch-vs-btc.html">&larr; Previous: Bitcoin Cash vs. Bitcoin</a>
+    <a class="back-link home-link" href="index.html" aria-label="Go to History of Forks">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    </a>
+    <a class="back-link" href="btg-vs-btc.html">Next: Bitcoin Gold vs. Bitcoin &rarr;</a>
+  </div>
+
+</div>
+<script>
+const DATA = [{"month":"2016-07","eth_price":13.027942340541584,"etc_price":1.6458564198699235,"eth_fee_usd":6628.560275763342,"etc_fee_usd":233.39871562811157,"eth_devs":93,"etc_devs":53},{"month":"2016-08","eth_price":11.135687733762568,"etc_price":1.8362913425084955,"eth_fee_usd":11057.519792029845,"etc_fee_usd":698.4998084317904,"eth_devs":101,"etc_devs":46},{"month":"2016-09","eth_price":12.50904980254238,"etc_price":1.322878539050652,"eth_fee_usd":16952.964712230187,"etc_fee_usd":396.91010877727996,"eth_devs":99,"etc_devs":30},{"month":"2016-10","eth_price":12.067942704285368,"etc_price":1.068903719028803,"eth_fee_usd":21772.554595721133,"etc_fee_usd":532.4312905173,"eth_devs":122,"etc_devs":40},{"month":"2016-11","eth_price":9.985928749425288,"etc_price":0.8735223911591379,"eth_fee_usd":13209.391767432724,"etc_fee_usd":171.91216331574674,"eth_devs":112,"etc_devs":43},{"month":"2016-12","eth_price":7.838758222346863,"etc_price":1.0114180831474895,"eth_fee_usd":14292.453504137346,"etc_fee_usd":329.4602210855939,"eth_devs":96,"etc_devs":33},{"month":"2017-01","eth_price":10.20808659092967,"etc_price":1.343918146972337,"eth_fee_usd":10807.915421991247,"etc_fee_usd":393.50636310083894,"eth_devs":132,"etc_devs":45},{"month":"2017-02","eth_price":12.424828277719799,"etc_price":1.2795215514002887,"eth_fee_usd":15501.711866754038,"etc_fee_usd":371.01651751787904,"eth_devs":126,"etc_devs":46},{"month":"2017-03","eth_price":34.29874073771233,"etc_price":1.842888509473658,"eth_fee_usd":67862.52647977571,"etc_fee_usd":760.5181542947439,"eth_devs":132,"etc_devs":37},{"month":"2017-04","eth_price":50.62365201817651,"etc_price":3.295325636986283,"eth_fee_usd":106553.11977162735,"etc_fee_usd":1321.3155182840626,"eth_devs":156,"etc_devs":34},{"month":"2017-05","eth_price":122.8971627080843,"etc_price":9.282134703314235,"eth_fee_usd":757987.7841810487,"etc_fee_usd":5390.573570390946,"eth_devs":135,"etc_devs":21},{"month":"2017-06","eth_price":303.9266683367621,"etc_price":18.47346649918462,"eth_fee_usd":3630965.6057225335,"etc_fee_usd":8906.585339167732,"eth_devs":191,"etc_devs":31},{"month":"2017-07","eth_price":220.49638569235117,"etc_price":15.714873195386593,"eth_fee_usd":2106714.8358473415,"etc_fee_usd":8174.940015885411,"eth_devs":202,"etc_devs":35},{"month":"2017-08","eth_price":301.1141310240757,"etc_price":14.930744367923891,"eth_fee_usd":3769927.6107538263,"etc_fee_usd":9579.757220874724,"eth_devs":194,"etc_devs":32},{"month":"2017-09","eth_price":297.84979850769537,"etc_price":14.091687248844476,"eth_fee_usd":4266689.559072096,"etc_fee_usd":9810.51415424233,"eth_devs":213,"etc_devs":44},{"month":"2017-10","eth_price":305.48072301615736,"etc_price":11.39200908839289,"eth_fee_usd":3425515.2576344404,"etc_fee_usd":9320.396380342376,"eth_devs":252,"etc_devs":46},{"month":"2017-11","eth_price":357.25473182349504,"etc_price":17.533142014429952,"eth_fee_usd":3604237.4483877383,"etc_fee_usd":16010.190125670988,"eth_devs":268,"etc_devs":45},{"month":"2017-12","eth_price":636.1714703719765,"etc_price":30.10976580020531,"eth_fee_usd":25017174.428768087,"etc_fee_usd":33757.31949321983,"eth_devs":274,"etc_devs":59},{"month":"2018-01","eth_price":1086.7152769461359,"etc_price":32.46492425599528,"eth_fee_usd":65364627.53432326,"etc_fee_usd":42566.60424276056,"eth_devs":253,"etc_devs":49},{"month":"2018-02","eth_price":867.7412055606579,"etc_price":29.64404574400256,"eth_fee_usd":18250297.61013276,"etc_fee_usd":27001.209033874584,"eth_devs":295,"etc_devs":60},{"month":"2018-03","eth_price":623.6310696913708,"etc_price":20.423725048468896,"eth_fee_usd":8926106.024374465,"etc_fee_usd":36120.364041347006,"eth_devs":305,"etc_devs":57},{"month":"2018-04","eth_price":520.4613353107345,"etc_price":17.003075013367194,"eth_fee_usd":6217595.938864954,"etc_fee_usd":10143.761015990884,"eth_devs":372,"etc_devs":67},{"month":"2018-05","eth_price":676.0452765690692,"etc_price":18.46837796465756,"eth_fee_usd":13319913.212975502,"etc_fee_usd":9388.44742550584,"eth_devs":289,"etc_devs":47},{"month":"2018-06","eth_price":518.3645359633744,"etc_price":15.029035898405159,"eth_fee_usd":8946946.445724575,"etc_fee_usd":44357.39370268856,"eth_devs":305,"etc_devs":60},{"month":"2018-07","eth_price":461.02728641051254,"etc_price":16.86258639675684,"eth_fee_usd":21073592.784172118,"etc_fee_usd":14342.204885820036,"eth_devs":364,"etc_devs":65},{"month":"2018-08","eth_price":320.71608125789476,"etc_price":13.896775735822771,"eth_fee_usd":7641978.810710363,"etc_fee_usd":11010.950468974152,"eth_devs":319,"etc_devs":67},{"month":"2018-09","eth_price":226.92747075784146,"etc_price":11.526733534088361,"eth_fee_usd":3299758.9296447258,"etc_fee_usd":5689.949566013589,"eth_devs":399,"etc_devs":86},{"month":"2018-10","eth_price":207.5146351690202,"etc_price":9.940307934187839,"eth_fee_usd":2713759.337735475,"etc_fee_usd":7783.858706420611,"eth_devs":350,"etc_devs":60},{"month":"2018-11","eth_price":167.23340535749077,"etc_price":7.270005286398449,"eth_fee_usd":2464349.29241138,"etc_fee_usd":4319.363748795408,"eth_devs":351,"etc_devs":68},{"month":"2018-12","eth_price":107.5333769159706,"etc_price":4.367163591018941,"eth_fee_usd":1489046.8667243645,"etc_fee_usd":2587.4802809333387,"eth_devs":348,"etc_devs":77},{"month":"2019-01","eth_price":126.80014148488897,"etc_price":4.496619733772482,"eth_fee_usd":1375527.5901768222,"etc_fee_usd":564265.9638192685,"eth_devs":357,"etc_devs":72},{"month":"2019-02","eth_price":125.56751163688739,"etc_price":4.157791762148983,"eth_fee_usd":1940485.3683897094,"etc_fee_usd":1828.6626586165603,"eth_devs":362,"etc_devs":57},{"month":"2019-03","eth_price":135.51720025829076,"etc_price":4.481923170575999,"eth_fee_usd":1950310.7907687395,"etc_fee_usd":2062.456561536122,"eth_devs":378,"etc_devs":138},{"month":"2019-04","eth_price":164.8510944223651,"etc_price":6.043587018566003,"eth_fee_usd":1958292.8210403975,"etc_fee_usd":2553.558618182199,"eth_devs":301,"etc_devs":56},{"month":"2019-05","eth_price":219.83285066458026,"etc_price":6.834841826672905,"eth_fee_usd":3650129.0650884127,"etc_fee_usd":2699.2855482817454,"eth_devs":331,"etc_devs":60},{"month":"2019-06","eth_price":273.91046287064097,"etc_price":8.565965475445523,"eth_fee_usd":4519694.386883694,"etc_fee_usd":3882.63064339571,"eth_devs":329,"etc_devs":56},{"month":"2019-07","eth_price":248.09787914914878,"etc_price":6.654374321897132,"eth_fee_usd":3634307.0460500545,"etc_fee_usd":2702.3153385375003,"eth_devs":317,"etc_devs":39},{"month":"2019-08","eth_price":199.46951124224665,"etc_price":6.139242007917198,"eth_fee_usd":2723894.8500992395,"etc_fee_usd":2180.5650188257146,"eth_devs":323,"etc_devs":45},{"month":"2019-09","eth_price":185.75671898597298,"etc_price":6.013075220650479,"eth_fee_usd":5646735.415798346,"etc_fee_usd":1818.9983154862566,"eth_devs":336,"etc_devs":50},{"month":"2019-10","eth_price":178.60206452838366,"etc_price":4.634151698076835,"eth_fee_usd":2724041.0710533787,"etc_fee_usd":1424.4092141452809,"eth_devs":305,"etc_devs":39},{"month":"2019-11","eth_price":172.90493301772844,"etc_price":4.519793073146027,"eth_fee_usd":2745480.7545551322,"etc_fee_usd":1182.0046013122374,"eth_devs":298,"etc_devs":35},{"month":"2019-12","eth_price":137.24715684281978,"etc_price":3.985522493675638,"eth_fee_usd":1714295.54450229,"etc_fee_usd":962.533544472823,"eth_devs":294,"etc_devs":41},{"month":"2020-01","eth_price":156.45152833751243,"etc_price":7.549807895638605,"eth_fee_usd":1513332.8755201465,"etc_fee_usd":26935.204745949522,"eth_devs":337,"etc_devs":40},{"month":"2020-02","eth_price":239.19138056389687,"etc_price":10.373560744170321,"eth_fee_usd":3140316.774685174,"etc_fee_usd":3532.881389132713,"eth_devs":306,"etc_devs":49},{"month":"2020-03","eth_price":160.4210765257065,"etc_price":5.8267529363925625,"eth_fee_usd":3733642.9086346324,"etc_fee_usd":1725.2124281308643,"eth_devs":337,"etc_devs":46},{"month":"2020-04","eth_price":171.64266569842195,"etc_price":5.5427888080394085,"eth_fee_usd":3101492.6727638827,"etc_fee_usd":1177.1039821536745,"eth_devs":341,"etc_devs":42},{"month":"2020-05","eth_price":207.70095941535797,"etc_price":6.746623638584004,"eth_fee_usd":10040657.28187303,"etc_fee_usd":1739.9834813587177,"eth_devs":359,"etc_devs":45},{"month":"2020-06","eth_price":235.848182674849,"etc_price":6.412662402764132,"eth_fee_usd":22034432.928024378,"etc_fee_usd":914.9477282400875,"eth_devs":340,"etc_devs":42},{"month":"2020-07","eth_price":259.6333009332404,"etc_price":6.366288911571003,"eth_fee_usd":34202073.92426492,"etc_fee_usd":963.7775764225034,"eth_devs":330,"etc_devs":43},{"month":"2020-08","eth_price":401.8500902829887,"etc_price":6.920507823006974,"eth_fee_usd":115341546.8936393,"etc_fee_usd":602.3903308296487,"eth_devs":363,"etc_devs":45},{"month":"2020-09","eth_price":367.93643854665885,"etc_price":5.486803947751444,"eth_fee_usd":171669383.52649462,"etc_fee_usd":615.448583956812,"eth_devs":336,"etc_devs":45},{"month":"2020-10","eth_price":376.1096160460776,"etc_price":5.413092034790211,"eth_fee_usd":56905990.73711312,"etc_fee_usd":552.8092684944269,"eth_devs":333,"etc_devs":45},{"month":"2020-11","eth_price":486.9749679836353,"etc_price":5.730321905173005,"eth_fee_usd":64115148.36466281,"etc_fee_usd":773.6369287304246,"eth_devs":371,"etc_devs":57},{"month":"2020-12","eth_price":623.0360675722554,"etc_price":6.03505696548066,"eth_fee_usd":110395205.21003735,"etc_fee_usd":3553.874608327882,"eth_devs":291,"etc_devs":42},{"month":"2021-01","eth_price":1202.378133841745,"etc_price":7.6864864756032185,"eth_fee_usd":325451315.58561915,"etc_fee_usd":1548.2272133824608,"eth_devs":378,"etc_devs":49},{"month":"2021-02","eth_price":1700.9068453118477,"etc_price":11.674854657148847,"eth_fee_usd":722784437.4826577,"etc_fee_usd":2257.746123972703,"eth_devs":385,"etc_devs":55},{"month":"2021-03","eth_price":1734.868970443619,"etc_price":12.014947463753611,"eth_fee_usd":650878624.7463312,"etc_fee_usd":1796.7541374990296,"eth_devs":366,"etc_devs":58},{"month":"2021-04","eth_price":2295.0658942100135,"etc_price":26.4532929097524,"eth_fee_usd":716432232.1927426,"etc_fee_usd":6080.665402984226,"eth_devs":344,"etc_devs":63},{"month":"2021-05","eth_price":3146.7476152165314,"etc_price":82.19606477794225,"eth_fee_usd":1034699859.7380762,"etc_fee_usd":29305.926116043825,"eth_devs":380,"etc_devs":64},{"month":"2021-06","eth_price":2331.9632680479253,"etc_price":54.22755959950704,"eth_fee_usd":165806377.239515,"etc_fee_usd":9503.902183001483,"eth_devs":385,"etc_devs":58},{"month":"2021-07","eth_price":2130.126105403367,"etc_price":48.28532296341949,"eth_fee_usd":201042001.68096206,"etc_fee_usd":8623.047846992118,"eth_devs":371,"etc_devs":56},{"month":"2021-08","eth_price":3101.052403823459,"etc_price":61.72362728484998,"eth_fee_usd":690697196.8063169,"etc_fee_usd":11761.411926709745,"eth_devs":432,"etc_devs":82},{"month":"2021-09","eth_price":3332.9033704578233,"etc_price":56.373232630169575,"eth_fee_usd":1069397517.2453516,"etc_fee_usd":10811.669630270853,"eth_devs":368,"etc_devs":76},{"month":"2021-10","eth_price":3817.664748108068,"etc_price":53.769855681679054,"eth_fee_usd":1362298911.054864,"etc_fee_usd":10199.065763451135,"eth_devs":422,"etc_devs":90},{"month":"2021-11","eth_price":4442.7322137833635,"etc_price":52.30624890555283,"eth_fee_usd":1829259130.0024533,"etc_fee_usd":10259.377108735567,"eth_devs":388,"etc_devs":95},{"month":"2021-12","eth_price":4051.2088267283802,"etc_price":37.63269061186197,"eth_fee_usd":1151177467.1179457,"etc_fee_usd":6725.76892773865,"eth_devs":395,"etc_devs":88},{"month":"2022-01","eth_price":3055.0316561113113,"etc_price":29.259364164153663,"eth_fee_usd":1339864937.2875698,"etc_fee_usd":6462.413582132271,"eth_devs":554,"etc_devs":99},{"month":"2022-02","eth_price":2868.3800125219173,"etc_price":29.70365516638605,"eth_fee_usd":717677039.3894007,"etc_fee_usd":5279.978449452613,"eth_devs":488,"etc_devs":69},{"month":"2022-03","eth_price":2877.0100679662905,"etc_price":34.846341397648736,"eth_fee_usd":424413929.69441503,"etc_fee_usd":7650.489975399904,"eth_devs":495,"etc_devs":68},{"month":"2022-04","eth_price":3098.0838357354364,"etc_price":37.71157531721824,"eth_fee_usd":511634383.8740562,"etc_fee_usd":7305.933837050402,"eth_devs":499,"etc_devs":61},{"month":"2022-05","eth_price":2188.6387730246415,"etc_price":23.396586348792084,"eth_fee_usd":560521882.256884,"etc_fee_usd":3974.552398408422,"eth_devs":606,"etc_devs":64},{"month":"2022-06","eth_price":1380.877500706214,"etc_price":17.599847367716897,"eth_fee_usd":204607113.2067271,"etc_fee_usd":2785.614435750894,"eth_devs":515,"etc_devs":67},{"month":"2022-07","eth_price":1360.7493549593726,"etc_price":21.811738448793047,"eth_fee_usd":109450118.0081937,"etc_fee_usd":4363.432012838374,"eth_devs":596,"etc_devs":72},{"month":"2022-08","eth_price":1699.1392546388645,"etc_price":36.700602244816544,"eth_fee_usd":92004309.95238943,"etc_fee_usd":10646.19014250146,"eth_devs":556,"etc_devs":73},{"month":"2022-09","eth_price":1483.7777664660034,"etc_price":32.79209080955648,"eth_fee_usd":74413684.97249936,"etc_fee_usd":6679.850683188749,"eth_devs":535,"etc_devs":69},{"month":"2022-10","eth_price":1367.5799344657908,"etc_price":24.786527514202955,"eth_fee_usd":99721439.61044785,"etc_fee_usd":4502.0573735734815,"eth_devs":588,"etc_devs":85},{"month":"2022-11","eth_price":1296.841140103254,"etc_price":20.999549179180974,"eth_fee_usd":91310729.18289605,"etc_fee_usd":3528.4143706907253,"eth_devs":519,"etc_devs":71},{"month":"2022-12","eth_price":1236.2342703568938,"etc_price":17.491325241015698,"eth_fee_usd":74390480.63254182,"etc_fee_usd":2652.106757547844,"eth_devs":496,"etc_devs":63},{"month":"2023-01","eth_price":1466.1233931392696,"etc_price":20.742271445417995,"eth_fee_usd":116966877.54042372,"etc_fee_usd":2766.7893918172304,"eth_devs":607,"etc_devs":62},{"month":"2023-02","eth_price":1624.5727817066047,"etc_price":22.020080608128076,"eth_fee_usd":161060886.91803992,"etc_fee_usd":2500.28516877185,"eth_devs":576,"etc_devs":71},{"month":"2023-03","eth_price":1675.8599264248417,"etc_price":19.770027265794948,"eth_fee_usd":180792902.69653103,"etc_fee_usd":2841.8022578611335,"eth_devs":539,"etc_devs":68},{"month":"2023-04","eth_price":1917.651654432106,"etc_price":20.711315672384853,"eth_fee_usd":241577847.91110468,"etc_fee_usd":2033.2267153538219,"eth_devs":600,"etc_devs":80},{"month":"2023-05","eth_price":1846.956427782282,"etc_price":18.484168796603193,"eth_fee_usd":449054333.2408558,"etc_fee_usd":1292.828050171326,"eth_devs":527,"etc_devs":64},{"month":"2023-06","eth_price":1818.460426777713,"etc_price":16.944566964089788,"eth_fee_usd":156887549.91328815,"etc_fee_usd":1059.6619623298004,"eth_devs":556,"etc_devs":62},{"month":"2023-07","eth_price":1892.9197848928184,"etc_price":18.97155787951886,"eth_fee_usd":196154994.37220386,"etc_fee_usd":1187.6957335338948,"eth_devs":587,"etc_devs":62},{"month":"2023-08","eth_price":1756.5632814143767,"etc_price":16.76341446872618,"eth_fee_usd":156609224.21984127,"etc_fee_usd":1005.5422730843329,"eth_devs":488,"etc_devs":46},{"month":"2023-09","eth_price":1621.0022349016174,"etc_price":15.407173498989737,"eth_fee_usd":92688060.04483247,"etc_fee_usd":763.6779513723811,"eth_devs":530,"etc_devs":47},{"month":"2023-10","eth_price":1659.7024431383277,"etc_price":15.708423539582396,"eth_fee_usd":91224668.57123001,"etc_fee_usd":1036.4125430759693,"eth_devs":568,"etc_devs":48},{"month":"2023-11","eth_price":1989.1647159750626,"etc_price":18.962358391267465,"eth_fee_usd":238457126.4990913,"etc_fee_usd":22805.444415312704,"eth_devs":500,"etc_devs":40},{"month":"2023-12","eth_price":2261.1495199562605,"etc_price":20.909463729084933,"eth_fee_usd":325161546.50764245,"etc_fee_usd":2819.055361564683,"eth_devs":513,"etc_devs":39},{"month":"2024-01","eth_price":2374.754074696933,"etc_price":23.94667021953735,"eth_fee_usd":212790705.86794803,"etc_fee_usd":2593.2309191320323,"eth_devs":540,"etc_devs":37},{"month":"2024-02","eth_price":2746.176642939196,"etc_price":26.317338074196172,"eth_fee_usd":353121043.16657174,"etc_fee_usd":1793.7285099605192,"eth_devs":564,"etc_devs":39},{"month":"2024-03","eth_price":3628.213270677401,"etc_price":33.50694677680595,"eth_fee_usd":606738584.4310813,"etc_fee_usd":2792.9003224753533,"eth_devs":669,"etc_devs":23},{"month":"2024-04","eth_price":3248.1313963958705,"etc_price":29.181614614233865,"eth_fee_usd":222013259.83064863,"etc_fee_usd":2171.7808036130727,"eth_devs":548,"etc_devs":16},{"month":"2024-05","eth_price":3307.088065713316,"etc_price":28.605669752069055,"eth_fee_usd":128629632.06215437,"etc_fee_usd":2077.3339536532526,"eth_devs":521,"etc_devs":14},{"month":"2024-06","eth_price":3566.879208981103,"etc_price":25.51563466089717,"eth_fee_usd":142350633.32185018,"etc_fee_usd":2329.2154465553085,"eth_devs":601,"etc_devs":19},{"month":"2024-07","eth_price":3272.686539016987,"etc_price":22.367443996378135,"eth_fee_usd":94688339.2358649,"etc_fee_usd":1273.859698621015,"eth_devs":510,"etc_devs":9},{"month":"2024-08","eth_price":2644.257099093154,"etc_price":19.1418143940952,"eth_fee_usd":62928311.30700245,"etc_fee_usd":1143.8177012638953,"eth_devs":533,"etc_devs":9},{"month":"2024-09","eth_price":2466.1227318451197,"etc_price":18.68824219774048,"eth_fee_usd":103678855.12514344,"etc_fee_usd":1129.3939259263382,"eth_devs":623,"etc_devs":9},{"month":"2024-10","eth_price":2517.569075548539,"etc_price":18.83076469890583,"eth_fee_usd":142233796.38780475,"etc_fee_usd":1125.4291430760472,"eth_devs":538,"etc_devs":7},{"month":"2024-11","eth_price":3116.722200432789,"etc_price":24.74189383846503,"eth_fee_usd":189926862.51306894,"etc_fee_usd":1617.2840009944703,"eth_devs":488,"etc_devs":10},{"month":"2024-12","eth_price":3642.748669951264,"etc_price":30.83450310931108,"eth_fee_usd":214001562.70489067,"etc_fee_usd":1917.7339652330709,"eth_devs":597,"etc_devs":10},{"month":"2025-01","eth_price":3328.5724404607754,"etc_price":26.51944892468721,"eth_fee_usd":147421917.31160873,"etc_fee_usd":1596.8945666101124,"eth_devs":604,"etc_devs":11},{"month":"2025-02","eth_price":2666.2091034169666,"etc_price":20.549731541891568,"eth_fee_usd":46768214.957990475,"etc_fee_usd":1052.6138049189346,"eth_devs":580,"etc_devs":10},{"month":"2025-03","eth_price":2015.8487483361919,"etc_price":18.235002561063904,"eth_fee_usd":22100292.468280453,"etc_fee_usd":2909.0162844033844,"eth_devs":689,"etc_devs":13},{"month":"2025-04","eth_price":1686.11526540035,"etc_price":15.810496539204474,"eth_fee_usd":20883905.349153128,"etc_fee_usd":700.6370973616985,"eth_devs":537,"etc_devs":14},{"month":"2025-05","eth_price":2376.1745748006265,"etc_price":18.268926858242825,"eth_fee_usd":42413009.15168664,"etc_fee_usd":3561.1642551597947,"eth_devs":531,"etc_devs":10},{"month":"2025-06","eth_price":2514.315357987533,"etc_price":16.780836649553756,"eth_fee_usd":39068666.99913195,"etc_fee_usd":790.3084395512045,"eth_devs":544,"etc_devs":14},{"month":"2025-07","eth_price":3228.279954940518,"etc_price":20.02586914341216,"eth_fee_usd":49685429.841383435,"etc_fee_usd":3456.996791176775,"eth_devs":500,"etc_devs":7},{"month":"2025-08","eth_price":4252.04678588262,"etc_price":21.79348368691809,"eth_fee_usd":39789279.277070545,"etc_fee_usd":1244.523442169175,"eth_devs":581,"etc_devs":9},{"month":"2025-09","eth_price":4342.266931706605,"etc_price":20.04995319430392,"eth_fee_usd":35911692.44346307,"etc_fee_usd":2292.1278869082666,"eth_devs":528,"etc_devs":11},{"month":"2025-10","eth_price":4108.446786495352,"etc_price":16.995461400490676,"eth_fee_usd":41537876.166673996,"etc_fee_usd":2093.0901106736646,"eth_devs":561,"etc_devs":13},{"month":"2025-11","eth_price":3204.4327191018906,"etc_price":14.786389438374876,"eth_fee_usd":23609463.85749777,"etc_fee_usd":1118.242212160527,"eth_devs":573,"etc_devs":15},{"month":"2025-12","eth_price":3018.006181105183,"etc_price":12.649213737513902,"eth_fee_usd":11524634.374994174,"etc_fee_usd":669.264648023297,"eth_devs":462,"etc_devs":15},{"month":"2026-01","eth_price":3069.282617635414,"etc_price":12.11588588310663,"eth_fee_usd":14017033.192612497,"etc_fee_usd":771.5479225618537,"eth_devs":527,"etc_devs":19},{"month":"2026-02","eth_price":2023.8466699924847,"etc_price":8.735526762613668,"eth_fee_usd":15294340.891229665,"etc_fee_usd":426.5323132964052,"eth_devs":532,"etc_devs":19},{"month":"2026-03","eth_price":2082.4991455195054,"etc_price":8.374413553719725,"eth_fee_usd":10639695.9940897,"etc_fee_usd":392.59236106291405,"eth_devs":582,"etc_devs":20},{"month":"2026-04","eth_price":2258.9548133352814,"etc_price":8.437922812324738,"eth_fee_usd":24521253.500939324,"etc_fee_usd":493.7178008713504,"eth_devs":510,"etc_devs":14},{"month":"2026-05","eth_price":2194.1669693924505,"etc_price":8.949440811549147,"eth_fee_usd":16662336.37759817,"etc_fee_usd":827.8541012008334,"eth_devs":552,"etc_devs":10},{"month":"2026-06","eth_price":1686.9234418585618,"etc_price":7.210109270919659,"eth_fee_usd":11288835.551998923,"etc_fee_usd":680.6794435247097,"eth_devs":499,"etc_devs":7},{"month":"2026-07","eth_price":1835.5647368536602,"etc_price":6.941619610816498,"eth_fee_usd":8435655.597266786,"etc_fee_usd":556.9639894477309,"eth_devs":482,"etc_devs":9},{"month":"2026-08","eth_price":2118.763349893855,"etc_price":6.867994231859854,"eth_fee_usd":10911788.910701754,"etc_fee_usd":565.1601842133957,"eth_devs":515,"etc_devs":16},{"month":"2026-09","eth_price":2552.895480378121,"etc_price":8.177071446104605,"eth_fee_usd":12720320.787381684,"etc_fee_usd":745.4579899698258,"eth_devs":397,"etc_devs":14}];
+
+function fmtMonth(m){
+  const [y, mo] = m.split('-');
+  const names = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return names[parseInt(mo,10)-1] + ' ' + y;
+}
+function fmtInt(n){ return Math.round(n).toLocaleString('en-US'); }
+function fmtUSD(n){
+  if (n >= 1000) return '$' + Math.round(n).toLocaleString('en-US');
+  if (n >= 1) return '$' + n.toFixed(2);
+  return '$' + n.toFixed(4);
+}
+// axis ticks land on "nice" round numbers (1/2/5 * 10^n) already — this just
+// strips the forced decimal padding those nice numbers don't need, without
+// touching the full-precision tooltip formatters above.
+function trimNum(v){
+  if (v === 0) return '0';
+  return parseFloat(v.toPrecision(3)).toString();
+}
+function axisUSD(v){
+  if (v >= 1e6) return '$' + trimNum(v/1e6) + 'M';
+  if (v >= 1e3) return '$' + trimNum(v/1e3) + 'K';
+  return '$' + trimNum(v);
+}
+function axisInt(v){ return trimNum(v); }
+function fmtPct(n){ return n.toFixed(2) + '%'; }
+function axisPct(v){ return trimNum(v) + '%'; }
+
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+// generic log-scale line chart, 1 or 2 series
+// yFmt: full-precision formatter, used in the hover tooltip
+// axisFmt: compact formatter for the left-axis tick labels (defaults to yFmt)
+function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts){
+  axisFmt = axisFmt || yFmt;
+  opts = opts || {};
+  const svg = document.getElementById(svgId);
+  const vb = svg.viewBox.baseVal;
+  const W = vb.width, H = vb.height;
+  const mL = 58, mR = 14, mT = 12, mB = 26;
+  const plotW = W - mL - mR, plotH = H - mT - mB;
+  const n = DATA.length;
+  const xStep = plotW / (n - 1);
+  function xAt(i){ return mL + i * xStep; }
+
+  let yMax = 0, yMinPos = Infinity;
+  seriesDefs.forEach(s => DATA.forEach(d => {
+    const v = s.get(d);
+    if (v > 0){ yMax = Math.max(yMax, v); yMinPos = Math.min(yMinPos, v); }
+  }));
+  yMax *= 1.15;
+  const logMin = Math.log10(yMinPos * 0.85);
+  const logMax = Math.log10(yMax);
+  function yAt(v){
+    if (v <= 0) return null;
+    return mT + plotH - ((Math.log10(v) - logMin) / (logMax - logMin)) * plotH;
+  }
+
+  svg.innerHTML = '';
+
+  const NICE = [];
+  for (let e = -4; e <= 12; e++) [1,2,5].forEach(m => NICE.push(m * Math.pow(10, e)));
+  NICE.filter(v => Math.log10(v) >= logMin - 0.001 && Math.log10(v) <= logMax + 0.001).forEach(v => {
+    const y = yAt(v);
+    svg.appendChild(el('line', {x1:mL, y1:y, x2:mL+plotW, y2:y, class:'gridline'}));
+    const lbl = svg.appendChild(el('text', {x:mL-6, y:y+3, class:'axis-label', 'text-anchor':'end'}));
+    lbl.textContent = axisFmt(v);
+  });
+
+  const yearTicks = [];
+  let lastYear = null;
+  DATA.forEach((d,i) => {
+    const yr = d.month.slice(0,4);
+    if (yr !== lastYear){ yearTicks.push(i); lastYear = yr; }
+  });
+  yearTicks.forEach(i => {
+    const lbl = svg.appendChild(el('text', {x:xAt(i), y:H-6, class:'axis-label', 'text-anchor':'middle'}));
+    lbl.textContent = DATA[i].month.slice(0,4);
+  });
+
+  const baseline = mT + plotH;
+  seriesDefs.forEach(s => {
+    let path = ''; let started = false;
+    let firstX = null, lastX = null;
+    DATA.forEach((d,i) => {
+      const y = yAt(s.get(d));
+      const x = xAt(i);
+      if (y === null){ started = false; return; }
+      path += (!started ? 'M' : 'L') + x.toFixed(2) + ' ' + y.toFixed(2) + ' ';
+      started = true;
+      if (firstX === null) firstX = x;
+      lastX = x;
+    });
+    if (seriesDefs.length === 1 && firstX !== null){
+      const area = path + `L${lastX.toFixed(2)} ${baseline.toFixed(2)} L${firstX.toFixed(2)} ${baseline.toFixed(2)} Z`;
+      svg.appendChild(el('path', {d:area, class:'series-area-' + s.key}));
+    }
+    svg.appendChild(el('path', {d:path, class:'series-' + s.key}));
+  });
+
+  seriesDefs.forEach(s => {
+    for (let i = n - 1; i >= 0; i--){
+      const y = yAt(s.get(DATA[i]));
+      if (y !== null){
+        svg.appendChild(el('circle', {cx:xAt(i), cy:y, r:3.5, class:'end-dot ' + s.key}));
+        break;
+      }
+    }
+  });
+
+  const crosshair = el('line', {class:'crosshair-line', y1:mT, y2:mT+plotH, x1:mL, x2:mL});
+  svg.appendChild(crosshair);
+  const dots = seriesDefs.map(s => {
+    const c = el('circle', {class:'hover-dot ' + s.key});
+    svg.appendChild(c);
+    return c;
+  });
+  const overlay = el('rect', {x:mL, y:mT, width:plotW, height:plotH, class:'capture-rect'});
+  svg.appendChild(overlay);
+
+  const tooltip = document.getElementById(tooltipId);
+  function show(i){
+    const d = DATA[i];
+    const x = xAt(i);
+    crosshair.setAttribute('x1', x); crosshair.setAttribute('x2', x); crosshair.style.opacity = 1;
+    const rows = seriesDefs.map((s, si) => {
+      const v = s.get(d);
+      const y = yAt(v);
+      if (y === null){ dots[si].style.opacity = 0; return ''; }
+      dots[si].setAttribute('cx', x); dots[si].setAttribute('cy', y); dots[si].style.opacity = 1;
+      return `<div class="row"><span class="k"><span class="dot" style="background:var(--${s.key})"></span>${s.label}</span><span class="v">${yFmt(v)}</span></div>`;
+    }).join('');
+    tooltip.innerHTML = `<div class="t-date">${fmtMonth(d.month)}</div>${rows}`;
+    tooltip.style.left = ((x / W) * 100) + '%';
+    tooltip.style.opacity = 1;
+  }
+  function hide(){
+    crosshair.style.opacity = 0;
+    dots.forEach(dot => dot.style.opacity = 0);
+    tooltip.style.opacity = 0;
+  }
+  function onMove(clientX){
+    const rect = svg.getBoundingClientRect();
+    const px = ((clientX - rect.left) / rect.width) * W;
+    let i = Math.round((px - mL) / xStep);
+    i = Math.max(0, Math.min(n-1, i));
+    show(i);
+  }
+  overlay.addEventListener('mousemove', e => onMove(e.clientX));
+  overlay.addEventListener('mouseleave', hide);
+  overlay.addEventListener('touchmove', e => { onMove(e.touches[0].clientX); e.preventDefault(); }, {passive:false});
+  overlay.addEventListener('touchend', hide);
+
+  const legend = document.getElementById(legendId);
+  legend.innerHTML = seriesDefs.map(s =>
+    `<span><span class="swatch" style="background:var(--${s.key})"></span>${s.label}</span>`
+  ).join('');
+}
+
+const CHART_CONFIGS = {
+  price: {
+    svgId:'chart-price', tooltipId:'tooltip-price', legendId:'legend-price',
+    absolute: {
+      seriesDefs:[
+        {key:'eth', label:'ETH price', get:d=>d.eth_price},
+        {key:'etc', label:'ETC price', get:d=>d.etc_price},
+      ], yFmt:fmtUSD, axisFmt:axisUSD,
+    },
+    ratio: {
+      seriesDefs:[
+        {key:'etc', label:'ETC price as % of ETH', get:d=> d.eth_price ? d.etc_price/d.eth_price*100 : null},
+      ], yFmt:fmtPct, axisFmt:axisPct,
+    },
+  },
+  fees: {
+    svgId:'chart-fees', tooltipId:'tooltip-fees', legendId:'legend-fees',
+    absolute: {
+      seriesDefs:[
+        {key:'eth', label:'ETH fees paid/month', get:d=>d.eth_fee_usd},
+        {key:'etc', label:'ETC fees paid/month', get:d=>d.etc_fee_usd},
+      ], yFmt:fmtUSD, axisFmt:axisUSD,
+    },
+    ratio: {
+      seriesDefs:[
+        {key:'etc', label:'ETC fees as % of ETH', get:d=> d.eth_fee_usd ? d.etc_fee_usd/d.eth_fee_usd*100 : null},
+      ], yFmt:fmtPct, axisFmt:axisPct,
+    },
+  },
+  devs: {
+    svgId:'chart-devs', tooltipId:'tooltip-devs', legendId:'legend-devs',
+    absolute: {
+      seriesDefs:[
+        {key:'eth', label:'ETH active developers/month', get:d=>d.eth_devs},
+        {key:'etc', label:'ETC active developers/month', get:d=>d.etc_devs},
+      ], yFmt:fmtInt, axisFmt:axisInt,
+    },
+    ratio: {
+      seriesDefs:[
+        {key:'etc', label:'ETC developers as % of ETH', get:d=> d.eth_devs ? d.etc_devs/d.eth_devs*100 : null},
+      ], yFmt:fmtPct, axisFmt:axisPct,
+    },
+  },
+};
+
+function renderMetricChart(name, mode){
+  const cfg = CHART_CONFIGS[name];
+  const view = cfg[mode];
+  renderChart(cfg.svgId, cfg.tooltipId, cfg.legendId, view.seriesDefs, view.yFmt, view.axisFmt);
+}
+
+Object.keys(CHART_CONFIGS).forEach(name => renderMetricChart(name, 'absolute'));
+
+const globalToggle = document.getElementById('global-view-toggle');
+globalToggle.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    globalToggle.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    Object.keys(CHART_CONFIGS).forEach(name => renderMetricChart(name, btn.dataset.mode));
+  });
+});
+
+// ---------------- language toggle ----------------
+// UI placeholder only — switches which button looks active, but doesn't
+// translate anything yet. Wire this up once the English copy is final.
+(function(){
+  const buttons = document.querySelectorAll('.lang-toggle button');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // translation not implemented yet
+    });
+  });
+})();
+</script>
+</body>
+</html>
