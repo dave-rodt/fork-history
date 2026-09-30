@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="assets/quantbitcoin-logo-rounded.png">
 <title>Preface: The Chain Multiverse</title>
 <meta name="description" content="Why this series exists and how to read it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,10 +76,16 @@
   }
   .data-note strong{color:var(--ink-soft);}
   .back-link{
-    display:inline-block; margin-top:34px; font-family:'IBM Plex Mono',monospace;
+    display:inline-block; font-family:'IBM Plex Mono',monospace;
     font-size:0.85rem; color:var(--ink-soft); text-decoration:none;
   }
   .back-link:hover{color:var(--accent);}
+  .chapter-nav{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:34px; flex-wrap:wrap; gap:12px;
+  }
+  .home-link{display:inline-flex; align-items:center; padding:4px;}
+  .home-link svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block;}
 </style>
 </head>
 <body>
@@ -107,13 +114,13 @@
 
     <p id="p3">I've been thinking about this constantly since August 8th. The temporary soft fork activated on Bitcoin that day was supposed to be a temporary change. Instead, in barely two months, it has already been followed by a hard fork and yet another soft fork. People in my community have strong, and often conflicting, views about each chain. I wanted to step back from the noise and ask a simpler question: what can history actually tell us about what comes next?</p>
 
-    <p id="p4">&ldquo;History doesn't repeat itself, but it rhymes&rdquo;. That idea drives this series. I'll look at some of the most famous forks in crypto history, trace how they unfolded, examine what happened to the resulting chains, and end each one by exploring how the new fork compares with each of the two chains.</p>
+    <p id="p4">"History doesn't repeat itself, but it rhymes". That idea drives this series. I'll look at some of the most famous forks in crypto history, trace how they unfolded, examine what happened to the resulting chains, and end each one by exploring how the new fork compares with each of the two chains.</p>
 
     <p class="schisms-lead" id="schisms-lead">Three fractures stand out.</p>
 
     <div class="schisms">
       <div class="schism" id="schism1"><a href="bch-vs-btc.html"><strong>Bitcoin vs. Bitcoin Cash: The Block Size War.</strong></a> A technical debate over scalability became Bitcoin's first major existential conflict. At its core were two questions: How should Bitcoin scale, and who gets to decide?</div>
-      <div class="schism" id="schism2"><strong>Ethereum vs. Ethereum Classic: The DAO Hack.</strong> After an exploit that drained millions of dollars, Ethereum faced a brutal choice: rewrite history to recover the funds, or let the theft stand and uphold the principle that code is law.</div>
+      <div class="schism" id="schism2"><a href="eth-vs-etc.html"><strong>Ethereum vs. Ethereum Classic: The DAO Hack.</strong></a> After an exploit that drained millions of dollars, Ethereum faced a brutal choice: rewrite history to recover the funds, or let the theft stand and uphold the principle that code is law.</div>
       <div class="schism" id="schism3"><strong>Bitcoin vs. Bitcoin Gold: The GPU Rebellion.</strong> Convinced that capital-intensive ASIC mining had concentrated too much power, a rebel faction changed Bitcoin's mining algorithm in an attempt to return mining to ordinary users.</div>
     </div>
 
@@ -123,13 +130,14 @@
 
     <p id="p7">The newest chapter is Bitcoin BLAKE2b. Emerging from the BIP-110 movement, it represents the latest attempt to reshape Bitcoin around a different set of priorities, including restricting arbitrary data such as inscriptions and replacing SHA-256 proof-of-work with BLAKE2b.</p>
 
+    <p id="p7n">For simplicity, throughout this series we'll refer to Bitcoin with the BLAKE2b algorithm as BTCB2, and to Bitcoin on the SHA-256 algorithm as BTC.</p>
     <p id="p8">The result is a fascinating live experiment.</p>
 
     <p id="p9">By making existing Bitcoin ASICs obsolete, BLAKE2b effectively reset the mining landscape and triggered a scramble for older compatible hardware, including Sia-family ASICs. The goal is to create a more accessible and decentralized mining ecosystem. The tradeoff is a security budget that, so far, is dramatically smaller than Bitcoin's main network.</p>
 
     <p id="p10">The market has been just as volatile. With thin liquidity and limited exchange support, BTCB2 has experienced enormous price swings, including an 84% drawdown after its initial surge.</p>
 
-    <p id="p11">Bitcoin on BLAKE2b is therefore more than another fork. It is a real-time test of ideological conviction.</p>
+    <p id="p11">BTCB2 is therefore more than another fork. It is a real-time test of ideological conviction.</p>
 
     <p id="p12">Can a smaller community build a durable network around a different set of principles, especially as BLAKE2b continues to evolve and improve, or will the network effects, liquidity, and entrenched SHA-256 ecosystem of the larger network ultimately prove too difficult to overcome?</p>
 
@@ -140,14 +148,19 @@
     <p class="data-note" id="datanote"><strong>On the data:</strong> prices, transaction counts, and hashrate come from CoinMetrics' public API; exchange listing dates come from each exchange's own announcements or archived coverage; the BLAKE2b chapter also draws on a first-party block-by-block crawl of both chains and its own market data pulled directly from its one listed exchange.</p>
   </div>
 
-  <a class="back-link" href="index.html" id="backlink">&larr; Back to History of Forks</a>
+  <div class="chapter-nav">
+    <a class="back-link home-link" href="index.html" aria-label="Go to History of Forks">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    </a>
+    <a class="back-link" href="bch-vs-btc.html" id="nextlink">Next: Bitcoin Cash vs. Bitcoin &rarr;</a>
+  </div>
 
 </div>
 <script>
 (function(){
   var IDS = ['eyebrow','h1t','masthead-label','p1','p2','p3','p4','schisms-lead',
-    'schism1','schism2','schism3','p5','p6','p7','p8','p9','p10','p11','p12','p13','p14',
-    'datanote','backlink','brand-name'];
+    'schism1','schism2','schism3','p5','p6','p7','p7n','p8','p9','p10','p11','p12','p13','p14',
+    'datanote','brand-name','nextlink'];
 
   var EN = {};
   IDS.forEach(function(id){
@@ -162,23 +175,24 @@
     'p1': 'La cadena de bloques (blockchain) se construyó sobre la idea de que miles de participantes independientes podían ponerse de acuerdo sobre una única historia compartida. Sin embargo, una y otra vez, esa historia se ha dividido en dos.',
     'p2': 'Un fork rara vez es solo una actualización de software. Es un campo de batalla filosófico y un experimento multimillonario de coordinación humana. Cuando una comunidad discrepa de manera fundamental sobre el rumbo que debe tomar un protocolo, no se limita a discutir. Divide la red y deja que ambas visiones compitan por usuarios, mineros, desarrolladores y capital.',
     'p3': 'Llevo pensando en esto constantemente desde el 8 de agosto. El soft fork temporal que se activó en Bitcoin ese día debía ser un cambio pasajero. En cambio, en apenas dos meses, ya ha sido seguido por un hard fork y otro soft fork más. En mi comunidad hay opiniones firmes, y a menudo contradictorias, sobre cada cadena. Quise alejarme del ruido y plantear una pregunta más simple: ¿qué puede decirnos realmente la historia sobre lo que viene?',
-    'p4': '“La historia no se repite, pero rima”. Esa idea impulsa esta serie. Analizaré algunos de los forks más famosos de la historia cripto, seguiré cómo se desarrollaron, examinaré qué pasó con las cadenas resultantes y cerrar cada uno explorando cómo se compara el nuevo fork con cada una de las dos cadenas.',
+    'p4': '"La historia no se repite, pero rima". Esa idea impulsa esta serie. Analizaré algunos de los forks más famosos de la historia cripto, seguiré cómo se desarrollaron, examinaré qué pasó con las cadenas resultantes y cerrar cada uno explorando cómo se compara el nuevo fork con cada una de las dos cadenas.',
     'schisms-lead': 'Tres fracturas destacan.',
     'schism1': '<a href="bch-vs-btc.html"><strong>Bitcoin vs. Bitcoin Cash: La Guerra del Tamaño de Bloque.</strong></a> Un debate técnico sobre escalabilidad se convirtió en el primer gran conflicto existencial de Bitcoin. En su núcleo había dos preguntas: ¿cómo debía escalar Bitcoin, y quién tenía el derecho a decidirlo?',
-    'schism2': '<strong>Ethereum vs. Ethereum Classic: El Hackeo de The DAO.</strong> Tras un exploit que drenó millones de dólares, Ethereum enfrentó una decisión brutal: reescribir la historia para recuperar los fondos, o dejar que el robo se mantuviera y defender el principio de que el código es ley.',
+    'schism2': '<a href="eth-vs-etc.html"><strong>Ethereum vs. Ethereum Classic: El Hackeo de The DAO.</strong></a> Tras un exploit que drenó millones de dólares, Ethereum enfrentó una decisión brutal: reescribir la historia para recuperar los fondos, o dejar que el robo se mantuviera y defender el principio de que el código es ley.',
     'schism3': '<strong>Bitcoin vs. Bitcoin Gold: La Rebelión de las GPU.</strong> Convencidos de que la minería con ASIC, intensiva en capital, había concentrado demasiado poder, los rebeldes cambiaron el algoritmo de minería de Bitcoin en un intento de devolver la minería a los usuarios comunes.',
     'p5': 'Cada división revela algo sobre cómo funciona realmente la gobernanza descentralizada: el poder en disputa entre los desarrolladores, operadores de nodos, mineros, mercados y usuarios, y el costo, a menudo inesperado, de rechazar el consenso.',
     'p6': 'Y cada una ofrece un posible vistazo de lo que está ocurriendo hoy.',
     'p7': 'El capítulo más reciente es Bitcoin BLAKE2b. Surgido del movimiento BIP-110, representa el intento más reciente de remodelar Bitcoin en torno a un conjunto distinto de prioridades, incluida la restricción de datos arbitrarios como las inscripciones y la sustitución de la prueba de trabajo SHA-256 por BLAKE2b.',
+    'p7n': 'Por simplicidad, a lo largo de esta serie nos referiremos a Bitcoin con el algoritmo BLAKE2b como BTCB2, y a Bitcoin con el algoritmo SHA-256 como BTC.',
     'p8': 'El resultado es un fascinante experimento en vivo.',
     'p9': 'Al volver obsoletos los ASIC existentes de Bitcoin, BLAKE2b reinició de hecho el panorama minero y desató una carrera por hardware compatible más antiguo, incluidos los ASIC de la familia Sia. El objetivo es crear un ecosistema de minería más accesible y descentralizado. La contrapartida es un presupuesto de seguridad que, por ahora, es drásticamente menor que el de la red principal de Bitcoin.',
     'p10': 'El mercado ha sido igual de volátil. Con poca liquidez y un respaldo limitado de los exchanges, BTCB2 ha experimentado enormes oscilaciones de precio, incluida una caída del 84% tras su repunte inicial.',
-    'p11': 'Bitcoin sobre BLAKE2b es, por lo tanto, algo más que otro fork. Es una prueba en tiempo real de convicción ideológica.',
+    'p11': 'BTCB2 es, por lo tanto, algo más que otro fork. Es una prueba en tiempo real de convicción ideológica.',
     'p12': '¿Puede una comunidad más pequeña construir una red duradera en torno a un conjunto distinto de principios, especialmente a medida que BLAKE2b continúa evolucionando y mejorando, o los efectos de red, la liquidez y el ecosistema SHA-256 ya consolidado de la red más grande resultarán, al final, demasiado difíciles de superar?',
     'p13': 'La historia no puede responder esa pregunta por nosotros. Pero puede darnos un marco para plantearla.',
     'p14': 'Ahí es donde comienza esta serie. Puede que no estemos de acuerdo en las conclusiones, pero espero que, al final, tengamos una comprensión más clara de lo que estos forks realmente nos dicen sobre Bitcoin, el consenso y las comunidades construidas a su alrededor.',
     'datanote': '<strong>Sobre los datos:</strong> los precios, el número de transacciones y el hashrate provienen de la API pública de CoinMetrics; las fechas de listado en exchanges provienen de los anuncios de cada exchange o de coberturas de prensa archivadas; el capítulo de BLAKE2b también se basa en un rastreo propio, bloque por bloque, de ambas cadenas, y en sus propios datos de mercado obtenidos directamente de su único exchange listado.',
-    'backlink': '&larr; Volver a Una historia de Forks',
+    'nextlink': 'Siguiente: Bitcoin Cash vs. Bitcoin &rarr;',
     'brand-name': 'Una historia de Forks'
   };
 

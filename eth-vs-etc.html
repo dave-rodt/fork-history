@@ -6,6 +6,19 @@
 <link rel="icon" type="image/png" href="assets/quantbitcoin-logo-rounded.png">
 <title>Ethereum vs. Ethereum Classic</title>
 <meta name="description" content="The DAO hack, the hard fork that reversed it, and the minority chain that refused.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="History of Forks">
+<meta property="og:title" content="Ethereum vs. Ethereum Classic">
+<meta property="og:description" content="The DAO hack, the hard fork that reversed it, and the minority chain that refused.">
+<meta property="og:url" content="https://dave-rodt.github.io/fork-history/eth-vs-etc.html">
+<meta property="og:image" content="https://dave-rodt.github.io/fork-history/assets/og-eth-vs-etc.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ethereum vs. Ethereum Classic — History of Forks, Chapter 2">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ethereum vs. Ethereum Classic">
+<meta name="twitter:description" content="The DAO hack, the hard fork that reversed it, and the minority chain that refused.">
+<meta name="twitter:image" content="https://dave-rodt.github.io/fork-history/assets/og-eth-vs-etc.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -72,10 +85,7 @@
   }
   .top-nav a:hover{color:var(--brand-orange);}
 
-  /* Language toggle — UI only for now, not wired to translated content yet.
-     Wire this up once the chapter's English copy is final (same pattern as
-     bch-vs-btc.html): capture EN from the DOM, hand-write an ES dict, swap
-     on click. Translating now would just mean re-translating after edits. */
+  /* Language toggle — wired in the script at the bottom of the page. */
   .lang-toggle{display:flex; border:1px solid var(--rule-strong); border-radius:20px; overflow:hidden;}
   .lang-toggle button{
     font-family:'IBM Plex Mono',monospace; font-size:0.72rem; font-weight:600; letter-spacing:0.02em;
@@ -177,6 +187,75 @@
   .tooltip .dot{width:7px; height:7px; border-radius:50%; display:inline-block;}
   .tooltip .v{font-family:'IBM Plex Mono',monospace;}
 
+  .sources-note{margin-top:30px; padding-top:18px; border-top:1px solid var(--rule);}
+  .sources-note h3{font-size:0.9rem; margin:0 0 10px; color:var(--ink-soft);}
+  .sources-note ol{max-width:70ch; padding-left:20px; margin:0; font-size:0.78rem; color:var(--ink-mute); line-height:1.6;}
+  .sources-note li{margin-bottom:6px;}
+  .sources-note a{color:var(--ink-soft);}
+  .sources-note a:hover{color:var(--brand-orange);}
+
+  /* ---------- tweet cards ---------- */
+  .tweet-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:18px; margin-top:8px;}
+  .tweet-card{
+    background:var(--panel); border:1px solid var(--rule); border-radius:10px; overflow:hidden;
+    margin:0; display:flex; flex-direction:column;
+    box-shadow:var(--shadow-sm);
+    transition:transform 0.16s ease, box-shadow 0.16s ease;
+  }
+  .tweet-card:hover{transform:translateY(-3px); box-shadow:var(--shadow-md);}
+  .tweet-card .tweet-img-btn{
+    display:block; width:100%; height:240px; overflow:hidden; background:var(--tag-bg);
+    border:none; padding:0; margin:0; position:relative; cursor:zoom-in;
+    font:inherit; -webkit-appearance:none; appearance:none;
+  }
+  .tweet-card .tweet-img-btn::after{
+    content:''; position:absolute; inset:0; background:rgba(0,0,0,0); transition:background 0.15s ease;
+  }
+  .tweet-card .tweet-img-btn:hover::after{background:rgba(0,0,0,0.10);}
+  .tweet-card img{width:100%; height:100%; display:block; object-fit:contain;}
+
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position:fixed; inset:0; background:rgba(10,11,13,0.88);
+    display:none; align-items:center; justify-content:center;
+    padding:32px; z-index:1000; cursor:zoom-out;
+  }
+  .lightbox.active{display:flex;}
+  .lightbox img{max-width:100%; max-height:100%; border-radius:10px; box-shadow:0 20px 50px rgba(0,0,0,0.5);}
+  .lightbox-close{
+    position:fixed; top:18px; right:22px; width:40px; height:40px; border-radius:50%;
+    border:none; background:rgba(255,255,255,0.14); color:#fff; font-size:1.6rem; line-height:1;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .lightbox-close:hover{background:rgba(255,255,255,0.26);}
+  .tweet-footer{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:10px 12px; border-top:1px solid var(--rule);
+  }
+  .tweet-footer .view-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.74rem; font-weight:500;
+    color:var(--ink-soft); text-decoration:none;
+  }
+  .tweet-footer .view-link:hover{color:var(--brand-orange);}
+  .tweet-footer .view-link svg{width:12px; height:12px; fill:currentColor; flex-shrink:0;}
+  .tweet-footer .tweet-date{font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ink-mute); white-space:nowrap;}
+  .tweet-card figcaption{padding:0 12px 12px; font-size:0.82rem; color:var(--ink-soft);}
+  /* ---------- exchange listing timeline ---------- */
+  .timeline-baseline{stroke:var(--rule-strong); stroke-width:1.5;}
+  .timeline-arrow{fill:var(--rule-strong);}
+  .timeline-date{font-family:'IBM Plex Mono',monospace; font-size:10px; fill:var(--ink-soft);}
+  .timeline-stem{stroke:var(--rule-strong); stroke-width:1;}
+  .timeline-marker{fill:var(--etc); stroke:var(--panel); stroke-width:2; pointer-events:none;}
+  .timeline-marker.proxy{fill:var(--panel); stroke:var(--etc); stroke-width:2;}
+  .timeline-hit{fill:transparent; cursor:pointer;}
+  .timeline-label{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; fill:var(--ink);}
+  .timeline-legend{display:flex; gap:16px; margin-top:10px; font-size:0.78rem; color:var(--ink-soft); flex-wrap:wrap;}
+  .timeline-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .timeline-legend .dot{width:9px; height:9px; border-radius:50%; display:inline-block; background:var(--etc);}
+  .timeline-legend .dot.proxy{background:var(--panel); border:2px solid var(--etc);}
+  .timeline-legend .square{width:9px; height:9px; border-radius:2px; display:inline-block; background:var(--etc);}
+
   footer{margin-top:30px; padding-top:18px; font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); line-height:1.7;}
 
   @media (max-width:600px){
@@ -188,7 +267,7 @@
 <div class="wrap">
 
   <nav class="top-nav">
-    <a href="index.html">&larr; History of Forks</a>
+    <a href="index.html" id="nav-back">&larr; History of Forks</a>
     <div class="lang-toggle" role="group" aria-label="Language">
       <button type="button" class="active" data-lang="en">EN</button>
       <button type="button" data-lang="es">ES</button>
@@ -196,63 +275,63 @@
   </nav>
 
   <header class="masthead">
-    <a class="masthead-title" href="index.html"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo">History of Forks: Chapter 2</a>
-    <div class="masthead-meta">Ethereum Classic (ETC), forked July 20, 2016</div>
+    <a class="masthead-title" href="index.html"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo"><span id="masthead-title-text">History of Forks: Chapter 2</span></a>
+    <div class="masthead-meta" id="masthead-meta">Ethereum Classic (ETC), forked July 20, 2016</div>
   </header>
 
   <div class="hero">
-    <div class="eyebrow">THE ONE THAT SUCCEEDED</div>
+    <div class="eyebrow" id="hero-eyebrow">THE ONE THAT SUCCEEDED</div>
     <h1>Ethereum vs. Ethereum Classic</h1>
-    <p class="lede">In 2016, an attacker drained The DAO of roughly 3.6 million ETH. Ethereum's core team executed a hard fork to reverse the theft. A minority kept mining the original, unaltered chain on principle, and it became Ethereum Classic. This is the only fork in the series where the side that changed the protocol won decisively.</p>
-    <div class="read-time">~? min read</div>
+    <p class="lede" id="hero-lede">In 2016, an attacker drained the Decentralized Autonomous Organization (The DAO) of roughly 3.6 million ETH. Ethereum's core team executed a hard fork to reverse the theft. A minority kept mining the original, unaltered chain on principle, and it became Ethereum Classic. This is the only fork in the series where the side that changed the protocol won decisively.</p>
+    <div class="read-time" id="read-time">~9 min read</div>
   </div>
 
   <!-- ================= PHASE 1: BACKGROUND ================= -->
   <section class="phase" id="background">
     <div class="phase-head">
       <span class="phase-num">01</span>
-      <h2>Background</h2>
+      <h2 id="bg-h2">Background</h2>
       <span class="phase-time">~3 min</span>
     </div>
-    <p>When Ethereum launched in July 2015, it arrived with a radically broader ambition than Bitcoin. It didn't just want to be digital money; it wanted to be a "world computer."</p>
-    <p>While Bitcoin was built as a highly secure digital ledger, Vitalik Buterin's 2013 whitepaper proposed something closer to a decentralized computing platform. Ethereum featured a built-in programming language capable of running arbitrary computations. The goal wasn't just to transfer value, but to build an entirely new foundation for applications where anyone could deploy custom tokens, decentralized insurance, and financial contracts directly onto the blockchain.</p>
-    <p>Much of the early community rallied around a simple creed: code is law. These applications, called smart contracts, would execute automatically across thousands of nodes. Ethereum promised applications resistant to downtime, censorship, and third-party interference.</p>
-    <p>That uncompromising promise was about to face its first catastrophic test.</p>
-    <p>By spring 2016, a project called The DAO emerged as a showcase for the world computer idea. Designed as a decentralized venture capital fund, it allowed anyone to send ETH in exchange for voting rights over future project funding. Its crowdsale raised roughly 11.5 million ETH, worth about $150 million at the time.</p>
-    <p>The scale was extraordinary. Roughly 14&ndash;15% of all ETH in circulation was now locked inside a single, experimental smart contract.</p>
-    <p>Then, on June 17, 2016, an attacker exploited a re-entrancy vulnerability in The DAO's code. In simple terms, the attacker could trigger another withdrawal before the contract updated its balance, repeating the process until approximately 3.6 million ETH, worth around $50&ndash;60 million, had been moved into a child DAO.</p>
-    <p>The Ethereum protocol itself hadn't been hacked. The attacker exploited a flaw in The DAO's code, and the blockchain kept processing transactions exactly as designed. The incident exposed a fundamental tension: if smart contracts were supposed to execute exactly as written, what would happen when the code produced an outcome the community considered unacceptable?</p>
-    <p>The attacker still faced one obstacle. The DAO's rules imposed a 28-day withdrawal delay on child DAOs, creating a window for intervention.</p>
-    <p>Suddenly, a ticking clock hung over the entire Ethereum ecosystem. Panic spread, ETH's price fell sharply, and developers, miners, investors, and exchanges were thrown into frantic debate.</p>
-    <p>As the countdown approached zero, Ethereum faced an existential question:</p>
-    <p>If "Code is Law," what happens when the law allows a hacker to walk away with a fortune, and the network's credibility with it?</p>
+    <p id="bg1">When Ethereum launched in July 2015, it arrived with a radically broader ambition than Bitcoin. It didn't just want to be digital money; it wanted to be a "world computer."</p>
+    <p id="bg2">While Bitcoin was built as a highly secure digital ledger, Vitalik Buterin's 2013 whitepaper proposed something closer to a decentralized computing platform. Ethereum featured a built-in programming language capable of running arbitrary computations. The goal wasn't just to transfer value, but to build an entirely new foundation for applications where anyone could deploy custom tokens, decentralized insurance, and financial contracts directly onto the blockchain.</p>
+    <p id="bg3">Much of the early community rallied around a simple creed: code is law. These applications, called smart contracts, would execute automatically across thousands of nodes. Ethereum promised applications resistant to downtime, censorship, and third-party interference.</p>
+    <p id="bg4">That uncompromising promise was about to face its first catastrophic test.</p>
+    <p id="bg5">By spring 2016, a project called The DAO emerged as a showcase for the world computer idea. Designed as a decentralized venture capital fund, it allowed anyone to send ETH in exchange for voting rights over future project funding. Its crowdsale raised roughly 11.5 million ETH, worth about $150 million at the time.</p>
+    <p id="bg6">The scale was extraordinary. Roughly 14&ndash;15% of all ETH in circulation was now locked inside a single, experimental smart contract.</p>
+    <p id="bg7">Then, on June 17, 2016, an attacker exploited a re-entrancy vulnerability in The DAO's code. In simple terms, the attacker could trigger another withdrawal before the contract updated its balance, repeating the process until approximately 3.6 million ETH, worth around $50&ndash;60 million, had been moved into a child DAO.</p>
+    <p id="bg8">The Ethereum protocol itself hadn't been hacked. The attacker exploited a flaw in The DAO's code, and the blockchain kept processing transactions exactly as designed. The incident exposed a fundamental tension: if smart contracts were supposed to execute exactly as written, what would happen when the code produced an outcome the community considered unacceptable?</p>
+    <p id="bg9">The attacker still faced one obstacle. The DAO's rules gave Ethereum a window of roughly four weeks.</p>
+    <p id="bg10">Suddenly, a ticking clock hung over the entire Ethereum ecosystem. Panic spread, ETH's price fell sharply, and developers, miners, investors, and exchanges were thrown into frantic debate.</p>
+    <p id="bg11">As the countdown approached zero, Ethereum faced an existential question:</p>
+    <p id="bg12">If "code is law," what happens when the law allows a hacker to walk away with a fortune, and the network's credibility with it?</p>
   </section>
 
   <!-- ================= PHASE 2: THE WHY ================= -->
   <section class="phase" id="why-fork">
     <div class="phase-head">
       <span class="phase-num">02</span>
-      <h2>Why Reverse the Hack?</h2>
+      <h2 id="why-h2">Why Reverse the Hack?</h2>
       <span class="phase-time">~2 min</span>
     </div>
-    <h3><strong>The Case for the Fork: ETH</strong></h3>
+    <h3 id="why-h3a"><strong>The Case for the Fork: ETH</strong></h3>
     <ul>
-      <li><strong>The spirit of the contract:</strong> The DAO was built to pool money for investment. The exploit was a bug, not the intended outcome. Recovering the funds, supporters argued, restored the contract's purpose rather than rewarding someone for exploiting its code.</li>
-      <li><strong>Protecting trust and the network:</strong> Ethereum was barely a year old. Roughly 15% of all ETH was locked in The DAO, and the attacker drained nearly a third of it, about 5% of the entire supply. Letting that stand could damage confidence and create serious systemic risk, particularly for a network planning to move toward Proof of Stake.</li>
-      <li><strong>Social consensus decides:</strong> A blockchain ultimately depends on people choosing which software to run. Miners, developers, and users could coordinate around the fork, making the chain with the strongest economic and social support the one that continued as Ethereum.</li>
+      <li id="why1"><strong>The spirit of the contract:</strong> The DAO was built to pool money for investment. The exploit was a bug, not the intended outcome. Recovering the funds, supporters argued, restored the contract's purpose rather than rewarding someone for exploiting its code.</li>
+      <li id="why2"><strong>Protecting trust and the network:</strong> Ethereum was barely a year old. Roughly 15% of all ETH was locked in The DAO, and the attacker drained nearly a third of it, about 5% of the entire supply. Letting that stand could damage confidence and create serious systemic risk, particularly for a network planning to move toward Proof of Stake.</li>
+      <li id="why3"><strong>Social consensus decides:</strong> A blockchain ultimately depends on people choosing which software to run. Miners, developers, and users could coordinate around the fork, making the chain with the strongest economic and social support the one that continued as Ethereum.</li>
     </ul>
 
-    <h3><strong>The Case for Keeping the Original Chain: ETC</strong></h3>
+    <h3 id="why-h3b"><strong>The Case for Keeping the Original Chain: ETC</strong></h3>
     <ul>
-      <li><strong>Code is law:</strong> Ethereum itself was never hacked. The network ran The DAO's code as written, and the exploit followed the rules of that contract. Changing the base layer to fix one application's bug, opponents argued, punished the part of the system that had worked and made finality depend on majority approval.</li>
-      <li><strong>A bailout with a threshold:</strong> Critics saw the fork as a bailout for The DAO's investors. If the network would not rewrite history for a small project's $1,000 loss, but would intervene when millions were at stake, what principle determines the threshold? For ETC supporters, that meant the rules were effectively negotiable when enough money or influential participants were involved.</li>
-      <li><strong>Principles over majority:</strong> The fork showed that developers, foundation members, miners, and other influential participants could coordinate to change the ledger. For ETC, this raised a fundamental question: does consensus mean following the rules, or following the majority?</li>
+      <li id="why4"><strong>Code is law:</strong> Ethereum itself was never hacked. The network ran The DAO's code as written, and the exploit followed the rules of that contract. Changing the base layer to fix one application's bug, opponents argued, punished the part of the system that had worked and made finality depend on majority approval.</li>
+      <li id="why5"><strong>A bailout with a threshold:</strong> Critics saw the fork as a bailout for The DAO's investors. If the network would not rewrite history for a small project's $1,000 loss, but would intervene when millions were at stake, what principle determines the threshold? For ETC supporters, that meant the rules were effectively negotiable when enough money or influential participants were involved.</li>
+      <li id="why6"><strong>Principles over majority:</strong> The fork showed that developers, foundation members, miners, and other influential participants could coordinate to change the ledger. For ETC, this raised a fundamental question: does consensus mean following the rules, or following the majority?</li>
     </ul>
 
-    <h3><strong>The Philosophical Divide</strong></h3>
+    <h3 id="why-h3c"><strong>The Philosophical Divide</strong></h3>
     <ul>
-      <li><strong>Ethereum:</strong> Consensus is the community's ability to coordinate and adapt the rules when the network's future is at stake.</li>
-      <li><strong>Ethereum Classic:</strong> Consensus means preserving the original rules, even at a short-term cost, because a ledger's long-term value depends on preserving the principles on which the chain was built.</li>
+      <li id="why7"><strong>Ethereum:</strong> Consensus is the community's ability to coordinate and adapt the rules when the network's future is at stake.</li>
+      <li id="why8"><strong>Ethereum Classic:</strong> Consensus means preserving the original rules, even at a short-term cost, because a ledger's long-term value depends on preserving the principles on which the chain was built.</li>
     </ul>
   </section>
 
@@ -260,57 +339,121 @@
   <section class="phase" id="how-it-happened">
     <div class="phase-head">
       <span class="phase-num">03</span>
-      <h2>How It Happened?</h2>
+      <h2 id="how-h2">How Did It Happen?</h2>
       <span class="phase-time">~2 min</span>
     </div>
-    <h3><strong>The 28-Day Clock</strong></h3>
-    <p>The DAO's code gave Ethereum four weeks. Any ETH moved into a child DAO was locked for 28 days, so the attacker couldn't touch the 3.6 million ETH right away.</p>
+    <h3 id="how-h3a"><strong>The 28-Day Clock</strong></h3>
+    <p id="how1">The DAO's code gave Ethereum four weeks. Any ETH moved into a child DAO was locked for 28 days, so the attacker couldn't touch the 3.6 million ETH right away.</p>
 
-    <h3><strong>Plan A: Freeze it</strong></h3>
-    <p>Vitalik Buterin and other core developers proposed a soft fork that would blacklist the attacker's addresses. The funds would remain frozen without changing Ethereum's history.</p>
+    <h3 id="how-h3b"><strong>Plan A: Freeze It</strong></h3>
+    <p id="how2">Vitalik Buterin and other core developers proposed a soft fork that would blacklist the attacker's addresses. The funds would remain frozen without changing Ethereum's history.</p>
 
-    <h3><strong>Then the Flaw</strong></h3>
-    <p>Researchers, including Cornell's Emin Gün Sirer, found a problem: enforcing the blacklist meant miners had to check every transaction for links to the frozen funds. Because rejected transactions pay no fees, an attacker could flood the network with them at no cost, forcing miners to waste resources on spam and potentially bringing Ethereum to a halt.</p>
+    <h3 id="how-h3c"><strong>Then the Flaw</strong></h3>
+    <p id="how3">Researchers, including Cornell's Emin Gün Sirer, found a problem: enforcing the blacklist meant miners had to check every transaction for links to the frozen funds. Because rejected transactions pay no fees, an attacker could flood the network with them at no cost, forcing miners to waste resources on spam and potentially bringing Ethereum to a halt.</p>
 
-    <h3><strong>Plan B: Move it</strong></h3>
-    <p>With the soft fork abandoned and the clock running down, Ethereum took the more radical option: a hard fork. Instead of freezing the stolen ETH, the new rules moved it, along with the rest of The DAO's funds, into a recovery contract, allowing the original DAO investors to withdraw their money.</p>
-    <p>But a hard fork requires more than code. It requires people to run it.</p>
+    <h3 id="how-h3d"><strong>Plan B: Move It</strong></h3>
+    <p id="how4">With the soft fork abandoned and the clock running down, Ethereum took the more radical option: a hard fork. Instead of freezing the stolen ETH, the new rules moved it, along with the rest of The DAO's funds, into a recovery contract, allowing the original DAO investors to withdraw their money.</p>
+    <p id="how5">But a hard fork requires more than code. It requires people to run it.</p>
 
-    <h3><strong>July 20, 2016: The Split</strong></h3>
-    <p>Most developers, exchanges, miners, and users upgraded. The new chain recovered the funds and continued as Ethereum.</p>
-    <p>A minority refused. They believed no amount of money justified rewriting the ledger. They kept mining the original chain, which survived as Ethereum Classic.</p>
+    <h3 id="how-h3e"><strong>July 20, 2016: The Split</strong></h3>
+    <p id="how6">Most developers, exchanges, miners, and users upgraded. The new chain recovered the funds and continued as Ethereum.</p>
+    <p id="how7">A minority refused. They believed no amount of money justified rewriting the ledger. They kept mining the original chain, which survived as Ethereum Classic.</p>
+    <p id="how8">The DAO fork left Ethereum with two competing answers to the same question: should a decentralized network preserve its rules, or preserve the purpose those rules were meant to serve?</p>
   </section>
 
   <!-- ================= PHASE 4: THE TWEETS ================= -->
   <section class="phase" id="tweets">
     <div class="phase-head">
       <span class="phase-num">04</span>
-      <h2>What people were saying about ETH vs. ETC</h2>
-      <span class="phase-time">~? min</span>
+      <h2 id="tweets-h2">What People Were Saying About ETH vs. ETC</h2>
+      <span class="phase-time">~1 min</span>
     </div>
-    <div class="placeholder-box">Coming soon: contemporaneous and later posts on "code is law" vs. the fork, screenshots to follow the same click-to-enlarge format as Chapter 1.</div>
+    <p id="tweets-intro">Five Twitter (X) posts from August 2016 through October 2017, showing how Ethereum Classic supporters argued that an immutable chain would outlast the one that reversed The DAO hack.</p>
+
+    <div class="tweet-grid">
+      <figure class="tweet-card">
+        <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: AZAZEL (@thefunkybits) tweet, April 30, 2017">
+          <img src="tweets/858763798009786368.png" alt="AZAZEL (@thefunkybits) tweet, April 30, 2017">
+        </button>
+        <div class="tweet-footer">
+          <a class="view-link" href="https://x.com/thefunkybits/status/858763798009786368" target="_blank" rel="noopener">
+            <svg viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163Z"/></svg>
+            <span id="vp1">View post</span>
+          </a>
+          <span class="tweet-date" id="td1">Apr 30, 2017</span>
+        </div>
+      </figure>
+      <figure class="tweet-card">
+        <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Drawpie tweet, October 7, 2017">
+          <img src="tweets/916542184140169217.png" alt="Drawpie tweet, October 7, 2017">
+        </button>
+        <div class="tweet-footer">
+          <a class="view-link" href="https://x.com/drawpie/status/916542184140169217" target="_blank" rel="noopener">
+            <svg viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163Z"/></svg>
+            <span id="vp2">View post</span>
+          </a>
+          <span class="tweet-date" id="td2">Oct 7, 2017</span>
+        </div>
+      </figure>
+      <figure class="tweet-card">
+        <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Steve (@Stevemartinio) tweet, September 1, 2017">
+          <img src="tweets/903611972515643393.png" alt="Steve (@Stevemartinio) tweet, September 1, 2017">
+        </button>
+        <div class="tweet-footer">
+          <a class="view-link" href="https://x.com/Stevemartinio/status/903611972515643393" target="_blank" rel="noopener">
+            <svg viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163Z"/></svg>
+            <span id="vp3">View post</span>
+          </a>
+          <span class="tweet-date" id="td3">Sep 1, 2017</span>
+        </div>
+      </figure>
+      <figure class="tweet-card">
+        <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Drawpie tweet, June 18, 2017">
+          <img src="tweets/876327728793796609.png" alt="Drawpie tweet, June 18, 2017">
+        </button>
+        <div class="tweet-footer">
+          <a class="view-link" href="https://x.com/drawpie/status/876327728793796609" target="_blank" rel="noopener">
+            <svg viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163Z"/></svg>
+            <span id="vp4">View post</span>
+          </a>
+          <span class="tweet-date" id="td4">Jun 18, 2017</span>
+        </div>
+      </figure>
+      <figure class="tweet-card">
+        <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Charlie Shrem tweet, August 1, 2016">
+          <img src="tweets/760105884244516864.png" alt="Charlie Shrem tweet, August 1, 2016">
+        </button>
+        <div class="tweet-footer">
+          <a class="view-link" href="https://x.com/CharlieShrem/status/760105884244516864" target="_blank" rel="noopener">
+            <svg viewBox="0 0 1200 1227" xmlns="http://www.w3.org/2000/svg"><path d="M714.163 519.284L1160.89 0H1055.03L667.137 450.887L357.328 0H0L468.492 681.821L0 1226.37H105.866L515.491 750.218L842.672 1226.37H1200L714.137 519.284H714.163Z"/></svg>
+            <span id="vp5">View post</span>
+          </a>
+          <span class="tweet-date" id="td5">Aug 1, 2016</span>
+        </div>
+      </figure>
+    </div>
   </section>
 
   <!-- ================= PHASE 5: METRICS ================= -->
   <section class="phase" id="metrics">
     <div class="phase-head">
       <span class="phase-num">05</span>
-      <h2>Years of data</h2>
+      <h2 id="metrics-h2">Years of Data</h2>
       <span class="phase-time">~1 min</span>
     </div>
-    <p>Monthly figures since ETC's fork (July 2016) through September 2026. Price and fees come from CoinMetrics' public dataset; developer activity is a first-party count of monthly unique commit authors across each chain's GitHub ecosystem (per Electric Capital's open taxonomy of which repos belong to which chain). A network-decentralization measure (Nakamoto coefficient) is still in progress and not yet included below.</p>
+    <p id="metrics-intro">Monthly figures since ETC's fork (July 2016) through September 2026. Price and fees come from CoinMetrics' public dataset; developer activity is a first-party count of monthly unique commit authors across each chain's GitHub ecosystem (per Electric Capital's open taxonomy of which repos belong to which chain).</p>
 
     <div class="view-toggle-row">
-      <span class="view-toggle-label">Chart view:</span>
+      <span class="view-toggle-label" id="view-label">Chart view:</span>
       <div class="view-toggle" id="global-view-toggle">
-        <button type="button" class="active" data-mode="absolute">Absolute</button>
-        <button type="button" data-mode="ratio">ETC as % of ETH</button>
+        <button type="button" class="active" data-mode="absolute" id="view-abs">Absolute</button>
+        <button type="button" data-mode="ratio" id="view-ratio">ETC as % of ETH</button>
       </div>
     </div>
 
     <div class="chart-block">
-      <div class="chart-title">Price: ETH vs. ETC, monthly (USD)</div>
-      <p class="chart-caption">Average daily close per month, log-scaled so both chains' full range stays readable on one chart.</p>
+      <div class="chart-title" id="ct1">Price: ETH vs. ETC, monthly (USD)</div>
+      <p class="chart-caption" id="cc1">Average daily close per month, log-scaled so both chains' full range stays readable on one chart.</p>
       <div class="chart-wrap">
         <svg class="chart" id="chart-price" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
         <div class="tooltip" id="tooltip-price"></div>
@@ -319,8 +462,8 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title">Fees paid: ETH vs. ETC, monthly (USD)</div>
-      <p class="chart-caption">Total network fees paid each month, converted to USD day-by-day (native fee &times; that day's price, summed) rather than applying one month-end price to the whole month.</p>
+      <div class="chart-title" id="ct2">Fees paid: ETH vs. ETC, monthly (USD)</div>
+      <p class="chart-caption" id="cc2">Total network fees paid each month, converted to USD day-by-day (native fee &times; that day's price, summed) rather than applying one month-end price to the whole month.</p>
       <div class="chart-wrap">
         <svg class="chart" id="chart-fees" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
         <div class="tooltip" id="tooltip-fees"></div>
@@ -329,13 +472,28 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title">Monthly active developers: ETH vs. ETC</div>
-      <p class="chart-caption">Distinct GitHub accounts committing to each chain's tagged repositories that month. ETH is capped to its 300 most-starred repos (its full ecosystem is far too large to crawl in full); ETC's much smaller repo list is used in full, uncapped.</p>
+      <div class="chart-title" id="ct3">Monthly active developers: ETH vs. ETC</div>
+      <p class="chart-caption" id="cc3">Distinct GitHub accounts committing to each chain's tagged repositories that month. ETH is capped to its 300 most-starred repos (its full ecosystem is far too large to crawl in full); ETC's much smaller repo list is used in full, uncapped.</p>
       <div class="chart-wrap">
         <svg class="chart" id="chart-devs" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
         <div class="tooltip" id="tooltip-devs"></div>
       </div>
       <div class="legend" id="legend-devs"></div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title" id="ct4">Timeline: ETH's launch, The DAO, the fork, and ETC's early exchange listings</div>
+      <p class="chart-caption" id="cc4">From Ethereum's own launch through The DAO, the hard fork, and Ethereum Classic's first exchange listings. Events are evenly spaced in date order, not to scale in time. The date under each point gives the actual timing.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-timeline" viewBox="0 0 820 130" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-timeline"></div>
+      </div>
+      <div class="timeline-legend">
+        <span><span class="dot"></span><span id="tll1">Exchange listing</span></span>
+        <span><span class="dot proxy"></span><span id="tll2">Confirmed live by this date (exact listing date unconfirmed)</span></span>
+        <span><span class="square"></span><span id="tll3">Protocol / network event</span></span>
+        <span id="tll4">Hover a point for details</span>
+      </div>
     </div>
   </section>
 
@@ -343,39 +501,72 @@
   <section class="phase" id="similarities">
     <div class="phase-head">
       <span class="phase-num">06</span>
-      <h2>Similarities with Each Chain</h2>
-      <span class="phase-time">~? min</span>
+      <h2 id="sim-h2">BTCB2 Similarities with Each Chain</h2>
+      <span class="phase-time">~1.5 min</span>
     </div>
-    <div class="placeholder-box">Coming soon: parallels between this fork and the BTCB2 split — on one side, a minority chain persisting on principle; on the other, a majority chain intervening to change the rules.</div>
+
+    <h3 id="sim-h3a"><strong>Parallels with ETC (Ethereum Classic): The Price of Principle</strong></h3>
+    <ul>
+      <li id="sim1"><strong>Principle Over Consensus:</strong> Both communities chose a strict interpretation of their network's original promise, even when consensus allowed behavior they rejected. ETC refused the bailout of The DAO to preserve "code is law," while BTCB2 rejects what its proponents consider non-monetary uses of block space, including JPEGs and BRC-20 tokens, in pursuit of Bitcoin's peer-to-peer electronic cash function.</li>
+      <li id="sim2"><strong>Sacrificing Network Effects to Preserve the Principle:</strong> That choice comes at a steep cost. ETC became the minority chain after the fork, leaving it without Ethereum's dominant brand, ecosystem, and most of its hashrate. BTCB2 likewise positions itself as a minority fork, meaning it gives up the established "BTC" identity and must build its own liquidity, exchange support, and network effects. Separately, its switch from SHA-256 to BLAKE2b makes existing Bitcoin mining infrastructure incompatible with the new chain. For BTCB2, the break also extends to established Lightning channels and economic nodes built around the existing Bitcoin network.</li>
+    </ul>
+
+    <h3 id="sim-h3b"><strong>Parallels with ETH (Ethereum): The Necessity of Intervention</strong></h3>
+    <ul>
+      <li id="sim3"><strong>Intervention to Save the Network:</strong> Both communities decided that simply continuing under the existing rules would undermine the network they wanted to preserve. Ethereum intervened after The DAO hack, while BTCB2 intervenes to protect Bitcoin's block space from Ordinals activity and what its proponents describe as mining centralization.</li>
+      <li id="sim4"><strong>Rewriting the Rules:</strong> Both required a break from the existing protocol. Ethereum forked to reverse The DAO theft. BTCB2 restricts arbitrary data, changes the hashing algorithm, and imposes tighter block constraints.</li>
+      <li id="sim5"><strong>The Claim to Legitimacy:</strong> Neither side saw itself as the fork. Both framed their changes as necessary to preserve the network's original purpose, while arguing that the other side was the one departing from those principles.</li>
+    </ul>
   </section>
 
-  <div class="sources-note" style="margin-top:30px; padding-top:18px; border-top:1px solid var(--rule);">
-    <h3 style="font-size:0.9rem; margin:0 0 10px; color:var(--ink-soft);">Sources</h3>
-    <div class="placeholder-box">Coming soon.</div>
+  <div class="sources-note">
+    <h3 id="sources-h3">Sources</h3>
+    <ol>
+      <li id="src1">Ethereum's mainnet launch (Frontier), July 30, 2015 &mdash; <a href="https://blog.ethereum.org/2015/07/30/ethereum-launches" target="_blank" rel="noopener">"Ethereum Launches," Ethereum Foundation Blog</a></li>
+      <li id="src2">Vitalik Buterin's proposal for a programmable blockchain &mdash; <a href="https://ethereum.org/en/whitepaper/" target="_blank" rel="noopener">Ethereum Whitepaper, ethereum.org</a></li>
+      <li id="src3">The DAO's 28-day crowdsale, the amount it raised, its number of investors, its share of all ETH, and the ETH drained in the hack &mdash; <a href="https://en.wikipedia.org/wiki/The_DAO" target="_blank" rel="noopener">The DAO, Wikipedia</a></li>
+      <li id="src4">The June 17, 2016 exploit, the child DAO's withdrawal delay, and the proposed soft fork &mdash; <a href="https://blog.ethereum.org/2016/06/17/critical-update-re-dao-vulnerability" target="_blank" rel="noopener">Vitalik Buterin, "CRITICAL UPDATE Re: DAO Vulnerability," Ethereum Foundation Blog</a></li>
+      <li id="src5">The soft fork's denial-of-service flaw &mdash; <a href="https://hackingdistributed.com/2016/06/28/ethereum-soft-fork-dos-vector/" target="_blank" rel="noopener">Tjaden Hess, River Keefer and Emin Gün Sirer, "Ethereum's DAO Wars Soft Fork is a Potential DoS Vector," Hacking Distributed</a></li>
+      <li id="src6">The hard fork at block 1,920,000 and the recovery contract, July 20, 2016 &mdash; <a href="https://blog.ethereum.org/2016/07/20/hard-fork-completed" target="_blank" rel="noopener">Vitalik Buterin, "Hard Fork Completed," Ethereum Foundation Blog</a></li>
+      <li id="src7">Ethereum Classic's founding principles and "code is law" &mdash; <a href="https://ethereumclassic.org/ETC_Declaration_of_Independence.pdf" target="_blank" rel="noopener">The Ethereum Classic Declaration of Independence</a></li>
+      <li id="src8">Poloniex lists ETC, July 24, 2016 &mdash; <a href="https://ethereumclassic.org/blog/2016-07-24-polo-trading/" target="_blank" rel="noopener">"ETC exchange trading and other news," Ethereum Classic Blog</a></li>
+      <li id="src9">Kraken lists ETC and credits it to ETH holders, July 26, 2016 &mdash; <a href="https://blog.kraken.com/product/kraken-opens-classic-ether-etc-markets-and" target="_blank" rel="noopener">"Kraken opens classic ether (ETC) markets and credits ETC to accounts," Kraken Blog</a></li>
+      <li id="src10">Bitfinex announces ETC support, July 27, 2016 &mdash; <a href="https://blog.bitfinex.com/announcements/ethereum-classic-launch/" target="_blank" rel="noopener">"Ethereum Classic Launch," Bitfinex Blog</a></li>
+      <li id="src11">Monthly price and fee data (PriceUSD, FeeTotNtv) &mdash; <a href="https://docs.coinmetrics.io/api/v4/" target="_blank" rel="noopener">Coin Metrics API v4 documentation (Community API)</a></li>
+      <li id="src12">The list of repositories counted for each chain's developer activity &mdash; <a href="https://github.com/electric-capital/open-dev-data" target="_blank" rel="noopener">electric-capital/open-dev-data, GitHub</a></li>
+    </ol>
   </div>
 
-  <footer>
+  <footer id="footer-text">
     DATA: COINMETRICS COMMUNITY API (PRICE, FEES), FIRST-PARTY GITHUB CRAWL (DEVELOPER ACTIVITY). PART OF THE "HISTORY OF FORKS" SERIES.
   </footer>
 
   <div class="chapter-nav">
-    <a class="back-link" href="bch-vs-btc.html">&larr; Previous: Bitcoin Cash vs. Bitcoin</a>
-    <a class="back-link home-link" href="index.html" aria-label="Go to History of Forks">
+    <a class="back-link" href="bch-vs-btc.html" id="backlink">&larr; Previous: Bitcoin Cash vs. Bitcoin</a>
+    <a class="back-link home-link" id="home-link" href="index.html" aria-label="Go to History of Forks">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
     </a>
-    <a class="back-link" href="btg-vs-btc.html">Next: Bitcoin Gold vs. Bitcoin &rarr;</a>
+    <a class="back-link" href="btg-vs-btc.html" id="nextlink">Next: Bitcoin Gold vs. Bitcoin &rarr;</a>
   </div>
 
 </div>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged tweet screenshot">
+  <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
 <script>
 const DATA = [{"month":"2016-07","eth_price":13.027942340541584,"etc_price":1.6458564198699235,"eth_fee_usd":6628.560275763342,"etc_fee_usd":233.39871562811157,"eth_devs":93,"etc_devs":53},{"month":"2016-08","eth_price":11.135687733762568,"etc_price":1.8362913425084955,"eth_fee_usd":11057.519792029845,"etc_fee_usd":698.4998084317904,"eth_devs":101,"etc_devs":46},{"month":"2016-09","eth_price":12.50904980254238,"etc_price":1.322878539050652,"eth_fee_usd":16952.964712230187,"etc_fee_usd":396.91010877727996,"eth_devs":99,"etc_devs":30},{"month":"2016-10","eth_price":12.067942704285368,"etc_price":1.068903719028803,"eth_fee_usd":21772.554595721133,"etc_fee_usd":532.4312905173,"eth_devs":122,"etc_devs":40},{"month":"2016-11","eth_price":9.985928749425288,"etc_price":0.8735223911591379,"eth_fee_usd":13209.391767432724,"etc_fee_usd":171.91216331574674,"eth_devs":112,"etc_devs":43},{"month":"2016-12","eth_price":7.838758222346863,"etc_price":1.0114180831474895,"eth_fee_usd":14292.453504137346,"etc_fee_usd":329.4602210855939,"eth_devs":96,"etc_devs":33},{"month":"2017-01","eth_price":10.20808659092967,"etc_price":1.343918146972337,"eth_fee_usd":10807.915421991247,"etc_fee_usd":393.50636310083894,"eth_devs":132,"etc_devs":45},{"month":"2017-02","eth_price":12.424828277719799,"etc_price":1.2795215514002887,"eth_fee_usd":15501.711866754038,"etc_fee_usd":371.01651751787904,"eth_devs":126,"etc_devs":46},{"month":"2017-03","eth_price":34.29874073771233,"etc_price":1.842888509473658,"eth_fee_usd":67862.52647977571,"etc_fee_usd":760.5181542947439,"eth_devs":132,"etc_devs":37},{"month":"2017-04","eth_price":50.62365201817651,"etc_price":3.295325636986283,"eth_fee_usd":106553.11977162735,"etc_fee_usd":1321.3155182840626,"eth_devs":156,"etc_devs":34},{"month":"2017-05","eth_price":122.8971627080843,"etc_price":9.282134703314235,"eth_fee_usd":757987.7841810487,"etc_fee_usd":5390.573570390946,"eth_devs":135,"etc_devs":21},{"month":"2017-06","eth_price":303.9266683367621,"etc_price":18.47346649918462,"eth_fee_usd":3630965.6057225335,"etc_fee_usd":8906.585339167732,"eth_devs":191,"etc_devs":31},{"month":"2017-07","eth_price":220.49638569235117,"etc_price":15.714873195386593,"eth_fee_usd":2106714.8358473415,"etc_fee_usd":8174.940015885411,"eth_devs":202,"etc_devs":35},{"month":"2017-08","eth_price":301.1141310240757,"etc_price":14.930744367923891,"eth_fee_usd":3769927.6107538263,"etc_fee_usd":9579.757220874724,"eth_devs":194,"etc_devs":32},{"month":"2017-09","eth_price":297.84979850769537,"etc_price":14.091687248844476,"eth_fee_usd":4266689.559072096,"etc_fee_usd":9810.51415424233,"eth_devs":213,"etc_devs":44},{"month":"2017-10","eth_price":305.48072301615736,"etc_price":11.39200908839289,"eth_fee_usd":3425515.2576344404,"etc_fee_usd":9320.396380342376,"eth_devs":252,"etc_devs":46},{"month":"2017-11","eth_price":357.25473182349504,"etc_price":17.533142014429952,"eth_fee_usd":3604237.4483877383,"etc_fee_usd":16010.190125670988,"eth_devs":268,"etc_devs":45},{"month":"2017-12","eth_price":636.1714703719765,"etc_price":30.10976580020531,"eth_fee_usd":25017174.428768087,"etc_fee_usd":33757.31949321983,"eth_devs":274,"etc_devs":59},{"month":"2018-01","eth_price":1086.7152769461359,"etc_price":32.46492425599528,"eth_fee_usd":65364627.53432326,"etc_fee_usd":42566.60424276056,"eth_devs":253,"etc_devs":49},{"month":"2018-02","eth_price":867.7412055606579,"etc_price":29.64404574400256,"eth_fee_usd":18250297.61013276,"etc_fee_usd":27001.209033874584,"eth_devs":295,"etc_devs":60},{"month":"2018-03","eth_price":623.6310696913708,"etc_price":20.423725048468896,"eth_fee_usd":8926106.024374465,"etc_fee_usd":36120.364041347006,"eth_devs":305,"etc_devs":57},{"month":"2018-04","eth_price":520.4613353107345,"etc_price":17.003075013367194,"eth_fee_usd":6217595.938864954,"etc_fee_usd":10143.761015990884,"eth_devs":372,"etc_devs":67},{"month":"2018-05","eth_price":676.0452765690692,"etc_price":18.46837796465756,"eth_fee_usd":13319913.212975502,"etc_fee_usd":9388.44742550584,"eth_devs":289,"etc_devs":47},{"month":"2018-06","eth_price":518.3645359633744,"etc_price":15.029035898405159,"eth_fee_usd":8946946.445724575,"etc_fee_usd":44357.39370268856,"eth_devs":305,"etc_devs":60},{"month":"2018-07","eth_price":461.02728641051254,"etc_price":16.86258639675684,"eth_fee_usd":21073592.784172118,"etc_fee_usd":14342.204885820036,"eth_devs":364,"etc_devs":65},{"month":"2018-08","eth_price":320.71608125789476,"etc_price":13.896775735822771,"eth_fee_usd":7641978.810710363,"etc_fee_usd":11010.950468974152,"eth_devs":319,"etc_devs":67},{"month":"2018-09","eth_price":226.92747075784146,"etc_price":11.526733534088361,"eth_fee_usd":3299758.9296447258,"etc_fee_usd":5689.949566013589,"eth_devs":399,"etc_devs":86},{"month":"2018-10","eth_price":207.5146351690202,"etc_price":9.940307934187839,"eth_fee_usd":2713759.337735475,"etc_fee_usd":7783.858706420611,"eth_devs":350,"etc_devs":60},{"month":"2018-11","eth_price":167.23340535749077,"etc_price":7.270005286398449,"eth_fee_usd":2464349.29241138,"etc_fee_usd":4319.363748795408,"eth_devs":351,"etc_devs":68},{"month":"2018-12","eth_price":107.5333769159706,"etc_price":4.367163591018941,"eth_fee_usd":1489046.8667243645,"etc_fee_usd":2587.4802809333387,"eth_devs":348,"etc_devs":77},{"month":"2019-01","eth_price":126.80014148488897,"etc_price":4.496619733772482,"eth_fee_usd":1375527.5901768222,"etc_fee_usd":564265.9638192685,"eth_devs":357,"etc_devs":72},{"month":"2019-02","eth_price":125.56751163688739,"etc_price":4.157791762148983,"eth_fee_usd":1940485.3683897094,"etc_fee_usd":1828.6626586165603,"eth_devs":362,"etc_devs":57},{"month":"2019-03","eth_price":135.51720025829076,"etc_price":4.481923170575999,"eth_fee_usd":1950310.7907687395,"etc_fee_usd":2062.456561536122,"eth_devs":378,"etc_devs":138},{"month":"2019-04","eth_price":164.8510944223651,"etc_price":6.043587018566003,"eth_fee_usd":1958292.8210403975,"etc_fee_usd":2553.558618182199,"eth_devs":301,"etc_devs":56},{"month":"2019-05","eth_price":219.83285066458026,"etc_price":6.834841826672905,"eth_fee_usd":3650129.0650884127,"etc_fee_usd":2699.2855482817454,"eth_devs":331,"etc_devs":60},{"month":"2019-06","eth_price":273.91046287064097,"etc_price":8.565965475445523,"eth_fee_usd":4519694.386883694,"etc_fee_usd":3882.63064339571,"eth_devs":329,"etc_devs":56},{"month":"2019-07","eth_price":248.09787914914878,"etc_price":6.654374321897132,"eth_fee_usd":3634307.0460500545,"etc_fee_usd":2702.3153385375003,"eth_devs":317,"etc_devs":39},{"month":"2019-08","eth_price":199.46951124224665,"etc_price":6.139242007917198,"eth_fee_usd":2723894.8500992395,"etc_fee_usd":2180.5650188257146,"eth_devs":323,"etc_devs":45},{"month":"2019-09","eth_price":185.75671898597298,"etc_price":6.013075220650479,"eth_fee_usd":5646735.415798346,"etc_fee_usd":1818.9983154862566,"eth_devs":336,"etc_devs":50},{"month":"2019-10","eth_price":178.60206452838366,"etc_price":4.634151698076835,"eth_fee_usd":2724041.0710533787,"etc_fee_usd":1424.4092141452809,"eth_devs":305,"etc_devs":39},{"month":"2019-11","eth_price":172.90493301772844,"etc_price":4.519793073146027,"eth_fee_usd":2745480.7545551322,"etc_fee_usd":1182.0046013122374,"eth_devs":298,"etc_devs":35},{"month":"2019-12","eth_price":137.24715684281978,"etc_price":3.985522493675638,"eth_fee_usd":1714295.54450229,"etc_fee_usd":962.533544472823,"eth_devs":294,"etc_devs":41},{"month":"2020-01","eth_price":156.45152833751243,"etc_price":7.549807895638605,"eth_fee_usd":1513332.8755201465,"etc_fee_usd":26935.204745949522,"eth_devs":337,"etc_devs":40},{"month":"2020-02","eth_price":239.19138056389687,"etc_price":10.373560744170321,"eth_fee_usd":3140316.774685174,"etc_fee_usd":3532.881389132713,"eth_devs":306,"etc_devs":49},{"month":"2020-03","eth_price":160.4210765257065,"etc_price":5.8267529363925625,"eth_fee_usd":3733642.9086346324,"etc_fee_usd":1725.2124281308643,"eth_devs":337,"etc_devs":46},{"month":"2020-04","eth_price":171.64266569842195,"etc_price":5.5427888080394085,"eth_fee_usd":3101492.6727638827,"etc_fee_usd":1177.1039821536745,"eth_devs":341,"etc_devs":42},{"month":"2020-05","eth_price":207.70095941535797,"etc_price":6.746623638584004,"eth_fee_usd":10040657.28187303,"etc_fee_usd":1739.9834813587177,"eth_devs":359,"etc_devs":45},{"month":"2020-06","eth_price":235.848182674849,"etc_price":6.412662402764132,"eth_fee_usd":22034432.928024378,"etc_fee_usd":914.9477282400875,"eth_devs":340,"etc_devs":42},{"month":"2020-07","eth_price":259.6333009332404,"etc_price":6.366288911571003,"eth_fee_usd":34202073.92426492,"etc_fee_usd":963.7775764225034,"eth_devs":330,"etc_devs":43},{"month":"2020-08","eth_price":401.8500902829887,"etc_price":6.920507823006974,"eth_fee_usd":115341546.8936393,"etc_fee_usd":602.3903308296487,"eth_devs":363,"etc_devs":45},{"month":"2020-09","eth_price":367.93643854665885,"etc_price":5.486803947751444,"eth_fee_usd":171669383.52649462,"etc_fee_usd":615.448583956812,"eth_devs":336,"etc_devs":45},{"month":"2020-10","eth_price":376.1096160460776,"etc_price":5.413092034790211,"eth_fee_usd":56905990.73711312,"etc_fee_usd":552.8092684944269,"eth_devs":333,"etc_devs":45},{"month":"2020-11","eth_price":486.9749679836353,"etc_price":5.730321905173005,"eth_fee_usd":64115148.36466281,"etc_fee_usd":773.6369287304246,"eth_devs":371,"etc_devs":57},{"month":"2020-12","eth_price":623.0360675722554,"etc_price":6.03505696548066,"eth_fee_usd":110395205.21003735,"etc_fee_usd":3553.874608327882,"eth_devs":291,"etc_devs":42},{"month":"2021-01","eth_price":1202.378133841745,"etc_price":7.6864864756032185,"eth_fee_usd":325451315.58561915,"etc_fee_usd":1548.2272133824608,"eth_devs":378,"etc_devs":49},{"month":"2021-02","eth_price":1700.9068453118477,"etc_price":11.674854657148847,"eth_fee_usd":722784437.4826577,"etc_fee_usd":2257.746123972703,"eth_devs":385,"etc_devs":55},{"month":"2021-03","eth_price":1734.868970443619,"etc_price":12.014947463753611,"eth_fee_usd":650878624.7463312,"etc_fee_usd":1796.7541374990296,"eth_devs":366,"etc_devs":58},{"month":"2021-04","eth_price":2295.0658942100135,"etc_price":26.4532929097524,"eth_fee_usd":716432232.1927426,"etc_fee_usd":6080.665402984226,"eth_devs":344,"etc_devs":63},{"month":"2021-05","eth_price":3146.7476152165314,"etc_price":82.19606477794225,"eth_fee_usd":1034699859.7380762,"etc_fee_usd":29305.926116043825,"eth_devs":380,"etc_devs":64},{"month":"2021-06","eth_price":2331.9632680479253,"etc_price":54.22755959950704,"eth_fee_usd":165806377.239515,"etc_fee_usd":9503.902183001483,"eth_devs":385,"etc_devs":58},{"month":"2021-07","eth_price":2130.126105403367,"etc_price":48.28532296341949,"eth_fee_usd":201042001.68096206,"etc_fee_usd":8623.047846992118,"eth_devs":371,"etc_devs":56},{"month":"2021-08","eth_price":3101.052403823459,"etc_price":61.72362728484998,"eth_fee_usd":690697196.8063169,"etc_fee_usd":11761.411926709745,"eth_devs":432,"etc_devs":82},{"month":"2021-09","eth_price":3332.9033704578233,"etc_price":56.373232630169575,"eth_fee_usd":1069397517.2453516,"etc_fee_usd":10811.669630270853,"eth_devs":368,"etc_devs":76},{"month":"2021-10","eth_price":3817.664748108068,"etc_price":53.769855681679054,"eth_fee_usd":1362298911.054864,"etc_fee_usd":10199.065763451135,"eth_devs":422,"etc_devs":90},{"month":"2021-11","eth_price":4442.7322137833635,"etc_price":52.30624890555283,"eth_fee_usd":1829259130.0024533,"etc_fee_usd":10259.377108735567,"eth_devs":388,"etc_devs":95},{"month":"2021-12","eth_price":4051.2088267283802,"etc_price":37.63269061186197,"eth_fee_usd":1151177467.1179457,"etc_fee_usd":6725.76892773865,"eth_devs":395,"etc_devs":88},{"month":"2022-01","eth_price":3055.0316561113113,"etc_price":29.259364164153663,"eth_fee_usd":1339864937.2875698,"etc_fee_usd":6462.413582132271,"eth_devs":554,"etc_devs":99},{"month":"2022-02","eth_price":2868.3800125219173,"etc_price":29.70365516638605,"eth_fee_usd":717677039.3894007,"etc_fee_usd":5279.978449452613,"eth_devs":488,"etc_devs":69},{"month":"2022-03","eth_price":2877.0100679662905,"etc_price":34.846341397648736,"eth_fee_usd":424413929.69441503,"etc_fee_usd":7650.489975399904,"eth_devs":495,"etc_devs":68},{"month":"2022-04","eth_price":3098.0838357354364,"etc_price":37.71157531721824,"eth_fee_usd":511634383.8740562,"etc_fee_usd":7305.933837050402,"eth_devs":499,"etc_devs":61},{"month":"2022-05","eth_price":2188.6387730246415,"etc_price":23.396586348792084,"eth_fee_usd":560521882.256884,"etc_fee_usd":3974.552398408422,"eth_devs":606,"etc_devs":64},{"month":"2022-06","eth_price":1380.877500706214,"etc_price":17.599847367716897,"eth_fee_usd":204607113.2067271,"etc_fee_usd":2785.614435750894,"eth_devs":515,"etc_devs":67},{"month":"2022-07","eth_price":1360.7493549593726,"etc_price":21.811738448793047,"eth_fee_usd":109450118.0081937,"etc_fee_usd":4363.432012838374,"eth_devs":596,"etc_devs":72},{"month":"2022-08","eth_price":1699.1392546388645,"etc_price":36.700602244816544,"eth_fee_usd":92004309.95238943,"etc_fee_usd":10646.19014250146,"eth_devs":556,"etc_devs":73},{"month":"2022-09","eth_price":1483.7777664660034,"etc_price":32.79209080955648,"eth_fee_usd":74413684.97249936,"etc_fee_usd":6679.850683188749,"eth_devs":535,"etc_devs":69},{"month":"2022-10","eth_price":1367.5799344657908,"etc_price":24.786527514202955,"eth_fee_usd":99721439.61044785,"etc_fee_usd":4502.0573735734815,"eth_devs":588,"etc_devs":85},{"month":"2022-11","eth_price":1296.841140103254,"etc_price":20.999549179180974,"eth_fee_usd":91310729.18289605,"etc_fee_usd":3528.4143706907253,"eth_devs":519,"etc_devs":71},{"month":"2022-12","eth_price":1236.2342703568938,"etc_price":17.491325241015698,"eth_fee_usd":74390480.63254182,"etc_fee_usd":2652.106757547844,"eth_devs":496,"etc_devs":63},{"month":"2023-01","eth_price":1466.1233931392696,"etc_price":20.742271445417995,"eth_fee_usd":116966877.54042372,"etc_fee_usd":2766.7893918172304,"eth_devs":607,"etc_devs":62},{"month":"2023-02","eth_price":1624.5727817066047,"etc_price":22.020080608128076,"eth_fee_usd":161060886.91803992,"etc_fee_usd":2500.28516877185,"eth_devs":576,"etc_devs":71},{"month":"2023-03","eth_price":1675.8599264248417,"etc_price":19.770027265794948,"eth_fee_usd":180792902.69653103,"etc_fee_usd":2841.8022578611335,"eth_devs":539,"etc_devs":68},{"month":"2023-04","eth_price":1917.651654432106,"etc_price":20.711315672384853,"eth_fee_usd":241577847.91110468,"etc_fee_usd":2033.2267153538219,"eth_devs":600,"etc_devs":80},{"month":"2023-05","eth_price":1846.956427782282,"etc_price":18.484168796603193,"eth_fee_usd":449054333.2408558,"etc_fee_usd":1292.828050171326,"eth_devs":527,"etc_devs":64},{"month":"2023-06","eth_price":1818.460426777713,"etc_price":16.944566964089788,"eth_fee_usd":156887549.91328815,"etc_fee_usd":1059.6619623298004,"eth_devs":556,"etc_devs":62},{"month":"2023-07","eth_price":1892.9197848928184,"etc_price":18.97155787951886,"eth_fee_usd":196154994.37220386,"etc_fee_usd":1187.6957335338948,"eth_devs":587,"etc_devs":62},{"month":"2023-08","eth_price":1756.5632814143767,"etc_price":16.76341446872618,"eth_fee_usd":156609224.21984127,"etc_fee_usd":1005.5422730843329,"eth_devs":488,"etc_devs":46},{"month":"2023-09","eth_price":1621.0022349016174,"etc_price":15.407173498989737,"eth_fee_usd":92688060.04483247,"etc_fee_usd":763.6779513723811,"eth_devs":530,"etc_devs":47},{"month":"2023-10","eth_price":1659.7024431383277,"etc_price":15.708423539582396,"eth_fee_usd":91224668.57123001,"etc_fee_usd":1036.4125430759693,"eth_devs":568,"etc_devs":48},{"month":"2023-11","eth_price":1989.1647159750626,"etc_price":18.962358391267465,"eth_fee_usd":238457126.4990913,"etc_fee_usd":22805.444415312704,"eth_devs":500,"etc_devs":40},{"month":"2023-12","eth_price":2261.1495199562605,"etc_price":20.909463729084933,"eth_fee_usd":325161546.50764245,"etc_fee_usd":2819.055361564683,"eth_devs":513,"etc_devs":39},{"month":"2024-01","eth_price":2374.754074696933,"etc_price":23.94667021953735,"eth_fee_usd":212790705.86794803,"etc_fee_usd":2593.2309191320323,"eth_devs":540,"etc_devs":37},{"month":"2024-02","eth_price":2746.176642939196,"etc_price":26.317338074196172,"eth_fee_usd":353121043.16657174,"etc_fee_usd":1793.7285099605192,"eth_devs":564,"etc_devs":39},{"month":"2024-03","eth_price":3628.213270677401,"etc_price":33.50694677680595,"eth_fee_usd":606738584.4310813,"etc_fee_usd":2792.9003224753533,"eth_devs":669,"etc_devs":23},{"month":"2024-04","eth_price":3248.1313963958705,"etc_price":29.181614614233865,"eth_fee_usd":222013259.83064863,"etc_fee_usd":2171.7808036130727,"eth_devs":548,"etc_devs":16},{"month":"2024-05","eth_price":3307.088065713316,"etc_price":28.605669752069055,"eth_fee_usd":128629632.06215437,"etc_fee_usd":2077.3339536532526,"eth_devs":521,"etc_devs":14},{"month":"2024-06","eth_price":3566.879208981103,"etc_price":25.51563466089717,"eth_fee_usd":142350633.32185018,"etc_fee_usd":2329.2154465553085,"eth_devs":601,"etc_devs":19},{"month":"2024-07","eth_price":3272.686539016987,"etc_price":22.367443996378135,"eth_fee_usd":94688339.2358649,"etc_fee_usd":1273.859698621015,"eth_devs":510,"etc_devs":9},{"month":"2024-08","eth_price":2644.257099093154,"etc_price":19.1418143940952,"eth_fee_usd":62928311.30700245,"etc_fee_usd":1143.8177012638953,"eth_devs":533,"etc_devs":9},{"month":"2024-09","eth_price":2466.1227318451197,"etc_price":18.68824219774048,"eth_fee_usd":103678855.12514344,"etc_fee_usd":1129.3939259263382,"eth_devs":623,"etc_devs":9},{"month":"2024-10","eth_price":2517.569075548539,"etc_price":18.83076469890583,"eth_fee_usd":142233796.38780475,"etc_fee_usd":1125.4291430760472,"eth_devs":538,"etc_devs":7},{"month":"2024-11","eth_price":3116.722200432789,"etc_price":24.74189383846503,"eth_fee_usd":189926862.51306894,"etc_fee_usd":1617.2840009944703,"eth_devs":488,"etc_devs":10},{"month":"2024-12","eth_price":3642.748669951264,"etc_price":30.83450310931108,"eth_fee_usd":214001562.70489067,"etc_fee_usd":1917.7339652330709,"eth_devs":597,"etc_devs":10},{"month":"2025-01","eth_price":3328.5724404607754,"etc_price":26.51944892468721,"eth_fee_usd":147421917.31160873,"etc_fee_usd":1596.8945666101124,"eth_devs":604,"etc_devs":11},{"month":"2025-02","eth_price":2666.2091034169666,"etc_price":20.549731541891568,"eth_fee_usd":46768214.957990475,"etc_fee_usd":1052.6138049189346,"eth_devs":580,"etc_devs":10},{"month":"2025-03","eth_price":2015.8487483361919,"etc_price":18.235002561063904,"eth_fee_usd":22100292.468280453,"etc_fee_usd":2909.0162844033844,"eth_devs":689,"etc_devs":13},{"month":"2025-04","eth_price":1686.11526540035,"etc_price":15.810496539204474,"eth_fee_usd":20883905.349153128,"etc_fee_usd":700.6370973616985,"eth_devs":537,"etc_devs":14},{"month":"2025-05","eth_price":2376.1745748006265,"etc_price":18.268926858242825,"eth_fee_usd":42413009.15168664,"etc_fee_usd":3561.1642551597947,"eth_devs":531,"etc_devs":10},{"month":"2025-06","eth_price":2514.315357987533,"etc_price":16.780836649553756,"eth_fee_usd":39068666.99913195,"etc_fee_usd":790.3084395512045,"eth_devs":544,"etc_devs":14},{"month":"2025-07","eth_price":3228.279954940518,"etc_price":20.02586914341216,"eth_fee_usd":49685429.841383435,"etc_fee_usd":3456.996791176775,"eth_devs":500,"etc_devs":7},{"month":"2025-08","eth_price":4252.04678588262,"etc_price":21.79348368691809,"eth_fee_usd":39789279.277070545,"etc_fee_usd":1244.523442169175,"eth_devs":581,"etc_devs":9},{"month":"2025-09","eth_price":4342.266931706605,"etc_price":20.04995319430392,"eth_fee_usd":35911692.44346307,"etc_fee_usd":2292.1278869082666,"eth_devs":528,"etc_devs":11},{"month":"2025-10","eth_price":4108.446786495352,"etc_price":16.995461400490676,"eth_fee_usd":41537876.166673996,"etc_fee_usd":2093.0901106736646,"eth_devs":561,"etc_devs":13},{"month":"2025-11","eth_price":3204.4327191018906,"etc_price":14.786389438374876,"eth_fee_usd":23609463.85749777,"etc_fee_usd":1118.242212160527,"eth_devs":573,"etc_devs":15},{"month":"2025-12","eth_price":3018.006181105183,"etc_price":12.649213737513902,"eth_fee_usd":11524634.374994174,"etc_fee_usd":669.264648023297,"eth_devs":462,"etc_devs":15},{"month":"2026-01","eth_price":3069.282617635414,"etc_price":12.11588588310663,"eth_fee_usd":14017033.192612497,"etc_fee_usd":771.5479225618537,"eth_devs":527,"etc_devs":19},{"month":"2026-02","eth_price":2023.8466699924847,"etc_price":8.735526762613668,"eth_fee_usd":15294340.891229665,"etc_fee_usd":426.5323132964052,"eth_devs":532,"etc_devs":19},{"month":"2026-03","eth_price":2082.4991455195054,"etc_price":8.374413553719725,"eth_fee_usd":10639695.9940897,"etc_fee_usd":392.59236106291405,"eth_devs":582,"etc_devs":20},{"month":"2026-04","eth_price":2258.9548133352814,"etc_price":8.437922812324738,"eth_fee_usd":24521253.500939324,"etc_fee_usd":493.7178008713504,"eth_devs":510,"etc_devs":14},{"month":"2026-05","eth_price":2194.1669693924505,"etc_price":8.949440811549147,"eth_fee_usd":16662336.37759817,"etc_fee_usd":827.8541012008334,"eth_devs":552,"etc_devs":10},{"month":"2026-06","eth_price":1686.9234418585618,"etc_price":7.210109270919659,"eth_fee_usd":11288835.551998923,"etc_fee_usd":680.6794435247097,"eth_devs":499,"etc_devs":7},{"month":"2026-07","eth_price":1835.5647368536602,"etc_price":6.941619610816498,"eth_fee_usd":8435655.597266786,"etc_fee_usd":556.9639894477309,"eth_devs":482,"etc_devs":9},{"month":"2026-08","eth_price":2118.763349893855,"etc_price":6.867994231859854,"eth_fee_usd":10911788.910701754,"etc_fee_usd":565.1601842133957,"eth_devs":515,"etc_devs":16},{"month":"2026-09","eth_price":2552.895480378121,"etc_price":8.177071446104605,"eth_fee_usd":12720320.787381684,"etc_fee_usd":745.4579899698258,"eth_devs":397,"etc_devs":14}];
 
+let CURRENT_LANG = 'en';
+const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 function fmtMonth(m){
   const [y, mo] = m.split('-');
-  const names = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return names[parseInt(mo,10)-1] + ' ' + y;
+  return (CURRENT_LANG === 'es' ? MONTHS_ES : MONTHS_EN)[parseInt(mo,10)-1] + ' ' + y;
 }
-function fmtInt(n){ return Math.round(n).toLocaleString('en-US'); }
+function fmtInt(n){ return Math.round(n).toLocaleString(CURRENT_LANG === 'es' ? 'es-ES' : 'en-US'); }
+function seriesLabel(s){ return CURRENT_LANG === 'es' ? s.labelEs : s.label; }
 function fmtUSD(n){
   if (n >= 1000) return '$' + Math.round(n).toLocaleString('en-US');
   if (n >= 1) return '$' + n.toFixed(2);
@@ -504,7 +695,7 @@ function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts
       const y = yAt(v);
       if (y === null){ dots[si].style.opacity = 0; return ''; }
       dots[si].setAttribute('cx', x); dots[si].setAttribute('cy', y); dots[si].style.opacity = 1;
-      return `<div class="row"><span class="k"><span class="dot" style="background:var(--${s.key})"></span>${s.label}</span><span class="v">${yFmt(v)}</span></div>`;
+      return `<div class="row"><span class="k"><span class="dot" style="background:var(--${s.key})"></span>${seriesLabel(s)}</span><span class="v">${yFmt(v)}</span></div>`;
     }).join('');
     tooltip.innerHTML = `<div class="t-date">${fmtMonth(d.month)}</div>${rows}`;
     tooltip.style.left = ((x / W) * 100) + '%';
@@ -529,7 +720,7 @@ function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts
 
   const legend = document.getElementById(legendId);
   legend.innerHTML = seriesDefs.map(s =>
-    `<span><span class="swatch" style="background:var(--${s.key})"></span>${s.label}</span>`
+    `<span><span class="swatch" style="background:var(--${s.key})"></span>${seriesLabel(s)}</span>`
   ).join('');
 }
 
@@ -538,13 +729,13 @@ const CHART_CONFIGS = {
     svgId:'chart-price', tooltipId:'tooltip-price', legendId:'legend-price',
     absolute: {
       seriesDefs:[
-        {key:'eth', label:'ETH price', get:d=>d.eth_price},
-        {key:'etc', label:'ETC price', get:d=>d.etc_price},
+        {key:'eth', label:'ETH price', labelEs:'Precio de ETH', get:d=>d.eth_price},
+        {key:'etc', label:'ETC price', labelEs:'Precio de ETC', get:d=>d.etc_price},
       ], yFmt:fmtUSD, axisFmt:axisUSD,
     },
     ratio: {
       seriesDefs:[
-        {key:'etc', label:'ETC price as % of ETH', get:d=> d.eth_price ? d.etc_price/d.eth_price*100 : null},
+        {key:'etc', label:'ETC price as % of ETH', labelEs:'Precio de ETC como % de ETH', get:d=> d.eth_price ? d.etc_price/d.eth_price*100 : null},
       ], yFmt:fmtPct, axisFmt:axisPct,
     },
   },
@@ -552,13 +743,13 @@ const CHART_CONFIGS = {
     svgId:'chart-fees', tooltipId:'tooltip-fees', legendId:'legend-fees',
     absolute: {
       seriesDefs:[
-        {key:'eth', label:'ETH fees paid/month', get:d=>d.eth_fee_usd},
-        {key:'etc', label:'ETC fees paid/month', get:d=>d.etc_fee_usd},
+        {key:'eth', label:'ETH fees paid/month', labelEs:'Comisiones de ETH/mes', get:d=>d.eth_fee_usd},
+        {key:'etc', label:'ETC fees paid/month', labelEs:'Comisiones de ETC/mes', get:d=>d.etc_fee_usd},
       ], yFmt:fmtUSD, axisFmt:axisUSD,
     },
     ratio: {
       seriesDefs:[
-        {key:'etc', label:'ETC fees as % of ETH', get:d=> d.eth_fee_usd ? d.etc_fee_usd/d.eth_fee_usd*100 : null},
+        {key:'etc', label:'ETC fees as % of ETH', labelEs:'Comisiones de ETC como % de ETH', get:d=> d.eth_fee_usd ? d.etc_fee_usd/d.eth_fee_usd*100 : null},
       ], yFmt:fmtPct, axisFmt:axisPct,
     },
   },
@@ -566,13 +757,13 @@ const CHART_CONFIGS = {
     svgId:'chart-devs', tooltipId:'tooltip-devs', legendId:'legend-devs',
     absolute: {
       seriesDefs:[
-        {key:'eth', label:'ETH active developers/month', get:d=>d.eth_devs},
-        {key:'etc', label:'ETC active developers/month', get:d=>d.etc_devs},
+        {key:'eth', label:'ETH active developers/month', labelEs:'Desarrolladores activos de ETH/mes', get:d=>d.eth_devs},
+        {key:'etc', label:'ETC active developers/month', labelEs:'Desarrolladores activos de ETC/mes', get:d=>d.etc_devs},
       ], yFmt:fmtInt, axisFmt:axisInt,
     },
     ratio: {
       seriesDefs:[
-        {key:'etc', label:'ETC developers as % of ETH', get:d=> d.eth_devs ? d.etc_devs/d.eth_devs*100 : null},
+        {key:'etc', label:'ETC developers as % of ETH', labelEs:'Desarrolladores de ETC como % de ETH', get:d=> d.eth_devs ? d.etc_devs/d.eth_devs*100 : null},
       ], yFmt:fmtPct, axisFmt:axisPct,
     },
   },
@@ -586,6 +777,149 @@ function renderMetricChart(name, mode){
 
 Object.keys(CHART_CONFIGS).forEach(name => renderMetricChart(name, 'absolute'));
 
+// ---------------- timeline: DAO, fork, ETC's early exchange listings ----------------
+// Sources: Ethereum's own launch date — Ethereum Foundation blog, "Frontier
+// Is Coming" / genesis block 0 (2015-07-30); The DAO crowdsale open/close and
+// hack date — Wikipedia, "The DAO"; the hard fork date/block — Ethereum
+// Foundation blog "Hard Fork Completed" (2016-07-20) and Etherscan block
+// 1,920,000; Poloniex listing — Ethereum Classic's own blog post the same day
+// (2016-07-24); Kraken listing — Kraken's own blog post (2016-07-26);
+// Bitfinex — its announcement post (2016-07-27) only says deposits/
+// withdrawals were enabling "soon", not an exact live-trading date, so it's
+// marked `proxy: true` (a lower bound, not confirmed).
+const TIMELINE_EVENTS = [
+  {
+    label: 'ETH launches',
+    labelEs: "Lanza ETH",
+    titleEs: "Se lanza la red principal de Ethereum",
+    detailEs: "La red principal de Ethereum (Frontier) entra en funcionamiento en el bloque 0, casi un año antes de <em>The DAO</em> y de su propio <em>hard fork</em>.",
+    title: 'Ethereum mainnet launches',
+    date: '2015-07-30',
+    detail: "Ethereum's mainnet (Frontier) goes live at block 0 — almost a year before The DAO and its own hard fork.",
+  },
+  {
+    label: 'DAO launches',
+    labelEs: "Lanza la DAO",
+    titleEs: "Abre la venta de <em>tokens</em> de <em>The DAO</em>",
+    detailEs: "Abre la venta de <em>tokens</em> de 28 días de <em>The DAO</em>, que termina recaudando aproximadamente 11.5 millones de ETH (unos $150 millones) de más de 11,000 participantes.",
+    title: 'The DAO crowdsale opens',
+    date: '2016-04-30',
+    detail: "The DAO's 28-day token sale opens, eventually raising roughly 11.5 million ETH (about $150 million) from over 11,000 participants.",
+  },
+  {
+    label: 'DAO hacked',
+    labelEs: "Hackeo DAO",
+    titleEs: "Explotan <em>The DAO</em>",
+    detailEs: "Un atacante explota una vulnerabilidad de <em>re-entrancy</em> en la función splitDAO y drena aproximadamente 3.6 millones de ETH hacia una DAO hija, sujeta a un período de espera de 28 días para retiros.",
+    title: 'The DAO is exploited',
+    date: '2016-06-17',
+    detail: 'An attacker exploits a re-entrancy bug in the splitDAO function, draining roughly 3.6 million ETH into a child DAO subject to a 28-day withdrawal delay.',
+  },
+  {
+    label: 'ETH hard fork',
+    labelEs: "Hard fork ETH",
+    titleEs: "Ethereum hace un <em>hard fork</em> para recuperar los fondos",
+    detailEs: "En el bloque 1,920,000, el <em>hard fork</em> de Ethereum traslada los fondos de <em>The DAO</em> a un contrato de recuperación. Una minoría rechaza el cambio y continúa la cadena original como Ethereum Classic.",
+    title: 'Ethereum hard forks to recover the funds',
+    date: '2016-07-20',
+    detail: "At block 1,920,000, Ethereum's hard fork moves The DAO's funds to a recovery contract. A minority rejects the change and continues the original chain as Ethereum Classic.",
+  },
+  {
+    label: 'Poloniex',
+    labelEs: "Poloniex",
+    titleEs: "Poloniex lista ETC",
+    detailEs: "El primer <em>exchange</em> importante en listar Ethereum Classic, cuatro días después del <em>fork</em>.",
+    title: 'Poloniex lists ETC',
+    date: '2016-07-24',
+    listing: true,
+    detail: 'The first major exchange to list Ethereum Classic, four days after the fork.',
+  },
+  {
+    label: 'Kraken',
+    labelEs: "Kraken",
+    titleEs: "Kraken lista ETC",
+    detailEs: "Abre los mercados ETC/XBT, ETC/ETH, ETC/USD y ETC/EUR, y acredita ETC a las cuentas que tenían ETH en el bloque del <em>fork</em>.",
+    title: 'Kraken lists ETC',
+    date: '2016-07-26',
+    listing: true,
+    detail: 'Opens ETC/XBT, ETC/ETH, ETC/USD, and ETC/EUR markets, crediting ETC to accounts that held ETH at the fork block.',
+  },
+  {
+    label: 'Bitfinex',
+    labelEs: "Bitfinex",
+    titleEs: "Bitfinex anuncia ETC",
+    detailEs: "Anuncia depósitos y retiros de ETC; el anuncio no indica la fecha exacta en que empezó el <em>trading</em>, así que esta fecha es un límite inferior.",
+    title: 'Bitfinex announces ETC',
+    date: '2016-07-27',
+    listing: true,
+    proxy: true,
+    detail: "Announces ETC deposits and withdrawals; the announcement doesn't state an exact date trading went live, so this date is a lower bound.",
+  },
+];
+
+function fmtLongDate(iso){
+  const [y, m, d] = iso.split('-').map(Number);
+  if (CURRENT_LANG === 'es') return d + ' ' + MONTHS_ES[m - 1] + ' ' + y;
+  return MONTHS_EN[m - 1] + ' ' + d + ', ' + y;
+}
+
+// Events sit at equal spacing in date order, not on a true time scale: the
+// fork and the three listings land within a week of each other, so a real
+// time axis squeezes them into a few pixels. The date under each marker
+// carries the actual timing.
+function renderTimeline(svgId, tooltipId, events){
+  const svg = document.getElementById(svgId);
+  const tooltip = document.getElementById(tooltipId);
+  const W = svg.viewBox.baseVal.width;
+  const mL = 24, mR = 32;
+  const plotW = W - mL - mR;
+  const baseline = 70;
+  const forkTime = Date.parse('2016-07-20T00:00:00Z');
+  const es = CURRENT_LANG === 'es';
+  const sorted = [...events].sort((p, q) => p.date.localeCompare(q.date));
+  const slot = plotW / sorted.length;
+
+  svg.innerHTML = '';
+  svg.appendChild(el('line', {x1:mL, x2:mL + plotW, y1:baseline, y2:baseline, class:'timeline-baseline'}));
+  const arrowX = mL + plotW;
+  svg.appendChild(el('path', {
+    d:`M${(arrowX-8).toFixed(1)},${(baseline-5).toFixed(1)} L${(arrowX+7).toFixed(1)},${baseline} L${(arrowX-8).toFixed(1)},${(baseline+5).toFixed(1)} Z`,
+    class:'timeline-arrow'
+  }));
+
+  sorted.forEach((e, i) => {
+    const x = mL + slot * (i + 0.5);
+    const day = Math.round((Date.parse(e.date + 'T00:00:00Z') - forkTime) / 86400000);
+
+    svg.appendChild(el('line', {x1:x, x2:x, y1:baseline, y2:baseline - 17, class:'timeline-stem'}));
+    const lbl = svg.appendChild(el('text', {x, y:baseline - 24, class:'timeline-label', 'text-anchor':'middle'}));
+    lbl.textContent = es ? e.labelEs : e.label;
+    const dt = svg.appendChild(el('text', {x, y:baseline + 28, class:'timeline-date', 'text-anchor':'middle'}));
+    dt.textContent = fmtLongDate(e.date);
+
+    if (e.listing){
+      svg.appendChild(el('circle', {cx:x, cy:baseline, r:6, class:'timeline-marker' + (e.proxy ? ' proxy' : '')}));
+    } else {
+      svg.appendChild(el('rect', {x:x - 5, y:baseline - 5, width:10, height:10, rx:1.5, class:'timeline-marker'}));
+    }
+    const hit = svg.appendChild(el('circle', {cx:x, cy:baseline, r:16, class:'timeline-hit'}));
+
+    function show(){
+      tooltip.innerHTML = `<div class="t-date">${es ? e.titleEs : e.title}</div>`
+        + `<div class="row"><span class="k">${fmtLongDate(e.date)}${e.proxy ? (es ? ' (o antes)' : ' (or earlier)') : ''} · ${es ? 'Día' : 'Day'} ${day}</span></div>`
+        + `<div class="row" style="max-width:220px; white-space:normal;"><span class="k">${es ? e.detailEs : e.detail}</span></div>`;
+      tooltip.style.left = ((x / W) * 100) + '%';
+      tooltip.style.opacity = 1;
+    }
+    function hide(){ tooltip.style.opacity = 0; }
+    hit.addEventListener('mouseenter', show);
+    hit.addEventListener('mouseleave', hide);
+    hit.addEventListener('touchstart', e2 => { e2.preventDefault(); show(); }, {passive:false});
+  });
+}
+
+renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS);
+
 const globalToggle = document.getElementById('global-view-toggle');
 globalToggle.querySelectorAll('button').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -595,18 +929,201 @@ globalToggle.querySelectorAll('button').forEach(btn => {
   });
 });
 
-// ---------------- language toggle ----------------
-// UI placeholder only — switches which button looks active, but doesn't
-// translate anything yet. Wire this up once the English copy is final.
+// ---------------- tweet screenshot lightbox ----------------
 (function(){
-  const buttons = document.querySelectorAll('.lang-toggle button');
-  buttons.forEach(btn => {
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('lightbox-close');
+
+  function open(src, alt){
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    lightbox.classList.remove('active');
+    lightboxImg.src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.tweet-img-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      // translation not implemented yet
+      const img = btn.querySelector('img');
+      open(img.src, img.alt);
     });
   });
+  lightbox.addEventListener('click', close);
+  closeBtn.addEventListener('click', e => { e.stopPropagation(); close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+})();
+
+// ---------------- language toggle ----------------
+// Same pattern as bch-vs-btc.html: capture EN from the DOM, swap in ES by id.
+// Charts and the timeline read CURRENT_LANG and re-render on switch.
+(function(){
+  const IDS = [
+    'bg-h2','bg1','bg2','bg3','bg4','bg5','bg6','bg7','bg8','bg9','bg10','bg11','bg12',
+    'why-h2','why-h3a','why1','why2','why3','why-h3b','why4','why5','why6','why-h3c','why7','why8',
+    'how-h2','how-h3a','how1','how-h3b','how2','how-h3c','how3','how-h3d','how4','how5','how-h3e','how6','how7','how8',
+    'sim-h2','sim-h3a','sim1','sim2','sim-h3b','sim3','sim4','sim5',
+    'nav-back','masthead-title-text','masthead-meta','hero-eyebrow','hero-lede','read-time','tweets-h2','tweets-intro','vp1','vp2','vp3','vp4','vp5','td1','td2','td3','td4','td5','metrics-h2','metrics-intro','view-label','view-abs','view-ratio','ct1','cc1','ct2','cc2','ct3','cc3','ct4','cc4','tll1','tll2','tll3','tll4','sources-h3','src1','src2','src3','src4','src5','src6','src7','src8','src9','src10','src11','src12','footer-text','backlink','nextlink',
+  ];
+
+  const EN = {};
+  IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) EN[id] = el.innerHTML;
+  });
+
+  const ES = {
+    'bg-h2': 'Antecedentes',
+    'bg1': "Cuando Ethereum se lanzó en julio de 2015, llegó con una ambición mucho más amplia que Bitcoin. No quería ser solo dinero digital, sino una \"computadora mundial\".",
+    'bg2': "Mientras Bitcoin fue diseñado como un registro digital altamente seguro, el <em>whitepaper</em> de Vitalik Buterin de 2013 proponía algo más cercano a una plataforma informática descentralizada. Ethereum incorporaba un lenguaje de programación capaz de ejecutar cálculos arbitrarios. El objetivo no era solo transferir valor, sino crear una nueva base para aplicaciones donde cualquiera pudiera desplegar <em>tokens</em> personalizados, seguros descentralizados y contratos financieros directamente sobre la <em>blockchain</em>.",
+    'bg3': "Gran parte de la comunidad inicial se unió alrededor de un principio sencillo: el código es la ley. Estas aplicaciones, conocidas como contratos inteligentes, se ejecutarían automáticamente en miles de nodos. Ethereum prometía aplicaciones resistentes a interrupciones, censura e interferencia de terceros.",
+    'bg4': "Esa promesa intransigente estaba a punto de enfrentar su primera prueba catastrófica.",
+    'bg5': "En la primavera de 2016, surgió un proyecto llamado \"<em>The DAO</em>\" como una demostración del concepto de la computadora mundial. Diseñado como un fondo de capital de riesgo descentralizado, permitía a cualquiera enviar ETH a cambio de derechos de voto sobre la financiación de futuros proyectos. Su venta inicial recaudó aproximadamente 11.5 millones de ETH, valorados en unos $150 millones en ese momento.",
+    'bg6': "La escala era extraordinaria. Aproximadamente 14&ndash;15% de todo el ETH en circulación había quedado bloqueado dentro de un único contrato inteligente experimental.",
+    'bg7': "Entonces, el 17 de junio de 2016, un atacante explotó una vulnerabilidad de <em>re-entrancy</em> en el código de <em>The DAO</em>. En términos simples, el atacante podía activar otro retiro antes de que el contrato actualizara su saldo, repitiendo el proceso hasta transferir aproximadamente 3.6 millones de ETH, valorados en unos $50&ndash;60 millones, a una DAO hija.",
+    'bg8': "El protocolo de Ethereum no había sido hackeado. El atacante había explotado una falla en el código de <em>The DAO</em>, mientras la <em>blockchain</em> continuaba procesando las transacciones exactamente como estaba diseñada para hacerlo. El incidente expuso una tensión fundamental: si los contratos inteligentes debían ejecutarse exactamente como estaban escritos, ¿qué ocurría cuando el código producía un resultado que la comunidad consideraba inaceptable?",
+    'bg9': "El atacante todavía enfrentaba un obstáculo. Las reglas de <em>The DAO</em> le dieron a Ethereum una ventana de aproximadamente cuatro semanas.",
+    'bg10': "De repente, un reloj corría sobre todo el ecosistema de Ethereum. El pánico se extendió, el precio de ETH cayó con fuerza y desarrolladores, mineros, inversores y <em>exchanges</em> entraron en un debate frenético.",
+    'bg11': "A medida que la cuenta regresiva se acercaba a cero, Ethereum enfrentaba una pregunta existencial:",
+    'bg12': "Si \"el código es la ley\", ¿qué ocurre cuando la ley permite que un <em>hacker</em> se marche con una fortuna y se lleve consigo la credibilidad de la red?",
+    'why-h2': "¿Por qué revertir el hackeo?",
+    'why-h3a': "<strong>El argumento a favor del <em>fork</em>: ETH</strong>",
+    'why1': "<strong>El espíritu del contrato:</strong> <em>The DAO</em> fue creada para reunir fondos destinados a inversiones. El <em>exploit</em> fue un error de código, no el resultado buscado. Sus defensores sostenían que recuperar los fondos restauraba el propósito del contrato, en lugar de recompensar a alguien por explotar su código.",
+    'why2': "<strong>Proteger la confianza y la red:</strong> Ethereum apenas tenía un año. Aproximadamente el 15% de todo el ETH estaba bloqueado en <em>The DAO</em>, y el atacante drenó casi un tercio de esos fondos, alrededor del 5% de todo el suministro. Permitir que el resultado se mantuviera podía dañar la confianza y crear un riesgo sistémico considerable, especialmente para una red que planeaba migrar hacia <em>Proof of Stake</em>.",
+    'why3': "<strong>El consenso social decide:</strong> En última instancia, una <em>blockchain</em> depende de que las personas elijan qué software ejecutar. Mineros, desarrolladores y usuarios podían coordinarse en torno al <em>fork</em>, haciendo que la cadena con mayor respaldo económico y social fuera la que continuara como Ethereum.",
+    'why-h3b': "<strong>El argumento a favor de mantener la cadena original: ETC</strong>",
+    'why4': "<strong>El código es la ley:</strong> Ethereum nunca fue hackeado. La red ejecutó el código de <em>The DAO</em> tal como estaba escrito, y el <em>exploit</em> siguió las reglas de ese contrato. Sus opositores argumentaban que modificar la capa base para corregir el error de una aplicación castigaba la parte del sistema que sí había funcionado y hacía que la finalidad de las transacciones dependiera de la aprobación de la mayoría.",
+    'why5': "<strong>Un rescate con un umbral:</strong> Los críticos veían el <em>fork</em> como un rescate para los inversores de <em>The DAO</em>. Si la red no reescribiría la historia por una pérdida de $1,000 en un proyecto pequeño, pero intervendría cuando estuvieran en juego millones, ¿qué principio determinaba el umbral? Para los defensores de ETC, eso significaba que las reglas podían negociarse cuando había suficiente dinero o suficientes participantes influyentes involucrados.",
+    'why6': "<strong>Los principios por encima de la mayoría:</strong> El <em>fork</em> demostró que desarrolladores, miembros de la fundación, mineros y otros participantes influyentes podían coordinarse para cambiar el registro. Para ETC, esto planteaba una pregunta fundamental: ¿el consenso significa seguir las reglas o seguir a la mayoría?",
+    'why-h3c': "<strong>La división filosófica</strong>",
+    'why7': "<strong>Ethereum:</strong> El consenso es la capacidad de la comunidad para coordinarse y adaptar las reglas cuando el futuro de la red está en juego.",
+    'why8': "<strong>Ethereum Classic:</strong> El consenso significa preservar las reglas originales, incluso a un costo de corto plazo, porque el valor a largo plazo de un registro depende de preservar los principios sobre los que se construyó la cadena.",
+    'how-h2': "¿Cómo sucedió?",
+    'how-h3a': "<strong>El reloj de 28 días</strong>",
+    'how1': "El código de <em>The DAO</em> le dio a Ethereum cuatro semanas. Cualquier ETH transferido a una DAO hija quedaba bloqueado durante 28 días, por lo que el atacante no podía tocar los 3.6 millones de ETH de inmediato.",
+    'how-h3b': "<strong>Plan A: Congelarlo</strong>",
+    'how2': "Vitalik Buterin y otros desarrolladores principales propusieron un <em>soft fork</em> que pondría en una lista negra las direcciones del atacante. Los fondos permanecerían congelados sin modificar la historia de Ethereum.",
+    'how-h3c': "<strong>Entonces apareció el problema</strong>",
+    'how3': "Investigadores, entre ellos Emin Gün Sirer, de Cornell, encontraron un problema: hacer cumplir la lista negra obligaría a los mineros a revisar cada transacción para detectar vínculos con los fondos congelados. Como las transacciones rechazadas no pagan comisiones, un atacante podría inundar la red con ellas sin costo, obligando a los mineros a desperdiciar recursos procesando <em>spam</em> y, potencialmente, paralizando Ethereum.",
+    'how-h3d': "<strong>Plan B: Moverlo</strong>",
+    'how4': "Con el <em>soft fork</em> descartado y el reloj avanzando, Ethereum tomó una opción más radical: un <em>hard fork</em>. En lugar de congelar el ETH robado, las nuevas reglas lo trasladaron, junto con el resto de los fondos de <em>The DAO</em>, a un contrato de recuperación, permitiendo que los inversores originales de <em>The DAO</em> retiraran su dinero.",
+    'how5': "Pero un <em>hard fork</em> requiere algo más que código. <strong>Requiere personas dispuestas a ejecutarlo.</strong>",
+    'how-h3e': "<strong>20 de julio de 2016: La división</strong>",
+    'how6': "La mayoría de los desarrolladores, <em>exchanges</em>, mineros y usuarios actualizaron sus nodos. La nueva cadena recuperó los fondos y continuó como Ethereum.",
+    'how7': "Una minoría se negó. Consideraban que ninguna cantidad de dinero justificaba reescribir el registro. Continuaron minando la cadena original, que sobrevivió como <strong>Ethereum Classic</strong>.",
+    'how8': "El <em>fork</em> de <em>The DAO</em> dejó a Ethereum con dos respuestas opuestas a la misma pregunta: ¿debe una red descentralizada preservar sus reglas o preservar el propósito al que esas reglas debían servir?",
+    'sim-h2': "Similitudes de BTCB2 con cada cadena",
+    'sim-h3a': "<strong>Paralelos con ETC (Ethereum Classic): El precio de los principios</strong>",
+    'sim1': "<strong>Los principios por encima del consenso:</strong> Ambas comunidades eligieron una interpretación estricta de la promesa original de su red, incluso cuando el consenso permitía comportamientos que rechazaban. ETC rechazó el rescate de <em>The DAO</em> para preservar el principio de \"el código es la ley\", mientras BTCB2 rechaza lo que sus defensores consideran usos no monetarios del espacio de bloques, incluidos los <em>JPEG</em> y los <em>tokens</em> BRC-20, en busca de la función de Bitcoin como dinero electrónico entre pares.",
+    'sim2': "<strong>Sacrificar los efectos de red para preservar el principio:</strong> Esa decisión tiene un costo elevado. ETC se convirtió en la cadena minoritaria después del <em>fork</em>, lo que la dejó sin la marca dominante de Ethereum, sin su ecosistema y sin la mayor parte de su <em>hashrate</em>. De la misma manera, BTCB2 se posiciona como un <em>fork</em> minoritario, lo que significa que renuncia a la identidad establecida de \"BTC\" y debe construir su propia liquidez, su soporte en <em>exchanges</em> y sus efectos de red. Por otro lado, su cambio de SHA-256 a BLAKE2b hace que la infraestructura de minería existente de Bitcoin sea incompatible con la nueva cadena. Para BTCB2, la ruptura también se extiende a los canales de Lightning establecidos y a los nodos económicos construidos alrededor de la red existente de Bitcoin.",
+    'sim-h3b': "<strong>Paralelos con ETH (Ethereum): La necesidad de intervenir</strong>",
+    'sim3': "<strong>Intervenir para salvar la red:</strong> Ambas comunidades decidieron que simplemente continuar bajo las reglas existentes socavaría la red que querían preservar. Ethereum intervino después del hackeo de <em>The DAO</em>, mientras BTCB2 interviene para proteger el espacio de bloques de Bitcoin de la actividad de <em>Ordinals</em> y de lo que sus defensores describen como una centralización de la minería.",
+    'sim4': "<strong>Reescribir las reglas:</strong> Ambos casos requirieron romper con el protocolo existente. Ethereum hizo un <em>fork</em> para revertir el robo de <em>The DAO</em>. BTCB2 restringe los datos arbitrarios, cambia el algoritmo de <em>hashing</em> e impone límites más estrictos a los bloques.",
+    'sim5': "<strong>La reivindicación de legitimidad:</strong> Ninguno de los dos lados se consideraba a sí mismo el <em>fork</em>. Ambos presentaron sus cambios como necesarios para preservar el propósito original de la red, mientras sostenían que era el otro lado el que se había apartado de esos principios.",
+    'nav-back': "&larr; Una historia de Forks",
+    'masthead-title-text': "Una historia de Forks: Capítulo 2",
+    'masthead-meta': "Ethereum Classic (ETC), bifurcado el 20 de julio de 2016",
+    'hero-eyebrow': "EL QUE TUVO ÉXITO",
+    'hero-lede': "En 2016, un atacante drenó aproximadamente 3.6 millones de ETH de la Organización Autónoma Descentralizada (<em>The DAO</em>, por sus siglas en inglés). El equipo principal de Ethereum ejecutó un <em>hard fork</em> para revertir el robo. Una minoría siguió minando la cadena original, sin alterar, por principio, y esa cadena se convirtió en Ethereum Classic. Es el único <em>fork</em> de la serie en el que el lado que cambió el protocolo ganó de forma decisiva.",
+    'read-time': "~9 min de lectura",
+    'tweets-h2': "Qué decía la gente sobre ETH vs. ETC",
+    'tweets-intro': "Cinco publicaciones de Twitter (X) de agosto de 2016 a octubre de 2017, que muestran cómo los defensores de Ethereum Classic argumentaban que una cadena inmutable sobreviviría a la que revirtió el hackeo de <em>The DAO</em>.",
+    'vp1': "Ver publicación",
+    'vp2': "Ver publicación",
+    'vp3': "Ver publicación",
+    'vp4': "Ver publicación",
+    'vp5': "Ver publicación",
+    'td1': "30 de abril de 2017",
+    'td2': "7 de octubre de 2017",
+    'td3': "1 de septiembre de 2017",
+    'td4': "18 de junio de 2017",
+    'td5': "1 de agosto de 2016",
+    'metrics-h2': "Años de datos",
+    'metrics-intro': "Cifras mensuales desde el <em>fork</em> de ETC (julio de 2016) hasta septiembre de 2026. El precio y las comisiones provienen del conjunto de datos público de CoinMetrics. La actividad de desarrolladores es un conteo propio de autores únicos de <em>commits</em> por mes en el ecosistema de GitHub de cada cadena (según la taxonomía abierta de Electric Capital sobre qué repositorios pertenecen a cada cadena).",
+    'view-label': "Vista del gráfico:",
+    'view-abs': "Absoluto",
+    'view-ratio': "ETC como % de ETH",
+    'ct1': "Precio: ETH vs. ETC, mensual (USD)",
+    'cc1': "Cierre diario promedio por mes, en escala logarítmica para que el rango completo de ambas cadenas se lea en un solo gráfico.",
+    'ct2': "Comisiones pagadas: ETH vs. ETC, mensual (USD)",
+    'cc2': "Total de comisiones de la red pagadas cada mes, convertidas a USD día por día (comisión nativa &times; el precio de ese día, sumado), en lugar de aplicar un solo precio de fin de mes a todo el mes.",
+    'ct3': "Desarrolladores activos por mes: ETH vs. ETC",
+    'cc3': "Cuentas distintas de GitHub que hicieron <em>commits</em> ese mes en los repositorios asignados a cada cadena. ETH se limita a sus 300 repositorios con más estrellas (su ecosistema completo es demasiado grande para rastrearlo entero). La lista mucho más pequeña de repositorios de ETC se usa completa, sin límite.",
+    'ct4': "Cronología: el lanzamiento de ETH, <em>The DAO</em>, el <em>fork</em> y los primeros listados de ETC en <em>exchanges</em>",
+    'cc4': "Desde el lanzamiento de Ethereum hasta <em>The DAO</em>, el <em>hard fork</em> y los primeros listados de Ethereum Classic en <em>exchanges</em>. Los eventos están espaciados de forma uniforme en orden cronológico, no a escala temporal. La fecha bajo cada punto indica el momento real.",
+    'tll1': "Listado en <em>exchange</em>",
+    'tll2': "Confirmado activo para esta fecha (fecha exacta de listado no confirmada)",
+    'tll3': "Evento de protocolo / red",
+    'tll4': "Pasa el cursor sobre un punto para más detalles",
+    'sources-h3': "Fuentes",
+    'src1': "El lanzamiento de la red principal de Ethereum (Frontier), 30 de julio de 2015 &mdash; <a href=\"https://blog.ethereum.org/2015/07/30/ethereum-launches\" target=\"_blank\" rel=\"noopener\">\"Ethereum Launches,\" Ethereum Foundation Blog</a>",
+    'src2': "La propuesta de Vitalik Buterin de una <em>blockchain</em> programable &mdash; <a href=\"https://ethereum.org/en/whitepaper/\" target=\"_blank\" rel=\"noopener\">Whitepaper de Ethereum, ethereum.org</a>",
+    'src3': "La venta de <em>tokens</em> de 28 días de <em>The DAO</em>, lo que recaudó, su número de inversores, su porcentaje de todo el ETH y el ETH drenado en el hackeo &mdash; <a href=\"https://en.wikipedia.org/wiki/The_DAO\" target=\"_blank\" rel=\"noopener\">The DAO, Wikipedia</a>",
+    'src4': "El <em>exploit</em> del 17 de junio de 2016, el período de espera de la DAO hija y el <em>soft fork</em> propuesto &mdash; <a href=\"https://blog.ethereum.org/2016/06/17/critical-update-re-dao-vulnerability\" target=\"_blank\" rel=\"noopener\">Vitalik Buterin, \"CRITICAL UPDATE Re: DAO Vulnerability,\" Ethereum Foundation Blog</a>",
+    'src5': "La falla de denegación de servicio del <em>soft fork</em> &mdash; <a href=\"https://hackingdistributed.com/2016/06/28/ethereum-soft-fork-dos-vector/\" target=\"_blank\" rel=\"noopener\">Tjaden Hess, River Keefer and Emin Gün Sirer, \"Ethereum's DAO Wars Soft Fork is a Potential DoS Vector,\" Hacking Distributed</a>",
+    'src6': "El <em>hard fork</em> en el bloque 1,920,000 y el contrato de recuperación, 20 de julio de 2016 &mdash; <a href=\"https://blog.ethereum.org/2016/07/20/hard-fork-completed\" target=\"_blank\" rel=\"noopener\">Vitalik Buterin, \"Hard Fork Completed,\" Ethereum Foundation Blog</a>",
+    'src7': "Los principios fundacionales de Ethereum Classic y \"el código es la ley\" &mdash; <a href=\"https://ethereumclassic.org/ETC_Declaration_of_Independence.pdf\" target=\"_blank\" rel=\"noopener\">The Ethereum Classic Declaration of Independence</a>",
+    'src8': "Poloniex lista ETC, 24 de julio de 2016 &mdash; <a href=\"https://ethereumclassic.org/blog/2016-07-24-polo-trading/\" target=\"_blank\" rel=\"noopener\">\"ETC exchange trading and other news,\" Ethereum Classic Blog</a>",
+    'src9': "Kraken lista ETC y lo acredita a los tenedores de ETH, 26 de julio de 2016 &mdash; <a href=\"https://blog.kraken.com/product/kraken-opens-classic-ether-etc-markets-and\" target=\"_blank\" rel=\"noopener\">\"Kraken opens classic ether (ETC) markets and credits ETC to accounts,\" Kraken Blog</a>",
+    'src10': "Bitfinex anuncia soporte para ETC, 27 de julio de 2016 &mdash; <a href=\"https://blog.bitfinex.com/announcements/ethereum-classic-launch/\" target=\"_blank\" rel=\"noopener\">\"Ethereum Classic Launch,\" Bitfinex Blog</a>",
+    'src11': "Datos mensuales de precio y comisiones (PriceUSD, FeeTotNtv) &mdash; <a href=\"https://docs.coinmetrics.io/api/v4/\" target=\"_blank\" rel=\"noopener\">Documentación de la API v4 de Coin Metrics (API comunitaria)</a>",
+    'src12': "La lista de repositorios contados para la actividad de desarrolladores de cada cadena &mdash; <a href=\"https://github.com/electric-capital/open-dev-data\" target=\"_blank\" rel=\"noopener\">electric-capital/open-dev-data, GitHub</a>",
+    'footer-text': "DATOS: API COMUNITARIA DE COINMETRICS (PRECIO, COMISIONES), RASTREO PROPIO DE GITHUB (ACTIVIDAD DE DESARROLLADORES). PARTE DE LA SERIE \"UNA HISTORIA DE FORKS\".",
+    'backlink': "&larr; Anterior: Bitcoin Cash vs. Bitcoin",
+    'nextlink': "Siguiente: Bitcoin Gold vs. Bitcoin &rarr;",
+  };
+
+  // Attribute text (alt, aria-label) the innerHTML swap above can't reach.
+  const ES_TWEET_ALTS = ["Publicación de AZAZEL (@thefunkybits), 30 de abril de 2017", "Publicación de Drawpie, 7 de octubre de 2017", "Publicación de Steve (@Stevemartinio), 1 de septiembre de 2017", "Publicación de Drawpie, 18 de junio de 2017", "Publicación de Charlie Shrem, 1 de agosto de 2016"];
+  const ATTRS = [
+    ['.brand-logo', 'alt', 'Logo de QuantBitcoin'],
+    ['.lang-toggle', 'aria-label', 'Idioma'],
+    ['#home-link', 'aria-label', 'Ir a Una historia de Forks'],
+    ['#lightbox', 'aria-label', 'Captura de tweet ampliada'],
+    ['#lightbox-close', 'aria-label', 'Cerrar'],
+  ];
+  document.querySelectorAll('.tweet-img-btn').forEach((btn, i) => {
+    ATTRS.push([`.tweet-card:nth-child(${i + 1}) .tweet-img-btn`, 'aria-label', 'Ampliar captura: ' + ES_TWEET_ALTS[i]]);
+    ATTRS.push([`.tweet-card:nth-child(${i + 1}) img`, 'alt', ES_TWEET_ALTS[i]]);
+  });
+  const ATTRS_EN = ATTRS.map(([sel, attr]) => document.querySelector(sel).getAttribute(attr));
+
+  const META = {
+    en: {title: document.title, desc: document.querySelector('meta[name="description"]').content},
+    es: {title: 'Ethereum vs. Ethereum Classic', desc: 'El hackeo de The DAO, el hard fork que lo revirtió y la cadena minoritaria que se negó.'},
+  };
+
+  function applyLang(lang){
+    CURRENT_LANG = lang;
+    const dict = lang === 'es' ? ES : EN;
+    ATTRS.forEach(([sel, attr, es], i) => document.querySelector(sel).setAttribute(attr, lang === 'es' ? es : ATTRS_EN[i]));
+    document.title = META[lang].title;
+    document.querySelector('meta[name="description"]').content = META[lang].desc;
+    const mode = document.querySelector('#global-view-toggle button.active').dataset.mode;
+    Object.keys(CHART_CONFIGS).forEach(name => renderMetricChart(name, mode));
+    renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS);
+    IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && dict[id] != null) el.innerHTML = dict[id];
+    });
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-toggle button').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    try { localStorage.setItem('site-lang', lang); } catch(e){}
+  }
+
+  document.querySelectorAll('.lang-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+  });
+
+  let saved = null;
+  try { saved = localStorage.getItem('site-lang'); } catch(e){}
+  if (saved === 'es') applyLang('es');
 })();
 </script>
 </body>
