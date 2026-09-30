@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="assets/quantbitcoin-logo-rounded.png">
+<title>Bitcoin Gold vs. Bitcoin</title>
+<meta name="description" content="The anti-ASIC fork, attacked twice, cheaper the second time.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light dark;
+    --bg:#EDEFEF; --panel:#FFFFFF; --ink:#1A1D22; --ink-soft:#4B5158; --ink-mute:#7A8087;
+    --rule:#C7CBCF; --rule-strong:#9AA0A6; --accent:#F08A1E;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
+      --rule:#33373E; --rule-strong:#4A4F57; --accent:#F08A1E;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
+    --rule:#33373E; --rule-strong:#4A4F57; --accent:#F08A1E;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:720px; margin:0 auto; padding:0 20px 100px;}
+  h1{font-family:'Source Serif 4',serif; font-weight:600; letter-spacing:-0.01em; margin:0; text-wrap:balance;}
+  header.masthead{
+    display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
+    padding:26px 0 16px; border-bottom:1px solid var(--rule-strong);
+    font-family:'IBM Plex Mono',monospace; font-size:0.78rem; letter-spacing:0.04em;
+    color:var(--ink-soft); text-transform:uppercase;
+  }
+  header.masthead a{color:inherit; text-decoration:none;}
+  header.masthead a:hover{color:var(--accent);}
+  .masthead-brand{display:inline-flex; align-items:center; gap:8px;}
+  .brand-logo{width:22px; height:22px; border-radius:5px; display:block;}
+  .hero{padding:56px 0 24px;}
+  .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--accent); letter-spacing:0.03em; margin-bottom:10px;}
+  .hero h1{font-size:clamp(1.8rem,4.4vw,2.6rem); line-height:1.14;}
+  .hero p{max-width:58ch; color:var(--ink-soft); font-size:1.05rem; margin-top:16px;}
+  .placeholder-box{
+    border:1.5px dashed var(--rule-strong); border-radius:8px; padding:22px;
+    color:var(--ink-mute); font-style:italic; max-width:58ch; margin-top:8px;
+  }
+  .back-link{
+    display:inline-block; margin-top:34px; font-family:'IBM Plex Mono',monospace;
+    font-size:0.85rem; color:var(--ink-soft); text-decoration:none;
+  }
+  .back-link:hover{color:var(--accent);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <a href="index.html" class="masthead-brand"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo">History of Forks</a>
+    <div>Chapter 3</div>
+  </header>
+
+  <div class="hero">
+    <div class="eyebrow">THE RENTABLE-HASHRATE PROBLEM</div>
+    <h1>Bitcoin Gold vs. Bitcoin</h1>
+    <p>Bitcoin Gold swapped SHA-256 for a GPU-friendly algorithm to fight ASIC-driven mining centralization. The same property that let ordinary GPUs mine it also let anyone rent enough hashpower to attack it, twice, for a fraction of what each attack stole.</p>
+  </div>
+
+  <div class="placeholder-box">Coming soon.</div>
+
+  <a class="back-link" href="index.html">&larr; Back to History of Forks</a>
+
+</div>
+</body>
+</html>
