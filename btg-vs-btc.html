@@ -5,7 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" type="image/png" href="assets/quantbitcoin-logo-rounded.png">
 <title>Bitcoin Gold vs. Bitcoin</title>
-<meta name="description" content="The anti-ASIC fork, attacked twice, cheaper the second time.">
+<meta name="description" content="Bitcoin Gold swapped SHA-256 for a GPU-friendly algorithm to fight ASIC mining. The same property let anyone rent enough hashpower to attack it.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="History of Forks">
+<meta property="og:title" content="Bitcoin Gold vs. Bitcoin">
+<meta property="og:description" content="Bitcoin Gold swapped SHA-256 for a GPU-friendly algorithm to fight ASIC mining. The same property let anyone rent enough hashpower to attack it.">
+<meta property="og:url" content="https://dave-rodt.github.io/fork-history/btg-vs-btc.html">
+<meta property="og:image" content="https://dave-rodt.github.io/fork-history/assets/og-btg-vs-btc.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bitcoin Gold vs. Bitcoin — History of Forks, Chapter 3">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bitcoin Gold vs. Bitcoin">
+<meta name="twitter:description" content="Bitcoin Gold swapped SHA-256 for a GPU-friendly algorithm to fight ASIC mining. The same property let anyone rent enough hashpower to attack it.">
+<meta name="twitter:image" content="https://dave-rodt.github.io/fork-history/assets/og-btg-vs-btc.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -13,66 +26,1184 @@
   :root{
     color-scheme: light dark;
     --bg:#EDEFEF; --panel:#FFFFFF; --ink:#1A1D22; --ink-soft:#4B5158; --ink-mute:#7A8087;
-    --rule:#C7CBCF; --rule-strong:#9AA0A6; --accent:#F08A1E;
+    --rule:#C7CBCF; --rule-strong:#9AA0A6;
+    /* BTG: Bitcoin Gold's official logo navy (#00206B, press kit at
+       bitcoingold.org/press-kit), lightened to #2A4DB0 so it reads as a chart
+       line. BTC: the BCH chapter's teal, so Bitcoin keeps one color across
+       chapters. Gold is avoided: it collides with the site's orange/yellow
+       brand chrome. Pair validated with the dataviz skill's validate_palette.js
+       (light #2A4DB0/#00806B; dark #5B7FD6/#33A393, all checks pass). */
+    --btg:#2A4DB0; --btc:#00806B; --btg2:#8A4A12; --tl-btc:#C8700A; --tl-bch:#07875F;
+    --btg-fill:rgba(42,77,176,0.10); --btc-fill:rgba(0,128,107,0.10);
+    --brand-orange:#F08A1E; --brand-yellow:#FDCA1E;
+    --shadow-sm:0 1px 2px rgba(20,22,25,0.06), 0 1px 1px rgba(20,22,25,0.04);
+    --shadow-md:0 6px 16px rgba(20,22,25,0.10), 0 2px 4px rgba(20,22,25,0.06);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
-      --rule:#33373E; --rule-strong:#4A4F57; --accent:#F08A1E;
+      --rule:#33373E; --rule-strong:#4A4F57;
+      --btg:#5B7FD6; --btc:#33A393; --btg2:#AA6026; --tl-btc:#EA8A12; --tl-bch:#09B283;
+      --btg-fill:rgba(91,127,214,0.14); --btc-fill:rgba(51,163,147,0.14);
+      --brand-orange:#F08A1E; --brand-yellow:#FDCA1E;
+      --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
+      --shadow-md:0 8px 20px rgba(0,0,0,0.38), 0 2px 6px rgba(0,0,0,0.28);
     }
   }
   :root[data-theme="dark"]{
     --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
-    --rule:#33373E; --rule-strong:#4A4F57; --accent:#F08A1E;
+    --rule:#33373E; --rule-strong:#4A4F57;
+    --btg:#5B7FD6; --btc:#33A393; --btg2:#AA6026; --tl-btc:#EA8A12; --tl-bch:#09B283;
+    --btg-fill:rgba(91,127,214,0.14); --btc-fill:rgba(51,163,147,0.14);
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
+    --shadow-md:0 8px 20px rgba(0,0,0,0.38), 0 2px 6px rgba(0,0,0,0.28);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased;}
-  .wrap{max-width:720px; margin:0 auto; padding:0 20px 100px;}
-  h1{font-family:'Source Serif 4',serif; font-weight:600; letter-spacing:-0.01em; margin:0; text-wrap:balance;}
+  .wrap{max-width:880px; margin:0 auto; padding:0 20px 100px;}
+  h1,h2,h3{font-family:'Source Serif 4',serif; font-weight:600; letter-spacing:-0.01em; margin:0; text-wrap:balance;}
+
   header.masthead{
     display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
     padding:26px 0 16px; border-bottom:1px solid var(--rule-strong);
-    font-family:'IBM Plex Mono',monospace; font-size:0.78rem; letter-spacing:0.04em;
-    color:var(--ink-soft); text-transform:uppercase;
   }
-  header.masthead a{color:inherit; text-decoration:none;}
-  header.masthead a:hover{color:var(--accent);}
-  .masthead-brand{display:inline-flex; align-items:center; gap:8px;}
+  .masthead-title{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.78rem; letter-spacing:0.04em;
+    color:var(--ink-soft); text-transform:uppercase; text-decoration:none;
+  }
+  .masthead-title:hover{color:var(--brand-orange);}
   .brand-logo{width:22px; height:22px; border-radius:5px; display:block;}
-  .hero{padding:56px 0 24px;}
-  .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--accent); letter-spacing:0.03em; margin-bottom:10px;}
-  .hero h1{font-size:clamp(1.8rem,4.4vw,2.6rem); line-height:1.14;}
-  .hero p{max-width:58ch; color:var(--ink-soft); font-size:1.05rem; margin-top:16px;}
-  .placeholder-box{
-    border:1.5px dashed var(--rule-strong); border-radius:8px; padding:22px;
-    color:var(--ink-mute); font-style:italic; max-width:58ch; margin-top:8px;
+  .masthead-meta{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute);}
+
+  .top-nav{padding:14px 0 0; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .top-nav a{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--ink-soft); text-decoration:none;
+  }
+  .top-nav a:hover{color:var(--brand-orange);}
+
+  /* Language toggle — wired in the script at the bottom of the page. */
+  .lang-toggle{display:flex; border:1px solid var(--rule-strong); border-radius:20px; overflow:hidden;}
+  .lang-toggle button{
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; font-weight:600; letter-spacing:0.02em;
+    background:var(--panel); color:var(--ink-soft); border:none; padding:5px 12px; cursor:pointer;
+  }
+  .lang-toggle button + button{border-left:1px solid var(--rule-strong);}
+  .lang-toggle button.active{background:var(--brand-orange); color:#000;}
+  .lang-toggle button:hover:not(.active){color:var(--ink);}
+
+  .chapter-nav{
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:baseline;
+    margin-top:34px; gap:12px;
+  }
+  .chapter-nav a:nth-child(1){justify-self:start;}
+  .chapter-nav a:nth-child(2){justify-self:center;}
+  .chapter-nav a:nth-child(3){justify-self:end;}
+  @media (max-width:600px){
+    .chapter-nav{grid-template-columns:1fr; text-align:center;}
+    .chapter-nav a{justify-self:center !important;}
   }
   .back-link{
-    display:inline-block; margin-top:34px; font-family:'IBM Plex Mono',monospace;
+    display:inline-block; font-family:'IBM Plex Mono',monospace;
     font-size:0.85rem; color:var(--ink-soft); text-decoration:none;
   }
-  .back-link:hover{color:var(--accent);}
+  .back-link:hover{color:var(--brand-orange);}
+  .home-link{display:inline-flex; align-items:center; padding:4px;}
+  .home-link svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block;}
+
+  .hero{padding:44px 0 30px; border-bottom:1px solid var(--rule);}
+  .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--brand-orange); letter-spacing:0.03em; margin-bottom:10px;}
+  .hero h1{font-size:clamp(1.9rem,4.4vw,2.9rem); line-height:1.14; max-width:20ch;}
+  .hero p.lede{max-width:62ch; font-size:1.08rem; color:var(--ink-soft); margin-top:16px;}
+  .read-time{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute); margin-top:14px;}
+
+  section.phase{padding:40px 0; border-bottom:1px solid var(--rule);}
+  section.phase:last-of-type{border-bottom:none;}
+  .phase-head{display:flex; align-items:baseline; gap:12px; margin-bottom:18px; flex-wrap:wrap;}
+  .phase-num{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--brand-orange); flex-shrink:0;}
+  .phase-head h2{font-size:1.5rem;}
+  .phase-time{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); margin-left:auto;}
+  .phase p{max-width:66ch; margin:0 0 14px;}
+  .phase p:last-child{margin-bottom:0;}
+  .phase ul{max-width:66ch; padding-left:20px; margin:0 0 14px;}
+  .phase li{margin-bottom:6px;}
+  .phase h3{font-size:1.05rem; margin:22px 0 8px;}
+  .phase h3:first-of-type{margin-top:0;}
+
+  .placeholder-box{
+    border:1.5px dashed var(--rule-strong); border-radius:8px; padding:20px;
+    color:var(--ink-mute); font-style:italic; max-width:66ch;
+  }
+
+  /* ---------- charts ---------- */
+  .chart-block{margin-top:28px;}
+  .chart-block:first-child{margin-top:0;}
+  .chart-title{font-size:1rem; font-weight:600; margin-bottom:2px;}
+  .view-toggle-row{display:flex; align-items:center; gap:10px; margin:-4px 0 20px;}
+  .view-toggle-label{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute);}
+  .view-toggle{display:flex; border:1px solid var(--rule-strong); border-radius:20px; overflow:hidden; flex-shrink:0;}
+  .view-toggle button{
+    font-family:'IBM Plex Mono',monospace; font-size:0.68rem; font-weight:600; letter-spacing:0.02em;
+    background:var(--panel); color:var(--ink-soft); border:none; padding:4px 10px; cursor:pointer;
+  }
+  .view-toggle button + button{border-left:1px solid var(--rule-strong);}
+  .view-toggle button.active{background:var(--brand-orange); color:#000;}
+  .view-toggle button:hover:not(.active){color:var(--ink);}
+  .chart-caption{font-size:0.84rem; color:var(--ink-soft); margin:0 0 12px; max-width:64ch;}
+  .chart-wrap{
+    position:relative; background:var(--panel); border:1px solid var(--rule); border-radius:10px;
+    padding:18px 18px 12px; box-shadow:var(--shadow-sm);
+  }
+  svg.chart{width:100%; height:auto; display:block; overflow:visible;}
+  .gridline{stroke:var(--rule); stroke-width:1;}
+  .axis-label{fill:var(--ink-mute); font-size:10.5px; font-family:'IBM Plex Mono',monospace;}
+  .series-btg{fill:none; stroke:var(--btg); stroke-width:2.25; stroke-linecap:round; stroke-linejoin:round;}
+  .series-btc{fill:none; stroke:var(--btc); stroke-width:2.25; stroke-linecap:round; stroke-linejoin:round;}
+  .series-area-btg{fill:var(--btg-fill); stroke:none;}
+  .series-area-btc{fill:var(--btc-fill); stroke:none;}
+  .end-dot{pointer-events:none;}
+  .end-dot.btg{fill:var(--btg); stroke:var(--panel); stroke-width:2;}
+  .end-dot.btc{fill:var(--btc); stroke:var(--panel); stroke-width:2;}
+  .crosshair-line{stroke:var(--ink-mute); stroke-width:1; opacity:0; pointer-events:none;}
+  .hover-dot{r:4.5; opacity:0; pointer-events:none;}
+  .hover-dot.btg{fill:var(--btg); stroke:var(--panel); stroke-width:1.5;}
+  .hover-dot.btc{fill:var(--btc); stroke:var(--panel); stroke-width:1.5;}
+  .capture-rect{fill:transparent; cursor:crosshair;}
+  .legend{display:flex; gap:16px; margin-top:12px; font-size:0.8rem; color:var(--ink-soft); flex-wrap:wrap;}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .swatch{width:13px; height:2.5px; border-radius:2px; display:inline-block;}
+  .tooltip{
+    position:absolute; pointer-events:none; opacity:0;
+    background:var(--panel); border:1px solid var(--rule-strong); border-radius:7px;
+    padding:8px 10px; font-size:0.76rem; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,0.14);
+    white-space:nowrap; transform:translate(-50%,-100%); top:-8px; z-index:5;
+  }
+  .tooltip .t-date{color:var(--ink-mute); font-size:0.7rem; margin-bottom:4px;}
+  .tooltip .row{display:flex; justify-content:space-between; gap:12px;}
+  .tooltip .row .k{display:flex; align-items:center; gap:5px; color:var(--ink-soft);}
+  .tooltip .dot{width:7px; height:7px; border-radius:50%; display:inline-block;}
+  .tooltip .v{font-family:'IBM Plex Mono',monospace;}
+
+  .sources-note{margin-top:30px; padding-top:18px; border-top:1px solid var(--rule);}
+  .sources-note h3{font-size:0.9rem; margin:0 0 10px; color:var(--ink-soft);}
+  .sources-note ol{max-width:70ch; padding-left:20px; margin:0; font-size:0.78rem; color:var(--ink-mute); line-height:1.6;}
+  .sources-note li{margin-bottom:6px;}
+  .sources-note a{color:var(--ink-soft);}
+  .sources-note a:hover{color:var(--brand-orange);}
+
+  /* ---------- tweet cards ---------- */
+  .tweet-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:18px; margin-top:8px;}
+  .tweet-card{
+    background:var(--panel); border:1px solid var(--rule); border-radius:10px; overflow:hidden;
+    margin:0; display:flex; flex-direction:column;
+    box-shadow:var(--shadow-sm);
+    transition:transform 0.16s ease, box-shadow 0.16s ease;
+  }
+  .tweet-card:hover{transform:translateY(-3px); box-shadow:var(--shadow-md);}
+  .tweet-card .tweet-img-btn{
+    display:block; width:100%; height:240px; overflow:hidden; background:var(--tag-bg);
+    border:none; padding:0; margin:0; position:relative; cursor:zoom-in;
+    font:inherit; -webkit-appearance:none; appearance:none;
+  }
+  .tweet-card .tweet-img-btn::after{
+    content:''; position:absolute; inset:0; background:rgba(0,0,0,0); transition:background 0.15s ease;
+  }
+  .tweet-card .tweet-img-btn:hover::after{background:rgba(0,0,0,0.10);}
+  .tweet-card img{width:100%; height:100%; display:block; object-fit:contain;}
+
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    position:fixed; inset:0; background:rgba(10,11,13,0.88);
+    display:none; align-items:center; justify-content:center;
+    padding:32px; z-index:1000; cursor:zoom-out;
+  }
+  .lightbox.active{display:flex;}
+  .lightbox img{max-width:100%; max-height:100%; border-radius:10px; box-shadow:0 20px 50px rgba(0,0,0,0.5);}
+  .lightbox-close{
+    position:fixed; top:18px; right:22px; width:40px; height:40px; border-radius:50%;
+    border:none; background:rgba(255,255,255,0.14); color:#fff; font-size:1.6rem; line-height:1;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+  }
+  .lightbox-close:hover{background:rgba(255,255,255,0.26);}
+  .tweet-footer{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:10px 12px; border-top:1px solid var(--rule);
+  }
+  .tweet-footer .view-link{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.74rem; font-weight:500;
+    color:var(--ink-soft); text-decoration:none;
+  }
+  .tweet-footer .view-link:hover{color:var(--brand-orange);}
+  .tweet-footer .view-link svg{width:12px; height:12px; fill:currentColor; flex-shrink:0;}
+  .tweet-footer .tweet-date{font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--ink-mute); white-space:nowrap;}
+  .tweet-card figcaption{padding:0 12px 12px; font-size:0.82rem; color:var(--ink-soft);}
+  /* ---------- exchange listing timeline ---------- */
+  .timeline-baseline{stroke:var(--rule-strong); stroke-width:1.5;}
+  .timeline-arrow{fill:var(--rule-strong);}
+  .timeline-date{font-family:'IBM Plex Mono',monospace; font-size:10px; fill:var(--ink-soft);}
+  .timeline-stem{stroke:var(--rule-strong); stroke-width:1;}
+  .timeline-marker{fill:var(--btg); stroke:var(--panel); stroke-width:2; pointer-events:none;}
+  .timeline-marker.proxy{fill:var(--panel); stroke:var(--btg); stroke-width:2;}
+  .timeline-hit{fill:transparent; cursor:pointer;}
+  .timeline-label{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; fill:var(--ink);}
+  .timeline-legend{display:flex; gap:16px; margin-top:10px; font-size:0.78rem; color:var(--ink-soft); flex-wrap:wrap;}
+  .timeline-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .timeline-legend .dot{width:9px; height:9px; border-radius:50%; display:inline-block; background:var(--btg);}
+  .timeline-legend .dot.proxy{background:var(--panel); border:2px solid var(--btg);}
+  /* Post-July-2018 BTG (Equihash-BTG): its own color, since the algorithm and
+     units changed. Copper (light #8A4A12, dark #AA6026), deepened so it stays
+     apart from the timeline's BTC orange. Timeline-only brand hues, darkened
+     in light mode for 3:1 contrast: --tl-btc (Bitcoin orange) and --tl-bch
+     (Bitcoin Cash green). Validated with validate_palette.js --pairs all
+     against --btg and --btg2; each timeline line is also labeled by name. */
+  .series-btg2{fill:none; stroke:var(--btg2); stroke-width:2.25; stroke-linecap:round; stroke-linejoin:round;}
+  .end-dot.btg2{fill:var(--btg2); stroke:var(--panel); stroke-width:2;}
+  .hover-dot.btg2{fill:var(--btg2); stroke:var(--panel); stroke-width:1.5;}
+  .tl-link{fill:none; stroke-width:2;}
+  .tl-link.btc{stroke:var(--tl-btc);} .tl-link.bch{stroke:var(--tl-bch);} .tl-link.bsv{stroke:var(--ink-mute);}
+  .tl-link.btg{stroke:var(--btg);} .tl-link.btg2{stroke:var(--btg2);}
+  .tl-node.btc{fill:var(--tl-btc);} .tl-node.bch{fill:var(--tl-bch);}
+  .tl-ring{fill:none; stroke:var(--ink-soft); stroke-width:1.5;}
+  .tl-pointer{stroke:var(--rule-strong); stroke-width:1;}
+  .tl-line-label{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; fill:var(--ink-soft);}
+  .tl-callout{fill:var(--panel); stroke:var(--rule-strong); stroke-width:1;}
+  .tl-callout-text{font-family:'IBM Plex Sans',sans-serif; font-size:10.5px; font-weight:600; fill:var(--ink);}
+  .tl-callout-date{font-family:'IBM Plex Mono',monospace; font-size:9px; fill:var(--ink-mute);}
+  .timeline-marker.seg2{fill:var(--btg2);}
+  .timeline-marker.delist.seg2{fill:var(--panel); stroke:var(--btg2);}
+  .timeline-marker.attack.seg2{fill:var(--btg2);}
+  .timeline-legend .chain{width:14px; height:3px; border-radius:2px; display:inline-block;}
+  .timeline-legend .chain.btc{background:var(--tl-btc);} .timeline-legend .chain.bch{background:var(--tl-bch);} .timeline-legend .chain.bsv{background:var(--ink-mute);}
+  .timeline-legend .chain.btg{background:var(--btg);} .timeline-legend .chain.btg2{background:var(--btg2);}
+  .timeline-marker.delist{fill:var(--panel); stroke:var(--btg); stroke-width:2;}
+  .timeline-marker.attack{fill:var(--btg); stroke:var(--panel); stroke-width:2;}
+  .timeline-slash{stroke:var(--btg); stroke-width:2; pointer-events:none;}
+  .timeline-legend .dot.delist{background:var(--panel); border:2px solid var(--btg); position:relative;}
+  .timeline-legend .diamond{width:8px; height:8px; display:inline-block; background:var(--btg); transform:rotate(45deg);}
+  .annotation-line{stroke:var(--ink-mute); stroke-width:1; stroke-dasharray:2 3; opacity:0.55;}
+  .annotation-label{fill:var(--ink-mute); font-size:9px; font-family:'IBM Plex Mono',monospace;}
+  .timeline-legend .square{width:9px; height:9px; border-radius:2px; display:inline-block; background:var(--btg);}
+
+  footer{margin-top:30px; padding-top:18px; font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); line-height:1.7;}
+
+  @media (max-width:600px){
+    section.phase{padding:30px 0;}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
 
+  <nav class="top-nav">
+    <a href="index.html" id="nav-back">&larr; History of Forks</a>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" class="active" data-lang="en">EN</button>
+      <button type="button" data-lang="es">ES</button>
+    </div>
+  </nav>
+
   <header class="masthead">
-    <a href="index.html" class="masthead-brand"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo">History of Forks</a>
-    <div>Chapter 3</div>
+    <a class="masthead-title" href="index.html"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo"><span id="masthead-title-text">History of Forks: Chapter 3</span></a>
+    <div class="masthead-meta" id="masthead-meta">Bitcoin Gold (BTG), forked October 24, 2017</div>
   </header>
 
   <div class="hero">
-    <div class="eyebrow">THE RENTABLE-HASHRATE PROBLEM</div>
+    <div class="eyebrow" id="hero-eyebrow">THE RENTABLE-HASHRATE PROBLEM</div>
     <h1>Bitcoin Gold vs. Bitcoin</h1>
-    <p>Bitcoin Gold swapped SHA-256 for a GPU-friendly algorithm to fight ASIC-driven mining centralization. The same property that let ordinary GPUs mine it also let anyone rent enough hashpower to attack it, twice, for a fraction of what each attack stole.</p>
+    <p class="lede" id="hero-lede">Bitcoin Gold swapped SHA-256 for a GPU-friendly algorithm to fight ASIC-driven mining centralization. The same property that let ordinary GPUs mine it also let anyone rent enough hashpower to attack it, twice, for a fraction of what each attack took.</p>
+    <div class="read-time" id="read-time">~? min read</div>
   </div>
 
-  <div class="placeholder-box">Coming soon.</div>
+  <section class="phase" id="background">
+    <div class="phase-head">
+      <span class="phase-num">01</span>
+      <h2 id="bg-h2">Background</h2>
+      <span class="phase-time">~1 min</span>
+    </div>
+    <p id="bg1">By 2017, Bitcoin's original vision of "one CPU, one vote" was already a relic.</p>
+    <p id="bg2">Mining had left the bedroom and moved into warehouses filled with ASICs, machines built for one job: mining Bitcoin. The economics favored whoever could buy the most hardware, secure the cheapest electricity, and operate at the largest scale.</p>
+    <p id="bg3">At the center of that world was Bitmain, led by Jihan Wu. The company was both a dominant hardware manufacturer and a major mining pool operator. A miner could end up buying machines from the same company that was competing with them for blocks.</p>
+    <p id="bg4">And the concentration was becoming hard to ignore. For long stretches, a handful of Chinese mining pools controlled a large share of Bitcoin's hash rate.</p>
+    <p id="bg5">Then Bitcoin faced one of its fiercest political battles yet.</p>
+    <p id="bg6">SegWit promised to change how Bitcoin handled transaction data, but some large miners resisted. Critics also pointed to AsicBoost, a technique that could provide compatible hardware with a significant efficiency advantage, one that SegWit would largely eliminate. Bitmain's chips supported the technique, although the company denied using it on Bitcoin.</p>
+    <p id="bg7">The conflict exposed an uncomfortable possibility: the people with the greatest influence over Bitcoin's security could also have economic reasons to resist changes to the protocol.</p>
+    <p id="bg8">SegWit activated in August 2017. But the battle had demonstrated something that was difficult to unsee:</p>
+    <p id="bg9">Mining was not just about securing Bitcoin. It was also a source of power.</p>
+  </section>
+  <section class="phase" id="why-fork">
+    <div class="phase-head">
+      <span class="phase-num">02</span>
+      <h2 id="why-h2">Why Change the Mining Algorithm?</h2>
+      <span class="phase-time">~1 min</span>
+    </div>
+    <p id="why1">If the miners securing Bitcoin could influence which changes the network accepted, Bitcoin Gold asked a sharper question:</p>
+    <p id="why2">What if you made the existing miners obsolete?</p>
+    <p id="why3">The founders saw a structural problem. SHA-256 rewarded specialized hardware, large capital, and cheap electricity, conditions that favored industrial operators. Reforming that industry looked difficult. So they chose a different route: make the existing hardware useless.</p>
+    <p id="why4">By replacing SHA-256 with a different proof-of-work algorithm, Bitcoin Gold aimed to remove the advantage held by Bitcoin's specialized miners and give ordinary GPU miners a chance to compete.</p>
+    <p id="why5">The goal was not simply to create another version of Bitcoin. It was to change the economics of who could secure the network.</p>
+  </section>
+  <section class="phase" id="how-it-happened">
+    <div class="phase-head">
+      <span class="phase-num">03</span>
+      <h2 id="how-h2">How Did It Happen?</h2>
+      <span class="phase-time">~1 min</span>
+    </div>
+    <p id="how1">Led by Jack Liao of LightningASIC, Bitcoin Gold was announced and built in public during 2017.</p>
+    <p id="how2">The project chose Equihash, a memory-hard algorithm designed to favor GPUs over Bitcoin's specialized ASICs. The idea was straightforward: if Bitcoin's mining industry had become concentrated around specialized machines, changing the algorithm could open the door to a broader base of miners.</p>
+    <p id="how3">On October 24, 2017, after Bitcoin block 491,406, Bitcoin Gold took a snapshot of the Bitcoin blockchain. From that moment, the chains shared the same history but followed different mining rules. Every Bitcoin holder at the snapshot was entitled to BTG on a 1:1 basis.</p>
+    <p id="how4">But before public mining began, the project mined 8,000 blocks at minimum difficulty, producing roughly 100,000 BTG. The coins were placed in 4-of-6 multisig wallets as an "endowment." Critics simply called it a premine.</p>
+    <p id="how5">Public mining opened on November 13, 2017. Alongside Equihash, the chain launched with replay protection, new address prefixes (G and A), per-block difficulty adjustment, and the SegWit code already present in Bitcoin.</p>
+    <p id="how6">The fork was live. Bitcoin Gold had changed the rules of mining and was now putting its central idea to the test.</p>
+  </section>
 
-  <a class="back-link" href="index.html">&larr; Back to History of Forks</a>
+  <!-- ================= THE OUTCOME ================= -->
+  <section class="phase" id="outcome">
+    <div class="phase-head">
+      <span class="phase-num">04</span>
+      <h2 id="out-h2">The Outcome</h2>
+      <span class="phase-time">~2 min</span>
+    </div>
+    <p id="out1">The first challenge arrived almost immediately.</p>
+    <p id="out2">In May 2018, Bitmain announced an Equihash ASIC. The hardware Bitcoin Gold had tried to escape had followed it.</p>
+    <p id="out3">That same month, the network suffered 51% attacks. Attackers, likely using rented hash power, reorganized the chain and double-spent BTG. Bitcoin Gold responded on July 3, 2018 with a second hard fork, switching to Equihash-BTG to break the new ASICs and make hash-power rental harder to use.</p>
+    <p id="out4">The sequence revealed the first hard lesson of ASIC resistance: it is a moving target. Enough economic reward creates an incentive to build specialized hardware. Changing the algorithm can delay the process; it cannot erase the incentive.</p>
+    <p id="out5">The attacks revealed a second lesson. Making mining accessible does not automatically make a network secure. Bitcoin Gold had changed the hardware, but not the underlying economics. Cheap power still mattered. Scale still mattered. Hash power could still be concentrated or rented.</p>
+    <p id="out6">The same vulnerability returned in January 2020. Attackers carried out two deep reorganizations and double-spent roughly 7,000 BTG.</p>
+    <p id="out7">Then came another problem, this time closer to home.</p>
+    <p id="out8">The project had promised more decentralized mining, yet it had allocated 100,000 BTG to itself during the first 8,000 blocks. Whatever the intended use of the endowment, critics had an easy objection: decentralization is not only about who can mine. It is also about who receives the coins.</p>
+    <p id="out9">And eventually, even control of the project itself became contested.</p>
+    <p id="out10">Jack Liao stepped down from the Bitcoin Gold board in late 2018, leaving the remaining team to run the project. Years later, a dispute erupted over the project's website. In 2024, Liao took control of the bitcoingold.org domain, while the remaining team moved to a new domain. Each side offered a different account of what happened: the team said Liao had left and sold his holdings; Liao presented the takeover as a rebirth of the project.</p>
+    <p id="out11">There was something almost paradoxical about it.</p>
+    <p id="out12">A project created to reduce the concentration of power in Bitcoin's mining industry had ended up fighting over who controlled its own infrastructure.</p>
+    <p id="out13">And that brought the story back to Bitcoin.</p>
+    <p id="out14">The 2017 SegWit battle had shown that large miners could exert significant pressure on Bitcoin's development, but they did not have the final say. SegWit activated after months of conflict, with user-activated soft-fork pressure helping tip the balance.</p>
+    <p id="out15">Bitcoin Gold changed the miners, the hardware, and the algorithm. But Bitcoin's miners were never the only ones with power.</p>
+    <p id="out16">Bitcoin Gold changed who could mine, but it did not change how power works in a decentralized network.</p>
+  </section>
+  <section class="phase" id="metrics">
+    <div class="phase-head">
+      <span class="phase-num">05</span>
+      <h2 id="metrics-h2">Years of Data</h2>
+      <span class="phase-time">~1 min</span>
+    </div>
+    <p id="metrics-intro">Monthly figures from CoinMetrics' public dataset, from BTG's fork (October 2017) through September 2026. BTG's price ends in July 2026: after that no exchange quotes it, and the last prices only repeat the day before.</p>
+
+    <div class="view-toggle-row">
+      <span class="view-toggle-label" id="view-label">Chart view:</span>
+      <div class="view-toggle" id="global-view-toggle">
+        <button type="button" class="active" data-mode="absolute" id="view-abs">Absolute</button>
+        <button type="button" data-mode="ratio" id="view-ratio">BTG as % of BTC</button>
+      </div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title" id="ct1">Price: BTG vs. BTC, Monthly (USD)</div>
+      <p class="chart-caption" id="cc1">Average daily close per month, log-scaled. BTG traded as a pre-launch token from the fork date, three weeks before its own chain went live.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-price" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-price"></div>
+      </div>
+      <div class="legend" id="legend-price"></div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title" id="ct2">Transactions: BTG vs. BTC, Monthly Count</div>
+      <p class="chart-caption" id="cc2">Total confirmed transactions each month on each chain, from BTG's mainnet launch (November 12, 2017).</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-tx" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-tx"></div>
+      </div>
+      <div class="legend" id="legend-tx"></div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title" id="ct3">Hashrate: BTG, Monthly Average (Sol/s)</div>
+      <p class="chart-caption" id="cc3">BTG's own network hashrate, in Equihash solutions per second. It can't be shown as a share of Bitcoin's: the two chains use different mining algorithms. In July 2018 BTG switched to a new algorithm, Equihash-BTG, which changed the units. The line changes color there, and values on either side aren't comparable. Dashed lines mark the algorithm change and the two 51% attacks.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-hash" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-hash"></div>
+      </div>
+      <div class="legend" id="legend-hash"></div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title" id="ct4">Timeline: Bitcoin's Forks and BTG's Branch</div>
+      <p class="chart-caption" id="cc4">Bitcoin split twice in 2017, with SegWit activating between the two splits, and added Taproot in 2021. BCH split again in 2018, into BCH and BSV. BTG's own branch carries its listings, attacks, second algorithm change, and delistings. Its color changes at the algorithm change, as in the hashrate chart. Events are evenly spaced, not to scale in time. The date under each point gives the actual timing.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-timeline" viewBox="0 0 820 345" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tooltip" id="tooltip-timeline"></div>
+      </div>
+      <div class="timeline-legend">
+        <span><span class="chain btc"></span>BTC</span>
+        <span><span class="chain bch"></span>BCH</span>
+        <span><span class="chain bsv"></span>BSV</span>
+        <span><span class="chain btg"></span><span id="tll6">BTG (Equihash)</span></span>
+        <span><span class="chain btg2"></span><span id="tll7">BTG (Equihash-BTG)</span></span>
+        <span><span class="dot"></span><span id="tll1">Exchange listing</span></span>
+        <span><span class="dot delist"></span><span id="tll2">Exchange delisting</span></span>
+        <span><span class="diamond"></span><span id="tll3">51% attack</span></span>
+        <span><span class="square"></span><span id="tll5">Protocol / network event</span></span>
+        <span id="tll4">Hover a point for details</span>
+      </div>
+    </div>
+  </section>
+  <section class="phase" id="similarities">
+    <div class="phase-head">
+      <span class="phase-num">06</span>
+      <h2 id="sim-h2">BTCB2 Similarities with Each Chain</h2>
+      <span class="phase-time">~? min</span>
+    </div>
+    <div class="placeholder-box" id="sim-box">Coming soon.</div>
+  </section>
+  <div class="sources-note">
+    <h3 id="sources-h3">Sources</h3>
+    <ol>
+      <li id="src1">Bitcoin Gold's fork height, block 491,407 &mdash; <a href="https://github.com/BTCGPU/BTCGPU/blob/master/src/chainparams.cpp" target="_blank" rel="noopener">BTCGPU/BTCGPU chainparams.cpp, GitHub</a></li>
+      <li id="src2">Mainnet launch, November 12, 2017 &mdash; <a href="https://bitcoingold.org/bitcoin-gold-blockchain-is-live/" target="_blank" rel="noopener">"Bitcoin Gold Blockchain is Live," Bitcoin Gold</a></li>
+      <li id="src3">Binance lists BTG, October 24, 2017 &mdash; <a href="https://www.binance.com/en/support/announcement/115002358672" target="_blank" rel="noopener">Binance announcement</a></li>
+      <li id="src4">The May 2018 51% attack and its window &mdash; <a href="https://bitcoingold.org/responding-to-attacks/" target="_blank" rel="noopener">"Responding to Attacks," Bitcoin Gold</a></li>
+      <li id="src5">388,296 BTG received by the attacker's address &mdash; <a href="https://btgexplorer.com/api/v2/address/GTNjvCGssb2rbLnDV1xxsHmunQdvXnY2Ft" target="_blank" rel="noopener">BTG block explorer</a></li>
+      <li id="src6">The switch to Equihash-BTG at block 536,200, July 3, 2018 &mdash; <a href="https://bitcoingold.org/a-successful-network-upgrade/" target="_blank" rel="noopener">"A Successful Network Upgrade," Bitcoin Gold</a></li>
+      <li id="src7">Bittrex removes BTG markets, September 14, 2018 &mdash; <a href="https://bittrex.zendesk.com/hc/en-us/articles/360015197572-Pending-Market-Removals-9-14-2018" target="_blank" rel="noopener">Bittrex notice (archived)</a></li>
+      <li id="src8">The January 2020 51% attacks, amounts and rental cost &mdash; <a href="https://gist.github.com/metalicjames/71321570a105940529e709651d0a9765" target="_blank" rel="noopener">James Lovejoy, MIT Digital Currency Initiative</a></li>
+      <li id="src9">Binance delists BTG, October 24, 2022 &mdash; <a href="https://www.binance.com/en/support/announcement/binance-will-delist-dnt-nbs-btg-and-tct-on-2022-10-24-cd7aae08f6a84ad89ca6a2c4d52fa32e" target="_blank" rel="noopener">Binance announcement</a></li>
+      <li id="src10">Bitfinex delists BTG, July 11, 2023 &mdash; <a href="https://support.bitfinex.com/hc/en-us/articles/115003076854-Bitcoin-Gold-BTG-Delisted" target="_blank" rel="noopener">"Bitcoin Gold (BTG) Delisted," Bitfinex</a></li>
+      <li id="src11">Monthly price, transaction and hashrate data &mdash; <a href="https://docs.coinmetrics.io/api/v4/" target="_blank" rel="noopener">Coin Metrics API v4 documentation (Community API)</a></li>
+      <li id="src12">Bitcoin Cash's fork block, 478,558 &mdash; <a href="https://www.blockchain.com/explorer/blocks/btc/478558" target="_blank" rel="noopener">Blockchain.com Explorer</a></li>
+      <li id="src13">Bitcoin's SegWit activation block, 481,824 &mdash; <a href="https://en.wikipedia.org/wiki/SegWit" target="_blank" rel="noopener">SegWit, Wikipedia</a></li>
+      <li id="src14">Bitcoin SV splits from Bitcoin Cash at block 556,767, November 15, 2018 &mdash; <a href="https://www.coindesk.com/markets/2018/11/15/bitcoin-cash-just-split-into-two-blockchains" target="_blank" rel="noopener">"Bitcoin Cash Just Split Into Two Blockchains," CoinDesk</a></li>
+      <li id="src15">Taproot activation block, 709,632 &mdash; <a href="https://blockstream.info/block-height/709632" target="_blank" rel="noopener">Blockstream Explorer</a></li>
+      <li id="src16">Further reorgs and counterattacks, January 23 to February 11, 2020 &mdash; <a href="https://medium.com/mit-media-lab-digital-currency-initiative/reorgs-on-bitcoin-gold-counterattacks-in-the-wild-da7e2b797c21" target="_blank" rel="noopener">"Reorgs on Bitcoin Gold: Counterattacks in the Wild," MIT Digital Currency Initiative</a></li>
+      <li id="src17">Jack Liao steps down from the board, November 19, 2018 &mdash; <a href="https://bitcoingold.org/leadership-for-another-year/" target="_blank" rel="noopener">"Leadership for Another Year," Bitcoin Gold</a></li>
+      <li id="src18">The 2024 dispute over the bitcoingold.org domain (the team's account) &mdash; <a href="https://bitcoin-takeover.com/bitcoin-gold-one-gpu-one-vote/" target="_blank" rel="noopener">"Bitcoin Gold: One GPU, One Vote," Bitcoin Takeover</a></li>
+    </ol>
+  </div>
+
+  <footer id="footer-text">
+    DATA: COINMETRICS COMMUNITY API (PRICE, TRANSACTIONS, HASHRATE). PART OF THE "HISTORY OF FORKS" SERIES.
+  </footer>
+
+  <div class="chapter-nav">
+    <a class="back-link" href="eth-vs-etc.html" id="backlink">&larr; Previous: Ethereum vs. Ethereum Classic</a>
+    <a class="back-link home-link" id="home-link" href="index.html" aria-label="Go to History of Forks">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    </a>
+    <a class="back-link" href="blake2b-retrospective.html" id="nextlink">Next: Bitcoin BLAKE2b: One Month Retrospective &rarr;</a>
+  </div>
 
 </div>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged tweet screenshot">
+  <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+const DATA = [{"month":"2017-10","btg_price":141.395890381824,"btc_price":5926.368046610168,"btg_tx":null,"btc_tx":2310251.0,"btg_hash":null},{"month":"2017-11","btg_price":226.4529542667826,"btc_price":7781.03213700565,"btg_tx":186791.0,"btc_tx":9341003.0,"btg_hash":71011788.56740418},{"month":"2017-12","btg_price":278.9058947544514,"btc_price":15194.10497518901,"btg_tx":167130.0,"btc_tx":11182855.0,"btg_hash":64072915.63616599},{"month":"2018-01","btg_price":216.95516297560363,"btc_price":12891.060519588613,"btg_tx":120141.0,"btc_tx":8869570.0,"btg_hash":43862740.1725071},{"month":"2018-02","btg_price":118.37156267616975,"btc_price":9396.599650507222,"btg_tx":77703.0,"btc_tx":5345436.0,"btg_hash":43860612.09327712},{"month":"2018-03","btg_price":72.80187280678201,"btc_price":8992.046454912237,"btg_tx":93519.0,"btc_tx":5690766.0,"btg_hash":45079960.41765308},{"month":"2018-04","btg_price":55.88761149196586,"btc_price":8018.054271692968,"btg_tx":74542.0,"btc_tx":5751589.0,"btg_hash":38196782.89933642},{"month":"2018-05","btg_price":57.872948105103106,"btc_price":8423.247831234328,"btg_tx":81741.0,"btc_tx":6130989.0,"btg_hash":31993186.789910767},{"month":"2018-06","btg_price":34.102408823039916,"btc_price":6769.3244134619135,"btg_tx":59903.0,"btc_tx":5747745.0,"btg_hash":26464029.215259645},{"month":"2018-07","btg_price":29.02748728097578,"btc_price":7118.681239927603,"btg_tx":26848.0,"btc_tx":6391313.0,"btg_hash":null},{"month":"2018-08","btg_price":20.71572002153142,"btc_price":6677.730917346958,"btg_tx":28265.0,"btc_tx":6725607.0,"btg_hash":2067534.7759516877},{"month":"2018-09","btg_price":21.62196363954323,"btc_price":6590.200040190922,"btg_tx":34631.0,"btc_tx":6863878.0,"btg_hash":2576222.525434028},{"month":"2018-10","btg_price":26.049071870654803,"btc_price":6415.1142316698415,"btg_tx":34840.0,"btc_tx":7576746.0,"btg_hash":3336753.6681873505},{"month":"2018-11","btg_price":24.681076307226476,"btc_price":5345.764674878239,"btg_tx":29625.0,"btc_tx":8055798.0,"btg_hash":3711631.443773534},{"month":"2018-12","btg_price":13.502906308174927,"btc_price":3665.740837408797,"btg_tx":22623.0,"btc_tx":8191030.0,"btg_hash":3012597.021023745},{"month":"2019-01","btg_price":11.728822879642271,"btc_price":3659.232663750683,"btg_tx":23182.0,"btc_tx":9222189.0,"btg_hash":2653264.439911141},{"month":"2019-02","btg_price":10.902113732180961,"btc_price":3659.201131282874,"btg_tx":21134.0,"btc_tx":9260134.0,"btg_hash":2302773.9267857145},{"month":"2019-03","btg_price":12.661295312894936,"btc_price":3923.4174107501753,"btg_tx":20369.0,"btc_tx":9458396.0,"btg_hash":2566505.68859543},{"month":"2019-04","btg_price":16.503170092933484,"btc_price":5145.797054693162,"btg_tx":27378.0,"btc_tx":10996420.0,"btg_hash":2728694.848333719},{"month":"2019-05","btg_price":21.90377667332751,"btc_price":7292.919984257462,"btg_tx":27611.0,"btc_tx":11500508.0,"btg_hash":3483800.4465184435},{"month":"2019-06","btg_price":27.441776655580366,"btc_price":9393.020061772837,"btg_tx":24197.0,"btc_tx":10481484.0,"btg_hash":3135246.0213931324},{"month":"2019-07","btg_price":25.151409399355355,"btc_price":10659.624927258157,"btg_tx":44785.0,"btc_tx":10302567.0,"btg_hash":3555103.893184364},{"month":"2019-08","btg_price":14.508212855163483,"btc_price":10628.744097537749,"btg_tx":72519.0,"btc_tx":10157607.0,"btg_hash":3031793.5604894715},{"month":"2019-09","btg_price":9.859754822172059,"btc_price":9792.419261390021,"btg_tx":101232.0,"btc_tx":9800953.0,"btg_hash":2620640.605403164},{"month":"2019-10","btg_price":7.83994588448536,"btc_price":8387.15982785581,"btg_tx":25704.0,"btc_tx":9890188.0,"btg_hash":2145722.8910020906},{"month":"2019-11","btg_price":7.640608977038521,"btc_price":8339.688379551919,"btg_tx":17332.0,"btc_tx":9240225.0,"btg_hash":2039820.8929652777},{"month":"2019-12","btg_price":5.566135342490903,"btc_price":7246.166450772044,"btg_tx":18610.0,"btc_tx":9418563.0,"btg_hash":1708486.887828181},{"month":"2020-01","btg_price":9.183106783823908,"btc_price":8365.7359320865,"btg_tx":36749.0,"btc_tx":9605536.0,"btg_hash":2412180.5057605286},{"month":"2020-02","btg_price":11.068655199047123,"btc_price":9646.19281580645,"btg_tx":33726.0,"btc_tx":9437431.0,"btg_hash":2216243.6507742656},{"month":"2020-03","btg_price":8.045059399850137,"btc_price":6885.037264610397,"btg_tx":27195.0,"btc_tx":8897428.0,"btg_hash":2355577.1124290624},{"month":"2020-04","btg_price":9.077830167659306,"btc_price":7224.347704104812,"btg_tx":19442.0,"btc_tx":8703117.0,"btg_hash":2121239.038278935},{"month":"2020-05","btg_price":9.270158454913398,"btc_price":9264.668143189232,"btg_tx":14618.0,"btc_tx":9088147.0,"btg_hash":1132266.1610909498},{"month":"2020-06","btg_price":8.9974101441833,"btc_price":9478.762561918955,"btg_tx":14154.0,"btc_tx":9189828.0,"btg_hash":922875.787538966},{"month":"2020-07","btg_price":9.020835065847018,"btc_price":9597.276008946852,"btg_tx":21116.0,"btc_tx":10152857.0,"btg_hash":843519.1216636798},{"month":"2020-08","btg_price":10.53937094973135,"btc_price":11648.209951568604,"btg_tx":17532.0,"btc_tx":9789543.0,"btg_hash":875597.053532706},{"month":"2020-09","btg_price":8.319220995848209,"btc_price":10647.193640549383,"btg_tx":9210.0,"btc_tx":9488466.0,"btg_hash":796354.1571828703},{"month":"2020-10","btg_price":7.743475064025642,"btc_price":11895.126609905547,"btg_tx":9577.0,"btc_tx":9280893.0,"btg_hash":774558.3574238352},{"month":"2020-11","btg_price":8.239580466687391,"btc_price":16670.627445129558,"btg_tx":12948.0,"btc_tx":9141753.0,"btg_hash":781848.6144510031},{"month":"2020-12","btg_price":8.790676227497768,"btc_price":21995.8736749326,"btg_tx":12971.0,"btc_tx":9723135.0,"btg_hash":730920.150086619},{"month":"2021-01","btg_price":11.132560831325309,"btc_price":34752.85856475368,"btg_tx":23084.0,"btc_tx":10071413.0,"btg_hash":737910.9888773148},{"month":"2021-02","btg_price":20.735668350518942,"btc_price":46316.12198772021,"btg_tx":33408.0,"btc_tx":8967168.0,"btg_hash":806080.3614628803},{"month":"2021-03","btg_price":31.208247639591573,"btc_price":54933.491410035625,"btg_tx":26247.0,"btc_tx":9337574.0,"btg_hash":1027100.1582885304},{"month":"2021-04","btg_price":84.98394634737207,"btc_price":57105.45609389246,"btg_tx":45735.0,"btc_tx":8346904.0,"btg_hash":1941524.5742550152},{"month":"2021-05","btg_price":87.53542724141582,"btc_price":46507.35033992572,"btg_tx":28312.0,"btc_tx":7786747.0,"btg_hash":2062389.200162784},{"month":"2021-06","btg_price":51.94825602863497,"btc_price":35811.81382305475,"btg_tx":16373.0,"btc_tx":6510722.0,"btg_hash":1928279.5362337963},{"month":"2021-07","btg_price":43.611553265913344,"btc_price":34412.27598575064,"btg_tx":12037.0,"btc_tx":6803948.0,"btg_hash":1644436.5807948774},{"month":"2021-08","btg_price":64.2756519053435,"btc_price":45746.96164301578,"btg_tx":16203.0,"btc_tx":7455990.0,"btg_hash":1722494.1396565114},{"month":"2021-09","btg_price":64.45730748332434,"btc_price":45927.461348433666,"btg_tx":13674.0,"btc_tx":7603386.0,"btg_hash":2075097.0902280093},{"month":"2021-10","btg_price":66.40884669564402,"btc_price":57915.467306096216,"btg_tx":13918.0,"btc_tx":8449029.0,"btg_hash":2150095.445848641},{"month":"2021-11","btg_price":61.62453195946671,"btc_price":60684.55066210988,"btg_tx":13070.0,"btc_tx":8300559.0,"btg_hash":2088971.206394676},{"month":"2021-12","btg_price":44.1045635508269,"btc_price":49356.9545744311,"btg_tx":11209.0,"btc_tx":8108023.0,"btg_hash":2133665.906584528},{"month":"2022-01","btg_price":34.62427443350344,"btc_price":41113.14966322278,"btg_tx":10949.0,"btc_tx":7739847.0,"btg_hash":2145319.80114882},{"month":"2022-02","btg_price":31.595530824378987,"btc_price":40756.41008039158,"btg_tx":10109.0,"btc_tx":6996693.0,"btg_hash":2007112.3950074406},{"month":"2022-03","btg_price":34.8421816268567,"btc_price":41973.92290655153,"btg_tx":12063.0,"btc_tx":7972122.0,"btg_hash":1984902.5837847223},{"month":"2022-04","btg_price":35.38173261187794,"btc_price":41441.3370125229,"btg_tx":9969.0,"btc_tx":7817057.0,"btg_hash":1858375.271123071},{"month":"2022-05","btg_price":22.63305796967614,"btc_price":31706.786788099776,"btg_tx":9786.0,"btc_tx":8054790.0,"btg_hash":1681140.4502777779},{"month":"2022-06","btg_price":18.287820875624202,"btc_price":24352.584424611352,"btg_tx":9401.0,"btc_tx":7512554.0,"btg_hash":1788093.3080814043},{"month":"2022-07","btg_price":19.684641273449063,"btc_price":21545.18048662921,"btg_tx":9340.0,"btc_tx":7680059.0,"btg_hash":1647587.6175205344},{"month":"2022-08","btg_price":27.213549272072015,"btc_price":22362.41746393733,"btg_tx":8347.0,"btc_tx":7811692.0,"btg_hash":1852373.6144619922},{"month":"2022-09","btg_price":22.637647267591742,"btc_price":19792.869884293774,"btg_tx":7364.0,"btc_tx":7683921.0,"btg_hash":4758592.474378086},{"month":"2022-10","btg_price":18.88325967512698,"btc_price":19647.71690510737,"btg_tx":11591.0,"btc_tx":7968474.0,"btg_hash":6341868.026029719},{"month":"2022-11","btg_price":15.491209789338402,"btc_price":17579.60670669784,"btg_tx":8754.0,"btc_tx":7868100.0,"btg_hash":5248823.241433642},{"month":"2022-12","btg_price":13.832983235187307,"btc_price":16937.163565426752,"btg_tx":7133.0,"btc_tx":7950408.0,"btg_hash":4525138.4299551975},{"month":"2023-01","btg_price":15.174122489171255,"btc_price":20239.865773646812,"btg_tx":7423.0,"btc_tx":8758990.0,"btg_hash":4873934.311859319},{"month":"2023-02","btg_price":17.195926386431218,"btc_price":23303.395567149542,"btg_tx":6226.0,"btc_tx":8385176.0,"btg_hash":4975746.42745577},{"month":"2023-03","btg_price":15.633123320434922,"btc_price":25123.182304581365,"btg_tx":10844.0,"btc_tx":9770106.0,"btg_hash":3870295.5510823624},{"month":"2023-04","btg_price":15.500169328632717,"btc_price":28855.591357253063,"btg_tx":9104.0,"btc_tx":10720736.0,"btg_hash":3464584.8703645836},{"month":"2023-05","btg_price":13.079061882414148,"btc_price":27516.26549124262,"btg_tx":4784.0,"btc_tx":16298437.0,"btg_hash":3939786.2686394863},{"month":"2023-06","btg_price":12.3452304012462,"btc_price":27760.893140541597,"btg_tx":5331.0,"btc_tx":12141700.0,"btg_hash":3754761.1247939817},{"month":"2023-07","btg_price":14.551948426910071,"btc_price":30050.34557770404,"btg_tx":7473.0,"btc_tx":14130344.0,"btg_hash":3883313.3023092146},{"month":"2023-08","btg_price":14.271843964434296,"btc_price":27845.168167370524,"btg_tx":5266.0,"btc_tx":14405888.0,"btg_hash":3726151.7827094533},{"month":"2023-09","btg_price":12.644738160772103,"btc_price":26306.336479271373,"btg_tx":4866.0,"btc_tx":14672694.0,"btg_hash":4356435.126857254},{"month":"2023-10","btg_price":13.628778668587783,"btc_price":29748.8713124187,"btg_tx":4705.0,"btc_tx":10136497.0,"btg_hash":4422698.50072282},{"month":"2023-11","btg_price":15.586639545330522,"btc_price":36604.63068173582,"btg_tx":5197.0,"btc_tx":16411243.0,"btg_hash":3958608.8375285496},{"month":"2023-12","btg_price":17.463720163946338,"btc_price":42548.02586179559,"btg_tx":6429.0,"btc_tx":17539793.0,"btg_hash":2632220.6605891576},{"month":"2024-01","btg_price":22.079753886085612,"btc_price":42911.79087259855,"btg_tx":6371.0,"btc_tx":14735261.0,"btg_hash":3584485.793695863},{"month":"2024-02","btg_price":23.596575230537972,"btc_price":49872.90727605353,"btg_tx":9562.0,"btc_tx":10565915.0,"btg_hash":3982965.943538075},{"month":"2024-03","btg_price":42.925066944349986,"btc_price":67711.85272275221,"btg_tx":13520.0,"btc_tx":11622871.0,"btg_hash":5673066.476338112},{"month":"2024-04","btg_price":37.202304939873535,"btc_price":65915.19861520553,"btg_tx":8364.0,"btc_tx":14478233.0,"btg_hash":5379173.481461034},{"month":"2024-05","btg_price":34.0909046198864,"btc_price":65255.59593221282,"btg_tx":8597.0,"btc_tx":18202551.0,"btg_hash":3649686.2432851703},{"month":"2024-06","btg_price":27.814220647517217,"btc_price":65903.24148341126,"btg_tx":5490.0,"btc_tx":17413013.0,"btg_hash":3195303.5026138113},{"month":"2024-07","btg_price":24.357959125937178,"btc_price":62837.6423336287,"btg_tx":5466.0,"btc_tx":19506505.0,"btg_hash":2816687.6061962363},{"month":"2024-08","btg_price":22.015309121471127,"btc_price":59963.00688085632,"btg_tx":4257.0,"btc_tx":18538105.0,"btg_hash":3017404.9869369776},{"month":"2024-09","btg_price":22.11407044468302,"btc_price":60337.91305350672,"btg_tx":4055.0,"btc_tx":17757745.0,"btg_hash":2805787.6240636576},{"month":"2024-10","btg_price":22.191996100808122,"btc_price":65582.58307140702,"btg_tx":4734.0,"btc_tx":20477350.0,"btg_hash":2713379.6372535843},{"month":"2024-11","btg_price":28.48342103195476,"btc_price":86569.09437550165,"btg_tx":16349.0,"btc_tx":16097068.0,"btg_hash":3050322.8307812503},{"month":"2024-12","btg_price":23.007273938882676,"btc_price":98246.95644894513,"btg_tx":11375.0,"btc_tx":12793058.0,"btg_hash":2555292.7134785694},{"month":"2025-01","btg_price":10.821390807601647,"btc_price":100008.38356327183,"btg_tx":14568.0,"btc_tx":11544592.0,"btg_hash":1761815.1475377092},{"month":"2025-02","btg_price":5.729347599235065,"btc_price":95251.19750017741,"btg_tx":5632.0,"btc_tx":11384544.0,"btg_hash":1086387.1767551259},{"month":"2025-03","btg_price":3.2745965000644923,"btc_price":85064.30919960975,"btg_tx":5877.0,"btc_tx":12033581.0,"btg_hash":698418.0020680256},{"month":"2025-04","btg_price":0.7819028250262439,"btc_price":86436.3487561952,"btg_tx":5549.0,"btc_tx":12427851.0,"btg_hash":311285.7210790895},{"month":"2025-05","btg_price":0.7428571259521417,"btc_price":103629.43386172956,"btg_tx":3662.0,"btc_tx":12145551.0,"btg_hash":201457.72801523298},{"month":"2025-06","btg_price":0.6799735535799541,"btc_price":105806.69944625947,"btg_tx":2018.0,"btc_tx":10278854.0,"btg_hash":159868.44977044754},{"month":"2025-07","btg_price":0.6440797019050927,"btc_price":115353.56446927854,"btg_tx":2191.0,"btc_tx":12981028.0,"btg_hash":127552.54627874849},{"month":"2025-08","btg_price":0.5210278803831706,"btc_price":114845.93707753062,"btg_tx":1676.0,"btc_tx":14115655.0,"btg_hash":103188.71214829749},{"month":"2025-09","btg_price":0.8588405248103937,"btc_price":113170.91745874342,"btg_tx":2230.0,"btc_tx":15185649.0,"btg_hash":137012.6753591821},{"month":"2025-10","btg_price":1.3810455639986245,"btc_price":114119.52504498413,"btg_tx":2691.0,"btc_tx":14490047.0,"btg_hash":297595.34531922045},{"month":"2025-11","btg_price":0.848366133701411,"btc_price":96282.01454801293,"btg_tx":2107.0,"btc_tx":12861163.0,"btg_hash":256622.72860339502},{"month":"2025-12","btg_price":0.5046208601583125,"btc_price":88915.91901772215,"btg_tx":1950.0,"btc_tx":14237003.0,"btg_hash":152176.62166330646},{"month":"2026-01","btg_price":2.223130072823356,"btc_price":90477.77406900324,"btg_tx":1543.0,"btc_tx":12112239.0,"btg_hash":186972.74994436977},{"month":"2026-02","btg_price":0.5192983657776891,"btc_price":68855.45190982717,"btg_tx":1648.0,"btc_tx":13116990.0,"btg_hash":261567.44276909725},{"month":"2026-03","btg_price":0.5359676937693096,"btc_price":69532.57664804584,"btg_tx":1169.0,"btc_tx":14725053.0,"btg_hash":343073.27895571984},{"month":"2026-04","btg_price":0.5044840202536606,"btc_price":73725.33581697839,"btg_tx":1240.0,"btc_tx":16801905.0,"btg_hash":319643.1994405864},{"month":"2026-05","btg_price":0.4170536400994755,"btc_price":77985.6057137653,"btg_tx":1450.0,"btc_tx":20004548.0,"btg_hash":154220.47541666668},{"month":"2026-06","btg_price":0.2705229493175551,"btc_price":62972.21526557511,"btg_tx":1560.0,"btc_tx":19553416.0,"btg_hash":79381.98778433642},{"month":"2026-07","btg_price":0.25751465503153553,"btc_price":63867.633603806484,"btg_tx":1200.0,"btc_tx":20345941.0,"btg_hash":71685.91172901733},{"month":"2026-08","btg_price":null,"btc_price":69472.36112530269,"btg_tx":999.0,"btc_tx":20837153.0,"btg_hash":60160.583131720436},{"month":"2026-09","btg_price":null,"btc_price":80365.95528584112,"btg_tx":1008.0,"btc_tx":20272642.0,"btg_hash":54672.94545697637}];
+let CURRENT_LANG = 'en';
+const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_ES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtMonth(m){
+  const [y, mo] = m.split('-');
+  return (CURRENT_LANG === 'es' ? MONTHS_ES : MONTHS_EN)[parseInt(mo,10)-1] + ' ' + y;
+}
+function fmtInt(n){ return Math.round(n).toLocaleString(CURRENT_LANG === 'es' ? 'es-ES' : 'en-US'); }
+function seriesLabel(s){ return CURRENT_LANG === 'es' ? s.labelEs : s.label; }
+function fmtUSD(n){
+  if (n >= 1000) return '$' + Math.round(n).toLocaleString('en-US');
+  if (n >= 1) return '$' + n.toFixed(2);
+  return '$' + n.toFixed(4);
+}
+// axis ticks land on "nice" round numbers (1/2/5 * 10^n) already — this just
+// strips the forced decimal padding those nice numbers don't need, without
+// touching the full-precision tooltip formatters above.
+function trimNum(v){
+  if (v === 0) return '0';
+  return parseFloat(v.toPrecision(3)).toString();
+}
+function axisUSD(v){
+  if (v >= 1e6) return '$' + trimNum(v/1e6) + 'M';
+  if (v >= 1e3) return '$' + trimNum(v/1e3) + 'K';
+  return '$' + trimNum(v);
+}
+function axisInt(v){ return v >= 1e6 ? trimNum(v/1e6) + 'M' : v >= 1e3 ? trimNum(v/1e3) + 'K' : trimNum(v); }
+// BTG's shares fall to thousandths of a percent, so keep 3 significant digits below 1%.
+function fmtPct(n){ return (n >= 1 ? n.toFixed(2) : n.toPrecision(3)) + '%'; }
+function fmtSol(n){ return n >= 1e6 ? trimNum(n/1e6) + 'M Sol/s' : n >= 1e3 ? trimNum(n/1e3) + 'K Sol/s' : trimNum(n) + ' Sol/s'; }
+function axisSol(v){ return v >= 1e6 ? trimNum(v/1e6) + 'M' : v >= 1e3 ? trimNum(v/1e3) + 'K' : trimNum(v); }
+function axisPct(v){ return trimNum(v) + '%'; }
+
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+// generic log-scale line chart, 1 or 2 series
+// yFmt: full-precision formatter, used in the hover tooltip
+// axisFmt: compact formatter for the left-axis tick labels (defaults to yFmt)
+function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts){
+  axisFmt = axisFmt || yFmt;
+  opts = opts || {};
+  const svg = document.getElementById(svgId);
+  const vb = svg.viewBox.baseVal;
+  const W = vb.width, H = vb.height;
+  const mL = 58, mR = 14, mT = 12, mB = 26;
+  const plotW = W - mL - mR, plotH = H - mT - mB;
+  const n = DATA.length;
+  const xStep = plotW / (n - 1);
+  function xAt(i){ return mL + i * xStep; }
+
+  let yMax = 0, yMinPos = Infinity;
+  seriesDefs.forEach(s => DATA.forEach(d => {
+    const v = s.get(d);
+    if (v > 0){ yMax = Math.max(yMax, v); yMinPos = Math.min(yMinPos, v); }
+  }));
+  yMax *= 1.15;
+  const logMin = Math.log10(yMinPos * 0.85);
+  const logMax = Math.log10(yMax);
+  function yAt(v){
+    if (v <= 0) return null;
+    return mT + plotH - ((Math.log10(v) - logMin) / (logMax - logMin)) * plotH;
+  }
+
+  svg.innerHTML = '';
+
+  const NICE = [];
+  for (let e = -7; e <= 12; e++) [1,2,5].forEach(m => NICE.push(m * Math.pow(10, e)));
+  NICE.filter(v => Math.log10(v) >= logMin - 0.001 && Math.log10(v) <= logMax + 0.001).forEach(v => {
+    const y = yAt(v);
+    svg.appendChild(el('line', {x1:mL, y1:y, x2:mL+plotW, y2:y, class:'gridline'}));
+    const lbl = svg.appendChild(el('text', {x:mL-6, y:y+3, class:'axis-label', 'text-anchor':'end'}));
+    lbl.textContent = axisFmt(v);
+  });
+
+  const yearTicks = [];
+  let lastYear = null;
+  DATA.forEach((d,i) => {
+    const yr = d.month.slice(0,4);
+    if (yr !== lastYear){
+      if (yearTicks.length && i - yearTicks[yearTicks.length - 1] < 6) yearTicks.pop();
+      yearTicks.push(i); lastYear = yr;
+    }
+  });
+  yearTicks.forEach(i => {
+    const lbl = svg.appendChild(el('text', {x:xAt(i), y:H-6, class:'axis-label', 'text-anchor':'middle'}));
+    lbl.textContent = DATA[i].month.slice(0,4);
+  });
+
+  // optional flagged months: a dashed guide + short label (same as the BCH chapter)
+  (opts.annotations || []).forEach(a => {
+    const i = DATA.findIndex(d => d.month === a.month);
+    if (i < 0) return;
+    const x = xAt(i);
+    svg.appendChild(el('line', {x1:x, x2:x, y1:mT, y2:mT+plotH, class:'annotation-line'}));
+    const left = i < n/2;
+    const lbl = svg.appendChild(el('text', {x: x + (left ? 4 : -4), y:mT + 9 + (a.row || 0) * 11, class:'annotation-label', 'text-anchor': left ? 'start' : 'end'}));
+    lbl.textContent = CURRENT_LANG === 'es' ? a.labelEs : a.label;
+  });
+
+  const baseline = mT + plotH;
+  seriesDefs.forEach(s => {
+    let path = ''; let area = ''; let run = [];
+    const closeRun = () => {
+      if (run.length) area += 'M' + run.map(p => p[0].toFixed(2) + ' ' + p[1].toFixed(2)).join(' L')
+        + ` L${run[run.length-1][0].toFixed(2)} ${baseline.toFixed(2)} L${run[0][0].toFixed(2)} ${baseline.toFixed(2)} Z `;
+      run = [];
+    };
+    DATA.forEach((d,i) => {
+      const y = yAt(s.get(d));
+      const x = xAt(i);
+      if (y === null){ closeRun(); return; }
+      path += (!run.length ? 'M' : 'L') + x.toFixed(2) + ' ' + y.toFixed(2) + ' ';
+      run.push([x, y]);
+    });
+    closeRun();
+    if (seriesDefs.length === 1 && area){
+      svg.appendChild(el('path', {d:area, class:'series-area-' + s.key}));
+    }
+    svg.appendChild(el('path', {d:path, class:'series-' + s.key}));
+  });
+
+  seriesDefs.forEach(s => {
+    for (let i = n - 1; i >= 0; i--){
+      const y = yAt(s.get(DATA[i]));
+      if (y !== null){
+        svg.appendChild(el('circle', {cx:xAt(i), cy:y, r:3.5, class:'end-dot ' + s.key}));
+        break;
+      }
+    }
+  });
+
+  const crosshair = el('line', {class:'crosshair-line', y1:mT, y2:mT+plotH, x1:mL, x2:mL});
+  svg.appendChild(crosshair);
+  const dots = seriesDefs.map(s => {
+    const c = el('circle', {class:'hover-dot ' + s.key});
+    svg.appendChild(c);
+    return c;
+  });
+  const overlay = el('rect', {x:mL, y:mT, width:plotW, height:plotH, class:'capture-rect'});
+  svg.appendChild(overlay);
+
+  const tooltip = document.getElementById(tooltipId);
+  function show(i){
+    const d = DATA[i];
+    const x = xAt(i);
+    crosshair.setAttribute('x1', x); crosshair.setAttribute('x2', x); crosshair.style.opacity = 1;
+    const rows = seriesDefs.map((s, si) => {
+      const v = s.get(d);
+      const y = yAt(v);
+      if (y === null){ dots[si].style.opacity = 0; return ''; }
+      dots[si].setAttribute('cx', x); dots[si].setAttribute('cy', y); dots[si].style.opacity = 1;
+      return `<div class="row"><span class="k"><span class="dot" style="background:var(--${s.key})"></span>${seriesLabel(s)}</span><span class="v">${yFmt(v)}</span></div>`;
+    }).join('');
+    tooltip.innerHTML = `<div class="t-date">${fmtMonth(d.month)}</div>${rows}`;
+    tooltip.style.left = ((x / W) * 100) + '%';
+    tooltip.style.opacity = 1;
+  }
+  function hide(){
+    crosshair.style.opacity = 0;
+    dots.forEach(dot => dot.style.opacity = 0);
+    tooltip.style.opacity = 0;
+  }
+  function onMove(clientX){
+    const rect = svg.getBoundingClientRect();
+    const px = ((clientX - rect.left) / rect.width) * W;
+    let i = Math.round((px - mL) / xStep);
+    i = Math.max(0, Math.min(n-1, i));
+    show(i);
+  }
+  overlay.addEventListener('mousemove', e => onMove(e.clientX));
+  overlay.addEventListener('mouseleave', hide);
+  overlay.addEventListener('touchmove', e => { onMove(e.touches[0].clientX); e.preventDefault(); }, {passive:false});
+  overlay.addEventListener('touchend', hide);
+
+  const legend = document.getElementById(legendId);
+  legend.innerHTML = seriesDefs.map(s =>
+    `<span><span class="swatch" style="background:var(--${s.key})"></span>${seriesLabel(s)}</span>`
+  ).join('');
+}
+
+const ATTACKS = [
+  {month:'2018-05', label:'51% attack', labelEs:'Ataque del 51%'},
+  // two months after the May attack: a second label row keeps the two apart
+  {month:'2018-07', label:'New PoW: Equihash-BTG', labelEs:'Nuevo PoW: Equihash-BTG', row:1},
+  {month:'2020-01', label:'51% attacks', labelEs:'Ataques del 51%'},
+];
+const CHART_CONFIGS = {
+  price: {
+    svgId:'chart-price', tooltipId:'tooltip-price', legendId:'legend-price',
+    absolute: {
+      seriesDefs:[
+        {key:'btc', label:'BTC price', labelEs:'Precio de BTC', get:d=>d.btc_price},
+        {key:'btg', label:'BTG price', labelEs:'Precio de BTG', get:d=>d.btg_price},
+      ], yFmt:fmtUSD, axisFmt:axisUSD,
+    },
+    ratio: {
+      seriesDefs:[
+        {key:'btg', label:'BTG price as % of BTC', labelEs:'Precio de BTG como % de BTC', get:d=> d.btg_price && d.btc_price ? d.btg_price/d.btc_price*100 : null},
+      ], yFmt:fmtPct, axisFmt:axisPct,
+    },
+  },
+  tx: {
+    svgId:'chart-tx', tooltipId:'tooltip-tx', legendId:'legend-tx',
+    absolute: {
+      seriesDefs:[
+        {key:'btc', label:'BTC transactions/month', labelEs:'Transacciones de BTC/mes', get:d=>d.btc_tx},
+        {key:'btg', label:'BTG transactions/month', labelEs:'Transacciones de BTG/mes', get:d=>d.btg_tx},
+      ], yFmt:fmtInt, axisFmt:axisInt,
+    },
+    ratio: {
+      seriesDefs:[
+        {key:'btg', label:'BTG transactions as % of BTC', labelEs:'Transacciones de BTG como % de BTC', get:d=> d.btg_tx && d.btc_tx ? d.btg_tx/d.btc_tx*100 : null},
+      ], yFmt:fmtPct, axisFmt:axisPct,
+    },
+  },
+  // No ratio view: BTG and BTC hashrates are in different units (different algorithms).
+  hash: {
+    svgId:'chart-hash', tooltipId:'tooltip-hash', legendId:'legend-hash',
+    absolute: {
+      seriesDefs:[
+        {key:'btg', label:'Equihash (to June 2018)', labelEs:'Equihash (hasta junio de 2018)', get:d=> d.month < '2018-07' ? d.btg_hash : null},
+        {key:'btg2', label:'Equihash-BTG (from August 2018)', labelEs:'Equihash-BTG (desde agosto de 2018)', get:d=> d.month > '2018-07' ? d.btg_hash : null},
+      ], yFmt:fmtSol, axisFmt:axisSol, annotations:ATTACKS,
+    },
+  },
+};
+CHART_CONFIGS.hash.ratio = CHART_CONFIGS.hash.absolute;
+
+function renderMetricChart(name, mode){
+  const cfg = CHART_CONFIGS[name];
+  const view = cfg[mode];
+  renderChart(cfg.svgId, cfg.tooltipId, cfg.legendId, view.seriesDefs, view.yFmt, view.axisFmt, {annotations: view.annotations});
+}
+
+Object.keys(CHART_CONFIGS).forEach(name => renderMetricChart(name, 'absolute'));
+
+// ---------------- timeline: listings, attacks, delistings ----------------
+// Sources for every event are in btg_timeline_research.md and the page's
+// Sources list. type: listing | delist | attack | protocol.
+// Events on Bitcoin's own row: the two 2017 splits and SegWit between them.
+const MAIN_EVENTS = [
+  {type:'protocol', date:'2017-08-01', callout:'Bitcoin Cash hard fork', calloutEs:'Hard fork de Bitcoin Cash',
+   title:'Bitcoin Cash splits from Bitcoin', titleEs:'Bitcoin Cash se separa de Bitcoin',
+   detail:'At block 478,558, Bitcoin Cash forks off to raise the block size limit. See Chapter 1.',
+   detailEs:'En el bloque 478,558, Bitcoin Cash se separa para aumentar el límite de tamaño de bloque. Ver el Capítulo 1.'},
+  {type:'protocol', date:'2017-08-24', callout:'SegWit soft fork', calloutEs:'Soft fork de SegWit',
+   title:'SegWit activates on Bitcoin', titleEs:'SegWit se activa en Bitcoin',
+   detail:'At block 481,824, Bitcoin activates Segregated Witness, the upgrade at the center of the 2017 fights.',
+   detailEs:'En el bloque 481,824, Bitcoin activa Segregated Witness, la actualización en el centro de las disputas de 2017.'},
+  {type:'protocol', date:'2017-10-24', callout:'Bitcoin Gold hard fork', calloutEs:'Hard fork de Bitcoin Gold',
+   title:'Bitcoin Gold forks from Bitcoin', titleEs:'Bitcoin Gold se separa de Bitcoin',
+   detail:'BTG copies Bitcoin\'s history up to block 491,406 and splits at block 491,407. Its own chain doesn\'t run yet.',
+   detailEs:'BTG copia la historia de Bitcoin hasta el bloque 491,406 y se separa en el bloque 491,407. Su propia cadena todavía no funciona.'},
+  {type:'protocol', date:'2021-11-14', callout:'Taproot soft fork', calloutEs:'Soft fork de Taproot',
+   title:'Taproot activates on Bitcoin', titleEs:'Taproot se activa en Bitcoin',
+   detail:'At block 709,632, Bitcoin activates Taproot, its first major upgrade since SegWit.',
+   detailEs:'En el bloque 709,632, Bitcoin activa Taproot, su primera gran actualización desde SegWit.'},
+];
+// Events on the BCH branch.
+const BCH_EVENTS = [
+  {type:'protocol', date:'2018-11-15', callout:'Bitcoin SV hard fork', calloutEs:'Hard fork de Bitcoin SV',
+   title:'Bitcoin SV splits from Bitcoin Cash', titleEs:'Bitcoin SV se separa de Bitcoin Cash',
+   detail:'At block 556,767, a fight between two Bitcoin Cash camps splits the chain. The faction led by Craig Wright continues as Bitcoin SV.',
+   detailEs:'En el bloque 556,767, una disputa entre dos grupos de Bitcoin Cash divide la cadena. La facción liderada por Craig Wright continúa como Bitcoin SV.'},
+];
+// BTG's own branch, in date order. The fork itself sits on Bitcoin's row (MAIN_EVENTS).
+const TIMELINE_EVENTS = [
+  {type:'listing', date:'2017-10-24', label:'Listed', labelEs:'Listado',
+   title:'Binance and Bitfinex list BTG', titleEs:'Binance y Bitfinex listan BTG',
+   detail:'Both open BTG trading on the fork day, three weeks before BTG\'s chain goes live. Kraken declines; Coinbase never supports it.',
+   detailEs:'Ambos abren el <em>trading</em> de BTG el día del <em>fork</em>, tres semanas antes de que su cadena funcione. Kraken lo rechaza; Coinbase nunca lo soporta.'},
+  {type:'protocol', date:'2017-11-12', label:'Mainnet', labelEs:'Lanzamiento',
+   title:'BTG mainnet launches', titleEs:'Se lanza la red principal de BTG',
+   detail:'The chain goes live after a launch delayed by an attack. The first public block, 499,407, follows an 8,000-block premine.',
+   detailEs:'La cadena entra en funcionamiento tras un lanzamiento retrasado por un ataque. El primer bloque público, 499,407, llega después de una preminería de 8,000 bloques.'},
+  {type:'attack', date:'2018-05-16', label:'51% attack', labelEs:'Ataque 51%',
+   title:'First 51% attack', titleEs:'Primer ataque del 51%',
+   detail:'From May 16 to 19, an attacker rewrites blocks to double-spend on exchanges. 388,296 BTG (about $18M) passes through the attacker\'s address.',
+   detailEs:'Del 16 al 19 de mayo, un atacante reescribe bloques para gastar dos veces en <em>exchanges</em>. 388,296 BTG (unos $18 millones) pasan por la dirección del atacante.'},
+  {type:'protocol', date:'2018-07-03', label:'New PoW', labelEs:'Nuevo PoW',
+   title:'BTG switches to Equihash-BTG', titleEs:'BTG cambia a Equihash-BTG',
+   detail:'At block 536,200, BTG changes its mining algorithm to lock out ASICs that had arrived for the old one, and changes its difficulty adjustment.',
+   detailEs:'En el bloque 536,200, BTG cambia su algoritmo de minería para dejar fuera los ASIC que habían llegado para el anterior, y cambia su ajuste de dificultad.'},
+  {type:'delist', date:'2018-09-14', label:'Bittrex out', labelEs:'Sale Bittrex',
+   title:'Bittrex delists BTG', titleEs:'Bittrex deslista BTG',
+   detail:'Bittrex removes all BTG markets. BTG says it declined to pay Bittrex 12,372 BTG (about $275K) for losses from the May attack.',
+   detailEs:'Bittrex retira todos los mercados de BTG. BTG dice que se negó a pagarle 12,372 BTG (unos $275 mil) por las pérdidas del ataque de mayo.'},
+  {type:'attack', date:'2020-01-23', label:'51% attacks', labelEs:'Ataques 51%',
+   title:'Two more 51% attacks', titleEs:'Otros dos ataques del 51%',
+   detail:'Two reorgs on January 23 and 24 double-spend about 7,167 BTG ($72K), using roughly $3,400 of rented hashpower.',
+   detailEs:'Dos reorganizaciones el 23 y 24 de enero gastan dos veces unos 7,167 BTG ($72 mil), con unos $3,400 de poder de <em>hash</em> alquilado.'},
+  {type:'delist', date:'2022-10-24', label:'Binance out', labelEs:'Sale Binance',
+   title:'Binance delists BTG', titleEs:'Binance deslista BTG',
+   detail:'Binance ends BTG trading five years to the day after listing it.',
+   detailEs:'Binance termina el <em>trading</em> de BTG cinco años exactos después de listarlo.'},
+  {type:'delist', date:'2023-07-11', label:'Bitfinex out', labelEs:'Sale Bitfinex',
+   title:'Bitfinex delists BTG', titleEs:'Bitfinex deslista BTG',
+   detail:'Bitfinex, the other fork-day exchange, ends BTG trading.',
+   detailEs:'Bitfinex, el otro <em>exchange</em> del día del <em>fork</em>, termina el <em>trading</em> de BTG.'},
+];
+function fmtLongDate(iso){
+  const [y, m, d] = iso.split('-').map(Number);
+  if (CURRENT_LANG === 'es') return d + ' ' + MONTHS_ES[m - 1] + ' ' + y;
+  return MONTHS_EN[m - 1] + ' ' + d + ', ' + y;
+}
+
+// A fork diagram in the style of the classic "Bitcoin Forks 2017" graphic:
+// Bitcoin runs along the middle row, BCH branches below, BTG above. BTG's
+// events sit on its branch, evenly spaced (not to scale in time) with the
+// date under each. The branch switches to --btg2 at the July 2018 algorithm
+// change, matching the hashrate chart.
+function renderTimeline(svgId, tooltipId, events){
+  const svg = document.getElementById(svgId);
+  const tooltip = document.getElementById(tooltipId);
+  const W = svg.viewBox.baseVal.width;
+  const es = CURRENT_LANG === 'es';
+  const forkTime = Date.parse('2017-10-24T00:00:00Z');
+  const Y = {btg:78, btc:172, bch:252, bsv:322};
+  svg.innerHTML = '';
+
+  const link = (x1, y1, x2, y2, cls) => {
+    svg.appendChild(el('line', {x1, y1, x2, y2, class:'tl-link ' + cls}));
+    const ang = Math.atan2(y2 - y1, x2 - x1), ax = x2 - Math.cos(ang) * 1, ay = y2 - Math.sin(ang) * 1;
+    const p = (d, o) => `${(ax - Math.cos(ang) * d + Math.cos(ang + Math.PI/2) * o).toFixed(1)},${(ay - Math.sin(ang) * d + Math.sin(ang + Math.PI/2) * o).toFixed(1)}`;
+    svg.appendChild(el('path', {d:`M${p(7, -4)} L${ax.toFixed(1)},${ay.toFixed(1)} L${p(7, 4)}`, class:'tl-link ' + cls}));
+  };
+  const callout = (x, y, text, date) => {
+    const w = Math.max(text.length * 5.9, date.length * 5.6) + 16;
+    svg.appendChild(el('rect', {x:x - w/2, y, width:w, height:32, rx:5, class:'tl-callout'}));
+    const t = svg.appendChild(el('text', {x, y:y + 13, class:'tl-callout-text', 'text-anchor':'middle'})); t.textContent = text;
+    const d = svg.appendChild(el('text', {x, y:y + 26, class:'tl-callout-date', 'text-anchor':'middle'})); d.textContent = date;
+  };
+  const hover = (x, y, e) => {
+    const hit = svg.appendChild(el('circle', {cx:x, cy:y, r:16, class:'timeline-hit'}));
+    const day = Math.round((Date.parse(e.date + 'T00:00:00Z') - forkTime) / 86400000);
+    function show(){
+      tooltip.innerHTML = `<div class="t-date">${es ? e.titleEs : e.title}</div>`
+        + `<div class="row"><span class="k">${fmtLongDate(e.date)} · ${es ? 'Día' : 'Day'} ${day}</span></div>`
+        + `<div class="row" style="max-width:220px; white-space:normal;"><span class="k">${es ? e.detailEs : e.detail}</span></div>`;
+      tooltip.style.left = ((x / W) * 100) + '%';
+      tooltip.style.top = ((y / svg.viewBox.baseVal.height) * 100) + '%';
+      tooltip.style.opacity = 1;
+    }
+    function hide(){ tooltip.style.opacity = 0; }
+    hit.addEventListener('mouseenter', show);
+    hit.addEventListener('mouseleave', hide);
+    hit.addEventListener('touchstart', e2 => { e2.preventDefault(); show(); }, {passive:false});
+  };
+
+  // Bitcoin's row: one plain line, with a node only at the three events.
+  const lineEnd = (x, y, cls, text) => {
+    const t = svg.appendChild(el('text', {x:x + 6, y:y + 4, class:'tl-line-label'}));
+    t.textContent = text;
+  };
+  // BCH fork, SegWit, BTG fork, Taproot. Taproot and BSV sit roughly where
+  // their dates fall against BTG's branch above.
+  const mainX = [100, 164, 228, 646];
+  link(24, Y.btc, 770, Y.btc, 'btc'); lineEnd(770, Y.btc, 'btc', 'BTC');
+  mainX.forEach((x, i) => {
+    svg.appendChild(el('circle', {cx:x, cy:Y.btc, r:6, class:'tl-node btc'}));
+    svg.appendChild(el('circle', {cx:x, cy:Y.btc, r:10, class:'tl-ring'}));
+    hover(x, Y.btc, MAIN_EVENTS[i]);
+  });
+
+  // BCH branch, in Bitcoin Cash green.
+  svg.appendChild(el('line', {x1:mainX[0] + 5, y1:Y.btc + 7, x2:150, y2:Y.bch, class:'tl-link bch'}));  // bend: no arrowhead
+  link(150, Y.bch, 770, Y.bch, 'bch'); lineEnd(770, Y.bch, 'bch', 'BCH');
+
+  // BSV branch off BCH, in neutral gray.
+  const bsvX = 582;
+  svg.appendChild(el('circle', {cx:bsvX, cy:Y.bch, r:6, class:'tl-node bch'}));
+  svg.appendChild(el('circle', {cx:bsvX, cy:Y.bch, r:10, class:'tl-ring'}));
+  hover(bsvX, Y.bch, BCH_EVENTS[0]);
+  svg.appendChild(el('line', {x1:bsvX + 4, y1:Y.bch + 7, x2:bsvX + 40, y2:Y.bsv, class:'tl-link bsv'}));
+  link(bsvX + 40, Y.bsv, 770, Y.bsv, 'bsv'); lineEnd(770, Y.bsv, 'bsv', 'BSV');
+
+  // Callouts for the three Bitcoin-row events, each with a pointer to its fork point.
+  const [bchEv, segEv, btgEv, tapEv] = MAIN_EVENTS;
+  const pointer = (x1, y1, x2, y2) => svg.appendChild(el('line', {x1, y1, x2, y2, class:'tl-pointer'}));
+  const bsvEv = BCH_EVENTS[0];
+  pointer(mainX[3], Y.btc + 10, mainX[3], 200);     // Taproot: node ring -> box top
+  callout(mainX[3], 200, es ? tapEv.calloutEs : tapEv.callout, fmtLongDate(tapEv.date));
+  pointer(506, 290, 604, 290);                       // BSV: box right edge -> BSV branch
+  callout(440, 274, es ? bsvEv.calloutEs : bsvEv.callout, fmtLongDate(bsvEv.date));
+  pointer(172, 216, 132, 216);                       // BCH: box left edge -> BCH branch
+  callout(245, 200, es ? bchEv.calloutEs : bchEv.callout, fmtLongDate(bchEv.date));
+  pointer(mainX[1], 150, mainX[1], Y.btc - 10);     // SegWit: box bottom -> node ring
+  callout(mainX[1], 118, es ? segEv.calloutEs : segEv.callout, fmtLongDate(segEv.date));
+  pointer(236, 88, 258, 127);                        // BTG: box -> BTG branch
+  callout(170, 56, es ? btgEv.calloutEs : btgEv.callout, fmtLongDate(btgEv.date));
+
+  // BTG branch: its events as nodes, navy until the algorithm change, copper after.
+  const sorted = [...events].sort((p, q) => p.date.localeCompare(q.date));
+  const x0 = 300, x1 = 740, step = (x1 - x0) / (sorted.length - 1);
+  const xs = sorted.map((e, i) => x0 + i * step);
+  const switchIdx = sorted.findIndex(e => e.date >= '2018-07-03');
+  link(mainX[2] + 4, Y.btc - 7, xs[0] - 8, Y.btg + 7, 'btg');
+  sorted.forEach((e, i) => {
+    const x = xs[i], seg = i >= switchIdx ? ' seg2' : '';
+    if (i) link(xs[i-1] + 9, Y.btg, x - 9, Y.btg, i >= switchIdx ? 'btg2' : 'btg');
+    const stem = i % 2 ? 30 : 16;
+    svg.appendChild(el('line', {x1:x, x2:x, y1:Y.btg - 8, y2:Y.btg - stem, class:'timeline-stem'}));
+    const lbl = svg.appendChild(el('text', {x, y:Y.btg - stem - 5, class:'timeline-label', 'text-anchor':'middle'}));
+    lbl.textContent = es ? e.labelEs : e.label;
+    // the first date starts at its node so it clears the incoming branch line
+    const dt = svg.appendChild(el('text', {x: i ? x : x - 7, y:Y.btg + (i % 2 ? 36 : 23), class:'timeline-date', 'text-anchor': i ? 'middle' : 'start'}));
+    dt.textContent = fmtLongDate(e.date);
+    if (e.type === 'listing'){
+      svg.appendChild(el('circle', {cx:x, cy:Y.btg, r:7, class:'timeline-marker' + seg}));
+    } else if (e.type === 'delist'){
+      svg.appendChild(el('circle', {cx:x, cy:Y.btg, r:7, class:'timeline-marker delist' + seg}));
+    } else if (e.type === 'attack'){
+      svg.appendChild(el('rect', {x:x - 5.5, y:Y.btg - 5.5, width:11, height:11, class:'timeline-marker attack' + seg, transform:`rotate(45 ${x} ${Y.btg})`}));
+    } else {
+      svg.appendChild(el('rect', {x:x - 6, y:Y.btg - 6, width:12, height:12, rx:1.5, class:'timeline-marker' + seg}));
+    }
+    hover(x, Y.btg, e);
+  });
+  link(xs[xs.length-1] + 9, Y.btg, 770, Y.btg, 'btg2'); lineEnd(770, Y.btg, 'btg2', 'BTG');
+}
+
+renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS);
+
+const globalToggle = document.getElementById('global-view-toggle');
+globalToggle.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    globalToggle.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    Object.keys(CHART_CONFIGS).forEach(name => renderMetricChart(name, btn.dataset.mode));
+  });
+});
+
+// ---------------- tweet screenshot lightbox ----------------
+(function(){
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('lightbox-close');
+
+  function open(src, alt){
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    lightbox.classList.remove('active');
+    lightboxImg.src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.tweet-img-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const img = btn.querySelector('img');
+      open(img.src, img.alt);
+    });
+  });
+  lightbox.addEventListener('click', close);
+  closeBtn.addEventListener('click', e => { e.stopPropagation(); close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+})();
+
+// ---------------- tweet screenshot lightbox ----------------
+(function(){
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const closeBtn = document.getElementById('lightbox-close');
+
+  function open(src, alt){
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '';
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    lightbox.classList.remove('active');
+    lightboxImg.src = '';
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('.tweet-img-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const img = btn.querySelector('img');
+      open(img.src, img.alt);
+    });
+  });
+  lightbox.addEventListener('click', close);
+  closeBtn.addEventListener('click', e => { e.stopPropagation(); close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+})();
+
+// ---------------- language toggle ----------------
+// Same pattern as bch-vs-btc.html: capture EN from the DOM, swap in ES by id.
+// Charts and the timeline read CURRENT_LANG and re-render on switch.
+(function(){
+  const IDS = [
+    'nav-back',
+    'masthead-title-text',
+    'masthead-meta',
+    'hero-eyebrow',
+    'hero-lede',
+    'read-time',
+    'bg-h2',
+    'why-h2',
+    'how-h2', 'out-h2', 'out1','out2','out3','out4','out5','out6','out7','out8','out9','out10','out11','out12','out13','out14','out15','out16', 'bg1','bg2','bg3','bg4','bg5','bg6','bg7','bg8','bg9','why1','why2','why3','why4','why5','how1','how2','how3','how4','how5','how6',
+    
+    'sim-h2',
+    
+    
+    
+    'sim-box',
+    'metrics-h2',
+    'metrics-intro',
+    'view-label',
+    'view-abs',
+    'view-ratio',
+    'ct1',
+    'cc1',
+    'ct2',
+    'cc2',
+    'ct3',
+    'cc3',
+    'ct4',
+    'cc4',
+    'tll1',
+    'tll2',
+    'tll3',
+    'tll5',
+    'tll4',
+    'sources-h3',
+    'footer-text',
+    'backlink',
+    'nextlink',
+    'src1',
+    'src2',
+    'src3',
+    'src4',
+    'src5',
+    'src6',
+    'src7',
+    'src8',
+    'src9',
+    'src10',
+    'src11',
+    'src12',
+    'src13',
+    'src14',
+    'src15',
+    'src16',
+    'src17',
+    'src18',
+  ];
+
+  const EN = {};
+  IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) EN[id] = el.innerHTML;
+  });
+
+  const ES = {
+    'nav-back': "&larr; Una historia de Forks",
+    'masthead-title-text': "Una historia de Forks: Capítulo 3",
+    'masthead-meta': "Bitcoin Gold (BTG), bifurcado el 24 de octubre de 2017",
+    'hero-eyebrow': "EL PROBLEMA DEL HASHRATE ALQUILABLE",
+    'hero-lede': "Bitcoin Gold cambió SHA-256 por un algoritmo apto para GPU para combatir la centralización de la minería causada por los ASIC. La misma propiedad que permitía a las GPU comunes minarlo también permitía a cualquiera alquilar suficiente poder de <em>hash</em> para atacarlo, dos veces, por una fracción de lo que se llevó cada ataque.",
+    'read-time': "~? min de lectura",
+    'bg-h2': "Antecedentes",
+    'why-h2': "¿Por qué cambiar el algoritmo de minería?",
+    'how-h2': "¿Cómo sucedió?",
+    'out-h2': "El resultado",
+    'out1': "El primer desafío llegó casi de inmediato.",
+    'out2': "En mayo de 2018, Bitmain anunció un ASIC para Equihash. El hardware del que Bitcoin Gold había intentado escapar lo había seguido hasta allí.",
+    'out3': "Ese mismo mes, la red sufrió ataques del 51%. Los atacantes, probablemente utilizando poder de <em>hash</em> alquilado, reorganizaron la cadena y realizaron doble gasto de BTG. Bitcoin Gold respondió el 3 de julio de 2018 con un segundo <em>hard fork</em>, cambiando a Equihash-BTG para inutilizar los nuevos ASICs y dificultar el alquiler de poder de <em>hash</em>.",
+    'out4': "La secuencia reveló la primera lección difícil de la resistencia a los ASICs: es un objetivo en movimiento. Mientras exista suficiente recompensa económica, habrá un incentivo para construir hardware especializado. Cambiar el algoritmo puede retrasar el proceso, pero no puede eliminar ese incentivo.",
+    'out5': "Los ataques revelaron una segunda lección. Hacer que la minería sea accesible no hace automáticamente que una red sea segura. Bitcoin Gold había cambiado el hardware, pero no la economía subyacente. La electricidad barata seguía importando. La escala seguía importando. El poder de <em>hash</em> todavía podía concentrarse o alquilarse.",
+    'out6': "La misma vulnerabilidad reapareció en enero de 2020. Los atacantes realizaron dos reorganizaciones profundas de la cadena y gastaron dos veces aproximadamente 7,000 BTG.",
+    'out7': "Entonces apareció otro problema, esta vez más cerca de casa.",
+    'out8': "El proyecto había prometido una minería más descentralizada, pero había asignado 100,000 BTG al propio proyecto durante los primeros 8,000 bloques. Cualquiera que fuera el uso previsto del <em>endowment</em>, los críticos tenían una objeción sencilla: la descentralización no se trata únicamente de quién puede minar. También se trata de quién recibe las monedas.",
+    'out9': "Y con el tiempo, incluso el control del propio proyecto terminó siendo motivo de disputa.",
+    'out10': "Jack Liao dejó la junta directiva de Bitcoin Gold a finales de 2018, dejando al equipo restante a cargo del proyecto. Años después, surgió una disputa por el sitio web del proyecto. En 2024, Liao tomó el control del dominio bitcoingold.org, mientras que el equipo restante se trasladó a un nuevo dominio. Cada lado ofreció una versión diferente de lo ocurrido: el equipo afirmó que Liao había abandonado el proyecto y vendido sus participaciones; Liao presentó la toma del dominio como un renacimiento del proyecto.",
+    'out11': "Había algo casi paradójico en todo aquello.",
+    'out12': "Un proyecto creado para reducir la concentración de poder en la industria minera de Bitcoin había terminado peleando por quién controlaba su propia infraestructura.",
+    'out13': "Y eso llevó la historia de vuelta a Bitcoin.",
+    'out14': "La batalla por SegWit en 2017 había demostrado que los grandes mineros podían ejercer una presión significativa sobre el desarrollo de Bitcoin, pero no tenían la última palabra. SegWit se activó después de meses de conflicto, con la presión del <em>soft fork</em> activado por los usuarios ayudando a inclinar la balanza.",
+    'out15': "Bitcoin Gold cambió a los mineros, el hardware y el algoritmo. Pero los mineros de Bitcoin nunca fueron los únicos que tenían poder.",
+    'out16': "Bitcoin Gold cambió quién podía minar, pero no cambió cómo funciona el poder en una red descentralizada.",
+    'bg1': "Para 2017, la visión original de Bitcoin de \"una CPU, un voto\" ya era cosa del pasado.",
+    'bg2': "La minería había salido del dormitorio y se había trasladado a almacenes llenos de ASICs, máquinas diseñadas para una sola tarea: minar Bitcoin. La economía favorecía a quien podía comprar más hardware, conseguir la electricidad más barata y operar a mayor escala.",
+    'bg3': "En el centro de ese mundo estaba Bitmain, dirigida por Jihan Wu. La empresa era tanto un fabricante dominante de hardware como un importante operador de <em>pools</em> de minería. Un minero podía terminar comprando máquinas a la misma empresa que competía con él por encontrar bloques.",
+    'bg4': "Y la concentración era cada vez más difícil de ignorar. Durante largos períodos, un puñado de <em>pools</em> de minería chinos controlaba una gran parte del <em>hash rate</em> de Bitcoin.",
+    'bg5': "Entonces Bitcoin enfrentó una de sus batallas políticas más intensas hasta ese momento.",
+    'bg6': "SegWit prometía cambiar la forma en que Bitcoin manejaba los datos de las transacciones, pero algunos grandes mineros se opusieron. Los críticos también señalaron AsicBoost, una técnica que podía proporcionar a cierto hardware compatible una ventaja significativa de eficiencia, una ventaja que SegWit eliminaría en gran medida. Los chips de Bitmain eran compatibles con la técnica, aunque la empresa negó utilizarla en Bitcoin.",
+    'bg7': "El conflicto expuso una posibilidad incómoda: quienes tenían mayor influencia sobre la seguridad de Bitcoin también podían tener razones económicas para resistirse a cambios en el protocolo.",
+    'bg8': "SegWit se activó en agosto de 2017. Pero la batalla había demostrado algo que era difícil de ignorar:",
+    'bg9': "La minería no se trataba únicamente de asegurar Bitcoin. También era una fuente de poder.",
+    'why1': "Si los mineros que aseguraban Bitcoin podían influir en qué cambios aceptaba la red, Bitcoin Gold planteó una pregunta más directa:",
+    'why2': "¿Y si hacías obsoletos a los mineros existentes?",
+    'why3': "Los fundadores veían un problema estructural. SHA-256 premiaba el hardware especializado, el gran capital y la electricidad barata, condiciones que favorecían a los operadores industriales. Reformar esa industria parecía difícil. Así que eligieron otra ruta: hacer inútil el hardware existente.",
+    'why4': "Al reemplazar SHA-256 por un algoritmo de prueba de trabajo diferente, Bitcoin Gold buscaba eliminar la ventaja de los mineros especializados de Bitcoin y dar a los mineros comunes con GPU una oportunidad de competir.",
+    'why5': "El objetivo no era simplemente crear otra versión de Bitcoin. Era cambiar la economía de quién podía asegurar la red.",
+    'how1': "Liderado por Jack Liao de LightningASIC, Bitcoin Gold fue anunciado y desarrollado públicamente durante 2017.",
+    'how2': "El proyecto eligió Equihash, un algoritmo que requiere mucha memoria y que fue diseñado para favorecer las GPUs sobre los ASICs especializados de Bitcoin. La idea era sencilla: si la industria minera de Bitcoin se había concentrado alrededor de máquinas especializadas, cambiar el algoritmo podía abrir la puerta a una base más amplia de mineros.",
+    'how3': "El 24 de octubre de 2017, después del bloque 491,406 de Bitcoin, Bitcoin Gold tomó una fotografía del estado de la <em>blockchain</em> de Bitcoin. A partir de ese momento, las cadenas compartían la misma historia, pero seguirían reglas de minería diferentes. Cada persona que tuviera Bitcoin en ese momento tenía derecho a recibir BTG en una proporción 1:1.",
+    'how4': "Pero antes de que comenzara la minería pública, el proyecto minó 8,000 bloques con la dificultad mínima, produciendo aproximadamente 100,000 BTG. Las monedas fueron depositadas en billeteras <em>multisig</em> 4-de-6 como un \"<em>endowment</em>\". Los críticos simplemente lo llamaron un <em>premine</em>.",
+    'how5': "La minería pública comenzó el 13 de noviembre de 2017. Junto con Equihash, la cadena incorporó protección contra ataques de <em>replay</em>, nuevos prefijos de direcciones (G y A), ajuste de dificultad por bloque y el código de SegWit que ya estaba presente en Bitcoin.",
+    'how6': "El <em>fork</em> estaba activo. Bitcoin Gold había cambiado las reglas de la minería y ahora estaba poniendo a prueba su idea central.",
+    'sim-h2': "Similitudes de BTCB2 con cada cadena",
+    'sim-box': "Próximamente.",
+    'metrics-h2': "Años de datos",
+    'metrics-intro': "Cifras mensuales del conjunto de datos público de CoinMetrics, desde el <em>fork</em> de BTG (octubre de 2017) hasta septiembre de 2026. El precio de BTG termina en julio de 2026: después, ningún <em>exchange</em> lo cotiza y los últimos precios solo repiten el del día anterior.",
+    'view-label': "Vista del gráfico:",
+    'view-abs': "Absoluto",
+    'view-ratio': "BTG como % de BTC",
+    'ct1': "Precio: BTG vs. BTC, mensual (USD)",
+    'cc1': "Cierre diario promedio por mes, en escala logarítmica. BTG cotizó como un <em>token</em> previo al lanzamiento desde la fecha del <em>fork</em>, tres semanas antes de que su propia cadena funcionara.",
+    'ct2': "Transacciones: BTG vs. BTC, conteo mensual",
+    'cc2': "Total de transacciones confirmadas cada mes en cada cadena, desde el lanzamiento de la red principal de BTG (12 de noviembre de 2017).",
+    'ct3': "<em>Hashrate</em>: BTG, promedio mensual (Sol/s)",
+    'cc3': "El <em>hashrate</em> propio de la red de BTG, en soluciones de Equihash por segundo. No se puede mostrar como porcentaje del de Bitcoin: las dos cadenas usan algoritmos de minería distintos. En julio de 2018 BTG cambió a un nuevo algoritmo, Equihash-BTG, que cambió las unidades. La línea cambia de color en ese punto, y los valores de cada lado no son comparables. Las líneas punteadas marcan el cambio de algoritmo y los dos ataques del 51%.",
+    'ct4': "Cronología: los <em>forks</em> de Bitcoin y la rama de BTG",
+    'cc4': "Bitcoin se dividió dos veces en 2017, con SegWit activándose entre ambas divisiones, y añadió Taproot en 2021. BCH volvió a dividirse en 2018, en BCH y BSV. La rama propia de BTG muestra sus listados, ataques, segundo cambio de algoritmo y deslistados. Su color cambia en el cambio de algoritmo, como en el gráfico de <em>hashrate</em>. Los eventos están espaciados de forma uniforme, no a escala temporal. La fecha bajo cada punto indica el momento real.",
+    'tll1': "Listado en <em>exchange</em>",
+    'tll2': "Deslistado de <em>exchange</em>",
+    'tll3': "Ataque del 51%",
+    'tll5': "Evento de protocolo / red",
+    'tll4': "Pasa el cursor sobre un punto para más detalles",
+    'sources-h3': "Fuentes",
+    'footer-text': "DATOS: API COMUNITARIA DE COINMETRICS (PRECIO, TRANSACCIONES, HASHRATE). PARTE DE LA SERIE \"UNA HISTORIA DE FORKS\".",
+    'backlink': "&larr; Anterior: Ethereum vs. Ethereum Classic",
+    'nextlink': "Siguiente: Bitcoin BLAKE2b: retrospectiva de un mes &rarr;",
+    'src1': "La altura del <em>fork</em> de Bitcoin Gold, bloque 491,407 &mdash; <a href=\"https://github.com/BTCGPU/BTCGPU/blob/master/src/chainparams.cpp\" target=\"_blank\" rel=\"noopener\">BTCGPU/BTCGPU chainparams.cpp, GitHub</a>",
+    'src2': "Lanzamiento de la red principal, 12 de noviembre de 2017 &mdash; <a href=\"https://bitcoingold.org/bitcoin-gold-blockchain-is-live/\" target=\"_blank\" rel=\"noopener\">\"Bitcoin Gold Blockchain is Live,\" Bitcoin Gold</a>",
+    'src3': "Binance lista BTG, 24 de octubre de 2017 &mdash; <a href=\"https://www.binance.com/en/support/announcement/115002358672\" target=\"_blank\" rel=\"noopener\">Binance announcement</a>",
+    'src4': "El ataque del 51% de mayo de 2018 y su duración &mdash; <a href=\"https://bitcoingold.org/responding-to-attacks/\" target=\"_blank\" rel=\"noopener\">\"Responding to Attacks,\" Bitcoin Gold</a>",
+    'src5': "388,296 BTG recibidos por la dirección del atacante &mdash; <a href=\"https://btgexplorer.com/api/v2/address/GTNjvCGssb2rbLnDV1xxsHmunQdvXnY2Ft\" target=\"_blank\" rel=\"noopener\">BTG block explorer</a>",
+    'src6': "El cambio a Equihash-BTG en el bloque 536,200, 3 de julio de 2018 &mdash; <a href=\"https://bitcoingold.org/a-successful-network-upgrade/\" target=\"_blank\" rel=\"noopener\">\"A Successful Network Upgrade,\" Bitcoin Gold</a>",
+    'src7': "Bittrex retira los mercados de BTG, 14 de septiembre de 2018 &mdash; <a href=\"https://bittrex.zendesk.com/hc/en-us/articles/360015197572-Pending-Market-Removals-9-14-2018\" target=\"_blank\" rel=\"noopener\">Bittrex notice (archived)</a>",
+    'src8': "Los ataques del 51% de enero de 2020, montos y costo de alquiler &mdash; <a href=\"https://gist.github.com/metalicjames/71321570a105940529e709651d0a9765\" target=\"_blank\" rel=\"noopener\">James Lovejoy, MIT Digital Currency Initiative</a>",
+    'src9': "Binance deslista BTG, 24 de octubre de 2022 &mdash; <a href=\"https://www.binance.com/en/support/announcement/binance-will-delist-dnt-nbs-btg-and-tct-on-2022-10-24-cd7aae08f6a84ad89ca6a2c4d52fa32e\" target=\"_blank\" rel=\"noopener\">Binance announcement</a>",
+    'src10': "Bitfinex deslista BTG, 11 de julio de 2023 &mdash; <a href=\"https://support.bitfinex.com/hc/en-us/articles/115003076854-Bitcoin-Gold-BTG-Delisted\" target=\"_blank\" rel=\"noopener\">\"Bitcoin Gold (BTG) Delisted,\" Bitfinex</a>",
+    'src11': "Datos mensuales de precio, transacciones y <em>hashrate</em> &mdash; <a href=\"https://docs.coinmetrics.io/api/v4/\" target=\"_blank\" rel=\"noopener\">Coin Metrics API v4 documentation (Community API)</a>",
+    'src12': "El bloque del <em>fork</em> de Bitcoin Cash, 478,558 &mdash; <a href=\"https://www.blockchain.com/explorer/blocks/btc/478558\" target=\"_blank\" rel=\"noopener\">Blockchain.com Explorer</a>",
+    'src13': "El bloque de activación de SegWit en Bitcoin, 481,824 &mdash; <a href=\"https://en.wikipedia.org/wiki/SegWit\" target=\"_blank\" rel=\"noopener\">SegWit, Wikipedia</a>",
+    'src14': "Bitcoin SV se separa de Bitcoin Cash en el bloque 556,767, 15 de noviembre de 2018 &mdash; <a href=\"https://www.coindesk.com/markets/2018/11/15/bitcoin-cash-just-split-into-two-blockchains\" target=\"_blank\" rel=\"noopener\">\"Bitcoin Cash Just Split Into Two Blockchains,\" CoinDesk</a>",
+    'src15': "El bloque de activación de Taproot, 709,632 &mdash; <a href=\"https://blockstream.info/block-height/709632\" target=\"_blank\" rel=\"noopener\">Blockstream Explorer</a>",
+    'src16': "Más reorganizaciones y contraataques, del 23 de enero al 11 de febrero de 2020 &mdash; <a href=\"https://medium.com/mit-media-lab-digital-currency-initiative/reorgs-on-bitcoin-gold-counterattacks-in-the-wild-da7e2b797c21\" target=\"_blank\" rel=\"noopener\">\"Reorgs on Bitcoin Gold: Counterattacks in the Wild,\" MIT Digital Currency Initiative</a>",
+    'src17': "Jack Liao deja la junta directiva, 19 de noviembre de 2018 &mdash; <a href=\"https://bitcoingold.org/leadership-for-another-year/\" target=\"_blank\" rel=\"noopener\">\"Leadership for Another Year,\" Bitcoin Gold</a>",
+    'src18': "La disputa de 2024 por el dominio bitcoingold.org (versión del equipo) &mdash; <a href=\"https://bitcoin-takeover.com/bitcoin-gold-one-gpu-one-vote/\" target=\"_blank\" rel=\"noopener\">\"Bitcoin Gold: One GPU, One Vote,\" Bitcoin Takeover</a>",
+  };
+
+  // Attribute text (alt, aria-label) the innerHTML swap above can't reach.
+  const ES_TWEET_ALTS = [];
+  const ATTRS = [
+    ['.brand-logo', 'alt', 'Logo de QuantBitcoin'],
+    ['.lang-toggle', 'aria-label', 'Idioma'],
+    ['#home-link', 'aria-label', 'Ir a Una historia de Forks'],
+    ['#lightbox', 'aria-label', 'Captura de tweet ampliada'],
+    ['#lightbox-close', 'aria-label', 'Cerrar'],
+  ];
+  document.querySelectorAll('.tweet-img-btn').forEach((btn, i) => {
+    ATTRS.push([`.tweet-card:nth-child(${i + 1}) .tweet-img-btn`, 'aria-label', 'Ampliar captura: ' + ES_TWEET_ALTS[i]]);
+    ATTRS.push([`.tweet-card:nth-child(${i + 1}) img`, 'alt', ES_TWEET_ALTS[i]]);
+  });
+  const ATTRS_EN = ATTRS.map(([sel, attr]) => document.querySelector(sel).getAttribute(attr));
+
+  const META = {
+    en: {title: document.title, desc: document.querySelector('meta[name="description"]').content},
+    es: {title: 'Bitcoin Gold vs. Bitcoin', desc: 'Bitcoin Gold cambió SHA-256 por un algoritmo apto para GPU para combatir la minería con ASIC. La misma propiedad permitió a cualquiera alquilar poder de hash para atacarlo.'},
+  };
+
+  function applyLang(lang){
+    CURRENT_LANG = lang;
+    const dict = lang === 'es' ? ES : EN;
+    ATTRS.forEach(([sel, attr, es], i) => document.querySelector(sel).setAttribute(attr, lang === 'es' ? es : ATTRS_EN[i]));
+    document.title = META[lang].title;
+    document.querySelector('meta[name="description"]').content = META[lang].desc;
+    const mode = document.querySelector('#global-view-toggle button.active').dataset.mode;
+    Object.keys(CHART_CONFIGS).forEach(name => renderMetricChart(name, mode));
+    renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS);
+    IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && dict[id] != null) el.innerHTML = dict[id];
+    });
+    document.documentElement.lang = lang;
+    document.querySelectorAll('.lang-toggle button').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    try { localStorage.setItem('site-lang', lang); } catch(e){}
+  }
+
+  document.querySelectorAll('.lang-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+  });
+
+  let saved = null;
+  try { saved = localStorage.getItem('site-lang'); } catch(e){}
+  if (saved === 'es') applyLang('es');
+})();
+</script>
 </body>
 </html>
