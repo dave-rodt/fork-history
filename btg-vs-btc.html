@@ -29,12 +29,16 @@
     --rule:#C7CBCF; --rule-strong:#9AA0A6;
     /* BTG: Bitcoin Gold's official logo navy (#00206B, press kit at
        bitcoingold.org/press-kit), lightened to #2A4DB0 so it reads as a chart
-       line. BTC: the BCH chapter's teal, so Bitcoin keeps one color across
-       chapters. Gold is avoided: it collides with the site's orange/yellow
-       brand chrome. Pair validated with the dataviz skill's validate_palette.js
-       (light #2A4DB0/#00806B; dark #5B7FD6/#33A393, all checks pass). */
-    --btg:#2A4DB0; --btc:#00806B; --btg2:#8A4A12; --tl-btc:#C8700A; --tl-bch:#07875F;
-    --btg-fill:rgba(42,77,176,0.10); --btc-fill:rgba(0,128,107,0.10);
+       line. BTC: Bitcoin orange, the same in every chapter. Gold is avoided: it
+       collides with the site's orange/yellow brand chrome. BTG after its July
+       2018 algorithm change: plum, since a copper sat too close to Bitcoin
+       orange. All four chart colors (BTC, BTG, BTG after 2018, BCH) checked
+       together with the dataviz skill's validate_palette.js --pairs all:
+       light #C8700A/#2A4DB0/#8E3F6E/#07875F and dark #CC6F0A/#5B7FD6/#A65A8C/
+       #0E9A72 pass, with a 6-8 CVD gap on two pairs covered by the line
+       labels and legends. */
+    --btg:#2A4DB0; --btc:#C8700A; --btg2:#8E3F6E; --tl-btc:#C8700A; --tl-bch:#07875F;
+    --btg-fill:rgba(42,77,176,0.10); --btc-fill:rgba(200,112,10,0.10);
     --brand-orange:#F08A1E; --brand-yellow:#FDCA1E;
     --shadow-sm:0 1px 2px rgba(20,22,25,0.06), 0 1px 1px rgba(20,22,25,0.04);
     --shadow-md:0 6px 16px rgba(20,22,25,0.10), 0 2px 4px rgba(20,22,25,0.06);
@@ -43,8 +47,8 @@
     :root:not([data-theme="light"]){
       --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
       --rule:#33373E; --rule-strong:#4A4F57;
-      --btg:#5B7FD6; --btc:#33A393; --btg2:#AA6026; --tl-btc:#EA8A12; --tl-bch:#09B283;
-      --btg-fill:rgba(91,127,214,0.14); --btc-fill:rgba(51,163,147,0.14);
+      --btg:#5B7FD6; --btc:#CC6F0A; --btg2:#A65A8C; --tl-btc:#CC6F0A; --tl-bch:#0E9A72;
+      --btg-fill:rgba(91,127,214,0.14); --btc-fill:rgba(204,111,10,0.14);
       --brand-orange:#F08A1E; --brand-yellow:#FDCA1E;
       --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
       --shadow-md:0 8px 20px rgba(0,0,0,0.38), 0 2px 6px rgba(0,0,0,0.28);
@@ -53,8 +57,8 @@
   :root[data-theme="dark"]{
     --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
     --rule:#33373E; --rule-strong:#4A4F57;
-    --btg:#5B7FD6; --btc:#33A393; --btg2:#AA6026; --tl-btc:#EA8A12; --tl-bch:#09B283;
-    --btg-fill:rgba(91,127,214,0.14); --btc-fill:rgba(51,163,147,0.14);
+    --btg:#5B7FD6; --btc:#CC6F0A; --btg2:#A65A8C; --tl-btc:#CC6F0A; --tl-bch:#0E9A72;
+    --btg-fill:rgba(91,127,214,0.14); --btc-fill:rgba(204,111,10,0.14);
     --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
     --shadow-md:0 8px 20px rgba(0,0,0,0.38), 0 2px 6px rgba(0,0,0,0.28);
   }
@@ -178,7 +182,7 @@
     position:absolute; pointer-events:none; opacity:0;
     background:var(--panel); border:1px solid var(--rule-strong); border-radius:7px;
     padding:8px 10px; font-size:0.76rem; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,0.14);
-    white-space:nowrap; transform:translate(-50%,-100%); top:-8px; z-index:5;
+    white-space:nowrap; max-width:calc(100vw - 12px); transform:translate(-50%,-100%); top:-8px; z-index:5;
   }
   .tooltip .t-date{color:var(--ink-mute); font-size:0.7rem; margin-bottom:4px;}
   .tooltip .row{display:flex; justify-content:space-between; gap:12px;}
@@ -254,7 +258,7 @@
   .timeline-legend .dot{width:9px; height:9px; border-radius:50%; display:inline-block; background:var(--btg);}
   .timeline-legend .dot.proxy{background:var(--panel); border:2px solid var(--btg);}
   /* Post-July-2018 BTG (Equihash-BTG): its own color, since the algorithm and
-     units changed. Copper (light #8A4A12, dark #AA6026), deepened so it stays
+     units changed. Plum (light #8E3F6E, dark #A65A8C), chosen so it stays
      apart from the timeline's BTC orange. Timeline-only brand hues, darkened
      in light mode for 3:1 contrast: --tl-btc (Bitcoin orange) and --tl-bch
      (Bitcoin Cash green). Validated with validate_palette.js --pairs all
@@ -514,6 +518,19 @@
 </div>
 
 <script>
+// Tooltips on phones: keep a tooltip inside the screen (shift it sideways if
+// it would spill over an edge), open it on tap, and close it on a tap
+// outside the chart. A tap no longer blocks the page from scrolling.
+function clampTip(tip){
+  tip.style.marginLeft = '0px';
+  const r = tip.getBoundingClientRect(), vw = document.documentElement.clientWidth;
+  const shift = r.left < 6 ? 6 - r.left : r.right > vw - 6 ? vw - 6 - r.right : 0;
+  tip.style.marginLeft = shift + 'px';
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.chart-wrap')) document.querySelectorAll('.tooltip').forEach(t => { t.style.opacity = 0; });
+});
+
 const DATA = [{"month":"2017-10","btg_price":141.395890381824,"btc_price":5926.368046610168,"btg_tx":null,"btc_tx":2310251.0,"btg_hash":null},{"month":"2017-11","btg_price":226.4529542667826,"btc_price":7781.03213700565,"btg_tx":186791.0,"btc_tx":9341003.0,"btg_hash":71011788.56740418},{"month":"2017-12","btg_price":278.9058947544514,"btc_price":15194.10497518901,"btg_tx":167130.0,"btc_tx":11182855.0,"btg_hash":64072915.63616599},{"month":"2018-01","btg_price":216.95516297560363,"btc_price":12891.060519588613,"btg_tx":120141.0,"btc_tx":8869570.0,"btg_hash":43862740.1725071},{"month":"2018-02","btg_price":118.37156267616975,"btc_price":9396.599650507222,"btg_tx":77703.0,"btc_tx":5345436.0,"btg_hash":43860612.09327712},{"month":"2018-03","btg_price":72.80187280678201,"btc_price":8992.046454912237,"btg_tx":93519.0,"btc_tx":5690766.0,"btg_hash":45079960.41765308},{"month":"2018-04","btg_price":55.88761149196586,"btc_price":8018.054271692968,"btg_tx":74542.0,"btc_tx":5751589.0,"btg_hash":38196782.89933642},{"month":"2018-05","btg_price":57.872948105103106,"btc_price":8423.247831234328,"btg_tx":81741.0,"btc_tx":6130989.0,"btg_hash":31993186.789910767},{"month":"2018-06","btg_price":34.102408823039916,"btc_price":6769.3244134619135,"btg_tx":59903.0,"btc_tx":5747745.0,"btg_hash":26464029.215259645},{"month":"2018-07","btg_price":29.02748728097578,"btc_price":7118.681239927603,"btg_tx":26848.0,"btc_tx":6391313.0,"btg_hash":null},{"month":"2018-08","btg_price":20.71572002153142,"btc_price":6677.730917346958,"btg_tx":28265.0,"btc_tx":6725607.0,"btg_hash":2067534.7759516877},{"month":"2018-09","btg_price":21.62196363954323,"btc_price":6590.200040190922,"btg_tx":34631.0,"btc_tx":6863878.0,"btg_hash":2576222.525434028},{"month":"2018-10","btg_price":26.049071870654803,"btc_price":6415.1142316698415,"btg_tx":34840.0,"btc_tx":7576746.0,"btg_hash":3336753.6681873505},{"month":"2018-11","btg_price":24.681076307226476,"btc_price":5345.764674878239,"btg_tx":29625.0,"btc_tx":8055798.0,"btg_hash":3711631.443773534},{"month":"2018-12","btg_price":13.502906308174927,"btc_price":3665.740837408797,"btg_tx":22623.0,"btc_tx":8191030.0,"btg_hash":3012597.021023745},{"month":"2019-01","btg_price":11.728822879642271,"btc_price":3659.232663750683,"btg_tx":23182.0,"btc_tx":9222189.0,"btg_hash":2653264.439911141},{"month":"2019-02","btg_price":10.902113732180961,"btc_price":3659.201131282874,"btg_tx":21134.0,"btc_tx":9260134.0,"btg_hash":2302773.9267857145},{"month":"2019-03","btg_price":12.661295312894936,"btc_price":3923.4174107501753,"btg_tx":20369.0,"btc_tx":9458396.0,"btg_hash":2566505.68859543},{"month":"2019-04","btg_price":16.503170092933484,"btc_price":5145.797054693162,"btg_tx":27378.0,"btc_tx":10996420.0,"btg_hash":2728694.848333719},{"month":"2019-05","btg_price":21.90377667332751,"btc_price":7292.919984257462,"btg_tx":27611.0,"btc_tx":11500508.0,"btg_hash":3483800.4465184435},{"month":"2019-06","btg_price":27.441776655580366,"btc_price":9393.020061772837,"btg_tx":24197.0,"btc_tx":10481484.0,"btg_hash":3135246.0213931324},{"month":"2019-07","btg_price":25.151409399355355,"btc_price":10659.624927258157,"btg_tx":44785.0,"btc_tx":10302567.0,"btg_hash":3555103.893184364},{"month":"2019-08","btg_price":14.508212855163483,"btc_price":10628.744097537749,"btg_tx":72519.0,"btc_tx":10157607.0,"btg_hash":3031793.5604894715},{"month":"2019-09","btg_price":9.859754822172059,"btc_price":9792.419261390021,"btg_tx":101232.0,"btc_tx":9800953.0,"btg_hash":2620640.605403164},{"month":"2019-10","btg_price":7.83994588448536,"btc_price":8387.15982785581,"btg_tx":25704.0,"btc_tx":9890188.0,"btg_hash":2145722.8910020906},{"month":"2019-11","btg_price":7.640608977038521,"btc_price":8339.688379551919,"btg_tx":17332.0,"btc_tx":9240225.0,"btg_hash":2039820.8929652777},{"month":"2019-12","btg_price":5.566135342490903,"btc_price":7246.166450772044,"btg_tx":18610.0,"btc_tx":9418563.0,"btg_hash":1708486.887828181},{"month":"2020-01","btg_price":9.183106783823908,"btc_price":8365.7359320865,"btg_tx":36749.0,"btc_tx":9605536.0,"btg_hash":2412180.5057605286},{"month":"2020-02","btg_price":11.068655199047123,"btc_price":9646.19281580645,"btg_tx":33726.0,"btc_tx":9437431.0,"btg_hash":2216243.6507742656},{"month":"2020-03","btg_price":8.045059399850137,"btc_price":6885.037264610397,"btg_tx":27195.0,"btc_tx":8897428.0,"btg_hash":2355577.1124290624},{"month":"2020-04","btg_price":9.077830167659306,"btc_price":7224.347704104812,"btg_tx":19442.0,"btc_tx":8703117.0,"btg_hash":2121239.038278935},{"month":"2020-05","btg_price":9.270158454913398,"btc_price":9264.668143189232,"btg_tx":14618.0,"btc_tx":9088147.0,"btg_hash":1132266.1610909498},{"month":"2020-06","btg_price":8.9974101441833,"btc_price":9478.762561918955,"btg_tx":14154.0,"btc_tx":9189828.0,"btg_hash":922875.787538966},{"month":"2020-07","btg_price":9.020835065847018,"btc_price":9597.276008946852,"btg_tx":21116.0,"btc_tx":10152857.0,"btg_hash":843519.1216636798},{"month":"2020-08","btg_price":10.53937094973135,"btc_price":11648.209951568604,"btg_tx":17532.0,"btc_tx":9789543.0,"btg_hash":875597.053532706},{"month":"2020-09","btg_price":8.319220995848209,"btc_price":10647.193640549383,"btg_tx":9210.0,"btc_tx":9488466.0,"btg_hash":796354.1571828703},{"month":"2020-10","btg_price":7.743475064025642,"btc_price":11895.126609905547,"btg_tx":9577.0,"btc_tx":9280893.0,"btg_hash":774558.3574238352},{"month":"2020-11","btg_price":8.239580466687391,"btc_price":16670.627445129558,"btg_tx":12948.0,"btc_tx":9141753.0,"btg_hash":781848.6144510031},{"month":"2020-12","btg_price":8.790676227497768,"btc_price":21995.8736749326,"btg_tx":12971.0,"btc_tx":9723135.0,"btg_hash":730920.150086619},{"month":"2021-01","btg_price":11.132560831325309,"btc_price":34752.85856475368,"btg_tx":23084.0,"btc_tx":10071413.0,"btg_hash":737910.9888773148},{"month":"2021-02","btg_price":20.735668350518942,"btc_price":46316.12198772021,"btg_tx":33408.0,"btc_tx":8967168.0,"btg_hash":806080.3614628803},{"month":"2021-03","btg_price":31.208247639591573,"btc_price":54933.491410035625,"btg_tx":26247.0,"btc_tx":9337574.0,"btg_hash":1027100.1582885304},{"month":"2021-04","btg_price":84.98394634737207,"btc_price":57105.45609389246,"btg_tx":45735.0,"btc_tx":8346904.0,"btg_hash":1941524.5742550152},{"month":"2021-05","btg_price":87.53542724141582,"btc_price":46507.35033992572,"btg_tx":28312.0,"btc_tx":7786747.0,"btg_hash":2062389.200162784},{"month":"2021-06","btg_price":51.94825602863497,"btc_price":35811.81382305475,"btg_tx":16373.0,"btc_tx":6510722.0,"btg_hash":1928279.5362337963},{"month":"2021-07","btg_price":43.611553265913344,"btc_price":34412.27598575064,"btg_tx":12037.0,"btc_tx":6803948.0,"btg_hash":1644436.5807948774},{"month":"2021-08","btg_price":64.2756519053435,"btc_price":45746.96164301578,"btg_tx":16203.0,"btc_tx":7455990.0,"btg_hash":1722494.1396565114},{"month":"2021-09","btg_price":64.45730748332434,"btc_price":45927.461348433666,"btg_tx":13674.0,"btc_tx":7603386.0,"btg_hash":2075097.0902280093},{"month":"2021-10","btg_price":66.40884669564402,"btc_price":57915.467306096216,"btg_tx":13918.0,"btc_tx":8449029.0,"btg_hash":2150095.445848641},{"month":"2021-11","btg_price":61.62453195946671,"btc_price":60684.55066210988,"btg_tx":13070.0,"btc_tx":8300559.0,"btg_hash":2088971.206394676},{"month":"2021-12","btg_price":44.1045635508269,"btc_price":49356.9545744311,"btg_tx":11209.0,"btc_tx":8108023.0,"btg_hash":2133665.906584528},{"month":"2022-01","btg_price":34.62427443350344,"btc_price":41113.14966322278,"btg_tx":10949.0,"btc_tx":7739847.0,"btg_hash":2145319.80114882},{"month":"2022-02","btg_price":31.595530824378987,"btc_price":40756.41008039158,"btg_tx":10109.0,"btc_tx":6996693.0,"btg_hash":2007112.3950074406},{"month":"2022-03","btg_price":34.8421816268567,"btc_price":41973.92290655153,"btg_tx":12063.0,"btc_tx":7972122.0,"btg_hash":1984902.5837847223},{"month":"2022-04","btg_price":35.38173261187794,"btc_price":41441.3370125229,"btg_tx":9969.0,"btc_tx":7817057.0,"btg_hash":1858375.271123071},{"month":"2022-05","btg_price":22.63305796967614,"btc_price":31706.786788099776,"btg_tx":9786.0,"btc_tx":8054790.0,"btg_hash":1681140.4502777779},{"month":"2022-06","btg_price":18.287820875624202,"btc_price":24352.584424611352,"btg_tx":9401.0,"btc_tx":7512554.0,"btg_hash":1788093.3080814043},{"month":"2022-07","btg_price":19.684641273449063,"btc_price":21545.18048662921,"btg_tx":9340.0,"btc_tx":7680059.0,"btg_hash":1647587.6175205344},{"month":"2022-08","btg_price":27.213549272072015,"btc_price":22362.41746393733,"btg_tx":8347.0,"btc_tx":7811692.0,"btg_hash":1852373.6144619922},{"month":"2022-09","btg_price":22.637647267591742,"btc_price":19792.869884293774,"btg_tx":7364.0,"btc_tx":7683921.0,"btg_hash":4758592.474378086},{"month":"2022-10","btg_price":18.88325967512698,"btc_price":19647.71690510737,"btg_tx":11591.0,"btc_tx":7968474.0,"btg_hash":6341868.026029719},{"month":"2022-11","btg_price":15.491209789338402,"btc_price":17579.60670669784,"btg_tx":8754.0,"btc_tx":7868100.0,"btg_hash":5248823.241433642},{"month":"2022-12","btg_price":13.832983235187307,"btc_price":16937.163565426752,"btg_tx":7133.0,"btc_tx":7950408.0,"btg_hash":4525138.4299551975},{"month":"2023-01","btg_price":15.174122489171255,"btc_price":20239.865773646812,"btg_tx":7423.0,"btc_tx":8758990.0,"btg_hash":4873934.311859319},{"month":"2023-02","btg_price":17.195926386431218,"btc_price":23303.395567149542,"btg_tx":6226.0,"btc_tx":8385176.0,"btg_hash":4975746.42745577},{"month":"2023-03","btg_price":15.633123320434922,"btc_price":25123.182304581365,"btg_tx":10844.0,"btc_tx":9770106.0,"btg_hash":3870295.5510823624},{"month":"2023-04","btg_price":15.500169328632717,"btc_price":28855.591357253063,"btg_tx":9104.0,"btc_tx":10720736.0,"btg_hash":3464584.8703645836},{"month":"2023-05","btg_price":13.079061882414148,"btc_price":27516.26549124262,"btg_tx":4784.0,"btc_tx":16298437.0,"btg_hash":3939786.2686394863},{"month":"2023-06","btg_price":12.3452304012462,"btc_price":27760.893140541597,"btg_tx":5331.0,"btc_tx":12141700.0,"btg_hash":3754761.1247939817},{"month":"2023-07","btg_price":14.551948426910071,"btc_price":30050.34557770404,"btg_tx":7473.0,"btc_tx":14130344.0,"btg_hash":3883313.3023092146},{"month":"2023-08","btg_price":14.271843964434296,"btc_price":27845.168167370524,"btg_tx":5266.0,"btc_tx":14405888.0,"btg_hash":3726151.7827094533},{"month":"2023-09","btg_price":12.644738160772103,"btc_price":26306.336479271373,"btg_tx":4866.0,"btc_tx":14672694.0,"btg_hash":4356435.126857254},{"month":"2023-10","btg_price":13.628778668587783,"btc_price":29748.8713124187,"btg_tx":4705.0,"btc_tx":10136497.0,"btg_hash":4422698.50072282},{"month":"2023-11","btg_price":15.586639545330522,"btc_price":36604.63068173582,"btg_tx":5197.0,"btc_tx":16411243.0,"btg_hash":3958608.8375285496},{"month":"2023-12","btg_price":17.463720163946338,"btc_price":42548.02586179559,"btg_tx":6429.0,"btc_tx":17539793.0,"btg_hash":2632220.6605891576},{"month":"2024-01","btg_price":22.079753886085612,"btc_price":42911.79087259855,"btg_tx":6371.0,"btc_tx":14735261.0,"btg_hash":3584485.793695863},{"month":"2024-02","btg_price":23.596575230537972,"btc_price":49872.90727605353,"btg_tx":9562.0,"btc_tx":10565915.0,"btg_hash":3982965.943538075},{"month":"2024-03","btg_price":42.925066944349986,"btc_price":67711.85272275221,"btg_tx":13520.0,"btc_tx":11622871.0,"btg_hash":5673066.476338112},{"month":"2024-04","btg_price":37.202304939873535,"btc_price":65915.19861520553,"btg_tx":8364.0,"btc_tx":14478233.0,"btg_hash":5379173.481461034},{"month":"2024-05","btg_price":34.0909046198864,"btc_price":65255.59593221282,"btg_tx":8597.0,"btc_tx":18202551.0,"btg_hash":3649686.2432851703},{"month":"2024-06","btg_price":27.814220647517217,"btc_price":65903.24148341126,"btg_tx":5490.0,"btc_tx":17413013.0,"btg_hash":3195303.5026138113},{"month":"2024-07","btg_price":24.357959125937178,"btc_price":62837.6423336287,"btg_tx":5466.0,"btc_tx":19506505.0,"btg_hash":2816687.6061962363},{"month":"2024-08","btg_price":22.015309121471127,"btc_price":59963.00688085632,"btg_tx":4257.0,"btc_tx":18538105.0,"btg_hash":3017404.9869369776},{"month":"2024-09","btg_price":22.11407044468302,"btc_price":60337.91305350672,"btg_tx":4055.0,"btc_tx":17757745.0,"btg_hash":2805787.6240636576},{"month":"2024-10","btg_price":22.191996100808122,"btc_price":65582.58307140702,"btg_tx":4734.0,"btc_tx":20477350.0,"btg_hash":2713379.6372535843},{"month":"2024-11","btg_price":28.48342103195476,"btc_price":86569.09437550165,"btg_tx":16349.0,"btc_tx":16097068.0,"btg_hash":3050322.8307812503},{"month":"2024-12","btg_price":23.007273938882676,"btc_price":98246.95644894513,"btg_tx":11375.0,"btc_tx":12793058.0,"btg_hash":2555292.7134785694},{"month":"2025-01","btg_price":10.821390807601647,"btc_price":100008.38356327183,"btg_tx":14568.0,"btc_tx":11544592.0,"btg_hash":1761815.1475377092},{"month":"2025-02","btg_price":5.729347599235065,"btc_price":95251.19750017741,"btg_tx":5632.0,"btc_tx":11384544.0,"btg_hash":1086387.1767551259},{"month":"2025-03","btg_price":3.2745965000644923,"btc_price":85064.30919960975,"btg_tx":5877.0,"btc_tx":12033581.0,"btg_hash":698418.0020680256},{"month":"2025-04","btg_price":0.7819028250262439,"btc_price":86436.3487561952,"btg_tx":5549.0,"btc_tx":12427851.0,"btg_hash":311285.7210790895},{"month":"2025-05","btg_price":0.7428571259521417,"btc_price":103629.43386172956,"btg_tx":3662.0,"btc_tx":12145551.0,"btg_hash":201457.72801523298},{"month":"2025-06","btg_price":0.6799735535799541,"btc_price":105806.69944625947,"btg_tx":2018.0,"btc_tx":10278854.0,"btg_hash":159868.44977044754},{"month":"2025-07","btg_price":0.6440797019050927,"btc_price":115353.56446927854,"btg_tx":2191.0,"btc_tx":12981028.0,"btg_hash":127552.54627874849},{"month":"2025-08","btg_price":0.5210278803831706,"btc_price":114845.93707753062,"btg_tx":1676.0,"btc_tx":14115655.0,"btg_hash":103188.71214829749},{"month":"2025-09","btg_price":0.8588405248103937,"btc_price":113170.91745874342,"btg_tx":2230.0,"btc_tx":15185649.0,"btg_hash":137012.6753591821},{"month":"2025-10","btg_price":1.3810455639986245,"btc_price":114119.52504498413,"btg_tx":2691.0,"btc_tx":14490047.0,"btg_hash":297595.34531922045},{"month":"2025-11","btg_price":0.848366133701411,"btc_price":96282.01454801293,"btg_tx":2107.0,"btc_tx":12861163.0,"btg_hash":256622.72860339502},{"month":"2025-12","btg_price":0.5046208601583125,"btc_price":88915.91901772215,"btg_tx":1950.0,"btc_tx":14237003.0,"btg_hash":152176.62166330646},{"month":"2026-01","btg_price":2.223130072823356,"btc_price":90477.77406900324,"btg_tx":1543.0,"btc_tx":12112239.0,"btg_hash":186972.74994436977},{"month":"2026-02","btg_price":0.5192983657776891,"btc_price":68855.45190982717,"btg_tx":1648.0,"btc_tx":13116990.0,"btg_hash":261567.44276909725},{"month":"2026-03","btg_price":0.5359676937693096,"btc_price":69532.57664804584,"btg_tx":1169.0,"btc_tx":14725053.0,"btg_hash":343073.27895571984},{"month":"2026-04","btg_price":0.5044840202536606,"btc_price":73725.33581697839,"btg_tx":1240.0,"btc_tx":16801905.0,"btg_hash":319643.1994405864},{"month":"2026-05","btg_price":0.4170536400994755,"btc_price":77985.6057137653,"btg_tx":1450.0,"btc_tx":20004548.0,"btg_hash":154220.47541666668},{"month":"2026-06","btg_price":0.2705229493175551,"btc_price":62972.21526557511,"btg_tx":1560.0,"btc_tx":19553416.0,"btg_hash":79381.98778433642},{"month":"2026-07","btg_price":0.25751465503153553,"btc_price":63867.633603806484,"btg_tx":1200.0,"btc_tx":20345941.0,"btg_hash":71685.91172901733},{"month":"2026-08","btg_price":null,"btc_price":69472.36112530269,"btg_tx":999.0,"btc_tx":20837153.0,"btg_hash":60160.583131720436},{"month":"2026-09","btg_price":null,"btc_price":80365.95528584112,"btg_tx":1008.0,"btc_tx":20272642.0,"btg_hash":54672.94545697637}];
 let CURRENT_LANG = 'en';
 const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -677,7 +694,7 @@ function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts
     }).join('');
     tooltip.innerHTML = `<div class="t-date">${fmtMonth(d.month)}</div>${rows}`;
     tooltip.style.left = ((x / W) * 100) + '%';
-    tooltip.style.opacity = 1;
+    tooltip.style.opacity = 1; clampTip(tooltip);
   }
   function hide(){
     crosshair.style.opacity = 0;
@@ -855,7 +872,7 @@ function renderTimeline(svgId, tooltipId, events){
     const d = svg.appendChild(el('text', {x, y:y + 26, class:'tl-callout-date', 'text-anchor':'middle'})); d.textContent = date;
   };
   const hover = (x, y, e) => {
-    const hit = svg.appendChild(el('circle', {cx:x, cy:y, r:16, class:'timeline-hit'}));
+    const hit = svg.appendChild(el('circle', {cx:x, cy:y, r:24, class:'timeline-hit'}));
     const day = Math.round((Date.parse(e.date + 'T00:00:00Z') - forkTime) / 86400000);
     function show(){
       tooltip.innerHTML = `<div class="t-date">${es ? e.titleEs : e.title}</div>`
@@ -863,12 +880,12 @@ function renderTimeline(svgId, tooltipId, events){
         + `<div class="row" style="max-width:220px; white-space:normal;"><span class="k">${es ? e.detailEs : e.detail}</span></div>`;
       tooltip.style.left = ((x / W) * 100) + '%';
       tooltip.style.top = ((y / svg.viewBox.baseVal.height) * 100) + '%';
-      tooltip.style.opacity = 1;
+      tooltip.style.opacity = 1; clampTip(tooltip);
     }
     function hide(){ tooltip.style.opacity = 0; }
     hit.addEventListener('mouseenter', show);
     hit.addEventListener('mouseleave', hide);
-    hit.addEventListener('touchstart', e2 => { e2.preventDefault(); show(); }, {passive:false});
+    hit.addEventListener('click', ev => { ev.stopPropagation(); show(); });
   };
 
   // Bitcoin's row: one plain line, with a node only at the three events.
@@ -913,7 +930,7 @@ function renderTimeline(svgId, tooltipId, events){
   pointer(236, 88, 258, 127);                        // BTG: box -> BTG branch
   callout(170, 56, es ? btgEv.calloutEs : btgEv.callout, fmtLongDate(btgEv.date));
 
-  // BTG branch: its events as nodes, navy until the algorithm change, copper after.
+  // BTG branch: its events as nodes, navy until the algorithm change, plum after.
   const sorted = [...events].sort((p, q) => p.date.localeCompare(q.date));
   const x0 = 300, x1 = 740, step = (x1 - x0) / (sorted.length - 1);
   const xs = sorted.map((e, i) => x0 + i * step);
