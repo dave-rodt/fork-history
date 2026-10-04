@@ -13,66 +13,1033 @@
   :root{
     color-scheme: light dark;
     --bg:#EDEFEF; --panel:#FFFFFF; --ink:#1A1D22; --ink-soft:#4B5158; --ink-mute:#7A8087;
-    --rule:#C7CBCF; --rule-strong:#9AA0A6; --accent:#F08A1E;
+    --rule:#C7CBCF; --rule-strong:#9AA0A6;
+    --brand-orange:#F08A1E; --brand-yellow:#FDCA1E;
+    --shadow-sm:0 1px 2px rgba(20,22,25,0.06), 0 1px 1px rgba(20,22,25,0.04);
+    /* Node-share donut, one color per software group. Kept clear of the
+       site's orange/yellow brand chrome. Validated with the dataviz skill's
+       validate_palette.js in slice order, wrap-around included, for both
+       the all-nodes and Knots-only views, light and dark: no hard fails; some
+       adjacent pairs sit in the 6-8 CVD band, which the 2px slice gaps and
+       the swatch table cover. Gray is "Other". */
+    --node-other:#8A9096; --node-core-old:#2a78d6; --node-core-new:#1baf7a; --node-knots:#e34948;
+    --node-stuck:#4a3aa7; --node-b2-new:#e87ba4; --node-b2-old:#008300;
+    /* BTC: Bitcoin orange, the same in every chapter. BTCB2 purple. Pair
+       validated with the dataviz skill's validate_palette.js (light
+       #C8700A/#7A52C7, dark #CC6F0A/#9275E6, all checks pass). */
+    --btc:#C8700A; --b2:#7A52C7;
+    /* Timeline-only chain colors, the same as the BTG chapter's fork diagram:
+       Bitcoin orange and Bitcoin Cash green, each line also labeled by name. */
+    --tl-btc:#C8700A; --tl-bch:#07875F;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
-      --rule:#33373E; --rule-strong:#4A4F57; --accent:#F08A1E;
+      --rule:#33373E; --rule-strong:#4A4F57;
+      --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
+      --node-other:#8A9096; --node-core-old:#3987e5; --node-core-new:#199e70; --node-knots:#e66767;
+      --node-stuck:#9085e9; --node-b2-new:#d55181; --node-b2-old:#008300;
+      --btc:#CC6F0A; --b2:#9275E6; --tl-btc:#CC6F0A; --tl-bch:#0E9A72;
     }
   }
   :root[data-theme="dark"]{
     --bg:#14161B; --panel:#1B1E24; --ink:#EDECE6; --ink-soft:#A8ADB4; --ink-mute:#787E86;
-    --rule:#33373E; --rule-strong:#4A4F57; --accent:#F08A1E;
+    --rule:#33373E; --rule-strong:#4A4F57;
+    --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
+    --node-other:#8A9096; --node-core-old:#3987e5; --node-core-new:#199e70; --node-knots:#e66767;
+    --node-stuck:#9085e9; --node-b2-new:#d55181; --node-b2-old:#008300;
+    --btc:#CC6F0A; --b2:#9275E6; --tl-btc:#CC6F0A; --tl-bch:#0E9A72;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{background:var(--bg); color:var(--ink); font-family:'IBM Plex Sans',sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased;}
-  .wrap{max-width:720px; margin:0 auto; padding:0 20px 100px;}
-  h1{font-family:'Source Serif 4',serif; font-weight:600; letter-spacing:-0.01em; margin:0; text-wrap:balance;}
+  .wrap{max-width:880px; margin:0 auto; padding:0 20px 100px;}
+  h1,h2,h3{font-family:'Source Serif 4',serif; font-weight:600; letter-spacing:-0.01em; margin:0; text-wrap:balance;}
+
   header.masthead{
     display:flex; justify-content:space-between; align-items:baseline; gap:10px; flex-wrap:wrap;
     padding:26px 0 16px; border-bottom:1px solid var(--rule-strong);
-    font-family:'IBM Plex Mono',monospace; font-size:0.78rem; letter-spacing:0.04em;
-    color:var(--ink-soft); text-transform:uppercase;
   }
-  header.masthead a{color:inherit; text-decoration:none;}
-  header.masthead a:hover{color:var(--accent);}
-  .masthead-brand{display:inline-flex; align-items:center; gap:8px;}
+  .masthead-title{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.78rem; letter-spacing:0.04em;
+    color:var(--ink-soft); text-transform:uppercase; text-decoration:none;
+  }
+  .masthead-title:hover{color:var(--brand-orange);}
   .brand-logo{width:22px; height:22px; border-radius:5px; display:block;}
-  .hero{padding:56px 0 24px;}
-  .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--accent); letter-spacing:0.03em; margin-bottom:10px;}
-  .hero h1{font-size:clamp(1.8rem,4.4vw,2.6rem); line-height:1.14;}
-  .hero p{max-width:58ch; color:var(--ink-soft); font-size:1.05rem; margin-top:16px;}
-  .placeholder-box{
-    border:1.5px dashed var(--rule-strong); border-radius:8px; padding:22px;
-    color:var(--ink-mute); font-style:italic; max-width:58ch; margin-top:8px;
+  .masthead-meta{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute);}
+
+  .top-nav{padding:14px 0 0; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .top-nav a{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--ink-soft); text-decoration:none;
+  }
+  .top-nav a:hover{color:var(--brand-orange);}
+
+  /* Language toggle — inert for now: it only switches which button looks
+     active. Translation is wired once the English copy is final. */
+  .lang-toggle{display:flex; border:1px solid var(--rule-strong); border-radius:20px; overflow:hidden;}
+  .lang-toggle button{
+    font-family:'IBM Plex Mono',monospace; font-size:0.72rem; font-weight:600; letter-spacing:0.02em;
+    background:var(--panel); color:var(--ink-soft); border:none; padding:5px 12px; cursor:pointer;
+  }
+  .lang-toggle button + button{border-left:1px solid var(--rule-strong);}
+  .lang-toggle button.active{background:var(--brand-orange); color:#000;}
+  .lang-toggle button:hover:not(.active){color:var(--ink);}
+
+  .chapter-nav{
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:baseline;
+    margin-top:34px; gap:12px;
+  }
+  .chapter-nav > :nth-child(1){justify-self:start;}
+  .chapter-nav > :nth-child(2){justify-self:center;}
+  .chapter-nav > :nth-child(3){justify-self:end;}
+  @media (max-width:600px){
+    .chapter-nav{grid-template-columns:1fr; text-align:center;}
+    .chapter-nav > *{justify-self:center !important;}
   }
   .back-link{
-    display:inline-block; margin-top:34px; font-family:'IBM Plex Mono',monospace;
+    display:inline-block; font-family:'IBM Plex Mono',monospace;
     font-size:0.85rem; color:var(--ink-soft); text-decoration:none;
   }
-  .back-link:hover{color:var(--accent);}
+  .back-link:hover{color:var(--brand-orange);}
+  .home-link{display:inline-flex; align-items:center; padding:4px;}
+  .home-link svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block;}
+
+  .hero{padding:44px 0 30px; border-bottom:1px solid var(--rule);}
+  .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--brand-orange); letter-spacing:0.03em; margin-bottom:10px;}
+  .hero h1{font-size:clamp(1.9rem,4.4vw,2.9rem); line-height:1.14; max-width:20ch;}
+  .hero p.lede{max-width:62ch; font-size:1.08rem; color:var(--ink-soft); margin-top:16px;}
+
+  section.phase{padding:40px 0; border-bottom:1px solid var(--rule);}
+  section.phase:last-of-type{border-bottom:none;}
+  .phase-head{display:flex; align-items:baseline; gap:12px; margin-bottom:18px; flex-wrap:wrap;}
+  .phase-num{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--brand-orange); flex-shrink:0;}
+  .phase-head h2{font-size:1.5rem;}
+  .phase-time{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); margin-left:auto;}
+  .phase p{max-width:66ch; margin:0 0 14px;}
+
+  .placeholder-box{
+    border:1.5px dashed var(--rule-strong); border-radius:8px; padding:20px;
+    color:var(--ink-mute); font-style:italic; max-width:66ch; margin-top:30px;
+  }
+
+  /* ---------- charts ---------- */
+  .chart-block{margin-top:28px;}
+  .chart-title{font-size:1rem; font-weight:600; margin-bottom:2px;}
+  .chart-caption{font-size:0.84rem; color:var(--ink-soft); margin:0 0 12px; max-width:64ch;}
+  .chart-wrap{
+    position:relative; background:var(--panel); border:1px solid var(--rule); border-radius:10px;
+    padding:18px 18px 12px; box-shadow:var(--shadow-sm);
+  }
+  .view-toggle-row{display:flex; align-items:center; gap:10px; margin:0 0 14px;}
+  .view-toggle-label{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute);}
+  .view-toggle{display:flex; border:1px solid var(--rule-strong); border-radius:20px; overflow:hidden; flex-shrink:0;}
+  .view-toggle button{
+    font-family:'IBM Plex Mono',monospace; font-size:0.68rem; font-weight:600; letter-spacing:0.02em;
+    background:var(--panel); color:var(--ink-soft); border:none; padding:4px 10px; cursor:pointer;
+  }
+  .view-toggle button + button{border-left:1px solid var(--rule-strong);}
+  .view-toggle button.active{background:var(--brand-orange); color:#000;}
+  .view-toggle button:hover:not(.active){color:var(--ink);}
+  /* Block-space chart: one color per data type, validated bottom-to-top with
+     validate_palette.js (light and dark). Stamps are teal, not copper, so they
+     stay apart from the BTC-only band in Bitcoin orange stacked next to them;
+     dark mode keeps a 6.8 CVD gap between Stamps and Runes, covered by the
+     legend. Ordinary transactions are
+     a recessive gray on top so the data types sit on the baseline. */
+  :root{--sp-op83:#e34948; --sp-ins:#2a78d6; --sp-rune:#e87ba4; --sp-stamp:#00806B; --sp-ord:#C7CBCF; --sp-b2only:var(--b2); --sp-btconly:var(--btc);}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--sp-op83:#e66767; --sp-ins:#3987e5; --sp-rune:#d55181; --sp-stamp:#0F8A73; --sp-ord:#4A4F57;} }
+  :root[data-theme="dark"]{--sp-op83:#e66767; --sp-ins:#3987e5; --sp-rune:#d55181; --sp-stamp:#0F8A73; --sp-ord:#4A4F57;}
+  .toggle-rows{display:flex; gap:8px 22px; flex-wrap:wrap; margin:0 0 14px;}
+  .toggle-rows .view-toggle-row{margin:0;}
+  .tooltip .dot{width:7px; height:7px; border-radius:2px; display:inline-block; margin-right:5px;}
+  .sp-stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin:0 0 14px;}
+  .sp-stat{background:var(--panel); border:1px solid var(--rule); border-radius:10px; padding:12px 14px; box-shadow:var(--shadow-sm);}
+  .sp-stat .num{font-family:'IBM Plex Mono',monospace; font-size:1.45rem; font-weight:600; color:var(--ink); line-height:1.2;}
+  .sp-stat .abs{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--ink-soft); margin-top:1px;}
+  .sp-stat .cap{font-size:0.76rem; color:var(--ink-soft); margin-top:2px; display:flex; align-items:center; gap:6px;}
+  .sp-stat .cap .sw{width:8px; height:8px; border-radius:2px; display:inline-block; flex-shrink:0;}
+  #chart-space .gridline{stroke-dasharray:2 4;}
+  .sp-endlabel{font-family:'IBM Plex Sans',sans-serif; font-size:11px; font-weight:600; fill:var(--ink);}
+  .sp-endval{font-family:'IBM Plex Mono',monospace; font-size:10px; fill:var(--ink-mute);}
+  .sp-legend{display:flex; flex-wrap:wrap; gap:6px 16px; margin-top:10px; font-size:0.78rem; color:var(--ink-soft);}
+  .sp-legend .sw{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; position:relative; top:1px;}
+  .donut-row{display:flex; gap:28px; align-items:center; flex-wrap:wrap; justify-content:center;}
+  svg.donut{width:100%; max-width:250px; height:auto; display:block; overflow:visible;}
+  .node-table{flex:1; min-width:280px; border-collapse:collapse; font-size:0.84rem;}
+  .node-table td{padding:5px 6px; border-bottom:1px solid var(--rule);}
+  .node-table tr:last-child td{border-bottom:none;}
+  .node-table td.n, .node-table td.pct{font-family:'IBM Plex Mono',monospace; text-align:right; white-space:nowrap;}
+  .node-table td.pct{color:var(--ink-mute);}
+  .node-table .sw{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:8px; position:relative; top:1px;}
+  .node-table .chain{color:var(--ink-mute); font-size:0.76rem;}
+  .node-table tr{cursor:default;}
+  .badge-stalled{
+    display:inline-block; margin-left:6px; padding:0 6px; border:1px solid var(--rule-strong); border-radius:10px;
+    font-family:'IBM Plex Mono',monospace; font-size:0.64rem; font-weight:600; letter-spacing:0.04em;
+    color:var(--ink-soft); vertical-align:1px;
+  }
+  .node-table tr.hl td{background:var(--bg);}
+
+  .tooltip{
+    position:absolute; pointer-events:none; opacity:0;
+    background:var(--panel); border:1px solid var(--rule-strong); border-radius:7px;
+    padding:8px 10px; font-size:0.76rem; line-height:1.5; box-shadow:0 4px 14px rgba(0,0,0,0.14);
+    white-space:nowrap; max-width:calc(100vw - 12px); transform:translate(-50%,-100%); z-index:5;
+  }
+  .tooltip .t-date{color:var(--ink-mute); font-size:0.7rem; margin-bottom:4px;}
+  .tooltip .row{display:flex; justify-content:space-between; gap:12px;}
+  .tooltip .row .k{color:var(--ink-soft);}
+  .tooltip .v{font-family:'IBM Plex Mono',monospace;}
+
+  svg.chart{width:100%; height:auto; display:block; overflow:visible;}
+  .gridline{stroke:var(--rule); stroke-width:1;}
+  .axis-label{fill:var(--ink-mute); font-size:10.5px; font-family:'IBM Plex Mono',monospace;}
+  .end-label{font-size:10.5px; font-family:'IBM Plex Mono',monospace; fill:var(--ink-soft);}
+  .crosshair{stroke:var(--ink-mute); stroke-width:1; stroke-dasharray:2 3;}
+  .legend{display:flex; gap:18px; margin-top:10px; font-size:0.78rem; color:var(--ink-soft);}
+  .legend .key{display:inline-block; width:14px; height:2px; vertical-align:middle; margin-right:6px; border-radius:1px;}
+  .tl-link{fill:none; stroke-width:2;}
+  .tl-link.btc{stroke:var(--tl-btc);} .tl-link.bch{stroke:var(--tl-bch);} .tl-link.b2{stroke:var(--b2);}
+  .tl-link.b2-sha{stroke:var(--b2); stroke-dasharray:5 3;}
+  .tl-link.dead{stroke:var(--ink-mute);}
+  .tl-link.proposed{stroke:var(--ink-mute); stroke-width:1.5; stroke-dasharray:3 3;}
+  .tl-link.announced{stroke:var(--ink-mute); stroke-width:1.5; stroke-dasharray:3 3;}
+  .tl-node.btc{fill:var(--tl-btc);} .tl-node.bch{fill:var(--tl-bch);} .tl-node.b2{fill:var(--b2);}
+  .tl-node.hard{fill:var(--ink-soft);}
+  .tl-ring{fill:none; stroke:var(--ink-soft); stroke-width:1.5;}
+  .tl-genesis{fill:var(--ink); stroke:var(--panel); stroke-width:2;}
+  .tl-proposed-node{fill:var(--panel); stroke:var(--ink-mute); stroke-width:1.5;}
+  .tl-open{fill:var(--panel); stroke:var(--ink-mute); stroke-width:1.5; stroke-dasharray:3 2;}
+  .tl-policy{fill:var(--panel); stroke:var(--tl-btc); stroke-width:2;}
+  .tl-cross{stroke:var(--ink-mute); stroke-width:1.5;}
+  .tl-pointer{stroke:var(--rule-strong); stroke-width:1;}
+  .tl-line-label{font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; fill:var(--ink-soft);}
+  .tl-label{font-family:'IBM Plex Sans',sans-serif; font-size:10.5px; font-weight:600; fill:var(--ink);}
+  .tl-date{font-family:'IBM Plex Mono',monospace; font-size:9px; fill:var(--ink-mute);}
+  .tl-legend{display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:10px; font-size:0.78rem; color:var(--ink-soft);}
+  .tl-legend span{display:inline-flex; align-items:center; gap:6px;}
+  .tl-legend .ln{width:14px; height:3px; border-radius:2px; display:inline-block;}
+  .tl-legend .dt{width:9px; height:9px; border-radius:50%; display:inline-block;}
+  .sources-note{margin-top:30px; padding-top:18px; border-top:1px solid var(--rule);}
+  .sources-note h3{font-size:0.9rem; margin:0 0 10px; color:var(--ink-soft);}
+  .sources-note ol{max-width:70ch; padding-left:20px; margin:0; font-size:0.78rem; color:var(--ink-mute); line-height:1.6;}
+  .sources-note li{margin-bottom:6px;}
+  .sources-note a{color:var(--ink-soft);}
+  .sources-note a:hover{color:var(--brand-orange);}
 </style>
 </head>
 <body>
 <div class="wrap">
 
+  <nav class="top-nav">
+    <a href="index.html" id="nav-back">&larr; History of Forks</a>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" class="active" data-lang="en">EN</button>
+      <button type="button" data-lang="es">ES</button>
+    </div>
+  </nav>
+
   <header class="masthead">
-    <a href="index.html" class="masthead-brand"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo">History of Forks</a>
-    <div>Chapter 4</div>
+    <a class="masthead-title" href="index.html"><img src="assets/quantbitcoin-logo.png" alt="QuantBitcoin logo" class="brand-logo"><span>History of Forks: Chapter 4</span></a>
+    <div class="masthead-meta">Bitcoin BLAKE2b (BTCB2), forked August 8, 2026</div>
   </header>
 
   <div class="hero">
     <div class="eyebrow">THE NEWEST FORK IN THE SERIES</div>
     <h1>Bitcoin BLAKE2b: One Month Retrospective</h1>
-    <p>BTCB2 split from Bitcoin in August 2026 over a disagreement about non-monetary data in blocks, then swapped its mining algorithm outright. One month on, its own on-chain and market data can be measured against every chapter before it.</p>
+    <p class="lede">BTCB2 split from BTC in August 2026 over a disagreement about non-monetary data in blocks, then swapped its mining algorithm outright. One month on, its own on-chain and market data can be measured against every chapter before it.</p>
   </div>
 
-  <div class="placeholder-box">Coming soon.</div>
+  <div class="placeholder-box">The history sections are coming soon.</div>
 
-  <a class="back-link" href="index.html">&larr; Back to History of Forks</a>
+  <section class="phase" id="metrics">
+    <div class="phase-head">
+      <span class="phase-num">05</span>
+      <h2>One Month of Data</h2>
+      <span class="phase-time">~1 min</span>
+    </div>
+    <p>Measurements of the BTCB2 chain, its market and the network around it, taken in the first days of October 2026.</p>
+
+    <div class="chart-block">
+      <div class="chart-title" id="price-title">Price: BTCB2 vs. BTC, hourly (USD)</div>
+      <p class="chart-caption">BTCB2 started trading on Neoxa, its only exchange, on September 1 at about $98, 0.13% of BTC's price. It peaked at $1,670 on September 5, 2.1% of BTC, then fell 93% to $118 by September 12. On October 2 it traded near $402, about 0.48% of BTC. Hourly closes in UTC. The first 3 hours of trading are left out: they printed near BTC's own price before any real market formed.</p>
+      <div class="view-toggle-row">
+        <span class="view-toggle-label">Show:</span>
+        <div class="view-toggle" id="price-view-toggle">
+          <button type="button" class="active" data-view="abs">Prices (USD)</button>
+          <button type="button" data-view="share">BTCB2 as % of BTC</button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-price" viewBox="0 0 820 280" role="img"></svg>
+        <div class="tooltip" id="tooltip-price"></div>
+      </div>
+      <div class="legend" id="legend-price"></div>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title">Timeline: Bitcoin's forks and BTCB2's branch</div>
+      <p class="chart-caption">Bitcoin has changed its rules many times without splitting, through soft forks. Proposals for bigger blocks never activated. The hard forks of 2017 and 2018 created new coins, and Bitcoin Cash split twice more. In October 2025, Bitcoin Core 30 stopped limiting OP_RETURN data by default. That change, a relay policy and not a fork, set off BIP-110, a soft fork to limit such data again. BIP-110 split from BTC on August 8, 2026, then became its own coin when it switched to BLAKE2b mining on August 30, the same block where BIP-110's data limits finally took effect. On September 21 it added a 45-day wait on newly mined coins. In between, on August 23, Paul Sztorc's eCash split from BTC as a separate hard fork. Events are evenly spaced, not to scale in time. Hover a point for details.</p>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-timeline" viewBox="0 0 840 416" role="img" aria-label="Fork diagram of Bitcoin from 2009 to 2026: soft forks on BTC's line, failed proposals, the 2017 to 2018 hard forks including Bitcoin Cash and its splits, and the 2026 BTCB2 branch."></svg>
+        <div class="tooltip" id="tooltip-timeline"></div>
+      </div>
+      <div class="tl-legend">
+        <span><span class="ln" style="background:var(--tl-btc)"></span>BTC</span>
+        <span><span class="ln" style="background:var(--tl-bch)"></span>BCH</span>
+        <span><span class="ln" style="background:var(--b2)"></span>BTCB2</span>
+        <span><span class="ln" style="background:var(--ink-mute)"></span>Other forks</span>
+        <span><span class="dt" style="background:var(--tl-btc)"></span>Soft fork</span>
+        <span><span class="dt" style="background:var(--ink-soft)"></span>Hard fork, new coin</span>
+        <span><span class="dt" style="background:var(--panel); border:2px solid var(--tl-btc)"></span>Relay policy change</span>
+        <span><span class="dt" style="background:var(--panel); border:1.5px solid var(--ink-mute)"></span>Proposed, never split</span>
+      </div>
+      <p class="chart-caption" style="margin-top:14px;">BTC itself has not changed its consensus rules since Taproot activated in November 2021, so no soft forks appear on BTC's line after it. The later points on that line are not changes to BTC's rules: Bitcoin Core 30's OP_RETURN change is a relay policy, and BIP-110 and eCash split off into chains of their own.</p>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title">Which chain do Bitcoin's nodes follow?</div>
+      <p class="chart-caption">All 25,712 reachable nodes on Bitcoin's peer-to-peer network on October 2, 2026. About 1,120 of them, 4.4%, follow BTCB2. Another 730 enforce BIP-110 without the BLAKE2b fork and are stalled at block 961,639 (hatched slice, STALLED tag). BTCB2 nodes share Bitcoin's network, so each node's software version and the block height it reports show which chain it is on. Switch to Knots only to see how Knots nodes split among themselves. Hover a slice or a row for its count and share.</p>
+      <div class="view-toggle-row">
+        <span class="view-toggle-label">Show:</span>
+        <div class="view-toggle" id="node-view-toggle">
+          <button type="button" class="active" data-view="all">All nodes</button>
+          <button type="button" data-view="knots">Knots only</button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <div class="donut-row">
+          <svg class="donut" id="chart-nodes" viewBox="0 0 260 260" role="img" aria-label="Donut chart of reachable nodes by software and chain. The same data is in the table beside it."></svg>
+          <table class="node-table" id="node-table"></table>
+        </div>
+        <div class="tooltip" id="tooltip-nodes"></div>
+      </div>
+      <p class="chart-caption" style="margin-top:14px;">Stalled nodes: The chain that enforced BIP-110 kept SHA-256 for its first 8 blocks, mined slowly from August 8 to August 28. When it switched to BLAKE2b at block 961,640 on August 30, these nodes rejected the new blocks and have seen none since.</p>
+      <p class="chart-caption">Knots 29.4.1: Its 177 nodes follow the same tip as 29.4.2 but lack its 45-day wait on newly mined coins (blocks 973,440 to 979,920). If a miner spent a reward early, these nodes would accept that block while 29.4.2 nodes reject it. As long as most miners run 29.4.2, the block would be orphaned and the 29.4.1 nodes would switch back within a block or two. The risk is low, but any payment in that block could be reversed. No miner has done this yet.</p>
+      <p class="chart-caption">Why other counts are higher: Luke Dashjr's node charts total about 110,000 nodes because they add an estimate of nodes that never accept incoming connections, about 105,000 of them, or 95% of his total. No crawler can see those nodes directly. Bitnodes counts only the nodes it actually reaches, including 12,669 on Tor and 4,224 on I2P. Both sources put BTCB2 at about 4.4% of nodes. They differ on the split: Luke's estimate puts more nodes on Knots 29.4.1, while the nodes either crawler can reach favor 29.4.2.</p>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title">What block space was used for, and how much was replayed</div>
+      <p class="chart-caption">Every transaction on both chains, sorted by the kind of data it carries, as a share of each UTC day; the layers add up to 100%. On BTC, from the split on August 8 through October 1, Runes took 40% of block space. Inscriptions took 2.2%. OP_RETURN outputs over 83 bytes, the limit BIP-110 sets, took 0.1%. On BTCB2 these types are close to zero: 1.9% of space went to Runes, nearly all of them copies of BTC transactions, with no inscriptions and no OP_RETURN over 83 bytes. Both views also split transactions by whether they exist on the other chain. The same 3,235,470 transactions appear on both: that is 8.7% of BTC's 37,079,013 transactions but 98.5% of BTCB2's 3,285,701. Only 50,231 exist on BTCB2 alone, including the miners' own reward transactions. Replays fill 94% of BTCB2's block space. BTCB2 starts on August 30, when it switched to BLAKE2b; before that it mined only 8 blocks in three weeks.</p>
+      <div class="toggle-rows">
+        <div class="view-toggle-row">
+          <span class="view-toggle-label">Chain:</span>
+          <div class="view-toggle" id="sp-chain-toggle">
+            <button type="button" class="active" data-v="sha256">BTC</button>
+            <button type="button" data-v="blake2b">BTCB2</button>
+          </div>
+        </div>
+        <div class="view-toggle-row">
+          <span class="view-toggle-label">Measure:</span>
+          <div class="view-toggle" id="sp-measure-toggle">
+            <button type="button" class="active" data-v="v">Block space</button>
+            <button type="button" data-v="t">Transactions</button>
+          </div>
+        </div>
+      </div>
+      <div class="sp-stats" id="sp-stats"></div>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-space" viewBox="0 0 820 280" role="img" aria-label="Stacked area chart of daily block space or transactions by data type, adding up to 100% per day. Totals are in the caption and the tooltip."></svg>
+        <div class="tooltip" id="tooltip-space"></div>
+      </div>
+      <div class="sp-legend" id="legend-space"></div>
+      <p class="chart-caption" style="margin-top:14px;">How each type is detected, in the order checked: any OP_RETURN output over 83 bytes comes first, so everything BIP-110 would reject lands there, including 6,315 Runes transactions and 37 inscriptions. Inscriptions carry the Ordinals envelope in their witness data, as flagged by mempool's explorer; a raw scan of 120 BTCB2 blocks found none. Stamps hide data in fake public keys or script hashes. Runes carry an OP_RETURN output that starts with the Runes marker (OP_13); the ones counted as Runes stay within 83 bytes. Each transaction is counted once. Coinbase transactions count as ordinary.</p>
+    </div>
+
+    <div class="chart-block">
+      <div class="chart-title">Value moved and fees paid, by kind of transaction</div>
+      <p class="chart-caption">The same split as above, measured in money instead of space. The BTC chain moved 50.7 million BTC in outputs from August 8 through October 1 and paid 162.85 BTC in fees, about $12.5 million; Runes paid 11.7% of those fees while moving almost no value. BTCB2, from August 30, moved 7.7 million BTCB2, about $2.0 billion at its own market price, and paid 25.17 BTCB2 in fees, under $5,000 in total. BTC replays carry 95% of the value moved on BTCB2 and 96% of its fees. "Value moved" adds up every output, change sent back to the sender included, so it overstates what actually changed hands. Switch Scale to Log lines to see each type as its own line on a log axis, which makes the small Runes and inscriptions layers readable. USD uses each day's closing price: BTC from Yahoo Finance, BTCB2 from Neoxa, its only exchange, which has no price before September 1.</p>
+      <div class="toggle-rows">
+        <div class="view-toggle-row">
+          <span class="view-toggle-label">Chain:</span>
+          <div class="view-toggle" id="sv-chain-toggle">
+            <button type="button" class="active" data-v="sha256">BTC</button>
+            <button type="button" data-v="blake2b">BTCB2</button>
+          </div>
+        </div>
+        <div class="view-toggle-row">
+          <span class="view-toggle-label">Measure:</span>
+          <div class="view-toggle" id="sv-measure-toggle">
+            <button type="button" class="active" data-v="value">Value moved</button>
+            <button type="button" data-v="fees">Fees paid</button>
+          </div>
+        </div>
+        <div class="view-toggle-row">
+          <span class="view-toggle-label">Scale:</span>
+          <div class="view-toggle" id="sv-scale-toggle">
+            <button type="button" class="active" data-v="stack">Stacked</button>
+            <button type="button" data-v="log">Log lines</button>
+          </div>
+        </div>
+        <div class="view-toggle-row">
+          <span class="view-toggle-label">Unit:</span>
+          <div class="view-toggle" id="sv-unit-toggle">
+            <button type="button" class="active" data-v="coin">BTC</button>
+            <button type="button" data-v="usd">USD</button>
+          </div>
+        </div>
+      </div>
+      <div class="sp-stats" id="sv-stats"></div>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-value" viewBox="0 0 820 280" role="img" aria-label="Stacked area chart of daily value moved or fees paid by data type, in coins or USD. Totals are in the caption and the tiles above."></svg>
+        <div class="tooltip" id="tooltip-value"></div>
+      </div>
+      <div class="sp-legend" id="legend-value"></div>
+    </div>
+  </section>
+
+  <div class="sources-note">
+    <h3>Sources</h3>
+    <ol>
+      <li>Reachable nodes, user agents and reported heights, snapshot of October 2, 2026, 19:43 UTC &mdash; <a href="https://bitnodes.io/api/v1/snapshots/latest/" target="_blank" rel="noopener">Bitnodes snapshot API</a> (now served from btcnodes.io)</li>
+      <li>Estimated total nodes, including unreachable ones &mdash; <a href="https://luke.dashjr.org/programs/bitcoin/files/charts/software.html" target="_blank" rel="noopener">Luke Dashjr, "Bitcoin Node Software"</a></li>
+      <li>Block 961,639 mined August 28, 2026, and block 961,640, the first BLAKE2b block, mined August 30 &mdash; <a href="https://mempool.guide/block/961639" target="_blank" rel="noopener">mempool.guide block explorer</a></li>
+      <li>Knots 29.3 ships BIP-110 (May 9, 2026); Knots 29.4.1 activates it at the BLAKE2b hard fork &mdash; <a href="https://github.com/bitcoinknots/bitcoin/releases" target="_blank" rel="noopener">Bitcoin Knots releases, GitHub</a></li>
+      <li>Every transaction's size, fee, data flags and OP_RETURN outputs, blocks 961,632 to 969,505 (BTC) and 961,632 to 975,086 (BTCB2) &mdash; first-party crawl of <a href="https://mempool.space/docs/api/rest" target="_blank" rel="noopener">mempool.space</a> and <a href="https://mempool.guide" target="_blank" rel="noopener">mempool.guide</a> (<code>/api/v1/block/:hash/summary</code> and raw blocks)</li>
+      <li>Daily closing prices: BTC from <a href="https://finance.yahoo.com/quote/BTC-USD/history/" target="_blank" rel="noopener">Yahoo Finance (BTC-USD)</a>; BTCB2 from <a href="https://neoxa.exchange" target="_blank" rel="noopener">Neoxa</a>, its only exchange (BTCB2/USDC daily candles)</li>
+      <li>Knots 29.4.2 and its 45-day coinbase maturity rule, blocks 973,440 to 979,920 &mdash; <a href="https://github.com/bitcoinknots/bitcoin/releases/tag/v29.4.2.knots20260508" target="_blank" rel="noopener">Bitcoin Knots v29.4.2 release, GitHub</a></li>
+      <li>Bitcoin's soft forks, failed proposals and the 2017&ndash;2018 hard forks &mdash; Swan, "A timeline of Bitcoin forks," as of August 16, 2026</li>
+      <li>BIP-110's 2.53% miner signaling, the August 8 split at block 961,632, and the switch to BLAKE2b at block 961,640 &mdash; see this series' research notes and <a href="https://mempool.guide/block/961640" target="_blank" rel="noopener">mempool.guide</a></li>
+      <li>Bitcoin Core 30.0, released October 10, 2025, and its new OP_RETURN default &mdash; <a href="https://bitcoincore.org/en/releases/30.0/" target="_blank" rel="noopener">Bitcoin Core 30.0 release notes</a></li>
+      <li>eCash (Sztorc): announcement, Alpha chain from BTC block 963,647 on August 23, 2026, Beta chain, and planned mainnet around block 973,728 &mdash; <a href="https://bitcoin-takeover.com/ecash-ecx-paul-sztorc-forks-bitcoin-to-prove-a-point/" target="_blank" rel="noopener">"eCash (ECX): Paul Sztorc Forks Bitcoin to Prove a Point," Bitcoin Takeover</a>; <a href="https://news.bitcoin.com/crypto-news/paul-sztorcs-bitcoin-fork-ecx-rips-past-25000-blocks-in-just-13-hours/" target="_blank" rel="noopener">"Paul Sztorc's Bitcoin Fork ECX Rips Past 25,000 Blocks in Just 13 Hours," Bitcoin.com</a></li>
+      <li>BTCB2 hourly prices, BTCB2/USDC &mdash; <a href="https://neoxa.exchange/" target="_blank" rel="noopener">Neoxa exchange</a> candle API</li>
+      <li>BTC hourly prices, BTC/USD &mdash; <a href="https://docs.cdp.coinbase.com/exchange/reference/exchangerestapi_getproductcandles" target="_blank" rel="noopener">Coinbase Exchange candles API</a></li>
+    </ol>
+  </div>
+  <div class="chapter-nav">
+    <a class="back-link" href="btg-vs-btc.html">&larr; Previous: Bitcoin Gold vs. Bitcoin</a>
+    <a class="back-link home-link" href="index.html" aria-label="Go to History of Forks">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    </a>
+    <span></span>
+  </div>
 
 </div>
+
+<script>
+// Tooltips on phones: keep a tooltip inside the screen (shift it sideways if
+// it would spill over an edge), open it on tap, and close it on a tap
+// outside the chart. A tap no longer blocks the page from scrolling.
+function clampTip(tip){
+  tip.style.marginLeft = '0px';
+  const r = tip.getBoundingClientRect(), vw = document.documentElement.clientWidth;
+  const shift = r.left < 6 ? 6 - r.left : r.right > vw - 6 ? vw - 6 - r.right : 0;
+  tip.style.marginLeft = shift + 'px';
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.chart-wrap')) document.querySelectorAll('.tooltip').forEach(t => { t.style.opacity = 0; });
+});
+
+// Hourly BTCB2 and BTC closes, built by build_btcb2_btc_price_hourly.py.
+const PRICE = [{"t":1788285600,"b2":98,"btc":77126.87},{"t":1788289200,"b2":89,"btc":77277.15},{"t":1788292800,"b2":87.99,"btc":77403.8},{"t":1788296400,"b2":82,"btc":77166.59},{"t":1788300000,"b2":99.99999999,"btc":77224.98},{"t":1788303600,"b2":90,"btc":77398.69},{"t":1788307200,"b2":80,"btc":77170.03},{"t":1788310800,"b2":99.99999999,"btc":76965.74},{"t":1788314400,"b2":65,"btc":77277.15},{"t":1788318000,"b2":149.99999999,"btc":77512.45},{"t":1788321600,"b2":149.99999999,"btc":77516.75},{"t":1788325200,"b2":100,"btc":77606.33},{"t":1788328800,"b2":149.99999999,"btc":77573.69},{"t":1788332400,"b2":75,"btc":77436.24},{"t":1788336000,"b2":149,"btc":76803.54},{"t":1788339600,"b2":148,"btc":76711.07},{"t":1788343200,"b2":148,"btc":76638.81},{"t":1788346800,"b2":146,"btc":76778.49},{"t":1788350400,"b2":144,"btc":76563.52},{"t":1788354000,"b2":99.99999999,"btc":77112.64},{"t":1788357600,"b2":99.99999999,"btc":77016.75},{"t":1788361200,"b2":130,"btc":77253.04},{"t":1788364800,"b2":95,"btc":77139.94},{"t":1788368400,"b2":199.99999999,"btc":77351.46},{"t":1788372000,"b2":86,"btc":77345.92},{"t":1788375600,"b2":180,"btc":77316.03},{"t":1788379200,"b2":91,"btc":77378.11},{"t":1788382800,"b2":169.42,"btc":77266.24},{"t":1788386400,"b2":178.99999998,"btc":77003.61},{"t":1788390000,"b2":120,"btc":77307.36},{"t":1788393600,"b2":120,"btc":77026.98},{"t":1788397200,"b2":119,"btc":77321.27},{"t":1788400800,"b2":88,"btc":77789.58},{"t":1788404400,"b2":199,"btc":77673.96},{"t":1788408000,"b2":204.76,"btc":77750.99},{"t":1788411600,"b2":204.76,"btc":77781.09},{"t":1788415200,"b2":318.17,"btc":77809.62},{"t":1788418800,"b2":819.9,"btc":77633.36},{"t":1788422400,"b2":200,"btc":77803.13},{"t":1788429600,"b2":790,"btc":77708.61},{"t":1788433200,"b2":215,"btc":77910.27},{"t":1788436800,"b2":240,"btc":78621.29},{"t":1788440400,"b2":270,"btc":78823.92},{"t":1788444000,"b2":299.99999999,"btc":80550.91},{"t":1788447600,"b2":332,"btc":81364.13},{"t":1788451200,"b2":314.99999999,"btc":80973.5},{"t":1788454800,"b2":249,"btc":81055.02},{"t":1788458400,"b2":270,"btc":81268.43},{"t":1788462000,"b2":300,"btc":81768.48},{"t":1788465600,"b2":330.73999999,"btc":81468.81},{"t":1788469200,"b2":315,"btc":81600.19},{"t":1788472800,"b2":359.99999999,"btc":81155.56},{"t":1788476400,"b2":400,"btc":81263.99},{"t":1788480000,"b2":427.625,"btc":80979.1},{"t":1788483600,"b2":350.37015899,"btc":80975.3},{"t":1788487200,"b2":395.7962963,"btc":80836},{"t":1788490800,"b2":386.61627926,"btc":80850.5},{"t":1788494400,"b2":334.21,"btc":81071.89},{"t":1788498000,"b2":332.66,"btc":80983.2},{"t":1788501600,"b2":300,"btc":80791.24},{"t":1788505200,"b2":299.08971235,"btc":80650.84},{"t":1788508800,"b2":295,"btc":81141.59},{"t":1788512400,"b2":226.45332068,"btc":81042.44},{"t":1788516000,"b2":287.99999934,"btc":81185.26},{"t":1788519600,"b2":278.83,"btc":81221.2},{"t":1788523200,"b2":251.69,"btc":79447.07},{"t":1788526800,"b2":165.84327929,"btc":79362.21},{"t":1788530400,"b2":351.17627564,"btc":78891.58},{"t":1788534000,"b2":335,"btc":79422.96},{"t":1788537600,"b2":303,"btc":79749.76},{"t":1788541200,"b2":306.35028363,"btc":79469.85},{"t":1788544800,"b2":343.87183012,"btc":79617.92},{"t":1788548400,"b2":340.45,"btc":79807.37},{"t":1788552000,"b2":373.9,"btc":79718.63},{"t":1788555600,"b2":395,"btc":79654.12},{"t":1788559200,"b2":394.74652659,"btc":79654.1},{"t":1788562800,"b2":423.66,"btc":79675.12},{"t":1788566400,"b2":415,"btc":79600.8},{"t":1788570000,"b2":352.19,"btc":79551.01},{"t":1788573600,"b2":305.76669199,"btc":79584.5},{"t":1788577200,"b2":343.85,"btc":79596.27},{"t":1788580800,"b2":329.63,"btc":79511.01},{"t":1788584400,"b2":395,"btc":79590.33},{"t":1788588000,"b2":400,"btc":79660},{"t":1788591600,"b2":421.86,"btc":79726.8},{"t":1788595200,"b2":440.55,"btc":79653.3},{"t":1788598800,"b2":414.74999911,"btc":79634.99},{"t":1788602400,"b2":412,"btc":79621.14},{"t":1788606000,"b2":600,"btc":79621.92},{"t":1788609600,"b2":600,"btc":79710.73},{"t":1788613200,"b2":600,"btc":79624.51},{"t":1788616800,"b2":732.23489873,"btc":79723.2},{"t":1788620400,"b2":995,"btc":79802.01},{"t":1788624000,"b2":1670,"btc":80042.96},{"t":1788627600,"b2":1199.99999998,"btc":80064.7},{"t":1788631200,"b2":1423.36,"btc":80000.02},{"t":1788634800,"b2":990.62234608,"btc":79753.21},{"t":1788638400,"b2":1139.99,"btc":79740.09},{"t":1788642000,"b2":1166.2207,"btc":79911.99},{"t":1788645600,"b2":1243.34083728,"btc":79790.37},{"t":1788649200,"b2":1094.65547544,"btc":79831.57},{"t":1788652800,"b2":1030,"btc":79872.23},{"t":1788656400,"b2":1034.36838685,"btc":79954.31},{"t":1788660000,"b2":981.52441205,"btc":79907.01},{"t":1788663600,"b2":885.79,"btc":80031.87},{"t":1788667200,"b2":918.8,"btc":79867.76},{"t":1788670800,"b2":985.12912369,"btc":79991.98},{"t":1788674400,"b2":1029.75473755,"btc":79780.5},{"t":1788678000,"b2":1204.89202567,"btc":79810.07},{"t":1788681600,"b2":1080,"btc":79844.53},{"t":1788685200,"b2":940,"btc":79890.48},{"t":1788688800,"b2":958.05,"btc":80000.62},{"t":1788692400,"b2":885.32102304,"btc":79922.99},{"t":1788696000,"b2":801.54,"btc":79920.46},{"t":1788699600,"b2":805.8422905,"btc":79827.31},{"t":1788703200,"b2":837.14385634,"btc":79538.5},{"t":1788706800,"b2":718.56,"btc":79706.35},{"t":1788710400,"b2":674.36,"btc":79679.22},{"t":1788714000,"b2":687.03540056,"btc":79741.18},{"t":1788717600,"b2":682.9,"btc":79941.88},{"t":1788721200,"b2":700,"btc":79829.98},{"t":1788724800,"b2":663.1499521,"btc":79909.85},{"t":1788728400,"b2":725.16,"btc":79945.16},{"t":1788732000,"b2":803.5,"btc":80048.74},{"t":1788735600,"b2":728.27762548,"btc":80339.13},{"t":1788739200,"b2":725.16729376,"btc":80151.73},{"t":1788742800,"b2":689.79099364,"btc":79917.01},{"t":1788746400,"b2":627.63753624,"btc":79862.25},{"t":1788750000,"b2":601.13,"btc":79580.53},{"t":1788753600,"b2":554.94401639,"btc":79708.49},{"t":1788757200,"b2":699,"btc":79740.21},{"t":1788760800,"b2":598,"btc":79645.52},{"t":1788764400,"b2":633,"btc":79384.47},{"t":1788768000,"b2":636.87168874,"btc":79417.85},{"t":1788771600,"b2":613.18181818,"btc":79301.31},{"t":1788775200,"b2":575.04,"btc":79350.64},{"t":1788778800,"b2":566.98819626,"btc":79409.13},{"t":1788782400,"b2":559.87831462,"btc":79597.76},{"t":1788786000,"b2":500,"btc":79344.84},{"t":1788789600,"b2":398.65255105,"btc":79184.1},{"t":1788793200,"b2":301.8,"btc":78812.79},{"t":1788796800,"b2":296,"btc":79010.98},{"t":1788800400,"b2":361.04310599,"btc":79174.92},{"t":1788804000,"b2":400,"btc":79195.02},{"t":1788807600,"b2":365,"btc":79352.21},{"t":1788811200,"b2":378.54,"btc":79220.55},{"t":1788814800,"b2":338.40156348,"btc":79139.48},{"t":1788818400,"b2":336,"btc":78927.44},{"t":1788822000,"b2":332.5,"btc":79091.97},{"t":1788825600,"b2":200,"btc":79298.55},{"t":1788829200,"b2":397.82002831,"btc":79413.92},{"t":1788832800,"b2":338,"btc":78914},{"t":1788836400,"b2":290.44342625,"btc":78875.21},{"t":1788840000,"b2":266,"btc":78649.87},{"t":1788843600,"b2":335.85687248,"btc":78556.8},{"t":1788847200,"b2":301,"btc":78303.67},{"t":1788850800,"b2":297.99729771,"btc":78451.08},{"t":1788854400,"b2":255.28604132,"btc":78380.62},{"t":1788858000,"b2":253.98867377,"btc":78732.88},{"t":1788861600,"b2":258,"btc":78534.16},{"t":1788865200,"b2":245.93906354,"btc":78401.88},{"t":1788868800,"b2":292.12,"btc":78422.25},{"t":1788872400,"b2":268.49,"btc":77932.6},{"t":1788876000,"b2":284.52403669,"btc":78538.62},{"t":1788879600,"b2":311.84787255,"btc":78900},{"t":1788883200,"b2":312,"btc":78730.82},{"t":1788886800,"b2":310,"btc":78493.18},{"t":1788890400,"b2":310,"btc":78423.59},{"t":1788894000,"b2":285.66,"btc":78434.47},{"t":1788897600,"b2":305.46926094,"btc":78482.46},{"t":1788901200,"b2":288.01231797,"btc":78485.84},{"t":1788904800,"b2":287.81079377,"btc":78545.41},{"t":1788908400,"b2":306.92811802,"btc":78447.11},{"t":1788912000,"b2":316,"btc":78766.73},{"t":1788915600,"b2":317.98041804,"btc":78879.7},{"t":1788919200,"b2":310,"btc":78717.12},{"t":1788922800,"b2":300.5,"btc":78619.71},{"t":1788926400,"b2":291.903187,"btc":79159.11},{"t":1788930000,"b2":272.1,"btc":78921.79},{"t":1788933600,"b2":274.80367621,"btc":79150.25},{"t":1788937200,"b2":258.09778306,"btc":79258.79},{"t":1788940800,"b2":264.23529412,"btc":79695.38},{"t":1788944400,"b2":248,"btc":78940},{"t":1788948000,"b2":245.5,"btc":78901.75},{"t":1788951600,"b2":252,"btc":79294.26},{"t":1788955200,"b2":247.93751849,"btc":79587.32},{"t":1788958800,"b2":243.6970678,"btc":79119.65},{"t":1788962400,"b2":236.70203579,"btc":78941.83},{"t":1788966000,"b2":242,"btc":78582.07},{"t":1788969600,"b2":246.39689369,"btc":78783.18},{"t":1788973200,"b2":241.51118773,"btc":78754.89},{"t":1788976800,"b2":261,"btc":78399.35},{"t":1788980400,"b2":244.52001033,"btc":78212.95},{"t":1788984000,"b2":259.32369049,"btc":78303.89},{"t":1788987600,"b2":251.5065376,"btc":78128.28},{"t":1788991200,"b2":236.93973754,"btc":77892.29},{"t":1788994800,"b2":231.77886262,"btc":78283.98},{"t":1788998400,"b2":234.44548085,"btc":78151.72},{"t":1789002000,"b2":247.96460248,"btc":78070.4},{"t":1789005600,"b2":259,"btc":78326.1},{"t":1789009200,"b2":237.69,"btc":78297.16},{"t":1789012800,"b2":235.3841753,"btc":78368.72},{"t":1789016400,"b2":245.28765798,"btc":78500.05},{"t":1789020000,"b2":231.71964955,"btc":78394.43},{"t":1789023600,"b2":229.16250642,"btc":78079.51},{"t":1789027200,"b2":238.88303462,"btc":78085.45},{"t":1789030800,"b2":235.08099101,"btc":77959.8},{"t":1789034400,"b2":235.98394842,"btc":77830.44},{"t":1789038000,"b2":234.24114838,"btc":77810.35},{"t":1789041600,"b2":230.2,"btc":76868.45},{"t":1789045200,"b2":226.86,"btc":77145.03},{"t":1789048800,"b2":230,"btc":77390.8},{"t":1789052400,"b2":227.9686395,"btc":77218.74},{"t":1789056000,"b2":230,"btc":77160.22},{"t":1789059600,"b2":204.23299783,"btc":77286.04},{"t":1789063200,"b2":207,"btc":77218.6},{"t":1789066800,"b2":192.15818948,"btc":77123.6},{"t":1789070400,"b2":152,"btc":77239.01},{"t":1789074000,"b2":197.99971945,"btc":77125.97},{"t":1789077600,"b2":185,"btc":76802.14},{"t":1789081200,"b2":189.07450343,"btc":76536.55},{"t":1789084800,"b2":180.19153454,"btc":76878.72},{"t":1789088400,"b2":171.53,"btc":76949.1},{"t":1789092000,"b2":168.56881596,"btc":76813.67},{"t":1789095600,"b2":158.09188335,"btc":76866.34},{"t":1789099200,"b2":168.21334533,"btc":77086},{"t":1789102800,"b2":171.44,"btc":77225.28},{"t":1789106400,"b2":159.90749055,"btc":77265.11},{"t":1789110000,"b2":155.25,"btc":77199.53},{"t":1789113600,"b2":154.00526474,"btc":77337.07},{"t":1789117200,"b2":167.65,"btc":77005.96},{"t":1789120800,"b2":160.22,"btc":76966.64},{"t":1789124400,"b2":159.54751907,"btc":76999.27},{"t":1789128000,"b2":172.67910033,"btc":77990.86},{"t":1789131600,"b2":166.23,"btc":79223.77},{"t":1789135200,"b2":176.40941357,"btc":78776.91},{"t":1789138800,"b2":168.6,"btc":77694.35},{"t":1789142400,"b2":181.5,"btc":77893.44},{"t":1789146000,"b2":167.3,"btc":77505.18},{"t":1789149600,"b2":165,"btc":77033.98},{"t":1789153200,"b2":178.34051471,"btc":77257.36},{"t":1789156800,"b2":178,"btc":77305.96},{"t":1789160400,"b2":165.17,"btc":77106.23},{"t":1789164000,"b2":164.06817884,"btc":77121.61},{"t":1789167600,"b2":157.78853467,"btc":77208.55},{"t":1789171200,"b2":150,"btc":77271.11},{"t":1789174800,"b2":139.21,"btc":77250.02},{"t":1789178400,"b2":139.17411527,"btc":77270.69},{"t":1789182000,"b2":139.58838474,"btc":77259.23},{"t":1789185600,"b2":132.39711948,"btc":77206.75},{"t":1789189200,"b2":138.4799453,"btc":77200},{"t":1789192800,"b2":126.09,"btc":77279.06},{"t":1789196400,"b2":119.67,"btc":77257},{"t":1789200000,"b2":118,"btc":77340.73},{"t":1789203600,"b2":124.7,"btc":77336.02},{"t":1789207200,"b2":127.2,"btc":77311.71},{"t":1789210800,"b2":125.79,"btc":77339.8},{"t":1789214400,"b2":127.5,"btc":77319.47},{"t":1789218000,"b2":125.31,"btc":77351.6},{"t":1789221600,"b2":125.10342889,"btc":77444.01},{"t":1789225200,"b2":137.02084072,"btc":77363.97},{"t":1789228800,"b2":138.61992783,"btc":77337.96},{"t":1789232400,"b2":152.29085563,"btc":77191.42},{"t":1789236000,"b2":175.065177,"btc":77126.28},{"t":1789239600,"b2":161.23,"btc":77105.44},{"t":1789243200,"b2":152.33,"btc":77152.69},{"t":1789246800,"b2":166.23,"btc":77240.79},{"t":1789250400,"b2":160.84,"btc":77219.84},{"t":1789254000,"b2":154,"btc":77262.85},{"t":1789257600,"b2":154.79,"btc":77252.96},{"t":1789261200,"b2":157.55768932,"btc":77299.53},{"t":1789264800,"b2":158.17060215,"btc":77268.02},{"t":1789268400,"b2":161,"btc":77176.07},{"t":1789272000,"b2":162,"btc":77188.43},{"t":1789275600,"b2":160.05542247,"btc":77291.43},{"t":1789279200,"b2":150.07,"btc":77099.74},{"t":1789282800,"b2":154.13,"btc":77100.18},{"t":1789286400,"b2":151.32,"btc":76777.69},{"t":1789290000,"b2":154.29,"btc":76766.09},{"t":1789293600,"b2":158.84662757,"btc":76642.43},{"t":1789297200,"b2":161.61477416,"btc":76759.13},{"t":1789300800,"b2":161.2,"btc":76730.18},{"t":1789304400,"b2":166.42308424,"btc":76818.08},{"t":1789308000,"b2":171.45656237,"btc":77178.03},{"t":1789311600,"b2":176.10794453,"btc":77105.27},{"t":1789315200,"b2":178.66893732,"btc":77256.41},{"t":1789318800,"b2":181,"btc":77298.59},{"t":1789322400,"b2":179.9,"btc":77312.34},{"t":1789326000,"b2":188,"btc":77253.72},{"t":1789329600,"b2":182.88,"btc":77322.58},{"t":1789333200,"b2":182.75207588,"btc":77280.56},{"t":1789336800,"b2":171.45,"btc":76676.7},{"t":1789340400,"b2":185,"btc":76799.85},{"t":1789344000,"b2":176.61028804,"btc":76767.39},{"t":1789347600,"b2":196.99703547,"btc":77076.83},{"t":1789351200,"b2":188.36658943,"btc":77568.87},{"t":1789354800,"b2":172.6880958,"btc":77566.5},{"t":1789358400,"b2":180,"btc":77646.46},{"t":1789362000,"b2":184.78344196,"btc":77576.64},{"t":1789365600,"b2":184.84011061,"btc":77557.56},{"t":1789369200,"b2":183.32111016,"btc":77855.5},{"t":1789372800,"b2":199.82,"btc":77705.03},{"t":1789376400,"b2":199,"btc":78120.42},{"t":1789380000,"b2":194.8854548,"btc":77868.6},{"t":1789383600,"b2":200,"btc":77745.43},{"t":1789387200,"b2":190,"btc":77659.24},{"t":1789390800,"b2":195.64570406,"btc":78148.75},{"t":1789394400,"b2":195,"btc":78498.28},{"t":1789398000,"b2":208,"btc":78552.45},{"t":1789401600,"b2":201,"btc":78752.83},{"t":1789405200,"b2":208.13599098,"btc":78941.8},{"t":1789408800,"b2":233.53103177,"btc":79219.79},{"t":1789412400,"b2":238.22,"btc":78982.77},{"t":1789416000,"b2":246.25,"btc":79089.64},{"t":1789419600,"b2":246.14,"btc":78742.7},{"t":1789423200,"b2":249.5,"btc":78541.29},{"t":1789426800,"b2":235,"btc":78175.01},{"t":1789430400,"b2":236.79,"btc":77938.07},{"t":1789434000,"b2":235,"btc":77893.88},{"t":1789437600,"b2":240.65709884,"btc":77886.8},{"t":1789441200,"b2":240,"btc":77660.32},{"t":1789444800,"b2":235,"btc":77547.75},{"t":1789448400,"b2":235,"btc":77610.01},{"t":1789452000,"b2":239.03341769,"btc":77265.01},{"t":1789455600,"b2":237.14866321,"btc":76878.62},{"t":1789459200,"b2":240.14,"btc":76955.06},{"t":1789462800,"b2":236.19795384,"btc":76946.72},{"t":1789466400,"b2":235,"btc":77014.58},{"t":1789470000,"b2":236.69,"btc":76895.19},{"t":1789473600,"b2":231.38222735,"btc":76914.72},{"t":1789477200,"b2":231.84058672,"btc":76571.36},{"t":1789480800,"b2":235.41545199,"btc":75869.26},{"t":1789484400,"b2":252,"btc":76466.09},{"t":1789488000,"b2":274.75,"btc":76330.6},{"t":1789491600,"b2":277.9386585,"btc":76911.06},{"t":1789495200,"b2":274.58,"btc":75931.01},{"t":1789498800,"b2":271.25099063,"btc":76126.33},{"t":1789502400,"b2":275,"btc":75874.28},{"t":1789506000,"b2":276.76382181,"btc":75390.09},{"t":1789509600,"b2":289.65,"btc":75611},{"t":1789513200,"b2":298,"btc":75584.17},{"t":1789516800,"b2":280,"btc":75712.21},{"t":1789520400,"b2":284.14050296,"btc":75434.59},{"t":1789524000,"b2":293.56765419,"btc":75824.85},{"t":1789527600,"b2":288,"btc":75755.41},{"t":1789531200,"b2":289.73724898,"btc":75796.36},{"t":1789534800,"b2":300,"btc":75905.89},{"t":1789538400,"b2":300,"btc":75969},{"t":1789542000,"b2":300.03,"btc":75690.46},{"t":1789545600,"b2":301,"btc":75670.39},{"t":1789549200,"b2":299.93,"btc":75924.05},{"t":1789552800,"b2":304.33563338,"btc":75920},{"t":1789556400,"b2":305.5043241,"btc":76182.14},{"t":1789560000,"b2":320,"btc":75901.21},{"t":1789563600,"b2":320,"btc":75582.1},{"t":1789567200,"b2":377,"btc":75632.96},{"t":1789570800,"b2":370,"btc":75730.9},{"t":1789574400,"b2":438,"btc":75701.55},{"t":1789578000,"b2":427,"btc":75681.25},{"t":1789581600,"b2":451.92358171,"btc":75555.99},{"t":1789585200,"b2":458.76,"btc":76000},{"t":1789588800,"b2":464.16496828,"btc":76101.98},{"t":1789592400,"b2":515.2,"btc":75907.46},{"t":1789596000,"b2":475.10716943,"btc":75620.08},{"t":1789599600,"b2":478.58532024,"btc":76144.99},{"t":1789603200,"b2":541.78,"btc":76268.48},{"t":1789606800,"b2":549.5,"btc":76298.04},{"t":1789610400,"b2":548.87,"btc":76303.74},{"t":1789614000,"b2":530.35594954,"btc":76364.57},{"t":1789617600,"b2":539,"btc":76460.82},{"t":1789621200,"b2":453.16903682,"btc":76249.28},{"t":1789624800,"b2":485.27997755,"btc":76402.92},{"t":1789628400,"b2":462.24600466,"btc":76388.12},{"t":1789632000,"b2":500,"btc":76497.65},{"t":1789635600,"b2":489.5,"btc":76394.34},{"t":1789639200,"b2":463.33648888,"btc":76330.8},{"t":1789642800,"b2":413.32441845,"btc":76398.74},{"t":1789646400,"b2":451.62760166,"btc":76659.83},{"t":1789650000,"b2":386.77,"btc":76618.25},{"t":1789653600,"b2":424,"btc":76423.62},{"t":1789657200,"b2":416.79,"btc":76702.31},{"t":1789660800,"b2":433.16413701,"btc":76688.03},{"t":1789664400,"b2":479,"btc":76608.24},{"t":1789668000,"b2":473.89076217,"btc":76506.4},{"t":1789671600,"b2":442.06261713,"btc":76524.57},{"t":1789675200,"b2":430.8,"btc":76498.54},{"t":1789678800,"b2":433.74452958,"btc":76348.94},{"t":1789682400,"b2":431.94,"btc":76359.87},{"t":1789686000,"b2":415.73335975,"btc":76348.74},{"t":1789689600,"b2":393.39546634,"btc":76526.11},{"t":1789693200,"b2":383.11577735,"btc":76662.85},{"t":1789696800,"b2":378,"btc":76909.34},{"t":1789700400,"b2":356.5425325,"btc":77312.13},{"t":1789704000,"b2":364.33,"btc":77505},{"t":1789707600,"b2":356.5499959,"btc":77426.77},{"t":1789711200,"b2":343.95,"btc":77527.38},{"t":1789714800,"b2":330,"btc":77734.78},{"t":1789718400,"b2":321.59625883,"btc":78191.55},{"t":1789722000,"b2":297.26,"btc":78148.14},{"t":1789725600,"b2":303.09704408,"btc":78221.46},{"t":1789729200,"b2":321,"btc":77995.19},{"t":1789732800,"b2":338.22249919,"btc":77977.65},{"t":1789736400,"b2":338.19140244,"btc":80022.05},{"t":1789740000,"b2":327.91,"btc":80908.96},{"t":1789743600,"b2":377.01300941,"btc":80700.62},{"t":1789747200,"b2":385.0840064,"btc":80824.06},{"t":1789750800,"b2":391.68048612,"btc":80994.64},{"t":1789754400,"b2":400.38544655,"btc":80926.37},{"t":1789758000,"b2":393.79171964,"btc":81193.47},{"t":1789761600,"b2":389.33776261,"btc":81099.99},{"t":1789765200,"b2":400.18,"btc":81223.78},{"t":1789768800,"b2":387.39,"btc":81133.49},{"t":1789772400,"b2":320,"btc":80875.04},{"t":1789776000,"b2":333.14517008,"btc":81657.62},{"t":1789779600,"b2":321,"btc":81262.5},{"t":1789783200,"b2":313.01,"btc":81276.05},{"t":1789786800,"b2":293.15434959,"btc":81105.04},{"t":1789790400,"b2":296.86014895,"btc":81002.41},{"t":1789794000,"b2":318.98,"btc":81022.5},{"t":1789797600,"b2":299.58,"btc":81023.15},{"t":1789801200,"b2":300,"btc":81073.15},{"t":1789804800,"b2":307.57581648,"btc":81297.65},{"t":1789808400,"b2":300.65746529,"btc":81298.84},{"t":1789812000,"b2":294.27,"btc":81189.6},{"t":1789815600,"b2":294.27,"btc":81280},{"t":1789819200,"b2":298,"btc":81309.99},{"t":1789822800,"b2":301.25266497,"btc":81323.5},{"t":1789826400,"b2":286.69062496,"btc":81554.89},{"t":1789830000,"b2":297.1653457,"btc":81626.45},{"t":1789833600,"b2":294.23149801,"btc":81813.35},{"t":1789837200,"b2":304.69857666,"btc":81437.1},{"t":1789840800,"b2":313.10362599,"btc":81412.24},{"t":1789844400,"b2":309.01,"btc":81345.02},{"t":1789848000,"b2":304.6,"btc":81128.35},{"t":1789851600,"b2":304.6,"btc":81063.73},{"t":1789855200,"b2":296,"btc":81232.47},{"t":1789858800,"b2":291.69768985,"btc":81233.91},{"t":1789862400,"b2":285.7,"btc":81263.65},{"t":1789866000,"b2":292,"btc":81071.71},{"t":1789869600,"b2":294.09203537,"btc":80305.44},{"t":1789873200,"b2":294.17,"btc":80458.82},{"t":1789876800,"b2":294.2,"btc":80395.94},{"t":1789880400,"b2":296.89122658,"btc":80456.01},{"t":1789884000,"b2":292,"btc":80272.5},{"t":1789887600,"b2":291.12,"btc":80284.56},{"t":1789891200,"b2":289.02,"btc":80228.2},{"t":1789894800,"b2":293.15,"btc":80430.01},{"t":1789898400,"b2":285,"btc":80283.01},{"t":1789902000,"b2":279,"btc":80442.98},{"t":1789905600,"b2":291.46988854,"btc":80451.14},{"t":1789909200,"b2":290.64,"btc":80522.05},{"t":1789912800,"b2":280,"btc":80639.59},{"t":1789916400,"b2":279,"btc":80874.2},{"t":1789920000,"b2":285.03000004,"btc":81311.99},{"t":1789923600,"b2":294.39999999,"btc":81129.33},{"t":1789927200,"b2":288.24,"btc":81020.32},{"t":1789930800,"b2":290,"btc":81162.44},{"t":1789934400,"b2":271.01,"btc":81073.47},{"t":1789938000,"b2":274.95253081,"btc":80920.28},{"t":1789941600,"b2":267.08798213,"btc":81196.5},{"t":1789945200,"b2":267,"btc":81159.64},{"t":1789948800,"b2":275.71106078,"btc":81590.55},{"t":1789952400,"b2":271.8,"btc":80973.46},{"t":1789956000,"b2":267.5,"btc":81299.86},{"t":1789959600,"b2":273.93,"btc":81411.5},{"t":1789963200,"b2":272.06799845,"btc":81370.64},{"t":1789966800,"b2":277.3705801,"btc":81541.94},{"t":1789970400,"b2":273,"btc":81621.54},{"t":1789974000,"b2":269.52258834,"btc":81704.88},{"t":1789977600,"b2":278.99,"btc":83727},{"t":1789981200,"b2":281.72707329,"btc":84635.49},{"t":1789984800,"b2":283.07381888,"btc":84413.8},{"t":1789988400,"b2":283.22598194,"btc":84878.78},{"t":1789992000,"b2":280.96,"btc":85300},{"t":1789995600,"b2":300.3,"btc":85443.42},{"t":1789999200,"b2":312,"btc":85832.71},{"t":1790002800,"b2":320,"btc":85933.17},{"t":1790006400,"b2":327.94410512,"btc":85967.88},{"t":1790010000,"b2":330,"btc":85902.12},{"t":1790013600,"b2":342.59,"btc":86071.78},{"t":1790017200,"b2":354.90897157,"btc":86494.97},{"t":1790020800,"b2":343,"btc":86980.02},{"t":1790024400,"b2":345,"btc":86557.3},{"t":1790028000,"b2":337.44332065,"btc":86423.13},{"t":1790031600,"b2":331.91299625,"btc":86594.94},{"t":1790035200,"b2":366.26163991,"btc":85876.06},{"t":1790038800,"b2":380,"btc":85598.67},{"t":1790042400,"b2":407,"btc":85700},{"t":1790046000,"b2":420,"btc":85667.84},{"t":1790049600,"b2":420.00000001,"btc":85439.56},{"t":1790053200,"b2":420,"btc":85398.69},{"t":1790056800,"b2":415.65,"btc":85359.23},{"t":1790060400,"b2":377.43754045,"btc":85339.85},{"t":1790064000,"b2":378.48164907,"btc":86198.8},{"t":1790067600,"b2":366.35227273,"btc":86238.82},{"t":1790071200,"b2":348.79787326,"btc":85864.54},{"t":1790074800,"b2":350.90421514,"btc":85969.07},{"t":1790078400,"b2":367.43,"btc":86015.87},{"t":1790082000,"b2":393.68070233,"btc":86329.14},{"t":1790085600,"b2":387.44248,"btc":86242.89},{"t":1790089200,"b2":376.1,"btc":86417.8},{"t":1790092800,"b2":382.67773376,"btc":86426.29},{"t":1790096400,"b2":386.16161024,"btc":86587.58},{"t":1790100000,"b2":404.67432101,"btc":86469.53},{"t":1790103600,"b2":407,"btc":86211.14},{"t":1790107200,"b2":411.33,"btc":86281.15},{"t":1790110800,"b2":380.90031903,"btc":86187.03},{"t":1790114400,"b2":383.47633773,"btc":86121.88},{"t":1790118000,"b2":375.1,"btc":86198.05},{"t":1790121600,"b2":367.41830671,"btc":86461.52},{"t":1790125200,"b2":405.73423983,"btc":86360.01},{"t":1790128800,"b2":405,"btc":86538.14},{"t":1790132400,"b2":403,"btc":86696.41},{"t":1790136000,"b2":400.20476909,"btc":87164.81},{"t":1790139600,"b2":400,"btc":86487.46},{"t":1790143200,"b2":393,"btc":86456.51},{"t":1790146800,"b2":380.07283372,"btc":86128.2},{"t":1790150400,"b2":374.53480513,"btc":85901.81},{"t":1790154000,"b2":382.03,"btc":85848.87},{"t":1790157600,"b2":380,"btc":85906.66},{"t":1790161200,"b2":386,"btc":85637.71},{"t":1790164800,"b2":397,"btc":85482.1},{"t":1790168400,"b2":398.99,"btc":85783},{"t":1790172000,"b2":403,"btc":84521.36},{"t":1790175600,"b2":401.5248596,"btc":83998.33},{"t":1790179200,"b2":400.25514744,"btc":84030.09},{"t":1790182800,"b2":400,"btc":84314.47},{"t":1790186400,"b2":403.99,"btc":84313},{"t":1790190000,"b2":397.11944592,"btc":84515.87},{"t":1790193600,"b2":397.72,"btc":84235.46},{"t":1790197200,"b2":361.67,"btc":84399.36},{"t":1790200800,"b2":378.95286961,"btc":84550.19},{"t":1790204400,"b2":402.31,"btc":84378.31},{"t":1790208000,"b2":402,"btc":84301.26},{"t":1790211600,"b2":404.2,"btc":84100.39},{"t":1790215200,"b2":404.2,"btc":84349.88},{"t":1790218800,"b2":395.85033118,"btc":83928.16},{"t":1790222400,"b2":395.13221447,"btc":84024.37},{"t":1790226000,"b2":390.8032278,"btc":83965.41},{"t":1790229600,"b2":376.21,"btc":84095.61},{"t":1790233200,"b2":360.21101951,"btc":84503.45},{"t":1790236800,"b2":372.43021659,"btc":83634.15},{"t":1790240400,"b2":369.00876151,"btc":83244.97},{"t":1790244000,"b2":365,"btc":83496.96},{"t":1790247600,"b2":356.57406513,"btc":83468.76},{"t":1790251200,"b2":378.12232401,"btc":83578.94},{"t":1790254800,"b2":363.3548333,"btc":84236.3},{"t":1790258400,"b2":381.23185392,"btc":83644.95},{"t":1790262000,"b2":381.9010763,"btc":84401.36},{"t":1790265600,"b2":371.6869886,"btc":84467.79},{"t":1790269200,"b2":362.25,"btc":84091.6},{"t":1790272800,"b2":358,"btc":84453.28},{"t":1790276400,"b2":360.0717218,"btc":84395.47},{"t":1790280000,"b2":340,"btc":84354.08},{"t":1790283600,"b2":338,"btc":84320.1},{"t":1790287200,"b2":344.87086511,"btc":84263.42},{"t":1790290800,"b2":348.02,"btc":84385.46},{"t":1790294400,"b2":364.72578346,"btc":84577.63},{"t":1790298000,"b2":349.83202325,"btc":84596.07},{"t":1790301600,"b2":358.16398243,"btc":84220.94},{"t":1790305200,"b2":355.31,"btc":84216},{"t":1790308800,"b2":349.99,"btc":84189.81},{"t":1790312400,"b2":354.03916516,"btc":84181.75},{"t":1790316000,"b2":350.07,"btc":84022.58},{"t":1790319600,"b2":330.163996,"btc":84023.5},{"t":1790323200,"b2":319.83569029,"btc":84406.85},{"t":1790326800,"b2":310,"btc":84567.53},{"t":1790330400,"b2":302.99999999,"btc":84709.25},{"t":1790334000,"b2":285.66,"btc":84575.04},{"t":1790337600,"b2":315.96846107,"btc":84453.53},{"t":1790341200,"b2":335,"btc":83902.76},{"t":1790344800,"b2":329.77,"btc":84002.17},{"t":1790348400,"b2":309.09714056,"btc":83783.99},{"t":1790352000,"b2":295,"btc":83731.52},{"t":1790355600,"b2":290.8758585,"btc":83761.83},{"t":1790359200,"b2":287.0593528,"btc":83949.99},{"t":1790362800,"b2":299.93,"btc":84003.55},{"t":1790366400,"b2":306.86412852,"btc":83867.63},{"t":1790370000,"b2":309.5090101,"btc":83787.95},{"t":1790373600,"b2":295,"btc":84058.72},{"t":1790377200,"b2":316.56650138,"btc":84093.13},{"t":1790380800,"b2":302.87,"btc":83904.8},{"t":1790384400,"b2":300.34425984,"btc":84072.83},{"t":1790388000,"b2":316.2979671,"btc":83999.75},{"t":1790391600,"b2":303.34290128,"btc":83931.18},{"t":1790395200,"b2":310.61984089,"btc":83975.53},{"t":1790398800,"b2":311.8485832,"btc":83918.35},{"t":1790402400,"b2":322.4,"btc":83882.66},{"t":1790406000,"b2":338.02074074,"btc":84103.92},{"t":1790409600,"b2":346.57398749,"btc":84194.92},{"t":1790413200,"b2":337,"btc":84012.95},{"t":1790416800,"b2":332.05609735,"btc":84171.55},{"t":1790420400,"b2":343.71635136,"btc":84155.13},{"t":1790424000,"b2":345.5607049,"btc":84036.79},{"t":1790427600,"b2":339.90143137,"btc":83935.32},{"t":1790431200,"b2":349,"btc":84014.56},{"t":1790434800,"b2":349.01265778,"btc":84146.86},{"t":1790438400,"b2":348.96583161,"btc":84104.3},{"t":1790442000,"b2":340.58670499,"btc":84126.64},{"t":1790445600,"b2":347.48763936,"btc":83994.61},{"t":1790449200,"b2":331.9241933,"btc":84000.65},{"t":1790452800,"b2":331.48,"btc":84016.33},{"t":1790456400,"b2":322.83119896,"btc":84137.62},{"t":1790460000,"b2":328.36265903,"btc":84266.36},{"t":1790463600,"b2":331.65,"btc":84416.65},{"t":1790467200,"b2":356.14,"btc":84291.21},{"t":1790470800,"b2":354,"btc":84471.48},{"t":1790474400,"b2":357.8,"btc":84431.55},{"t":1790478000,"b2":352.68213164,"btc":84375.31},{"t":1790481600,"b2":345,"btc":84316.8},{"t":1790485200,"b2":342.10767483,"btc":84442.65},{"t":1790488800,"b2":335.16662771,"btc":84494.5},{"t":1790492400,"b2":338.81238903,"btc":84773.26},{"t":1790496000,"b2":340,"btc":84775.68},{"t":1790499600,"b2":345.55,"btc":84942.04},{"t":1790503200,"b2":347.3460873,"btc":84861.71},{"t":1790506800,"b2":344.88097046,"btc":84877.02},{"t":1790510400,"b2":357.11047795,"btc":84783.89},{"t":1790514000,"b2":356.85,"btc":85018.88},{"t":1790517600,"b2":350.18,"btc":84520},{"t":1790521200,"b2":347.9829954,"btc":84449.48},{"t":1790524800,"b2":353.868756,"btc":84410.44},{"t":1790528400,"b2":353.84049846,"btc":84559.75},{"t":1790532000,"b2":343.5413943,"btc":84798.73},{"t":1790535600,"b2":357,"btc":84717.81},{"t":1790539200,"b2":360.85,"btc":84532.2},{"t":1790542800,"b2":372,"btc":84675.8},{"t":1790546400,"b2":365.33987276,"btc":84187.88},{"t":1790550000,"b2":355.09655951,"btc":84462.14},{"t":1790553600,"b2":360,"btc":84121.85},{"t":1790557200,"b2":351.11271016,"btc":83676.34},{"t":1790560800,"b2":335.993003,"btc":83408.94},{"t":1790564400,"b2":340,"btc":83325.16},{"t":1790568000,"b2":333.5,"btc":83466.24},{"t":1790575200,"b2":336.14121307,"btc":83134},{"t":1790578800,"b2":344.00163239,"btc":82915.33},{"t":1790582400,"b2":340,"btc":82913.58},{"t":1790586000,"b2":344,"btc":82636.22},{"t":1790589600,"b2":355.21,"btc":82909.17},{"t":1790593200,"b2":358,"btc":83058.92},{"t":1790596800,"b2":345,"btc":83560.35},{"t":1790600400,"b2":340,"btc":83629.9},{"t":1790604000,"b2":347.38539456,"btc":82999.78},{"t":1790607600,"b2":341.4,"btc":83343.57},{"t":1790611200,"b2":343.42940523,"btc":83698.22},{"t":1790614800,"b2":342.71151434,"btc":83846.95},{"t":1790618400,"b2":357.94,"btc":84017.43},{"t":1790622000,"b2":338.91821239,"btc":83355.13},{"t":1790625600,"b2":336,"btc":83501.48},{"t":1790629200,"b2":342.7,"btc":83181.03},{"t":1790632800,"b2":350,"btc":83513.29},{"t":1790636400,"b2":361.99664931,"btc":83456.74},{"t":1790640000,"b2":368.68103405,"btc":83146.48},{"t":1790643600,"b2":375.75781061,"btc":83030.18},{"t":1790647200,"b2":371.45613636,"btc":82930.04},{"t":1790650800,"b2":364.14,"btc":83038.38},{"t":1790654400,"b2":366.662884,"btc":83170.56},{"t":1790658000,"b2":350.01,"btc":83398.44},{"t":1790661600,"b2":355,"btc":83976.01},{"t":1790665200,"b2":360,"btc":83956.54},{"t":1790668800,"b2":352.02130844,"btc":83845.92},{"t":1790672400,"b2":350,"btc":84221.33},{"t":1790676000,"b2":350,"btc":84000.91},{"t":1790679600,"b2":337.04,"btc":84324.03},{"t":1790683200,"b2":360,"btc":84303.91},{"t":1790686800,"b2":354.53586196,"btc":84193.56},{"t":1790690400,"b2":352.18032223,"btc":83717.42},{"t":1790694000,"b2":345,"btc":83054.99},{"t":1790697600,"b2":348,"btc":83026.63},{"t":1790701200,"b2":353,"btc":83048.04},{"t":1790704800,"b2":352.11,"btc":83609.98},{"t":1790708400,"b2":355.42,"btc":83571.71},{"t":1790712000,"b2":352.00962233,"btc":83582.68},{"t":1790715600,"b2":345,"btc":83473.96},{"t":1790719200,"b2":345.62147107,"btc":83583.12},{"t":1790722800,"b2":350.16486013,"btc":83638.42},{"t":1790726400,"b2":352,"btc":83418.28},{"t":1790730000,"b2":352.10999993,"btc":83404.75},{"t":1790733600,"b2":352.11,"btc":83347.68},{"t":1790737200,"b2":355.26,"btc":83269.16},{"t":1790740800,"b2":355.35,"btc":83174.05},{"t":1790744400,"b2":345.0996352,"btc":83351.59},{"t":1790748000,"b2":347.53778301,"btc":83005.88},{"t":1790751600,"b2":345.06,"btc":83259.85},{"t":1790755200,"b2":345.54,"btc":83023.16},{"t":1790758800,"b2":341.44,"btc":83598.19},{"t":1790762400,"b2":347.38021978,"btc":83883.37},{"t":1790766000,"b2":348.76041378,"btc":83879.17},{"t":1790769600,"b2":353.76,"btc":85258.29},{"t":1790773200,"b2":351.34633678,"btc":84608.12},{"t":1790776800,"b2":348.21,"btc":83754.46},{"t":1790780400,"b2":366.61807974,"btc":84084.66},{"t":1790784000,"b2":365,"btc":84309.87},{"t":1790787600,"b2":368.3120256,"btc":83977.64},{"t":1790791200,"b2":370.7395871,"btc":83911.91},{"t":1790794800,"b2":357.36236372,"btc":83556.83},{"t":1790798400,"b2":356.2011268,"btc":83621.59},{"t":1790802000,"b2":362.82,"btc":83704.52},{"t":1790805600,"b2":356.06643562,"btc":83627.01},{"t":1790809200,"b2":354.01791021,"btc":83556.14},{"t":1790812800,"b2":367.30901577,"btc":83454.89},{"t":1790816400,"b2":365.14160408,"btc":83459.62},{"t":1790820000,"b2":359.33515036,"btc":83431.28},{"t":1790823600,"b2":359,"btc":83697.25},{"t":1790827200,"b2":356.44571565,"btc":84060.07},{"t":1790830800,"b2":351.84756042,"btc":84252.01},{"t":1790834400,"b2":353.77,"btc":84075.72},{"t":1790838000,"b2":353.77,"btc":83371.84},{"t":1790841600,"b2":354.53836209,"btc":83515.08},{"t":1790845200,"b2":355.95607774,"btc":83744.48},{"t":1790848800,"b2":353,"btc":83932.77},{"t":1790852400,"b2":365.75290296,"btc":83882.02},{"t":1790856000,"b2":365,"btc":83708.06},{"t":1790859600,"b2":365.8,"btc":83913.54},{"t":1790863200,"b2":381.37188994,"btc":84026.41},{"t":1790866800,"b2":377.97221383,"btc":84130.06},{"t":1790870400,"b2":369.530806,"btc":84164.7},{"t":1790874000,"b2":374.8,"btc":84872.88},{"t":1790877600,"b2":378.62341444,"btc":84769.93},{"t":1790881200,"b2":386.87065713,"btc":84644.92},{"t":1790884800,"b2":380,"btc":84603.84},{"t":1790888400,"b2":369.8365753,"btc":84515.18},{"t":1790892000,"b2":372.41907605,"btc":84719.22},{"t":1790895600,"b2":372.42,"btc":84848.73},{"t":1790899200,"b2":374.08988064,"btc":84762.75},{"t":1790902800,"b2":377.99999999,"btc":84877.17},{"t":1790906400,"b2":369,"btc":85165.16},{"t":1790910000,"b2":373.97556486,"btc":85483.53},{"t":1790913600,"b2":376.85842884,"btc":86632.2},{"t":1790917200,"b2":375.83591596,"btc":85979.95},{"t":1790920800,"b2":373.81,"btc":85964.37},{"t":1790924400,"b2":376.37978676,"btc":86088.51},{"t":1790928000,"b2":379.9598934,"btc":86235.65},{"t":1790931600,"b2":380.87160707,"btc":86352.27},{"t":1790935200,"b2":380.11,"btc":86281},{"t":1790938800,"b2":383.0563546,"btc":86412.21},{"t":1790942400,"b2":386.29999999,"btc":86803.45},{"t":1790946000,"b2":390.94329638,"btc":86564.35},{"t":1790949600,"b2":418.11024463,"btc":85676.41},{"t":1790953200,"b2":404.29512584,"btc":85321.76},{"t":1790956800,"b2":407.57,"btc":85143.52},{"t":1790960400,"b2":403.18999999,"btc":84760.35},{"t":1790964000,"b2":403.1,"btc":84237.83},{"t":1790967600,"b2":402.11259212,"btc":84292.32}];
+(function(){
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('chart-price');
+  const tip = document.getElementById('tooltip-price');
+  const legend = document.getElementById('legend-price');
+  const wrap = tip.parentElement;
+  const W = 820, H = 280, mL = 62, mR = 70, mT = 14, mB = 28, pw = W - mL - mR, ph = H - mT - mB;
+  const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const t0 = PRICE[0].t, t1 = PRICE[PRICE.length - 1].t;
+  PRICE.forEach(r => r.share = r.b2 / r.btc * 100);
+  const x = t => mL + (t - t0) / (t1 - t0) * pw;
+  const usd = v => v >= 1000 ? '$' + Math.round(v).toLocaleString('en-US') : '$' + v.toFixed(2);
+  const pct = v => (v >= 1 ? v.toFixed(2) : v.toFixed(3)) + '%';
+  const day = t => { const d = new Date(t * 1000); return MON[d.getUTCMonth()] + ' ' + d.getUTCDate(); };
+  const el = (tag, attrs, text) => {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    svg.appendChild(e); return e;
+  };
+  // Line path that breaks where an hour is missing (Neoxa skips hours with no trade).
+  const path = (key, y) => PRICE.map((r, i) =>
+    (i && r.t - PRICE[i - 1].t <= 3600 ? 'L' : 'M') + x(r.t).toFixed(1) + ' ' + y(r[key]).toFixed(1)).join('');
+
+  function render(view){
+    svg.innerHTML = '';
+    let y, ticks, fmt, series;
+    if (view === 'abs') {
+      // Log scale: BTC near $80K and BTCB2 near $100 only fit on one axis on log.
+      const lo = Math.log10(50), hi = Math.log10(100000);
+      y = v => mT + ph - (Math.log10(v) - lo) / (hi - lo) * ph;
+      ticks = [100, 300, 1000, 3000, 10000, 30000, 100000];
+      fmt = v => v >= 1000 ? '$' + v / 1000 + 'K' : '$' + v;
+      series = [{key:'btc', name:'BTC', color:'var(--btc)'}, {key:'b2', name:'BTCB2', color:'var(--b2)'}];
+    } else {
+      const hi = 2.5;
+      y = v => mT + ph - v / hi * ph;
+      ticks = [0, 0.5, 1, 1.5, 2, 2.5];
+      fmt = v => v + '%';
+      series = [{key:'share', name:'BTCB2 as % of BTC', color:'var(--b2)'}];
+    }
+    ticks.forEach(v => {
+      el('line', {class:'gridline', x1:mL, x2:mL + pw, y1:y(v), y2:y(v)});
+      el('text', {class:'axis-label', x:mL - 8, y:y(v) + 3.5, 'text-anchor':'end'}, fmt(v));
+    });
+    // Weekly date ticks at UTC midnight, starting from the first full day.
+    for (let t = Math.ceil(t0 / 86400) * 86400; t <= t1; t += 7 * 86400)
+      el('text', {class:'axis-label', x:x(t), y:H - 8, 'text-anchor':'middle'}, day(t));
+    const last = PRICE[PRICE.length - 1];
+    series.forEach(sr => {
+      // Share view: light fill under the line down to 0%, like the BTG and ETC
+      // chapters' "% of parent" views. One area per gap-free run of hours.
+      if (sr.key === 'share') {
+        let runs = [], cur = [];
+        PRICE.forEach((r, i) => {
+          if (i && r.t - PRICE[i - 1].t > 3600) { runs.push(cur); cur = []; }
+          cur.push([x(r.t), y(r.share)]);
+        });
+        runs.push(cur);
+        runs.filter(rn => rn.length > 1).forEach(rn => el('path', {
+          d:'M' + rn.map(q => q[0].toFixed(1) + ' ' + q[1].toFixed(1)).join(' L') + ' L' + rn[rn.length - 1][0].toFixed(1) + ' ' + y(0).toFixed(1) +
+            ' L' + rn[0][0].toFixed(1) + ' ' + y(0).toFixed(1) + ' Z',
+          fill:sr.color, 'fill-opacity':0.14, stroke:'none'}));
+      }
+      el('path', {d:path(sr.key, y), fill:'none', stroke:sr.color, 'stroke-width':2, 'stroke-linejoin':'round'});
+      el('circle', {cx:x(last.t), cy:y(last[sr.key]), r:3.5, fill:sr.color, stroke:'var(--panel)', 'stroke-width':2});
+      el('text', {class:'end-label', x:x(last.t) + 8, y:y(last[sr.key]) + 3.5}, sr.key === 'share' ? pct(last.share) : sr.name);
+    });
+    legend.innerHTML = series.map(sr => '<span><span class="key" style="background:' + sr.color + '"></span>' + sr.name + '</span>').join('');
+    svg.setAttribute('aria-label', view === 'abs'
+      ? 'Line chart of hourly BTCB2 and BTC prices in USD, log scale, September 1 to October 2, 2026.'
+      : 'Area chart of BTCB2 price as a percent of BTC price, hourly, September 1 to October 2, 2026.');
+
+    const cross = el('line', {class:'crosshair', y1:mT, y2:mT + ph, opacity:0});
+    const dots = series.map(sr => el('circle', {r:4, fill:sr.color, stroke:'var(--panel)', 'stroke-width':2, opacity:0}));
+    const hit = el('rect', {x:mL, y:mT, width:pw, height:ph, fill:'transparent'});
+    hit.addEventListener('mousemove', e => {
+      const b = svg.getBoundingClientRect(), sx = (e.clientX - b.left) / b.width * W;
+      const tt = t0 + (sx - mL) / pw * (t1 - t0);
+      let i = 0;
+      for (let k = 1; k < PRICE.length; k++) if (Math.abs(PRICE[k].t - tt) < Math.abs(PRICE[i].t - tt)) i = k;
+      const r = PRICE[i], px = x(r.t);
+      cross.setAttribute('x1', px); cross.setAttribute('x2', px); cross.setAttribute('opacity', 1);
+      series.forEach((sr, k) => { dots[k].setAttribute('cx', px); dots[k].setAttribute('cy', y(r[sr.key])); dots[k].setAttribute('opacity', 1); });
+      const hh = String(new Date(r.t * 1000).getUTCHours()).padStart(2, '0');
+      tip.innerHTML = '<div class="t-date">' + day(r.t) + ', ' + hh + ':00 UTC</div>' +
+        '<div class="row"><span class="k">BTCB2</span><span class="v">' + usd(r.b2) + '</span></div>' +
+        '<div class="row"><span class="k">BTC</span><span class="v">' + usd(r.btc) + '</span></div>' +
+        '<div class="row"><span class="k">BTCB2 as % of BTC</span><span class="v">' + pct(r.share) + '</span></div>';
+      const w = wrap.getBoundingClientRect();
+      tip.style.left = (b.left - w.left + px / W * b.width) + 'px';
+      tip.style.top = (b.top - w.top + 8) + 'px';
+      tip.style.transform = 'translate(' + (px > W * 0.7 ? '-105%' : '5%') + ', 0)';
+      tip.style.opacity = '1'; clampTip(tip);
+    });
+    hit.addEventListener('mouseleave', () => {
+      tip.style.opacity = '0'; cross.setAttribute('opacity', 0); dots.forEach(d => d.setAttribute('opacity', 0));
+    });
+  }
+  document.querySelectorAll('#price-view-toggle button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#price-view-toggle button').forEach(x => x.classList.toggle('active', x === b));
+    render(b.dataset.view);
+  }));
+  render('abs');
+})();
+
+// ---------------- fork timeline ----------------
+// Events from Swan's "A timeline of Bitcoin forks" (as of Aug 16, 2026), plus
+// the 2026 BTCB2 branch and the 45-day rule. Evenly spaced in date order,
+// not to scale in time; the date under each event gives the timing.
+// kind: soft (soft fork on Bitcoin) | proposed (never split the chain) |
+// hard (new coin) | genesis | policy (relay policy) | split (BIP-110) | ecash (hard fork off BTC, its own line).
+const TL_MAIN = [
+  {x:40,  kind:'genesis', label:'Genesis', date:'Jan 3, 2009', detail:'Satoshi Nakamoto mines block 0.'},
+  {x:82,  kind:'soft', tier:0, label:'P2SH', date:'Apr 1, 2012', detail:'BIP 16, pay to script hash. Lets coins be locked to the hash of a script, the basis of multisig addresses.'},
+  {x:124, kind:'soft', tier:1, label:'Strict DER', date:'Jul 4, 2015', detail:'BIP 66. Requires one strict signature encoding, closing a source of signature malleability.'},
+  {x:166, kind:'proposed', tier:0, label:'Bitcoin XT', date:'Aug 2015', detail:'A client for 8 MB blocks. It never reached its miner activation threshold, so the chain never split.'},
+  {x:208, kind:'soft', tier:0, label:'CLTV', date:'Dec 2015', detail:'BIP 65, CHECKLOCKTIMEVERIFY. Coins that cannot be spent until a set time or block.'},
+  {x:250, kind:'proposed', tier:1, label:'Bitcoin Classic', date:'Feb 2016', detail:'A proposal for 2 MB blocks. It never activated.'},
+  {x:292, kind:'proposed', tier:0, label:'Bitcoin Unlimited', date:'Mar 2016', detail:'Let each miner set its own block size limit. It never activated.'},
+  {x:334, kind:'soft', tier:1, label:'CSV', date:'Jul 4, 2016', detail:'BIP 112, CHECKSEQUENCEVERIFY. Relative timelocks, a building block of the Lightning Network.'},
+  {x:376, kind:'hard', label:'Bitcoin Cash', date:'Aug 1, 2017', detail:'At block 478,558, Bitcoin Cash splits off to raise the block size limit. See Chapter 1.'},
+  {x:418, kind:'soft', tier:0, label:'SegWit', date:'Aug 24, 2017', detail:'BIP 141, at block 481,824. Raises capacity and fixes transaction malleability.'},
+  {x:460, kind:'hard', label:'Bitcoin Gold', date:'Oct 24, 2017', detail:'At block 491,407, Bitcoin Gold splits off with a GPU-friendly mining algorithm. See Chapter 3.'},
+  {x:502, kind:'hard', label:'United Bitcoin', date:'Dec 12, 2017', detail:'UBTC, one of the many forks of the 2017 bull market.'},
+  {x:544, kind:'hard', label:'Airdrop wave', date:"Nov '17 – Mar '18", detail:'Bitcoin Diamond, Super Bitcoin, Bitcoin God, Bitcoin Private, Lightning Bitcoin, Bitcoin Atom and dozens more.'},
+  {x:580, kind:'soft', tier:1, label:'Taproot', date:'Nov 14, 2021', detail:'BIP 341, at block 709,632. Schnorr signatures and script-path spending.'},
+  {x:614, kind:'policy', label:'Core v30', date:'Oct 10, 2025', detail:'Bitcoin Core 30.0 raises the default OP_RETURN relay limit from 83 bytes to 100,000, which in practice removes it, and allows several OP_RETURN outputs per transaction. A change to relay policy, not to consensus rules. The backlash over it led to BIP-110.'},
+  {x:648, kind:'split', label:'BIP-110', date:'Aug 8, 2026', detail:'A temporary soft fork to limit non-monetary data in blocks, first shipped in Knots 29.3 on May 9, 2026. Its mandatory signaling began at block 961,632. With only 2.53% of miners signaling, it never activated on BTC: the nodes enforcing it split onto their own chain, and about 97–98% of hashrate stayed on BTC.'},
+  {x:672, kind:'ecash', label:'eCash (Sztorc)', date:'Aug 23, 2026', detail:'At BTC block 963,647, Paul Sztorc\'s eCash (ECX) Alpha chain splits off BTC to add drivechains (BIP 300/301), a week before BTCB2 switches to BLAKE2b. Announced April 24, 2026. A Beta chain followed on September 19, around block 967,680. Mainnet, where every BTC holder receives ECX 1:1, is planned around block 973,728, on or about October 31.'},
+];
+// BCH's own splits, on its branch.
+const TL_BCH = [
+  {x:590, label:'Bitcoin SV', date:'Nov 15, 2018', end:'BSV', detail:'At block 556,767, a fight between two Bitcoin Cash camps splits the chain. The faction led by Craig Wright continues as Bitcoin SV.'},
+  {x:690, label:'Bitcoin Cash ABC', date:'Nov 15, 2020', end:'XEC', detail:'A dispute over sending part of the block reward to developers splits Bitcoin Cash again. The Bitcoin ABC chain becomes eCash (XEC), unrelated to Sztorc\'s eCash.'},
+];
+// The BTCB2 branch, after the BIP-110 split.
+const TL_B2 = [
+  {x:696, kind:'hard', label:'BLAKE2b PoW', sub:'BIP-110 live', date:'Aug 30, 2026', detail:'At block 961,640, the BIP-110 chain swaps SHA-256 for BLAKE2b, so BTC\'s mining hardware can no longer mine it. BIP-110\'s data limits take effect at the same block: Knots 29.4.1, released September 2, activates them by flag day at the mining change. Nodes that kept BIP-110 without BLAKE2b are stuck at block 961,639, mined August 28.'},
+  {x:770, kind:'soft', label:'45-day rule', date:'Sep 21, 2026', detail:'Knots 29.4.2, at BTCB2 block 973,440. Newly mined coins must wait about 45 days instead of 100 blocks before they can be spent, through block 979,920.'},
+];
+
+(function(){
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('chart-timeline');
+  const tip = document.getElementById('tooltip-timeline');
+  const W = 840, H = 416, END = 792;
+  const Y = {b2:68, btc:188, btg:268, bch:302, bsv:348, xec:390};
+  const el = (tag, attrs, text) => {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    svg.appendChild(e); return e;
+  };
+  const line = (x1, y1, x2, y2, cls) => el('line', {x1, y1, x2, y2, class:'tl-link ' + cls});
+  const arrow = (x1, y1, x2, y2, cls) => {
+    line(x1, y1, x2, y2, cls);
+    el('path', {d:`M${x2 - 7},${y2 - 4} L${x2},${y2} L${x2 - 7},${y2 + 4}`, class:'tl-link ' + cls});
+  };
+  const end = (x, y, text) => el('text', {x:x + 6, y:y + 4, class:'tl-line-label'}, text);
+  const label = (x, y, name, date, anchor = 'middle') => {
+    el('text', {x, y, class:'tl-label', 'text-anchor':anchor}, name);
+    el('text', {x, y:y + 12, class:'tl-date', 'text-anchor':anchor}, date);
+  };
+  const node = (x, y, cls) => { el('circle', {cx:x, cy:y, r:5.5, class:'tl-node ' + cls}); el('circle', {cx:x, cy:y, r:9, class:'tl-ring'}); };
+  const cross = (x, y) => { el('line', {x1:x - 4, y1:y - 4, x2:x + 4, y2:y + 4, class:'tl-cross'}); el('line', {x1:x - 4, y1:y + 4, x2:x + 4, y2:y - 4, class:'tl-cross'}); };
+  const hover = (x, y, e) => {
+    const hit = el('circle', {cx:x, cy:y, r:18, fill:'transparent', style:'cursor:pointer'});
+    const show = () => {
+      tip.innerHTML = '<div class="t-date">' + e.label + ' · ' + e.date + '</div>' +
+        '<div class="row" style="max-width:240px; white-space:normal;"><span class="k">' + e.detail + '</span></div>';
+      tip.style.left = (x / W * 100) + '%';
+      tip.style.top = ((y - 12) / H * 100) + '%';
+      tip.style.transform = 'translate(' + (x > W * 0.75 ? '-90%' : x < W * 0.2 ? '-10%' : '-50%') + ',-100%)';
+      tip.style.opacity = '1'; clampTip(tip);
+    };
+    hit.addEventListener('mouseenter', show);
+    hit.addEventListener('mouseleave', () => { tip.style.opacity = '0'; });
+    hit.addEventListener('click', ev => { ev.stopPropagation(); show(); });
+  };
+
+  // Branches first, so nodes and labels draw on top.
+  const bch = TL_MAIN[8], btg = TL_MAIN[10], ubtc = TL_MAIN[11], air = TL_MAIN[12], bip = TL_MAIN.find(e => e.kind === 'split'), ecash = TL_MAIN.find(e => e.kind === 'ecash');
+  arrow(18, Y.btc, END, Y.btc, 'btc'); end(END, Y.btc, 'BTC');
+  // Bitcoin Cash, with its own two splits.
+  line(bch.x + 4, Y.btc + 7, bch.x + 40, Y.bch, 'bch'); arrow(bch.x + 40, Y.bch, END, Y.bch, 'bch'); end(END, Y.bch, 'BCH');
+  TL_BCH.forEach((e, i) => {
+    const y2 = i ? Y.xec : Y.bsv;
+    line(e.x + 4, Y.bch + 7, e.x + 30, y2, 'dead'); arrow(e.x + 30, y2, END, y2, 'dead'); end(END, y2, e.end);
+    node(e.x, Y.bch, 'bch');
+    if (i) label(e.x, Y.bch - 26, e.label, e.date); else label(e.x - 14, Y.bch + 26, e.label, e.date, 'end');
+    hover(e.x, Y.bch, e);
+  });
+  // BTG still runs as its own chain, so its line continues to an arrow.
+  // UBTC: a short branch that stops. The airdrop wave: a fan of stubs.
+  line(btg.x + 4, Y.btc + 7, btg.x + 24, Y.btg, 'dead'); arrow(btg.x + 24, Y.btg, END, Y.btg, 'dead'); end(END, Y.btg, 'BTG');
+  line(ubtc.x + 4, Y.btc + 7, ubtc.x + 14, Y.btc + 40, 'dead'); cross(ubtc.x + 15, Y.btc + 43);
+  [-12, 0, 12].forEach(dx => { line(air.x + dx / 3, Y.btc + 7, air.x + dx + 6, Y.btc + 40, 'dead'); });
+  cross(air.x + 6, Y.btc + 43);
+  // The BTCB2 branch: BIP-110's SHA-256 chain, then BLAKE2b.
+  const [pow, rule] = TL_B2;
+  line(bip.x + 3, Y.btc - 8, bip.x + 10, Y.b2, 'b2-sha');
+  line(bip.x + 10, Y.b2, pow.x - 9, Y.b2, 'b2-sha');
+  line(pow.x + 5, Y.b2 - 7, pow.x + 26, Y.b2 - 40, 'dead'); cross(pow.x + 28, Y.b2 - 43);
+  el('text', {x:pow.x + 38, y:Y.b2 - 46, class:'tl-date'}, 'BIP-110 only, stuck');
+  el('text', {x:pow.x + 38, y:Y.b2 - 35, class:'tl-date'}, 'at block 961,639');
+  arrow(pow.x + 9, Y.b2, END, Y.b2, 'b2'); end(END, Y.b2, 'BTCB2');
+  // eCash (ECX): a hard fork off BTC's line on Aug 23, still running as its own chain.
+  line(ecash.x + 4, Y.btc + 7, ecash.x + 18, Y.btc + 52, 'dead');
+  arrow(ecash.x + 18, Y.btc + 52, END, Y.btc + 52, 'dead'); end(END, Y.btc + 52, 'ECX');
+
+  // Events on Bitcoin's row.
+  TL_MAIN.forEach(e => {
+    const x = e.x;
+    if (e.kind === 'genesis') {
+      el('circle', {cx:x, cy:Y.btc, r:6.5, class:'tl-genesis'});
+      label(x - 4, Y.btc + 26, e.label, e.date, 'start');
+    } else if (e.kind === 'soft') {
+      node(x, Y.btc, 'btc');
+      const top = Y.btc - (e.tier ? 64 : 34);
+      el('line', {x1:x, x2:x, y1:Y.btc - 10, y2:top + 16, class:'tl-pointer'});
+      label(x, top, e.label, e.date);
+    } else if (e.kind === 'proposed') {
+      const depth = e.tier ? 54 : 30;
+      el('line', {x1:x, x2:x, y1:Y.btc + 4, y2:Y.btc + depth, class:'tl-link proposed'});
+      el('circle', {cx:x, cy:Y.btc, r:4.5, class:'tl-proposed-node'});
+      cross(x, Y.btc + depth + 4);
+      label(x, Y.btc + depth + 22, e.label, e.date);
+    } else if (e.kind === 'hard') {
+      node(x, Y.btc, 'hard');
+      if (e === bch) label(x - 2, Y.btc + 84, e.label, e.date, 'end');
+      else if (e === air) label(x + 14, Y.btc + 58, e.label, e.date, 'start');
+      else if (e === btg) label(x + 32, Y.btg + 16, e.label, e.date, 'start');
+      else label(x + 15, Y.btc + 58, 'UBTC', e.date);
+    } else if (e.kind === 'split') {
+      node(x, Y.btc, 'b2');
+      label(x - 12, Y.btc - 36, e.label, e.date, 'end');
+    } else if (e.kind === 'policy') {
+      el('circle', {cx:x, cy:Y.btc, r:5, class:'tl-policy'});
+      label(x, Y.btc + 26, e.label, e.date);
+    } else if (e.kind === 'ecash') {
+      node(x, Y.btc, 'hard');
+      label(x + 26, Y.btc + 28, e.label, e.date, 'start');
+    }
+    hover(x, Y.btc, e);
+  });
+  // Events on the BTCB2 branch.
+  TL_B2.forEach(e => {
+    if (e.kind === 'hard') { el('rect', {x:e.x - 6, y:Y.b2 - 6, width:12, height:12, rx:1.5, class:'tl-node b2'}); }
+    else node(e.x, Y.b2, 'b2');
+    if (e.sub) {
+      el('text', {x:e.x, y:Y.b2 + 24, class:'tl-label', 'text-anchor':'middle'}, e.label);
+      label(e.x, Y.b2 + 36, e.sub, e.date);
+    } else label(e.x, Y.b2 + 24, e.label, e.date);
+    hover(e.x, Y.b2, e);
+  });
+})();
+
+// Inert language toggle: switches the active button only. Wire EN/ES once the copy is final.
+document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.lang-toggle button').forEach(x => x.classList.toggle('active', x === b));
+}));
+
+(function(){
+  // Bitnodes snapshot 1790967782 (Oct 2 2026 19:43 UTC): 25,712 reachable nodes,
+  // grouped by user agent and checked against each node's reported height
+  // (BTC ~969,600; BTCB2 ~975,200; BIP-110-only nodes all at 961,639).
+  const NODES = [
+    {label:'Other software', chain:'BTC', n:79, color:'var(--node-other)'},
+    {label:'Bitcoin Core below v30', chain:'BTC', n:10897, color:'var(--node-core-old)'},
+    {label:'Bitcoin Core v30+', chain:'BTC', n:10518, color:'var(--node-core-new)'},
+    {label:'Knots without BIP-110', knots:true, chain:'BTC', n:2366, color:'var(--node-knots)'},
+    {label:'BIP-110 without BLAKE2b', knots:true, stalled:true, chain:'Stuck at block 961,639', n:730, color:'var(--node-stuck)'},
+    {label:'Knots 29.4.2, with the 45-day rule', knots:true, chain:'BTCB2', n:945, color:'var(--node-b2-new)', note:'Includes 46 test builds (rc2)'},
+    {label:'Knots 29.4.1, without the 45-day rule', knots:true, chain:'BTCB2', n:177, color:'var(--node-b2-old)', note:'Low risk: may briefly accept a block that 29.4.2 rejects'},
+  ];
+  const total = NODES.reduce((s, d) => s + d.n, 0);
+  console.assert(total === 25712, 'node groups must sum to the snapshot total');
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('chart-nodes');
+  const table = document.getElementById('node-table');
+  const tip = document.getElementById('tooltip-nodes');
+  const wrap = tip.parentElement;
+  const fmt = n => n.toLocaleString('en-US');
+  const cx = 130, cy = 130, r = 112, rIn = 68;
+
+  function show(html, clientX, clientY){
+    const w = wrap.getBoundingClientRect();
+    tip.innerHTML = html;
+    tip.style.left = (clientX - w.left) + 'px';
+    tip.style.top = (clientY - w.top - 10) + 'px';
+    tip.style.opacity = '1'; clampTip(tip);
+  }
+  function hide(){ tip.style.opacity = '0'; }
+
+  // Knots-only view: the four groups that run Knots (all BIP-110-only nodes
+  // stuck at 961,639 run Knots builds). Shares recompute against that total.
+  function render(view){
+    const rows = view === 'knots' ? NODES.filter(d => d.knots) : NODES;
+    const base = rows.reduce((s, d) => s + d.n, 0);
+    const shareLabel = view === 'knots' ? 'Share of Knots nodes' : 'Share of network';
+    svg.innerHTML = '<defs><pattern id="hatch-stalled" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+      '<line x1="0" y1="0" x2="0" y2="6" stroke="var(--panel)" stroke-width="2.2"></line></pattern></defs>';
+    table.innerHTML = ''; hide();
+    let a = -Math.PI / 2;
+    rows.forEach(d => {
+      const share = d.n / base * 100;
+      const sweep = d.n / base * Math.PI * 2, a1 = a + sweep, large = sweep > Math.PI ? 1 : 0;
+      const pt = (rad, ang) => (cx + rad * Math.cos(ang)).toFixed(2) + ' ' + (cy + rad * Math.sin(ang)).toFixed(2);
+      const path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', 'M' + pt(r, a) + ' A' + r + ' ' + r + ' 0 ' + large + ' 1 ' + pt(r, a1) +
+        ' L' + pt(rIn, a1) + ' A' + rIn + ' ' + rIn + ' 0 ' + large + ' 0 ' + pt(rIn, a) + ' Z');
+      path.setAttribute('fill', d.color);
+      path.setAttribute('stroke', 'var(--panel)');
+      path.setAttribute('stroke-width', '2');
+      svg.appendChild(path);
+      // Stalled nodes get a hatch over their color, so the state never rests on color alone.
+      if (d.stalled) {
+        const hatch = path.cloneNode();
+        hatch.setAttribute('fill', 'url(#hatch-stalled)');
+        hatch.setAttribute('pointer-events', 'none');
+        svg.appendChild(hatch);
+      }
+      a = a1;
+
+      const tr = document.createElement('tr');
+      const swBg = d.stalled ? 'repeating-linear-gradient(45deg,' + d.color + ' 0 3px, var(--panel) 3px 5px)' : d.color;
+      tr.innerHTML = '<td><span class="sw" style="background:' + swBg + '"></span>' + d.label +
+        ' <span class="chain">· ' + d.chain + '</span>' + (d.stalled ? '<span class="badge-stalled">STALLED</span>' : '') +
+        '</td><td class="n">' + fmt(d.n) +
+        '</td><td class="pct">' + share.toFixed(1) + '%</td>';
+      table.appendChild(tr);
+
+      const html = '<div class="t-date">' + d.label + '</div>' +
+        '<div class="row"><span class="k">Nodes</span><span class="v">' + fmt(d.n) + '</span></div>' +
+        '<div class="row"><span class="k">' + shareLabel + '</span><span class="v">' + share.toFixed(1) + '%</span></div>' +
+        '<div class="row"><span class="k">Chain</span><span>' + d.chain + '</span></div>' +
+        (d.stalled ? '<div class="row"><span class="k">Status</span><span>Stalled since Aug 30 (last block Aug 28)</span></div>' : '') +
+        (d.note ? '<div class="row"><span class="k">' + d.note + '</span></div>' : '');
+      const on = e => { show(html, e.clientX, e.clientY); tr.classList.add('hl'); path.setAttribute('stroke', 'var(--ink)'); };
+      const off = () => { hide(); tr.classList.remove('hl'); path.setAttribute('stroke', 'var(--panel)'); };
+      path.addEventListener('mousemove', on);
+      path.addEventListener('mouseleave', off);
+      tr.addEventListener('mousemove', on);
+      tr.addEventListener('mouseleave', off);
+    });
+
+    const t1 = document.createElementNS(NS, 'text');
+    t1.setAttribute('x', cx); t1.setAttribute('y', cy - 2); t1.setAttribute('text-anchor', 'middle');
+    t1.setAttribute('style', "font:600 20px 'IBM Plex Mono',monospace; fill:var(--ink)");
+    t1.textContent = fmt(base);
+    const t2 = document.createElementNS(NS, 'text');
+    t2.setAttribute('x', cx); t2.setAttribute('y', cy + 16); t2.setAttribute('text-anchor', 'middle');
+    t2.setAttribute('style', "font:9.5px 'IBM Plex Mono',monospace; fill:var(--ink-mute); letter-spacing:0.04em");
+    t2.textContent = view === 'knots' ? 'KNOTS NODES' : 'REACHABLE NODES';
+    svg.appendChild(t1); svg.appendChild(t2);
+    svg.setAttribute('aria-label', (view === 'knots' ? 'Donut chart of reachable Knots nodes by version and chain.' :
+      'Donut chart of reachable nodes by software and chain.') + ' The same data is in the table beside it.');
+  }
+
+  document.querySelectorAll('#node-view-toggle button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#node-view-toggle button').forEach(x => x.classList.toggle('active', x === b));
+    render(b.dataset.view);
+  }));
+  render('all');
+})();
+</script>
+
+<script>
+// Stacked area charts for the "One Month of Data" section, from spam_breakdown.py.
+// Category order everywhere: OP_RETURN >83, inscription, rune, stamp, ordinary (incl. coinbase).
+// BTC runs Aug 8 - Oct 1; BTCB2 from Aug 30 (first BLAKE2b block) - Oct 1.
+(function(){
+  // SP row: [date, blocks, vbytes[5], fees_sat[5], txs[5], replayed_vbytes[5], replayed_fees[5], replayed_txs[5]]
+  const SP = {"sha256":[["2026-08-08",20,[10786,741136,7141965,3714,12081845],[36373,784393,5609195,14652,33969826],[30,498,52380,13,39764],[0,0,873176,1324,9865866],[0,0,1225850,3562,29255303],[0,0,5940,5,37899]],["2026-08-09",143,[144417,5308974,69405388,73573,67050524],[557457,4142223,44526082,173587,170812039],[219,5942,509939,266,215321],[0,0,584746,7419,40427739],[0,0,930569,19258,118190392],[0,0,2799,31,178651]],["2026-08-10",139,[107682,5272958,51558804,40062,78513346],[185083,4119423,37888565,105295,262222443],[311,5866,380707,145,252336],[0,0,100315,3271,37526568],[0,0,286057,7589,132632650],[0,0,250,14,171019]],["2026-08-11",129,[51574,3763394,47933636,36933,75296236],[111707,3507542,36207005,86110,244396519],[107,7351,351272,118,249714],[0,0,136344,3489,27549624],[0,0,426857,7671,99505506],[0,0,135,14,132603]],["2026-08-12",141,[38345,6786526,52596464,48457,79987990],[106787,7749656,39931057,142248,456316864],[92,5946,385182,174,259715],[0,0,186743,7619,25233948],[0,0,398234,25615,98477790],[0,0,215,31,120284]],["2026-08-13",146,[80128,5281610,56508564,55149,80791178],[155379,4327474,41675010,167611,272480722],[225,7430,413074,193,259808],[0,0,36362,3856,22392196],[0,0,104190,12138,86985823],[0,0,98,16,106076]],["2026-08-14",149,[50362,4705324,56947918,35429,84523316],[105732,3774119,41522532,105037,269543659],[140,5143,415777,120,273322],[0,0,46896,2792,19616111],[0,0,147115,7695,72046249],[0,0,101,11,97105]],["2026-08-15",145,[84302,4101412,65815498,16690,71895996],[122867,3274600,42868763,40706,186667826],[123,5729,480939,61,232662],[0,0,15871,2337,15384923],[0,0,56006,6483,45212618],[0,0,45,9,73497]],["2026-08-16",161,[83792,4837600,84519756,19782,67484350],[87740,3458044,49300883,47130,166366839],[111,4661,614080,73,212110],[0,0,38427,1459,16004013],[0,0,76327,3578,44144481],[0,0,86,6,67418]],["2026-08-17",158,[227642,2963576,68349234,29778,82708802],[264624,2675769,45472878,71349,228136891],[193,6586,495053,93,254097],[0,0,38486,2039,18898437],[0,0,107525,5192,54388249],[0,0,61,9,78720]],["2026-08-18",149,[172529,2831401,62782954,22890,79673822],[207876,2900704,42409866,65626,245220813],[188,6437,446907,79,257548],[0,0,45217,680,15727776],[0,0,163458,1888,56984331],[0,0,80,3,76404]],["2026-08-19",123,[115439,1912308,37438831,19893,81920483],[226117,2031352,32431647,64441,287512421],[207,5417,269343,71,262720],[0,0,43185,778,17146052],[0,0,135914,2465,67501158],[0,0,98,3,79941]],["2026-08-20",127,[58781,3031539,30546507,12692,93305004],[187565,3459720,31393852,38549,379313836],[132,4723,218705,46,291026],[0,0,77189,1103,19187118],[0,0,236656,3766,89495499],[0,0,168,5,89718]],["2026-08-21",137,[77938,2837445,30471395,14679,100398945],[240577,3442679,34175594,54605,447967200],[157,6302,219143,54,313343],[0,0,248478,1686,21865774],[0,0,591093,7018,105340686],[0,0,207,7,93948]],["2026-08-22",148,[94681,2985247,60701006,14988,82866271],[152469,2666111,43305992,42597,261645228],[131,6045,439434,52,258845],[0,0,73200,2366,15554998],[0,0,155448,8534,55885086],[0,0,116,10,69451]],["2026-08-23",136,[48120,2125724,65187502,7220,68327952],[85917,1885700,40581451,18656,190576233],[94,8673,471952,26,222256],[0,0,76627,780,12255001],[0,0,208590,2161,39870642],[0,0,79,3,56850]],["2026-08-24",142,[79267,3862076,49177888,27662,85615220],[168077,3509230,37490550,91555,270750996],[124,6433,360205,92,265709],[0,0,125730,1006,16924171],[0,0,328084,2633,60608924],[0,0,181,4,69781]],["2026-08-25",142,[54456,5011061,46344347,15076,86043598],[122611,4365271,35567792,46036,274099623],[120,6046,342041,55,272342],[0,0,169450,2175,14920615],[0,0,450251,5537,53484496],[0,0,284,9,68125]],["2026-08-26",152,[56498,7037506,58930243,6564,83990120],[85394,6997108,39642451,13781,251517338],[90,15504,439470,17,269207],[0,0,170586,0,13495155],[0,0,875910,0,48245536],[0,0,177,0,63713]],["2026-08-27",146,[84668,3654983,55056088,15936,86259374],[129559,3321232,36280263,41604,284285663],[139,6964,407030,58,276213],[0,0,44873,1925,13173448],[0,0,103368,4422,46672435],[0,0,103,8,61209]],["2026-08-28",132,[240766,4321251,38211056,12380,87466197],[323765,3958990,30111677,35209,309005731],[280,10760,281282,40,277336],[0,0,54256,0,11816608],[0,0,142315,0,50146855],[0,0,105,0,56101]],["2026-08-29",146,[191860,4360995,67951274,15109,72030514],[179862,3512229,37564393,41790,200499684],[223,4812,492689,53,237096],[0,0,101162,0,9262807],[0,0,138250,0,40982332],[0,0,157,0,45250]],["2026-08-30",163,[199778,2970449,90424500,15824,65569799],[184158,2233815,44121348,38574,159732508],[218,10572,655221,58,213240],[0,0,419504,0,9529898],[0,0,437816,0,27727007],[0,0,114,0,42743]],["2026-08-31",152,[388876,1628976,56632881,9658,87774605],[310828,1967823,33735076,24444,259891791],[318,5893,420351,33,270461],[0,0,162014,0,11254586],[0,0,201275,0,38969972],[0,0,80,0,53941]],["2026-09-01",142,[340152,1976902,48338906,10602,87903950],[266464,2423896,30965638,23947,267330579],[300,8104,348382,36,270523],[0,0,337868,534,11164143],[0,0,447637,1602,39507513],[0,0,192,1,50769]],["2026-09-02",137,[232171,3469791,42790696,12869,89096782],[274018,3126105,29566054,35029,265528672],[262,6020,311534,41,263561],[0,0,690542,227,13876130],[0,0,713247,472,42077007],[0,0,212,1,47154]],["2026-09-03",160,[183048,2126907,55968841,14004,98765297],[205477,2176578,35061552,45764,285831638],[239,6330,418363,46,287389],[0,0,226054,226,19440250],[0,0,313619,708,45431294],[0,0,192,1,48542]],["2026-09-04",143,[252320,1281722,45068901,18180,94653987],[503308,1998020,31360740,44076,306876049],[300,5156,332503,62,280269],[0,0,365792,0,16247082],[0,0,683462,0,41735726],[0,0,239,0,45217]],["2026-09-05",148,[200124,1683533,62491172,14162,81896920],[186129,2173821,35261131,34206,213341258],[241,7320,469513,52,246728],[0,0,848319,0,12906078],[0,0,1040640,0,29315848],[0,0,332,0,37890]],["2026-09-06",165,[252997,2117442,88146154,17950,69361981],[417720,2319640,41741596,42211,171105282],[299,7286,664346,71,221389],[0,0,172245,0,9924871],[0,0,196416,0,24176439],[0,0,133,0,35866]],["2026-09-07",139,[245894,2468749,58810658,14414,75203048],[315691,3287806,32342814,36139,215411291],[273,8339,446285,54,244061],[0,0,82480,0,8932290],[0,0,118763,0,30231044],[0,0,176,0,41671]],["2026-09-08",133,[102583,1880222,52401408,8480,75123659],[245307,2675182,29347392,20462,258322427],[226,5199,389706,31,246211],[0,0,548534,184,8774985],[0,0,612202,205,32025920],[0,0,191,1,40696]],["2026-09-09",161,[173944,2477103,64793379,13448,92032314],[333821,2792455,36050053,43341,292181320],[355,8863,479206,44,270022],[0,0,480841,0,19705994],[0,0,860185,0,71962092],[0,0,245,0,47116]],["2026-09-10",134,[113588,1496930,46414881,16886,83394749],[268018,2101619,28740330,42362,260562405],[278,5546,349233,50,270390],[0,0,168926,0,10165823],[0,0,299079,0,31771759],[0,0,249,0,41281]],["2026-09-11",161,[83742,5219468,64736210,8199,87893177],[196189,9868240,34653132,22612,268242710],[189,9254,481409,30,275856],[0,0,181163,0,9018493],[0,0,292384,0,28235025],[0,0,232,0,37269]],["2026-09-12",157,[53877,2677576,74212951,17757,71708520],[124921,2332100,34402430,42033,185890306],[160,5969,543313,49,234146],[0,0,231670,0,6872135],[0,0,299562,0,18992829],[0,0,130,0,29330]],["2026-09-13",151,[279432,1514352,78852141,16232,68051315],[206907,2514566,36755928,45617,168953909],[281,5604,569736,59,216013],[0,0,636484,0,7474046],[0,0,673512,0,20554746],[0,0,196,0,29392]],["2026-09-14",150,[326763,3704209,61729296,9226,82841649],[328133,3678561,32563764,25077,234551190],[370,8182,443444,35,256178],[0,0,170552,1805,9195260],[0,0,212004,4296,29214623],[0,0,165,7,37714]],["2026-09-15",163,[144604,2162414,75297777,7266,83135389],[177753,2404495,37740510,15595,248344194],[217,6685,543084,28,268385],[0,0,119156,2342,9463363],[0,0,150711,4850,29727780],[0,0,187,9,37408]],["2026-09-16",136,[70423,1994972,54127098,7303,78622250],[193571,2070846,31905590,19171,254309568],[157,8312,389124,26,256243],[0,0,614790,1846,8536316],[0,0,2493164,4072,32584578],[0,0,101,7,36054]],["2026-09-17",143,[97703,4646174,53391273,15921,82808089],[174762,6877158,29432683,48441,244217864],[194,5522,382282,49,264471],[0,0,241613,4544,7491112],[0,0,262794,11632,29939329],[0,0,95,17,34949]],["2026-09-18",152,[163988,1919643,58268112,24162,89174875],[206164,3399897,32667636,65760,282918770],[248,6093,416705,85,289856],[0,0,188235,0,8709878],[0,0,302033,0,34116922],[0,0,158,0,40415]],["2026-09-19",127,[169668,2448519,49172743,7276,74271747],[256148,3529194,28190568,24893,211193288],[319,5407,348264,23,238452],[0,0,406681,0,7506020],[0,0,515575,0,25332604],[0,0,225,0,34412]],["2026-09-20",154,[150192,2496996,81847232,9600,67916961],[206231,2636406,37294070,69003,170445994],[255,5826,589473,33,218118],[0,0,156936,0,8122226],[0,0,267111,0,22853664],[0,0,137,0,32684]],["2026-09-21",149,[510226,3554661,46666041,12134,94943050],[1210818,4335070,31494660,32396,315146293],[666,6009,334099,42,290839],[0,0,628199,442,15315212],[0,0,820239,329,51405018],[0,0,344,1,56453]],["2026-09-22",139,[194896,2198792,48271494,32315,85332596],[508516,3335955,30451198,91699,282251491],[444,6344,348635,114,264134],[0,0,462871,442,9920321],[0,0,591917,329,38495220],[0,0,289,1,42866]],["2026-09-23",129,[168652,2417173,42336190,8891,80922241],[452278,2686778,27922479,24113,258295530],[386,7667,311066,31,263738],[0,0,252516,2166,8995884],[0,0,351119,4758,32129960],[0,0,264,8,41286]],["2026-09-24",140,[154424,2781416,50781082,5756,81975104],[304888,3186657,30073654,13991,338797329],[312,4283,367545,21,261894],[0,0,187578,1925,8358788],[0,0,309767,4468,33450739],[0,0,251,7,37125]],["2026-09-25",134,[140338,2336595,43625618,7111,85953685],[400656,2676241,28556583,19588,351298686],[328,7098,318371,26,272888],[0,0,536694,3788,7545280],[0,0,817358,8017,34323631],[0,0,181,14,35533]],["2026-09-26",154,[197913,2143550,68908500,54024,78276809],[419586,2352196,34400411,167134,216091572],[267,5469,507606,195,243766],[0,0,574236,43258,6946912],[0,0,849391,136045,24513577],[0,0,302,156,29768]],["2026-09-27",146,[188875,1768929,72067146,17924,68745039],[500337,2236547,33786485,43019,176564424],[283,3896,528600,53,222467],[0,0,743053,5570,7063441],[0,0,783667,14560,25411105],[0,0,201,20,32243]],["2026-09-28",165,[419034,2947441,67994314,17567,90787461],[1321571,4446344,34371911,42163,302471407],[1136,6123,504950,69,267817],[0,0,441384,4091,9485607],[0,0,643416,10770,38238231],[0,0,333,15,40583]],["2026-09-29",159,[568224,3713474,60996764,21567,89840309],[1373182,5823194,30489432,55711,271486846],[1084,13266,443844,78,282255],[0,0,379468,9892,10423966],[0,0,526526,23910,34289477],[0,0,247,38,43995]],["2026-09-30",141,[291424,4335006,40258283,22156,94982655],[541281,7553113,29056829,67780,342378761],[430,17273,292936,80,293039],[0,0,306087,3507,9730408],[0,0,993868,10881,39008709],[0,0,420,13,42562]],["2026-10-01",136,[1669464,3025670,35473518,21071,91565376],[8839938,7266776,24587017,63341,383812843],[2167,6187,248416,68,278901],[0,0,284731,2156,9031760],[0,0,485498,5301,42637426],[0,0,196,8,37763]]],"blake2b":[["2026-08-30",332,[0,0,199402,0,63992975],[0,0,1706538,0,344096107],[0,0,301,0,254709],[0,0,198609,0,63823631],[0,0,1700796,0,323364253],[0,0,300,0,253920]],["2026-08-31",743,[0,0,411359,7726,142316050],[0,0,1391064,28212,489095341],[0,0,773,32,680129],[0,0,411359,7726,142046060],[0,0,1391064,28212,488250236],[0,0,773,32,678827]],["2026-09-01",1782,[0,0,1286307,39414,172898386],[0,0,2539192,107601,430473981],[0,0,2822,163,833807],[0,0,1286017,39414,172259640],[0,0,2538496,107601,429589229],[0,0,2821,163,831012]],["2026-09-02",1615,[0,0,1426315,1253,18080699],[0,0,1871723,1864,41591809],[0,0,4868,4,60836],[0,0,1426315,1253,17306916],[0,0,1871723,1864,40838464],[0,0,4868,4,57732]],["2026-09-03",875,[0,0,1278284,227,34842298],[0,0,1350700,708,56409265],[0,0,3225,1,72064],[0,0,1278284,227,33806964],[0,0,1350700,708,55536980],[0,0,3225,1,69691]],["2026-09-04",772,[0,0,718592,0,30280650],[0,0,1041035,0,74452846],[0,0,273,0,91073],[0,0,718592,0,25231786],[0,0,1041035,0,69872699],[0,0,273,0,87140]],["2026-09-05",342,[0,0,850396,0,17115255],[0,0,1042829,0,41711523],[0,0,337,0,57706],[0,0,850396,0,16592364],[0,0,1042829,0,39536709],[0,0,337,0,56204]],["2026-09-06",577,[0,0,176416,0,13591222],[0,0,199053,0,31006023],[0,0,143,0,50483],[0,0,175994,0,12585958],[0,0,198582,0,29618822],[0,0,142,0,48184]],["2026-09-07",926,[0,0,114499,0,13198670],[0,0,155310,0,38340539],[0,0,226,0,52803],[0,0,114499,0,10722937],[0,0,155310,0,34770543],[0,0,226,0,49339]],["2026-09-08",409,[0,0,543944,184,12107252],[0,0,590546,205,38530672],[0,0,204,1,49424],[0,0,543386,184,10270280],[0,0,589834,205,35431796],[0,0,202,1,47313]],["2026-09-09",360,[0,0,534238,0,30780223],[0,0,932218,0,103369492],[0,0,285,0,88456],[0,0,534238,0,28591260],[0,0,932218,0,99592012],[0,0,285,0,86715]],["2026-09-10",411,[0,0,196354,0,16848205],[0,0,331870,0,50312155],[0,0,289,0,63456],[0,0,196051,0,14241384],[0,0,331567,0,45483324],[0,0,288,0,61576]],["2026-09-11",530,[0,0,22816,0,14704370],[0,0,39157,0,44680395],[0,0,30,0,55397],[0,0,22816,0,12139452],[0,0,39157,0,41191456],[0,0,30,0,53569]],["2026-09-12",444,[0,0,331625,0,10389276],[0,0,494445,0,28423643],[0,0,293,0,40678],[0,0,331625,0,7987022],[0,0,494445,0,25094521],[0,0,293,0,39029]],["2026-09-13",180,[0,0,240374,0,11823649],[0,0,257866,0,31951024],[0,0,79,0,47289],[0,0,240374,0,10655610],[0,0,257866,0,29904635],[0,0,79,0,46334]],["2026-09-14",189,[0,0,337649,534,13308683],[0,0,399953,1602,39033922],[0,0,207,1,50661],[0,0,337436,534,11542013],[0,0,399697,1602,36544968],[0,0,206,1,49404]],["2026-09-15",194,[0,0,454595,0,10908044],[0,0,492397,0,31688547],[0,0,387,0,37927],[0,0,454019,0,9384217],[0,0,491695,0,29366084],[0,0,385,0,36708]],["2026-09-16",184,[0,0,474908,0,10336093],[0,0,1926451,0,34970682],[0,0,75,0,37645],[0,0,474908,0,8488240],[0,0,1926451,0,32201528],[0,0,75,0,36090]],["2026-09-17",189,[0,0,282036,10543,8739012],[0,0,729739,24850,32531403],[0,0,122,40,35840],[0,0,282036,10543,7501458],[0,0,729739,24850,30188120],[0,0,122,40,34620]],["2026-09-18",189,[0,0,264256,0,9620513],[0,0,353934,0,36303304],[0,0,119,0,40012],[0,0,264256,0,8373871],[0,0,353934,0,33397129],[0,0,119,0,38824]],["2026-09-19",198,[0,0,438510,0,9061111],[0,0,568011,0,27930199],[0,0,269,0,36091],[0,0,438207,0,7703376],[0,0,567707,0,25659892],[0,0,268,0,34896]],["2026-09-20",201,[0,0,132478,0,9485914],[0,0,195398,0,25130457],[0,0,128,0,33555],[0,0,132478,0,8033914],[0,0,195398,0,22723781],[0,0,128,0,32452]],["2026-09-21",221,[0,0,443079,442,16826944],[0,0,683698,329,57411759],[0,0,329,1,59314],[0,0,443079,442,14680066],[0,0,683698,329,51807070],[0,0,329,1,57966]],["2026-09-22",204,[0,0,281950,442,12309292],[0,0,343547,329,44463571],[0,0,138,1,46870],[0,0,281950,442,11471342],[0,0,343547,329,41589425],[0,0,138,1,45828]],["2026-09-23",152,[0,0,176384,0,9391956],[0,0,253625,0,32502745],[0,0,142,0,41117],[0,0,176384,0,8757725],[0,0,253625,0,31484973],[0,0,142,0,40444]],["2026-09-24",147,[0,0,606416,0,9023337],[0,0,810162,0,33527652],[0,0,516,0,37336],[0,0,605996,0,8187600],[0,0,807999,0,32689990],[0,0,515,0,36674]],["2026-09-25",149,[0,0,354660,7884,8979478],[0,0,648238,17243,36855744],[0,0,219,29,36926],[0,0,354660,7884,7634129],[0,0,648238,17243,34806319],[0,0,219,29,36005]],["2026-09-26",140,[0,0,585411,0,7986819],[0,0,857397,0,25030781],[0,0,247,0,30093],[0,0,585411,0,6970074],[0,0,857397,0,24477148],[0,0,247,0,29575]],["2026-09-27",149,[0,0,833736,0,8110591],[0,0,874495,0,25431954],[0,0,220,0,32462],[0,0,833736,0,6982270],[0,0,874495,0,25125904],[0,0,220,0,31893]],["2026-09-28",154,[0,0,247938,51488,12833747],[0,0,356931,157770,43893373],[0,0,172,185,49109],[0,0,247938,51488,10855654],[0,0,356931,157770,42847208],[0,0,172,185,48351]],["2026-09-29",171,[0,0,687452,5326,10571825],[0,0,924923,11538,34187812],[0,0,438,19,44613],[0,0,687452,5326,9719450],[0,0,924923,11538,33856169],[0,0,438,19,43902]],["2026-09-30",158,[0,0,317781,442,11646573],[0,0,954721,1237,40827686],[0,0,405,1,43529],[0,0,317487,442,10066036],[0,0,954427,1237,39208670],[0,0,404,1,42605]],["2026-10-01",160,[0,0,293989,11290,11120038],[0,0,552497,30922,44728484],[0,0,226,45,39457],[0,0,292995,11290,9451369],[0,0,548501,30922,42979357],[0,0,225,45,38198]]]};
+  const CATS = [
+    {label:'OP_RETURN > 83 B', long:'OP_RETURN over 83 bytes', color:'var(--sp-op83)'},
+    {label:'Inscriptions', long:'Inscriptions', color:'var(--sp-ins)'},
+    {label:'Runes', long:'Runes', color:'var(--sp-rune)'},
+    {label:'Stamps', long:'Stamps', color:'var(--sp-stamp)'},
+  ];
+  const ORD_REP = {label:'Replayed', long:'Ordinary, replayed from BTC', color:'var(--sp-ord)'};
+  const B2ONLY = {label:'BTCB2-only', long:'BTCB2-only (incl. miner rewards)', color:'var(--sp-b2only)'};
+  const BTCONLY = {label:'BTC-only', long:'BTC-only, never on BTCB2 (incl. miner rewards)', color:'var(--sp-btconly)'};
+  const ORD_SHARED = {label:'Also on BTCB2', long:'Ordinary, also replayed on BTCB2', color:'var(--sp-ord)'};
+  const REP_WORD = {blake2b:'Replayed from BTC, all types', sha256:'Also replayed on BTCB2, all types'};
+  const NS = 'http://www.w3.org/2000/svg';
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const fmtDate = d => MONTHS[+d.slice(5,7) - 1] + ' ' + (+d.slice(8,10));
+  const pct = x => (x < 0.1 && x > 0 ? x.toFixed(2) : x.toFixed(1)) + '%';
+  const sum = a => a.reduce((x, y) => x + y, 0);
+  function mk(tag, attrs){ const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+  // Monotone cubic interpolation (Fritsch-Carlson): smooth, never overshoots the data.
+  function monotone(pts){
+    const n = pts.length; if (n < 2) return '';
+    const dx = [], dy = [], m = [];
+    for (let i = 0; i < n - 1; i++){ dx[i] = pts[i+1][0] - pts[i][0]; dy[i] = (pts[i+1][1] - pts[i][1]) / dx[i]; }
+    m[0] = dy[0]; m[n-1] = dy[n-2];
+    for (let i = 1; i < n - 1; i++) m[i] = dy[i-1] * dy[i] <= 0 ? 0 : 3 * (dx[i-1] + dx[i]) / ((2*dx[i] + dx[i-1]) / dy[i-1] + (dx[i] + 2*dx[i-1]) / dy[i]);
+    let d = '';
+    for (let i = 0; i < n - 1; i++){
+      const h = dx[i] / 3;
+      d += ' C' + (pts[i][0] + h).toFixed(1) + ' ' + (pts[i][1] + m[i]*h).toFixed(1) + ' ' + (pts[i+1][0] - h).toFixed(1) + ' ' + (pts[i+1][1] - m[i+1]*h).toFixed(1) + ' ' + pts[i+1][0].toFixed(1) + ' ' + pts[i+1][1].toFixed(1);
+    }
+    return d;
+  }
+
+  // Split one day's per-category numbers into drawn layers, bottom to top. The
+  // ordinary layer splits into chain-only (colored) and shared with the other
+  // chain (gray, same color on both views); the data-type layers stay whole.
+  function splitLayers(chain, all, rep){
+    const out = CATS.map((c, i) => ({...c, v:all[i]}));
+    out.push({...(chain === 'blake2b' ? B2ONLY : BTCONLY), v:all[4] - rep[4]});
+    out.push({...(chain === 'blake2b' ? ORD_REP : ORD_SHARED), v:rep[4]});
+    return {tot:sum(all), rep:sum(rep), layers:out};
+  }
+
+  // cfg: {svg, tip, legend, stats, toggles:{id: [key, default]}, rows(state), day(row, state),
+  //       share:bool, fmt(x, state), axis(x, state), measureWord(state), tiles(D, state)}
+  function makeChart(cfg){
+    const svg = document.getElementById(cfg.svg), tip = document.getElementById(cfg.tip), wrap = tip.parentElement;
+    const W = 820, H = 280, mL = 56, mR = 118, mT = 14, mB = 28, pw = W - mL - mR, ph = H - mT - mB;
+    const state = {};
+    for (const id in cfg.toggles) state[cfg.toggles[id][0]] = cfg.toggles[id][1];
+
+    function scale(x){
+      if (cfg.share) return {top:1, step:0.25};
+      const e = Math.pow(10, Math.floor(Math.log10(x || 1)));
+      for (const m of [0.25, 0.5, 1, 2, 2.5, 5, 10]) if (x <= m * e * 4) return {top:Math.ceil(x / (m * e)) * m * e, step:m * e};
+    }
+
+    function render(){
+      const rows = cfg.rows(state), n = rows.length, D = rows.map(r => cfg.day(r, state));
+      const cum = D.map(d => { let acc = 0; return d.layers.map(l => (acc += cfg.share ? (d.tot ? l.v / d.tot : 0) : l.v)); });
+      const xAt = i => mL + i / (n - 1) * pw;
+      const grand = sum(D.map(d => d.tot)), ends = [];
+      svg.innerHTML = '';
+      const step = n > 40 ? 7 : 5;
+      rows.forEach((r, i) => { if ((i % step === 0 && n - 1 - i >= step / 2) || i === n - 1) {
+        const t = mk('text', {x:xAt(i), y:H - 8, 'text-anchor':'middle', class:'axis-label'}); t.textContent = fmtDate(r[0]); svg.appendChild(t); } });
+      let posY;
+      if (state.scale === 'log') {
+        // Log lines: each type drawn on its own (not stacked), so small layers show their trend.
+        // Stacking on a log axis would make band thickness meaningless, so this view never stacks.
+        const vals = D.flatMap(d => d.layers.map(l => l.v)).filter(v => v > 0);
+        const lo = Math.floor(Math.log10(Math.min(...vals))), hi = Math.ceil(Math.log10(Math.max(...vals)));
+        const yOf = v => mT + ph - (Math.log10(v) - lo) / (hi - lo) * ph;
+        const every = hi - lo > 7 ? 2 : 1;  // label every other decade on tall ranges so ticks never crowd
+        for (let e = lo; e <= hi; e++) {
+          svg.appendChild(mk('line', {x1:mL, x2:mL + pw, y1:yOf(10 ** e), y2:yOf(10 ** e), class:'gridline', 'stroke-dasharray':'2 4'}));
+          if ((hi - e) % every) continue;
+          const t = mk('text', {x:mL - 6, y:yOf(10 ** e) + 3.5, 'text-anchor':'end', class:'axis-label'}); t.textContent = cfg.axis(10 ** e, state); svg.appendChild(t);
+        }
+        posY = (i, c) => D[i].layers[c].v > 0 ? yOf(D[i].layers[c].v) : null;
+        D[0].layers.forEach((layer, c) => {
+          const total = sum(D.map(d => d.layers[c].v));
+          if (!total) return;
+          let run = [];
+          const flush = () => { if (run.length > 1) svg.appendChild(mk('path', {d:'M' + run[0][0].toFixed(1) + ' ' + run[0][1].toFixed(1) + monotone(run), fill:'none', stroke:layer.color, 'stroke-width':2})); run = []; };
+          rows.forEach((_, i) => { const y = posY(i, c); if (y === null) flush(); else run.push([xAt(i), y]); });
+          flush();
+          let last = n - 1; while (last > 0 && posY(last, c) === null) last--;
+          if (posY(last, c) !== null) ends.push({c, y:posY(last, c), share:grand ? total / grand * 100 : 0});
+        });
+      } else {
+        const sc = scale(Math.max(...cum.map(c => c[c.length - 1])) * 1.04), top = sc.top;
+        const yOf = f => mT + ph - f / top * ph;
+        for (let f = 0; f <= top + top * 1e-9; f += sc.step){
+          svg.appendChild(mk('line', {x1:mL, x2:mL + pw, y1:yOf(f), y2:yOf(f), class:'gridline', 'stroke-dasharray':'2 4'}));
+          const t = mk('text', {x:mL - 6, y:yOf(f) + 3.5, 'text-anchor':'end', class:'axis-label'});
+          t.textContent = cfg.share ? Math.round(f * 100) + '%' : cfg.axis(f, state); svg.appendChild(t);
+        }
+        posY = (i, c) => yOf(cum[i][c]);
+        // see-through fills so gridlines and the band edges below stay visible; solid top edge per band
+        D[0].layers.forEach((layer, c) => {
+          const total = sum(D.map(d => d.layers[c].v)), share = grand ? total / grand * 100 : 0;
+          if (share < 0.05) return;
+          const upper = rows.map((_, i) => [xAt(i), yOf(cum[i][c])]);
+          const lower = rows.map((_, i) => [xAt(i), yOf(c ? cum[i][c - 1] : 0)]).reverse();
+          svg.appendChild(mk('path', {d:'M' + upper[0][0].toFixed(1) + ' ' + upper[0][1].toFixed(1) + monotone(upper) +
+            ' L' + lower[0][0].toFixed(1) + ' ' + lower[0][1].toFixed(1) + monotone(lower) + ' Z', fill:layer.color, 'fill-opacity':layer.color === 'var(--sp-ord)' ? 0.16 : 0.32}));
+          svg.appendChild(mk('path', {d:'M' + upper[0][0].toFixed(1) + ' ' + upper[0][1].toFixed(1) + monotone(upper), fill:'none', stroke:layer.color, 'stroke-width':1.75}));
+          const mid = (cum[n - 1][c] + (c ? cum[n - 1][c - 1] : 0)) / 2;
+          ends.push({c, y:yOf(mid), share});
+        });
+      }
+      // direct labels at the right edge, nudged apart so they never overlap
+      ends.sort((a, b) => b.y - a.y);
+      for (let i = 1; i < ends.length; i++) if (ends[i - 1].y - ends[i].y < 24) ends[i].y = ends[i - 1].y - 24;
+      ends.forEach(e => {
+        const lay = D[0].layers[e.c], x = mL + pw + 10;
+        svg.appendChild(mk('rect', {x, y:e.y - 9, width:3, height:18, rx:1.5, fill:lay.color}));
+        const t1 = mk('text', {x:x + 8, y:e.y - 1, class:'sp-endlabel'}); t1.textContent = lay.label; svg.appendChild(t1);
+        const t2 = mk('text', {x:x + 8, y:e.y + 11, class:'sp-endval'}); t2.textContent = pct(e.share) + ' overall'; svg.appendChild(t2);
+      });
+
+      const cross = mk('line', {y1:mT, y2:mT + ph, class:'crosshair', opacity:0});
+      svg.appendChild(cross);
+      const dots = D[0].layers.map(l => { const c = mk('circle', {r:3.5, fill:l.color, stroke:'var(--panel)', 'stroke-width':1.5, opacity:0}); svg.appendChild(c); return c; });
+      const hit = mk('rect', {x:mL, y:mT, width:pw, height:ph, fill:'transparent'});
+      svg.appendChild(hit);
+      hit.addEventListener('mousemove', e => {
+        const box = svg.getBoundingClientRect();
+        const i = Math.max(0, Math.min(n - 1, Math.round(((e.clientX - box.left) / box.width * W - mL) / pw * (n - 1))));
+        const r = rows[i], d = D[i];
+        cross.setAttribute('x1', xAt(i)); cross.setAttribute('x2', xAt(i)); cross.setAttribute('opacity', 1);
+        dots.forEach((dot, c) => { const y = posY(i, c); dot.setAttribute('cx', xAt(i)); dot.setAttribute('cy', y === null ? 0 : y); dot.setAttribute('opacity', d.layers[c].v > 0 && y !== null ? 1 : 0); });
+        let html = '<div class="t-date">' + fmtDate(r[0]) + (cfg.subtitle ? cfg.subtitle(r, state) : '') + '</div>';
+        if (d.missing) html += '<div class="row"><span class="k">' + d.missing + '</span></div>';
+        else for (let c = d.layers.length - 1; c >= 0; c--) {
+          html += '<div class="row"><span class="k"><span class="dot" style="background:' + d.layers[c].color + '"></span>' + d.layers[c].long +
+            '</span><span class="v">' + pct(d.tot ? d.layers[c].v / d.tot * 100 : 0) + ' · ' + cfg.fmt(d.layers[c].v, state) + '</span></div>';
+        }
+        if (!d.missing) html += '<div class="row" style="margin-top:4px; padding-top:4px; border-top:1px solid var(--rule)"><span class="k">' + REP_WORD[state.chain] + '</span><span class="v">' + pct(d.tot ? d.rep / d.tot * 100 : 0) + '</span></div>';
+        const w = wrap.getBoundingClientRect();
+        tip.innerHTML = html;
+        const half = tip.offsetWidth / 2;
+        tip.style.left = Math.max(half, Math.min(w.width - half, e.clientX - w.left)) + 'px';
+        tip.style.top = (e.clientY - w.top - 10) + 'px';
+        tip.style.opacity = '1'; clampTip(tip);
+      });
+      hit.addEventListener('mouseleave', () => { tip.style.opacity = '0'; cross.setAttribute('opacity', 0); dots.forEach(d => d.setAttribute('opacity', 0)); });
+
+      document.getElementById(cfg.legend).innerHTML = D[0].layers.map(c => '<span><span class="sw" style="background:' + c.color + '"></span>' + c.long + '</span>').join('');
+      const sums = D[0].layers.map((_, c) => sum(D.map(d => d.layers[c].v)));
+      document.getElementById(cfg.stats).innerHTML = cfg.tiles(sums, grand, sum(D.map(d => d.rep)), state).map(t =>
+        '<div class="sp-stat"><div class="num">' + t.num + '</div>' + (t.abs ? '<div class="abs">' + t.abs + '</div>' : '') + '<div class="cap"><span class="sw" style="background:' + t.color + '"></span>' + t.cap + '</div></div>').join('');
+    }
+
+    for (const id in cfg.toggles) {
+      const key = cfg.toggles[id][0];
+      document.querySelectorAll('#' + id + ' button').forEach(b => b.addEventListener('click', () => {
+        document.querySelectorAll('#' + id + ' button').forEach(x => x.classList.toggle('active', x === b));
+        state[key] = b.dataset.v; render();
+      }));
+    }
+    render();
+  }
+
+  // ---- chart 1: block space / transactions, share of each day ----
+  const IDX = {v:2, t:4};
+  const WORD = {v:'of block space', t:'of transactions'};
+  const fmt1 = (x, st) => st.measure === 'v' ? (x / 1e6).toLocaleString('en-US', {maximumFractionDigits:x < 1e8 ? 2 : 0}) + ' MvB' : Math.round(x).toLocaleString('en-US') + ' txs';
+  makeChart({
+    svg:'chart-space', tip:'tooltip-space', legend:'legend-space', stats:'sp-stats', share:true,
+    toggles:{'sp-chain-toggle':['chain', 'sha256'], 'sp-measure-toggle':['measure', 'v']},
+    rows: st => SP[st.chain],
+    day: (r, st) => splitLayers(st.chain, r[IDX[st.measure]], r[IDX[st.measure] + 3]),
+    subtitle: r => ' · ' + r[1] + ' block' + (r[1] === 1 ? '' : 's'),
+    fmt: (x, st) => fmt1(x, st),
+    tiles: (sums, tot, rep, st) => st.chain === 'blake2b' ? [
+      {num:pct(rep / tot * 100), abs:fmt1(rep, st), cap:'Replayed from BTC · ' + WORD[st.measure], color:'var(--sp-ord)'},
+      {num:pct(sums[4] / tot * 100), abs:fmt1(sums[4], st), cap:'BTCB2-only · ' + WORD[st.measure], color:B2ONLY.color},
+      {num:pct(sums[2] / tot * 100), abs:fmt1(sums[2], st), cap:'Runes · ' + WORD[st.measure], color:CATS[2].color},
+      {num:pct(sums[0] / tot * 100), abs:fmt1(sums[0], st), cap:'OP_RETURN over 83 bytes · ' + WORD[st.measure], color:CATS[0].color},
+    ] : [
+      {num:pct(sums[2] / tot * 100), abs:fmt1(sums[2], st), cap:'Runes · ' + WORD[st.measure], color:CATS[2].color},
+      {num:pct(sums[1] / tot * 100), abs:fmt1(sums[1], st), cap:'Inscriptions · ' + WORD[st.measure], color:CATS[1].color},
+      {num:pct(sums[0] / tot * 100), abs:fmt1(sums[0], st), cap:'OP_RETURN over 83 bytes · ' + WORD[st.measure], color:CATS[0].color},
+      {num:pct(rep / tot * 100), abs:fmt1(rep, st), cap:'Also replayed on BTCB2 · ' + WORD[st.measure], color:'var(--sp-ord)'},
+    ],
+  });
+
+  // ---- chart 2: value moved / fees paid, absolute, in coins or USD ----
+  // SV row: [date, usd_price_or_0, value_sat[5], fees_sat[5], replayed_value_sat[5], replayed_fees_sat[5]]
+  // Price: BTC daily close (Yahoo); BTCB2 daily close on Neoxa, its only market (from Sep 1).
+  const SV = {"sha256":[["2026-08-08",64904.69,[265259312,886414771,6682675268,2132585,9498820139353],[36373,784393,5609195,14652,33969826],[0,0,400208551,805568,9150573812123],[0,0,1225850,3562,29255303]],["2026-08-09",64844.89,[67401473752,5795488361,142968420179,83931180,50176393821919],[557457,4142223,44526082,173587,170812039],[0,0,1841902076,29513672,37522780375701],[0,0,930569,19258,118190392]],["2026-08-10",63910.59,[159638500702,6118171157,130694366635,81133760,73328401295911],[185083,4119423,37888565,105295,262222443],[0,0,792191527,754865,35757196900902],[0,0,286057,7589,132632650]],["2026-08-11",63551.88,[6038612131,6157977898,116075268297,29550023,71551746195716],[111707,3507542,36207005,86110,244396519],[0,0,175752296,1480740,28120159088579],[0,0,426857,7671,99505506]],["2026-08-12",63402.43,[44731045,6181871524,124749230094,55407159,97063152765636],[106787,7749656,39931057,142248,456316864],[0,0,248831008,25555340,26845594651904],[0,0,398234,25615,98477790]],["2026-08-13",63402.17,[52501226,6344372936,121972103203,86331230,81760220144226],[155379,4327474,41675010,167611,272480722],[0,0,131274207,14960095,23536006515453],[0,0,104190,12138,86985823]],["2026-08-14",62975.59,[19414758,6104510350,105900591990,51421043,101441534947860],[105732,3774119,41522532,105037,269543659],[0,0,306824199,1106623,23334352522754],[0,0,147115,7695,72046249]],["2026-08-15",63024.32,[152739007,6128360392,118195501171,13589035,77643324256159],[122867,3274600,42868763,40706,186667826],[0,0,3844225,643846,16939122297601],[0,0,56006,6483,45212618]],["2026-08-16",62818.65,[59521862,5908279428,130557466064,14778423,69304712562325],[87740,3458044,49300883,47130,166366839],[0,0,131586551,3388462,17084811434179],[0,0,76327,3578,44144481]],["2026-08-17",64506.25,[177937227,6269671247,104746790110,122158053,101763655952432],[264624,2675769,45472878,71349,228136891],[0,0,6223251,706239,19776149955338],[0,0,107525,5192,54388249]],["2026-08-18",64680.71,[93861630,6585978682,79854954801,36065881,93870254432240],[207876,2900704,42409866,65626,245220813],[0,0,67514190,3510382,18089674330357],[0,0,163458,1888,56984331]],["2026-08-19",69266.19,[247324187,5067240474,47359399385,32859615,99948842975414],[226117,2031352,32431647,64441,287512421],[0,0,148180207,412388,21223581858360],[0,0,135914,2465,67501158]],["2026-08-20",73032.76,[255555743,5667405415,46346190286,15091929,125724348234877],[187565,3459720,31393852,38549,379313836],[0,0,103196622,7927555,24164830252349],[0,0,236656,3766,89495499]],["2026-08-21",78335.19,[176287534,6045956378,45295405531,4218421,126444376545175],[240577,3442679,34175594,54605,447967200],[0,0,261585822,1123971,23869395994357],[0,0,591093,7018,105340686]],["2026-08-22",77083.41,[75689027,6310804561,61674602769,19584918,72394020465012],[152469,2666111,43305992,42597,261645228],[0,0,51988160,7189552,17798633876636],[0,0,155448,8534,55885086]],["2026-08-23",77755.27,[135806875,6531530927,66452149063,8819983,61728706203122],[85917,1885700,40581451,18656,190576233],[0,0,260424071,1080086,13470264053267],[0,0,208590,2161,39870642]],["2026-08-24",78964.48,[155857799,5970396240,45305317216,35271853,105006999623030],[168077,3509230,37490550,91555,270750996],[0,0,483971999,270880,22213719328942],[0,0,328084,2633,60608924]],["2026-08-25",78564.98,[63169393,6053414441,33884377902,18808946,112102413403687],[122611,4365271,35567792,46036,274099623],[0,0,381685994,5684522,23895494759889],[0,0,450251,5537,53484496]],["2026-08-26",79027.42,[55960641,8141292280,53695695067,83531951,101098953994688],[85394,6997108,39642451,13781,251517338],[0,0,214245636,0,22052307595300],[0,0,875910,0,48245536]],["2026-08-27",80257.54,[95172711,6385372653,58305370448,17013824,104642350416294],[129559,3321232,36280263,41604,284285663],[0,0,41742581,8152449,21950741525393],[0,0,103368,4422,46672435]],["2026-08-28",77830.29,[106432069,7348227667,36815840052,7106384,108206334196409],[323765,3958990,30111677,35209,309005731],[0,0,32079323,0,19772604550996],[0,0,142315,0,50146855]],["2026-08-29",78245.81,[42458856,6555921235,67231156242,12112754,78260813274772],[179862,3512229,37564393,41790,200499684],[0,0,55347142,0,13549846537356],[0,0,138250,0,40982332]],["2026-08-30",77667.57,[458082519,6745998854,76852627018,10085697,76955044745865],[184158,2233815,44121348,38574,159732508],[0,0,28756335,0,7193771916672],[0,0,437816,0,27727007]],["2026-08-31",78548.63,[222620398,5935701969,58223536575,2437866,105483862600366],[310828,1967823,33735076,24444,259891791],[0,0,18855498,0,10641286709990],[0,0,201275,0,38969972]],["2026-09-01",77403.62,[1231566997,6373922952,41873585998,1072040975,100996645173892],[266464,2423896,30965638,23947,267330579],[0,0,36184309,1070212694,13648752372210],[0,0,447637,1602,39507513]],["2026-09-02",77300.48,[596160107,5449600214,36970615161,4920067,94334907282958],[274018,3126105,29566054,35029,265528672],[0,0,126425464,16528,10785686831997],[0,0,713247,472,42077007]],["2026-09-03",81271.74,[4354461867,6536238280,50403441723,9760114,104523630790027],[205477,2176578,35061552,45764,285831638],[0,0,44064056,5646,14494372789519],[0,0,313619,708,45431294]],["2026-09-04",79671.97,[2428571976,6574748153,55880540490,24695597,97152036162006],[503308,1998020,31360740,44076,306876049],[0,0,332582014,0,10055403876021],[0,0,683462,0,41735726]],["2026-09-05",79823.87,[6195708132,6433407976,64787577242,13059611,67973994805536],[186129,2173821,35261131,34206,213341258],[0,0,23409452,0,5723492568047],[0,0,1040640,0,29315848]],["2026-09-06",80350.05,[31838896584,5957564253,77642157491,13582859,61105160919646],[417720,2319640,41741596,42211,171105282],[0,0,14711968,0,5942314603085],[0,0,196416,0,24176439]],["2026-09-07",79115.85,[1730529310598,5944526158,70941300386,5054147,71109661553719],[315691,3287806,32342814,36139,215411291],[0,0,30463884,0,7022567074654],[0,0,118763,0,30231044]],["2026-09-08",78438.58,[125519411029,5092014480,53214861184,181471175,77228083548583],[245307,2675182,29347392,20462,258322427],[0,0,26331037,178393089,6112919536259],[0,0,612202,205,32025920]],["2026-09-09",78259.52,[71932007595,6157572970,69329218516,6211250,87823794854410],[333821,2792455,36050053,43341,292181320],[0,0,87241546,0,8318638480274],[0,0,860185,0,71962092]],["2026-09-10",76568.12,[13394336950,5206884767,50990167387,84233612,85601267840459],[268018,2101619,28740330,42362,260562405],[0,0,32207550,0,7790001201427],[0,0,299079,0,31771759]],["2026-09-11",77173.8,[1049063562,9576438224,58966934032,2221849,84895775908580],[196189,9868240,34653132,22612,268242710],[0,0,44309846,0,5830211475381],[0,0,292384,0,28235025]],["2026-09-12",77270.47,[85141943,5289565403,52056733707,95034036,64919621786935],[124921,2332100,34402430,42033,185890306],[0,0,11860316,0,3073073536107],[0,0,299562,0,18992829]],["2026-09-13",76838.16,[186745638,5024657070,65106804440,41666249,68910352042113],[206907,2514566,36755928,45617,168953909],[0,0,25876534,0,3345027991694],[0,0,673512,0,20554746]],["2026-09-14",78163.38,[528221210,4992057178,55798795210,73286354,81156986755280],[328133,3678561,32563764,25077,234551190],[0,0,13684935,119793,6222113578875],[0,0,212004,4296,29214623]],["2026-09-15",75612.51,[576314454,5512249864,59348249219,2783673,100568940486183],[177753,2404495,37740510,15595,248344194],[0,0,17488824,153590,5555404128715],[0,0,150711,4850,29727780]],["2026-09-16",76150.32,[5548247385,4473148238,71171169243,4555565,87893934383316],[193571,2070846,31905590,19171,254309568],[0,0,8037520,85094,8275976433440],[0,0,2493164,4072,32584578]],["2026-09-17",76403.77,[10066234727,4713726717,64512853884,10109495,109142655981334],[174762,6877158,29432683,48441,244217864],[0,0,9698462,4483862,7036429192849],[0,0,262794,11632,29939329]],["2026-09-18",80901.46,[3116537912,5007653785,64309416548,28102389,120955898293262],[206164,3399897,32667636,65760,282918770],[0,0,812340666,0,8225787430235],[0,0,302033,0,34116922]],["2026-09-19",81233.68,[2485545111,4128365848,42955558410,2234564,82995647264976],[256148,3529194,28190568,24893,211193288],[0,0,200536466,0,7196493295261],[0,0,515575,0,25332604]],["2026-09-20",81142.61,[2547117465,5002427760,77413857735,18414675,63740508963355],[206231,2636406,37294070,69003,170445994],[0,0,16148526,0,6573440031155],[0,0,267111,0,22853664]],["2026-09-21",86602.91,[4700213595,4862839568,57265289481,8005414,119887280807355],[1210818,4335070,31494660,32396,315146293],[0,0,144855932,13089,12823366090441],[0,0,820239,329,51405018]],["2026-09-22",86172.28,[4261931782,4543103614,61910941326,20775158,119970887211986],[508516,3335955,30451198,91699,282251491],[0,0,82894403,7978,15521500633073],[0,0,591917,329,38495220]],["2026-09-23",84383.01,[298658683,4188535429,55689832694,8872051,157376169454450],[452278,2686778,27922479,24113,258295530],[0,0,21176661,73326,7877979815814],[0,0,351119,4758,32129960]],["2026-09-24",84379.06,[135760768,4512600336,56159625693,5028123,108250908818797],[304888,3186657,30073654,13991,338797329],[0,0,170936749,40284,7411477815789],[0,0,309767,4468,33450739]],["2026-09-25",84034.92,[226744842,4323132681,45891382009,10035366,122458888984932],[400656,2676241,28556583,19588,351298686],[0,0,17630315,286649,10580911634015],[0,0,817358,8017,34323631]],["2026-09-26",84406.45,[619794954,4926343582,56654834663,41736603,99083588105021],[419586,2352196,34400411,167134,216091572],[0,0,20452810,33549086,4794211955643],[0,0,849391,136045,24513577]],["2026-09-27",84458.09,[95833637,4673066405,48989174301,108750747,67503614587704],[500337,2236547,33786485,43019,176564424],[0,0,22145206,478062,4991457713939],[0,0,783667,14560,25411105]],["2026-09-28",83502.61,[409794980,5231488319,43676897222,74875313,95444518558439],[1321571,4446344,34371911,42163,302471407],[0,0,55317585,271957,13196200775447],[0,0,643416,10770,38238231]],["2026-09-29",83622.43,[501476968,5355315014,36834817824,14223497,163574711035377],[1373182,5823194,30489432,55711,271486846],[0,0,31342974,706222,11353322974120],[0,0,526526,23910,34289477]],["2026-09-30",83553.85,[290987261,4512409858,27046090583,14224003,101939016172422],[541281,7553113,29056829,67780,342378761],[0,0,531110599,154782,10988427005549],[0,0,993868,10881,39008709]],["2026-10-01",84853.1,[302062847,4430308159,36089385318,31413898,89123676691848],[8839938,7266776,24587017,63341,383812843],[0,0,86331925,88297,7209838695713],[0,0,485498,5301,42637426]]],"blake2b":[["2026-08-30",0,[0,0,509825210,0,118223424900641],[0,0,1706538,0,344096107],[0,0,509765890,0,117993388918633],[0,0,1700796,0,323364253]],["2026-08-31",0,[0,0,2272853378,25983386,72153811424778],[0,0,1391064,28212,489095341],[0,0,2272853378,25983386,71861921036273],[0,0,1391064,28212,488250236]],["2026-09-01",90,[0,0,2600447726,87987758,136545013722874],[0,0,2539192,107601,430473981],[0,0,2600386492,87987758,135211974775975],[0,0,2538496,107601,429589229]],["2026-09-02",120,[0,0,622810340,312619,8351881267339],[0,0,1871723,1864,41591809],[0,0,622810340,312619,7186515906502],[0,0,1871723,1864,40838464]],["2026-09-03",400,[0,0,319642790,5646,13944213450618],[0,0,1350700,708,56409265],[0,0,319642790,5646,12096131872920],[0,0,1350700,708,55536980]],["2026-09-04",423.66,[0,0,335991107,0,37707371503446],[0,0,1041035,0,74452846],[0,0,335991107,0,36916928942713],[0,0,1041035,0,69872699]],["2026-09-05",1094.66,[0,0,23810906,0,46432772531031],[0,0,1042829,0,41711523],[0,0,23810906,0,45708858129417],[0,0,1042829,0,39536709]],["2026-09-06",728.28,[0,0,27974938,0,23938122685868],[0,0,199053,0,31006023],[0,0,27934911,0,22761932592020],[0,0,198582,0,29618822]],["2026-09-07",332.5,[0,0,51334777,0,20753079001734],[0,0,155310,0,38340539],[0,0,51334777,0,19160409943092],[0,0,155310,0,34770543]],["2026-09-08",306.93,[0,0,28284371,178393089,17452043218377],[0,0,590546,205,38530672],[0,0,27776803,178393089,15888816118226],[0,0,589834,205,35431796]],["2026-09-09",231.78,[0,0,97932049,0,37123191584979],[0,0,932218,0,103369492],[0,0,97932049,0,35239553421005],[0,0,932218,0,99592012]],["2026-09-10",189.07,[0,0,39026540,0,20488107134993],[0,0,331870,0,50312155],[0,0,39024813,0,18667403845549],[0,0,331567,0,45483324]],["2026-09-11",157.79,[0,0,1841771,0,13472472712824],[0,0,39157,0,44680395],[0,0,1841771,0,12136183246797],[0,0,39157,0,41191456]],["2026-09-12",154,[0,0,57603798,0,9846657830459],[0,0,494445,0,28423643],[0,0,57603798,0,8380357715009],[0,0,494445,0,25094521]],["2026-09-13",185,[0,0,9059972,0,7165437957035],[0,0,257866,0,31951024],[0,0,9059972,0,6064890399883],[0,0,257866,0,29904635]],["2026-09-14",235,[0,0,27401380,1070212694,10472855743759],[0,0,399953,1602,39033922],[0,0,27303557,1070212694,9079756137254],[0,0,399697,1602,36544968]],["2026-09-15",298,[0,0,29455797,0,6133627303615],[0,0,492397,0,31688547],[0,0,29239852,0,5397828077484],[0,0,491695,0,29366084]],["2026-09-16",478.59,[0,0,7352457,0,9771162387651],[0,0,1926451,0,34970682],[0,0,7352457,0,8340788103934],[0,0,1926451,0,32201528]],["2026-09-17",415.73,[0,0,8410866,4842339,7646944495609],[0,0,729739,24850,32531403],[0,0,8410866,4842339,6776057444449],[0,0,729739,24850,30188120]],["2026-09-18",320,[0,0,808830537,0,8619766547149],[0,0,353934,0,36303304],[0,0,808830537,0,8068635896188],[0,0,353934,0,33397129]],["2026-09-19",291.7,[0,0,204548432,0,7795095890623],[0,0,568011,0,27930199],[0,0,204471621,0,7130827248391],[0,0,567707,0,25659892]],["2026-09-20",267,[0,0,18104688,0,6553912749623],[0,0,195398,0,25130457],[0,0,18104688,0,6046527993728],[0,0,195398,0,22723781]],["2026-09-21",331.91,[0,0,139756337,13089,15228476586837],[0,0,683698,329,57411759],[0,0,139756337,13089,13467871326508],[0,0,683698,329,51807070]],["2026-09-22",375.1,[0,0,73906730,7978,17859997633023],[0,0,343547,329,44463571],[0,0,73906730,7978,16123556013507],[0,0,343547,329,41589425]],["2026-09-23",402.31,[0,0,12341266,0,8826951098771],[0,0,253625,0,32502745],[0,0,12341266,0,7796898199576],[0,0,253625,0,31484973]],["2026-09-24",348.02,[0,0,191093766,0,8153394462385],[0,0,810162,0,33527652],[0,0,190634942,0,7324058578297],[0,0,807999,0,32689990]],["2026-09-25",316.57,[0,0,19318970,400259,12121176469849],[0,0,648238,17243,36855744],[0,0,19318970,400259,10667023211352],[0,0,648238,17243,34806319]],["2026-09-26",331.65,[0,0,19849030,0,4761911983178],[0,0,857397,0,25030781],[0,0,19849030,0,4352285450923],[0,0,857397,0,24477148]],["2026-09-27",355.1,[0,0,21374132,0,5695661168605],[0,0,874495,0,25431954],[0,0,21374132,0,4961018931782],[0,0,874495,0,25125904]],["2026-09-28",362.0,[0,0,43353617,34205290,20243356384024],[0,0,356931,157770,43893373],[0,0,43353617,34205290,19486122247292],[0,0,356931,157770,42847208]],["2026-09-29",350.16,[0,0,49913293,318052,12550353534341],[0,0,924923,11538,34187812],[0,0,49913293,318052,11867418190820],[0,0,924923,11538,33856169]],["2026-09-30",354.02,[0,0,518501601,35362,12418833624445],[0,0,954721,1237,40827686],[0,0,518209344,35362,11102393669274],[0,0,954427,1237,39208670]],["2026-10-01",372.42,[0,0,95948969,689702,8533537450815],[0,0,552497,30922,44728484],[0,0,95868969,689702,7226296071357],[0,0,548501,30922,42979357]]]};
+  const VIDX = {value:2, fees:3};
+  const coin = st => st.chain === 'blake2b' ? 'BTCB2' : 'BTC';
+  const compact = x => x >= 1e9 ? (x / 1e9).toFixed(x >= 1e10 ? 0 : 1) + 'B' : x >= 1e6 ? (x / 1e6).toFixed(x >= 1e7 ? 0 : 1) + 'M' :
+    x >= 1e3 ? (x / 1e3).toFixed(x >= 1e4 ? 0 : 1) + 'K' : x >= 10 ? x.toFixed(0) : x >= 1 ? x.toFixed(1) : x > 0 ? x.toPrecision(2) : '0';
+  const compactShort = x => compact(x).replace(/\.0(?=[KMB]?$)/, '');
+  // amounts up to 0.01 coin read in sats (1 BTC = 100,000,000 sats) so labels stay short: 0.01 BTC -> 1M sats
+  const money = (x, st) => st.unit === 'usd' ? '$' + compact(x) : x > 0 && x <= 0.01 ? compactShort(x * 1e8) + ' sats' : compact(x) + ' ' + coin(st);
+  const VWORD = {value:'moved (all outputs, incl. change)', fees:'paid in fees'};
+  makeChart({
+    svg:'chart-value', tip:'tooltip-value', legend:'legend-value', stats:'sv-stats', share:false,
+    toggles:{'sv-chain-toggle':['chain', 'sha256'], 'sv-measure-toggle':['measure', 'value'], 'sv-unit-toggle':['unit', 'coin'], 'sv-scale-toggle':['scale', 'stack']},
+    rows: st => st.unit === 'usd' ? SV[st.chain].filter(r => r[1] > 0) : SV[st.chain],
+    day: (r, st) => {
+      const k = (st.unit === 'usd' ? r[1] : 1) / 1e8;
+      return splitLayers(st.chain, r[VIDX[st.measure]].map(x => x * k), r[VIDX[st.measure] + 2].map(x => x * k));
+    },
+    subtitle: (r, st) => r[1] ? ' · 1 ' + coin(st) + ' = $' + r[1].toLocaleString('en-US', {maximumFractionDigits:0}) : ' · no market price yet',
+    fmt: (x, st) => money(x, st),
+    axis: (x, st) => money(x, st),
+    tiles: (sums, tot, rep, st) => {
+      const share = i => pct(sums[i] / tot * 100) + ' ';
+      return st.chain === 'blake2b' ? [
+        {num:money(tot, st), cap:'Total ' + VWORD[st.measure], color:'var(--ink-mute)'},
+        {num:pct(rep / tot * 100), abs:money(rep, st), cap:'Replayed from BTC', color:'var(--sp-ord)'},
+        {num:pct(sums[4] / tot * 100), abs:money(sums[4], st), cap:'BTCB2-only', color:B2ONLY.color},
+        {num:pct(sums[2] / tot * 100), abs:money(sums[2], st), cap:'Runes', color:CATS[2].color},
+      ] : [
+        {num:money(tot, st), cap:'Total ' + VWORD[st.measure], color:'var(--ink-mute)'},
+        {num:pct(sums[2] / tot * 100), abs:money(sums[2], st), cap:'Runes', color:CATS[2].color},
+        {num:pct(sums[1] / tot * 100), abs:money(sums[1], st), cap:'Inscriptions', color:CATS[1].color},
+        {num:pct(rep / tot * 100), abs:money(rep, st), cap:'Also replayed on BTCB2', color:'var(--sp-ord)'},
+      ];
+    },
+  });
+
+})();
+</script>
 </body>
 </html>
