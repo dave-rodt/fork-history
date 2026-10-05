@@ -323,7 +323,7 @@
 
     <div class="chart-block">
       <div class="chart-title">What block space was used for, and how much was replayed</div>
-      <p class="chart-caption">Every transaction on both chains, sorted by the kind of data it carries, as a share of each UTC day; the layers add up to 100%. On BTC, from the split on August 8 through October 1, Runes took 40% of block space. Inscriptions took 2.2%. OP_RETURN outputs over 83 bytes, the limit BIP-110 sets, took 0.1%. On BTCB2 these types are close to zero: 1.9% of space went to Runes, nearly all of them copies of BTC transactions, with no inscriptions and no OP_RETURN over 83 bytes. Both views also split transactions by whether they exist on the other chain. The same 3,235,470 transactions appear on both: that is 8.7% of BTC's 37,079,013 transactions but 98.5% of BTCB2's 3,285,701. Only 50,231 exist on BTCB2 alone, including the miners' own reward transactions. Replays fill 94% of BTCB2's block space. BTCB2 starts on August 30, when it switched to BLAKE2b; before that it mined only 8 blocks in three weeks.</p>
+      <p class="chart-caption">Every transaction on both chains, sorted by the kind of data it carries, as a share of each UTC day; the layers add up to 100%. On BTC, from the split on August 8 through October 1, Runes took 40% of block space. Inscriptions took 2.2%. OP_RETURN outputs over 83 bytes, the limit BIP-110 sets, took 0.1%. On BTCB2 these types are close to zero: 1.9% of space went to Runes, nearly all of them copies of BTC transactions, with no inscriptions and no OP_RETURN over 83 bytes. Both views also split transactions by whether they exist on the other chain. The same 3,235,470 transactions appear on both: that is 8.7% of BTC's 37,079,013 transactions but 98.5% of BTCB2's 3,285,701. Only 50,231 exist on BTCB2 alone, including the miners' own reward transactions. Replays fill 94% of BTCB2's block space. The dashed line on the BTC view shows what BIP-110 would have rejected had BTC enforced it from the split: 2.38% of block space and 1.07% of transactions from August 8 to October 1, almost all of it inscriptions (94% of the rejected space) and OP_RETURN outputs over 83 bytes (6%). Runes are untouched, because their data fits in small OP_RETURN outputs. BTCB2 starts on August 30, when it switched to BLAKE2b; before that it mined only 8 blocks in three weeks.</p>
       <div class="toggle-rows">
         <div class="view-toggle-row">
           <span class="view-toggle-label">Chain:</span>
@@ -400,6 +400,7 @@
       <li>Knots 29.3 ships BIP-110 (May 9, 2026); Knots 29.4.1 activates it at the BLAKE2b hard fork &mdash; <a href="https://github.com/bitcoinknots/bitcoin/releases" target="_blank" rel="noopener">Bitcoin Knots releases, GitHub</a></li>
       <li>Every transaction's size, fee, data flags and OP_RETURN outputs, blocks 961,632 to 969,505 (BTC) and 961,632 to 975,086 (BTCB2) &mdash; first-party crawl of <a href="https://mempool.space/docs/api/rest" target="_blank" rel="noopener">mempool.space</a> and <a href="https://mempool.guide" target="_blank" rel="noopener">mempool.guide</a> (<code>/api/v1/block/:hash/summary</code> and raw blocks)</li>
       <li>Daily closing prices: BTC from <a href="https://finance.yahoo.com/quote/BTC-USD/history/" target="_blank" rel="noopener">Yahoo Finance (BTC-USD)</a>; BTCB2 from <a href="https://neoxa.exchange" target="_blank" rel="noopener">Neoxa</a>, its only exchange (BTCB2/USDC daily candles)</li>
+      <li>BIP-110's seven consensus rules, applied to every BTC transaction from block 961,632 as if BIP-110 had been active from the split (coins created before then exempt, as the BIP specifies) &mdash; <a href="https://bips.dev/110/" target="_blank" rel="noopener">BIP 110: Reduced Data Temporary Softfork</a>; first-party check of raw blocks from Blockstream and mempool.space. The same check on BTCB2 after its activation at block 973,440 finds no violations.</li>
       <li>Knots 29.4.2 and its 45-day coinbase maturity rule, blocks 973,440 to 979,920 &mdash; <a href="https://github.com/bitcoinknots/bitcoin/releases/tag/v29.4.2.knots20260508" target="_blank" rel="noopener">Bitcoin Knots v29.4.2 release, GitHub</a></li>
       <li>Bitcoin's soft forks, failed proposals and the 2017&ndash;2018 hard forks &mdash; Swan, "A timeline of Bitcoin forks," as of August 16, 2026</li>
       <li>BIP-110's 2.53% miner signaling, the August 8 split at block 961,632, and the switch to BLAKE2b at block 961,640 &mdash; see this series' research notes and <a href="https://mempool.guide/block/961640" target="_blank" rel="noopener">mempool.guide</a></li>
@@ -923,11 +924,29 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
           ends.push({c, y:yOf(mid), share});
         });
       }
+      // optional overlay line (share of the day), dashed, broken where the value is pending
+      const ov = cfg.overlay ? cfg.overlay(state) : null;
+      let ovY = null;
+      if (ov && state.scale !== 'log') {
+        const top = cfg.share ? 1 : null;
+        const yv = f => mT + ph - f / (top || 1) * ph;
+        ovY = i => { const v = ov.value(rows[i]); return v == null ? null : yv(v); };
+        let run = [], lastI = -1;
+        const flush = () => { if (run.length > 1) svg.appendChild(mk('path', {d:'M' + run.map(q => q[0].toFixed(1) + ' ' + q[1].toFixed(1)).join(' L'), fill:'none', stroke:'var(--ink)', 'stroke-width':1.75, 'stroke-dasharray':'5 4'})); run = []; };
+        rows.forEach((_, i) => { const y = ovY(i); if (y === null) flush(); else { run.push([xAt(i), y]); lastI = i; } });
+        flush();
+        if (lastI >= 0 && lastI < n - 1) {
+          svg.appendChild(mk('rect', {x:xAt(lastI + 1) - 4, y:mT, width:xAt(n - 1) - xAt(lastI + 1) + 8, height:ph, fill:'var(--ink)', 'fill-opacity':0.05}));
+          const t = mk('text', {x:(xAt(lastI + 1) + xAt(n - 1)) / 2, y:mT + ph - 30, 'text-anchor':'middle', class:'sp-endval'}); t.textContent = 'BIP-110'; svg.appendChild(t);
+          const t2 = mk('text', {x:(xAt(lastI + 1) + xAt(n - 1)) / 2, y:mT + ph - 19, 'text-anchor':'middle', class:'sp-endval'}); t2.textContent = 'pending'; svg.appendChild(t2);
+        }
+        if (lastI >= 0) { const [a, t] = ov.total(); ends.push({ov:true, y:ovY(lastI), share:a / t * 100}); }
+      }
       // direct labels at the right edge, nudged apart so they never overlap
       ends.sort((a, b) => b.y - a.y);
       for (let i = 1; i < ends.length; i++) if (ends[i - 1].y - ends[i].y < 24) ends[i].y = ends[i - 1].y - 24;
       ends.forEach(e => {
-        const lay = D[0].layers[e.c], x = mL + pw + 10;
+        const lay = e.ov ? {label:ov.label, color:'var(--ink)'} : D[0].layers[e.c], x = mL + pw + 10;
         svg.appendChild(mk('rect', {x, y:e.y - 9, width:3, height:18, rx:1.5, fill:lay.color}));
         const t1 = mk('text', {x:x + 8, y:e.y - 1, class:'sp-endlabel'}); t1.textContent = lay.label; svg.appendChild(t1);
         const t2 = mk('text', {x:x + 8, y:e.y + 11, class:'sp-endval'}); t2.textContent = pct(e.share) + ' overall'; svg.appendChild(t2);
@@ -950,6 +969,7 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
           html += '<div class="row"><span class="k"><span class="dot" style="background:' + d.layers[c].color + '"></span>' + d.layers[c].long +
             '</span><span class="v">' + pct(d.tot ? d.layers[c].v / d.tot * 100 : 0) + ' · ' + cfg.fmt(d.layers[c].v, state) + '</span></div>';
         }
+        if (ov && state.scale !== 'log') { const v = ov.value(r); html += '<div class="row" style="margin-top:4px; padding-top:4px; border-top:1px solid var(--rule)"><span class="k">' + ov.long + '</span><span class="v">' + (v == null ? 'pending' : pct(v * 100)) + '</span></div>'; }
         if (!d.missing) html += '<div class="row" style="margin-top:4px; padding-top:4px; border-top:1px solid var(--rule)"><span class="k">' + REP_WORD[state.chain] + '</span><span class="v">' + pct(d.tot ? d.rep / d.tot * 100 : 0) + '</span></div>';
         const w = wrap.getBoundingClientRect();
         tip.innerHTML = html;
@@ -962,7 +982,9 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
 
       document.getElementById(cfg.legend).innerHTML = D[0].layers.map(c => '<span><span class="sw" style="background:' + c.color + '"></span>' + c.long + '</span>').join('');
       const sums = D[0].layers.map((_, c) => sum(D.map(d => d.layers[c].v)));
-      document.getElementById(cfg.stats).innerHTML = cfg.tiles(sums, grand, sum(D.map(d => d.rep)), state).map(t =>
+      const tiles = cfg.tiles(sums, grand, sum(D.map(d => d.rep)), state);
+      if (ov && ov.tile) tiles.push(ov.tile());
+      document.getElementById(cfg.stats).innerHTML = tiles.map(t =>
         '<div class="sp-stat"><div class="num">' + t.num + '</div>' + (t.abs ? '<div class="abs">' + t.abs + '</div>' : '') + '<div class="cap"><span class="sw" style="background:' + t.color + '"></span>' + t.cap + '</div></div>').join('');
     }
 
@@ -976,6 +998,10 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
     render();
   }
 
+  // BIP-110 counterfactual for BTC, from bip110_daily.py: [rejected vB, rejected txs, all vB, all txs]
+  // per day; null = not every block of that day checked yet (shown as pending, never as zero).
+  const BIP = {"2026-08-08":[737882.25,528,19979447.0,92685],"2026-08-09":[4490083.5,6176,141982875.25,731687],"2026-08-10":[5234659.75,6142,135492851.75,639365],"2026-08-11":[3816688.25,7456,127081774.0,608562],"2026-08-12":[6830140.75,6046,139457781.0,651109],"2026-08-13":[5366597.5,7665,142716629.25,680730],"2026-08-14":[4763879.0,5294,146262350.75,694502],"2026-08-15":[4196227.5,5873,141913899.75,719514],"2026-08-16":[4926539.25,4781,156945280.5,831035],"2026-08-17":[3198995.5,6794,154279033.75,756022],"2026-08-18":[3011085.0,6641,145483596.5,711159],"2026-08-19":[2032882.5,5633,121406953.0,537758],"2026-08-20":[3103623.25,4879,126954523.5,514632],"2026-08-21":[2961361.25,6539,133800401.25,538999],"2026-08-22":[3098638.25,6211,146662191.75,704507],"2026-08-23":[2198489.0,8812,135696517.5,703001],"2026-08-24":[3949997.0,6588,138762114.25,632563],"2026-08-25":[5073990.75,6182,137468537.5,620604],"2026-08-26":[7124876.0,15629,150020931.0,724288],"2026-08-27":[3746253.0,7112,145071049.0,690404],"2026-08-28":[4570609.5,11061,130251649.75,569698],"2026-08-29":[4568216.0,5060,144549752.25,734873],"2026-08-30":[3182472.5,10811,159180349.25,879309],"2026-08-31":[2030703.0,6236,146434996.25,697056],"2026-09-01":[2326597.75,8422,138570513.25,627345],"2026-09-02":[3715725.75,6310,135602308.0,581418],"2026-09-03":[2325425.0,6590,157058097.75,712367],"2026-09-04":[1552403.25,5482,141275110.5,618290],"2026-09-05":[1892388.0,7579,146285910.75,723854],"2026-09-06":[2382481.5,7597,159896523.25,893391],"2026-09-07":[2737081.0,8650,136742763.0,699012],"2026-09-08":[1998060.25,5449,129516352.5,641373],"2026-09-09":[2660365.75,9233,159490187.75,758490],"2026-09-10":[1619370.5,5837,131437034.5,625497],"2026-09-11":[5306912.25,9450,157940796.75,766738],"2026-09-12":[2389049.5,6100,148670680.25,783637],"2026-09-13":[1800115.75,5897,148713472.25,791693],"2026-09-14":[4036683.25,8564,148611142.25,708209],"2026-09-15":[2331628.25,6928,160747449.75,818399],"2026-09-16":[2069527.25,8477,134822046.5,653862],"2026-09-17":[4752767.75,5734,140959159.75,652518],"2026-09-18":[2089524.5,6347,149550779.5,712987],"2026-09-19":[2632010.25,5753,126069952.75,592465],"2026-09-20":[2658242.0,6101,152420979.5,813705],"2026-09-21":[4076066.25,6695,145686112.25,631655],"2026-09-22":[2404529.75,6804,136030093.0,619671],"2026-09-23":[2596521.5,8074,125853146.75,582888],"2026-09-24":[2945492.25,4610,135697782.5,634055],"2026-09-25":[2524392.0,7490,132063348.5,598711],"2026-09-26":[2583550.0,6040,149580796.25,757303],"2026-09-27":[1962249.5,4188,142787912.75,755299],"2026-09-28":[3390562.5,7276,162165816.75,780095],"2026-09-29":[4282877.0,14353,155140338.75,740527],"2026-09-30":[4633237.75,17714,139889522.25,603758],"2026-10-01":[4701457.25,8364,131755099.75,535739]};
+
   // ---- chart 1: block space / transactions, share of each day ----
   const IDX = {v:2, t:4};
   const WORD = {v:'of block space', t:'of transactions'};
@@ -985,6 +1011,13 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
     toggles:{'sp-chain-toggle':['chain', 'sha256'], 'sp-measure-toggle':['measure', 'v']},
     rows: st => SP[st.chain],
     day: (r, st) => splitLayers(st.chain, r[IDX[st.measure]], r[IDX[st.measure] + 3]),
+    overlay: st => st.chain !== 'sha256' ? null : {
+      label:'BIP-110 would reject', long:'Would be rejected under BIP-110',
+      value: r => { const b = BIP[r[0]]; return b == null ? null : (st.measure === 'v' ? b[0] / b[2] : b[1] / b[3]); },
+      total: () => { const k = st.measure === 'v' ? 0 : 1; let a = 0, t = 0;
+        for (const d in BIP) if (BIP[d]) { a += BIP[d][k]; t += BIP[d][k + 2]; } return [a, t]; },
+      tile: function(){ const [a, t] = this.total(); return {num:pct(a / t * 100), abs:fmt1(a, st), cap:'Would be rejected under BIP-110 · ' + WORD[st.measure], color:'var(--ink)'}; },
+    },
     subtitle: r => ' · ' + r[1] + ' block' + (r[1] === 1 ? '' : 's'),
     fmt: (x, st) => fmt1(x, st),
     tiles: (sums, tot, rep, st) => st.chain === 'blake2b' ? [
