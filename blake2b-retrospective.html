@@ -118,6 +118,11 @@
   .phase-head h2{font-size:1.5rem;}
   .phase-time{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); margin-left:auto;}
   .phase p{max-width:66ch; margin:0 0 14px;}
+  .phase ul{max-width:66ch; padding-left:20px; margin:0 0 14px;}
+  .phase li{margin-bottom:6px;}
+  .phase code{font-family:'IBM Plex Mono',monospace; font-size:0.9em;}
+  .phase h3{font-size:1.05rem; margin:22px 0 8px;}
+  .read-time{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute); margin-top:14px;}
 
   .placeholder-box{
     border:1.5px dashed var(--rule-strong); border-radius:8px; padding:20px;
@@ -250,13 +255,78 @@
     <div class="eyebrow">THE NEWEST FORK IN THE SERIES</div>
     <h1>Bitcoin BLAKE2b: One Month Retrospective</h1>
     <p class="lede">BTCB2 split from BTC in August 2026 over a disagreement about non-monetary data in blocks, then swapped its mining algorithm outright. One month on, its own on-chain and market data can be measured against every chapter before it.</p>
+    <div class="read-time">~13 min read</div>
   </div>
 
-  <div class="placeholder-box">The history sections are coming soon.</div>
+  <section class="phase" id="background">
+    <div class="phase-head">
+      <span class="phase-num">01</span>
+      <h2>Background</h2>
+      <span class="phase-time">~1.5 min</span>
+    </div>
+    <p>The BIP-110 fight grew out of a long-standing difference in Bitcoin node policy.</p>
+    <p>Bitcoin Knots was introduced in 2011 by Luke Dashjr as a more conservative, configurable alternative to Bitcoin Core. It follows the same consensus rules as Core, but gives node operators and miners stricter control over what their nodes relay and mine.</p>
+    <p>That distinction became important during the “filter wars.” After the Ordinals wave of 2023, some Bitcoiners argued that inscriptions, large OP_RETURN outputs, and other non-monetary data burden nodes and compete with payments for block space. Knots became the main software associated with that view, while Core moved toward a more permissive relay policy.</p>
+    <p>The dispute escalated in 2025. In May, Core announced that its next release would relay and mine OP_RETURN outputs larger than 80 bytes by default, with no limit on the number of data outputs per transaction. On June 6, 31 Core contributors published a joint statement arguing that Bitcoin's censorship resistance means it will inevitably be used in ways some people dislike, and that relay policy should align with consensus by relaying transactions that miners are permitted to include in blocks, rather than imposing stricter filtering at the node level.</p>
+    <p>Then came Core 30.0 in October. It removed the traditional 83-byte OP_RETURN limit, raised the default -datacarriersize to 100,000 bytes, and allowed multiple data-carrier outputs per transaction. Dashjr argued that this effectively turned arbitrary data from something merely tolerated into an intended use of Bitcoin's transaction layer.</p>
+    <p>Users reacted quickly. Knots' share of nodes rose from roughly 2% to more than 20% in late 2025. For anti-spam advocates, this was no longer a relay-policy dispute. It was a fight over what Bitcoin's block space was for, and who had the authority to decide.</p>
+  </section>
+
+  <section class="phase" id="why">
+    <div class="phase-head">
+      <span class="phase-num">02</span>
+      <h2>The Why</h2>
+      <span class="phase-time">~1 min</span>
+    </div>
+    <p>BIP-110, the “Reduced Data Temporary Softfork,” emerged from that dispute. It first circulated as BIP-444 in late October 2025 and was later assigned the number 110, with Dathon Ohm as the formal author. Dashjr is widely credited with the original draft.</p>
+    <p>Its supporters had three related concerns.</p>
+    <ul>
+      <li><strong>Spam and node costs.</strong> They argued that supporting large amounts of arbitrary data would create artificial demand for block space, increase node costs, and make monetary transactions compete with non-financial data.</li>
+      <li><strong>Illegal content.</strong> Supporters also argued that normalizing large data payloads could make it easier to embed material such as child sexual abuse material (CSAM) and other illegal content in Bitcoin's permanent ledger, creating potential legal and regulatory risks for node operators. Critics countered that such content could already be embedded through other mechanisms and that relay defaults do not determine what ultimately enters a block.</li>
+      <li><strong>Protocol governance.</strong> Supporters argued that filtering at the relay level was insufficient, since users could bypass nodes by submitting transactions directly to miners. Moving the restrictions into consensus rules, such as capping new output scripts at 34 bytes and OP_RETURN at 83 bytes, was presented as the only durable fix.</li>
+    </ul>
+    <p>For supporters, the argument was no longer just about OP_RETURN. It had become a deeper question of whether Bitcoin should remain primarily a monetary network or function as a general-purpose data space for whatever paid the fees.</p>
+  </section>
+
+  <section class="phase" id="how-it-happened">
+    <div class="phase-head">
+      <span class="phase-num">03</span>
+      <h2>How Did It Happen?</h2>
+      <span class="phase-time">~3.5 min</span>
+    </div>
+    <p>BIP-110 was designed as a temporary User-Activated Soft Fork. Its supporters argued that users, rather than a small group of developers, should ultimately decide Bitcoin's rules. They framed the proposal as an emergency response to the risks of unrestricted data storage, including concerns about illegal content.</p>
+    <p>The soft fork was designed to be temporary: one year, with a 55% miner-signaling threshold for early lock-in instead of the usual higher threshold. The lower bar was intended to allow faster activation, while the one-year limit would give developers time to find a longer-term solution.</p>
+    <h3>The UASF Strategy</h3>
+    <p>The leverage came from the soft fork itself. Enforcing nodes would reject blocks that violated the new rules. If enough miners enforced them, miners that ignored the rules risked having their blocks orphaned and losing their rewards.</p>
+    <p>Signaling used version bit 4, beginning in late 2025. The first block to signal for BIP-110 came in March 2026, mined by Barefoot Mining through the Ocean pool. In May, the standard Knots release added BIP-110 enforcement, but as an opt-in: users had to confirm it at startup or set <code>consensusrules=rdts</code>. The mandatory window started at block 961,632 on August 8, 2026.</p>
+    <p>But not enough miners came. Through most of July, fewer than 1% of blocks signaled (0.6% over the 60 days to July 17), creeping to about 2.6% by the end of the month. No major pool backed the proposal. Foundry, the largest pool, put it to a vote among its own miners and said it would keep signaling no until miners with at least 51% of its voting hashrate said yes. The final period before the mandatory window had just 51 signaling blocks, or 2.53%.</p>
+    <h3>The Chain Split</h3>
+    <p>The last block accepted by both sides was 961,631, mined by AntPool on August 8 at 19:33:48 UTC. About two minutes later, at 19:35:55, AntPool mined block 961,632 without signaling BIP-110. Regular Bitcoin nodes accepted it. BIP-110 enforcing nodes rejected it and waited for a signaling block. Their own block 961,632 arrived at 20:12:12, 38 minutes after the last shared block, mined through Ocean.</p>
+    <p>Bitcoin had split.</p>
+    <h3>The Hashrate Problem</h3>
+    <p>More than 99% of Bitcoin's hashpower stayed on the chain that did not enforce BIP-110. The minority chain inherited Bitcoin's difficulty but only a tiny fraction of its mining power.</p>
+    <p>While Knots nodes had grown to more than 20% of the network by late 2025, estimates of how many were actually enforcing BIP-110 rules varied widely. BIP-110 proponents argued that around 20% of nodes supported it, while analyses that adjusted for duplicate and non-listening nodes put BIP-110-capable nodes at 2–8%, a gap that remained disputed through the split.</p>
+    <p>The result was a sharply reduced block rate: two blocks in its first eight hours, then just six over the next 20 days, with the last mined by Ocean on August 28.</p>
+    <p>The bigger question was economic support. Critics could not identify major economic nodes, such as exchanges, custodians, wallets, or payment networks, enforcing the BIP-110 rules. The BIP-110 chain had enforcing nodes, but little visible hashpower or economic adoption behind them.</p>
+    <p>The minority chain initially lacked replay protection. By mid-August, more than 400,000 ordinary Bitcoin transactions were sitting in its mempool because users had broadcast transactions without realizing they were valid on both chains. As a network-wide Bitcoin upgrade, BIP-110 was marked Closed. But its rules would survive on a new chain.</p>
+    <p>Supporters saw it differently.</p>
+    <p>BIP-110 was a UASF, so from their perspective the important actors were the nodes, not the miners. Those nodes did exactly what they were designed to do: reject blocks that violated their rules.</p>
+    <p>The result was a minority chain that enforced its rules but could not attract enough economic weight to support them. The BLAKE2b hard fork was the next move.</p>
+    <h3>From Soft Fork to Hard Fork</h3>
+    <p>The soft fork had failed to win the miners. The answer was to make the miners irrelevant. Dashjr had previously maintained code for changing Bitcoin's proof of work, providing the foundation for a fallback plan. At a Knots meeting on August 10, development was divided among Dashjr, Kyle and Chris Guida, covering the new block format, replay protection and BIP-110's rules.</p>
+    <p>The next day, the group ran a commit-reveal lottery on Testnet4 to select a new proof-of-work algorithm. BLAKE2b won on August 12. Because BLAKE2b was already used by Siacoin, a secondary ASIC market existed.</p>
+    <p>The new format also added opt-in replay protection. Transactions signed with a special flag are invalid on the SHA-256 chain, which would simply reject them. Transactions signed the usual way can still be replayed on the BLAKE2b chain, so the protection runs in one direction and depends on wallets and users choosing it.</p>
+    <p>On August 30, block 961,640 became the first BLAKE2b block, mined by SilentWave at 06:14 UTC. Fourteen more followed within two hours. The final Knots release implementing the fork arrived on September 2.</p>
+    <h3>Where It Landed</h3>
+    <p>The new coin (BTCB2) reached $1,799 on September 5, before falling to roughly $270 to $315 by September 21, with no major exchange listing it. The proof-of-work change made existing Bitcoin ASICs useless on the new chain. By September 8, roughly 17 PH/s of BLAKE2b hashrate was spread across 27 pools, although Alphapool briefly exceeded 50%, raising concerns about mining centralization.</p>
+    <h3>The Next Defense</h3>
+    <p>In response, the new chain introduced another temporary rule. On September 21, Bitcoin Knots PR #419 extended coinbase maturity from 100 blocks to 6,480 blocks, roughly 45 days, for mining rewards generated between blocks 973,440 and 979,920. Supporters presented it as a way to discourage short-term miners by forcing them to hold their rewards before they could spend or sell them.</p>
+  </section>
+
 
   <section class="phase" id="metrics">
     <div class="phase-head">
-      <span class="phase-num">05</span>
+      <span class="phase-num">04</span>
       <h2>One Month of Data</h2>
       <span class="phase-time">~1 min</span>
     </div>
@@ -322,8 +392,8 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title">What block space was used for, and how much was replayed</div>
-      <p class="chart-caption">Every transaction on both chains, sorted by the kind of data it carries, as a share of each UTC day; the layers add up to 100%. On BTC, from the split on August 8 through October 1, Runes took 40% of block space. Inscriptions took 2.2%. OP_RETURN outputs over 83 bytes, the limit BIP-110 sets, took 0.1%. On BTCB2 these types are close to zero: 1.9% of space went to Runes, nearly all of them copies of BTC transactions, with no inscriptions and no OP_RETURN over 83 bytes. Both views also split transactions by whether they exist on the other chain. The same 3,235,470 transactions appear on both: that is 8.7% of BTC's 37,079,013 transactions but 98.5% of BTCB2's 3,285,701. Only 50,231 exist on BTCB2 alone, including the miners' own reward transactions. Replays fill 94% of BTCB2's block space. The dashed line on the BTC view shows what BIP-110 would have rejected had BTC enforced it from the split: 2.38% of block space and 1.07% of transactions from August 8 to October 1, almost all of it inscriptions (94% of the rejected space) and OP_RETURN outputs over 83 bytes (6%). Runes are untouched, because their data fits in small OP_RETURN outputs. BTCB2 starts on August 30, when it switched to BLAKE2b; before that it mined only 8 blocks in three weeks.</p>
+      <div class="chart-title">What block space was used for, and how much is shared in both chains</div>
+      <p class="chart-caption">Every transaction on both chains, sorted by the kind of data it carries, as a share of each UTC day; the layers add up to 100%. On BTC, from the split on August 8 through October 1, Runes took 40% of block space. Inscriptions took 2.2%. OP_RETURN outputs over 83 bytes, the limit BIP-110 sets, took 0.1%. On BTCB2 these types are close to zero: 1.9% of space went to Runes, nearly all of them shared with BTC, with no inscriptions and no OP_RETURN over 83 bytes. Both views also split transactions by whether they exist on the other chain. The same 3,235,470 transactions appear on both: that is 8.7% of BTC's 37,079,013 transactions but 98.5% of BTCB2's 3,285,701. Only 50,231 exist on BTCB2 alone, including the miners' own reward transactions. Transactions shared in both chains fill 94% of BTCB2's block space. The dashed line on the BTC view shows what BIP-110 would have rejected had BTC enforced it from the split: 2.38% of block space and 1.07% of transactions from August 8 to October 1, almost all of it inscriptions (94% of the rejected space) and OP_RETURN outputs over 83 bytes (6%). Runes are untouched, because their data fits in small OP_RETURN outputs. BTCB2 starts on August 30, when it switched to BLAKE2b; before that it mined only 8 blocks in three weeks.</p>
       <div class="toggle-rows">
         <div class="view-toggle-row">
           <span class="view-toggle-label">Chain:</span>
@@ -346,12 +416,13 @@
         <div class="tooltip" id="tooltip-space"></div>
       </div>
       <div class="sp-legend" id="legend-space"></div>
+      <p class="chart-caption" style="margin-top:14px;">"Shared in both chains" means the identical transaction was confirmed on both BTC and BTCB2. The data shows when each chain confirmed it, not where it was first sent: 66.6% confirmed on BTC first, 11.0% on BTCB2 first, and 22.3% within 10 minutes of each other. We believe most are BTC transactions replayed onto BTCB2, for two reasons. BTCB2 has replay protection through a new signature type that BTCB2 wallets opt into (SIGHASH_UNIFIED); BTC rejects those signatures, so a transaction signed the BTCB2 way cannot appear on BTC, and every shared transaction uses the older signature types BTC wallets use. And BTC is worth more than 100 times as much as BTCB2, so BTC is where people mostly transact.</p>
       <p class="chart-caption" style="margin-top:14px;">How each type is detected, in the order checked: any OP_RETURN output over 83 bytes comes first, so everything BIP-110 would reject lands there, including 6,315 Runes transactions and 37 inscriptions. Inscriptions carry the Ordinals envelope in their witness data, as flagged by mempool's explorer; a raw scan of 120 BTCB2 blocks found none. Stamps hide data in fake public keys or script hashes. Runes carry an OP_RETURN output that starts with the Runes marker (OP_13); the ones counted as Runes stay within 83 bytes. Each transaction is counted once. Coinbase transactions count as ordinary.</p>
     </div>
 
     <div class="chart-block">
       <div class="chart-title">Value moved and fees paid, by kind of transaction</div>
-      <p class="chart-caption">The same split as above, measured in money instead of space. The BTC chain moved 50.7 million BTC in outputs from August 8 through October 1 and paid 162.85 BTC in fees, about $12.5 million; Runes paid 11.7% of those fees while moving almost no value. BTCB2, from August 30, moved 7.7 million BTCB2, about $2.0 billion at its own market price, and paid 25.17 BTCB2 in fees, under $5,000 in total. BTC replays carry 95% of the value moved on BTCB2 and 96% of its fees. "Value moved" adds up every output, change sent back to the sender included, so it overstates what actually changed hands. Switch Scale to Log lines to see each type as its own line on a log axis, which makes the small Runes and inscriptions layers readable. USD uses each day's closing price: BTC from Yahoo Finance, BTCB2 from Neoxa, its only exchange, which has no price before September 1.</p>
+      <p class="chart-caption">The same split as above, measured in money instead of space. The BTC chain moved 50.7 million BTC in outputs from August 8 through October 1 and paid 162.85 BTC in fees, about $12.5 million; Runes paid 11.7% of those fees while moving almost no value. BTCB2, from August 30, moved 7.7 million BTCB2, about $2.0 billion at its own market price, and paid 25.17 BTCB2 in fees, under $5,000 in total. Transactions shared in both chains carry 95% of the value moved on BTCB2 and 96% of its fees. "Value moved" adds up every output, change sent back to the sender included, so it overstates what actually changed hands. Switch Scale to Log lines to see each type as its own line on a log axis, which makes the small Runes and inscriptions layers readable. USD uses each day's closing price: BTC from Yahoo Finance, BTCB2 from Neoxa, its only exchange, which has no price before September 1.</p>
       <div class="toggle-rows">
         <div class="view-toggle-row">
           <span class="view-toggle-label">Chain:</span>
@@ -394,13 +465,32 @@
   <div class="sources-note">
     <h3>Sources</h3>
     <ol>
+      <li>Bitcoin Knots began in 2011 as Luke Dashjr's patchset, Bitcoin LJR &mdash; <a href="https://thecoinomist.com/learn/what-is-bitcoin-knots-fork-by-luke-dashjr/" target="_blank" rel="noopener">"What Is Bitcoin Knots," The Coinomist</a></li>
+      <li>Core's plan to relay and mine OP_RETURN outputs over 80 bytes, with any number of them, announced May 5, 2025 &mdash; <a href="https://gist.github.com/instagibbs/c436110890ab25aa9997b13c2270d5ce" target="_blank" rel="noopener">Gregory Sanders, Bitcoin Core announcement (GitHub gist)</a>; <a href="https://www.coindesk.com/tech/2025/05/06/bitcoin-developers-plan-op_return-removal-in-next-release" target="_blank" rel="noopener">CoinDesk, May 6, 2025</a></li>
+      <li>The June 6, 2025 joint statement by 31 Core contributors &mdash; <a href="https://bitcoincore.org/en/2025/06/06/relay-statement/" target="_blank" rel="noopener">"Bitcoin Core development and transaction relay policy," bitcoincore.org</a></li>
+      <li>Knots' rise to 20&ndash;25% of reachable nodes in September 2025 &mdash; <a href="https://blog.bitfinex.com/education/why-is-bitcoin-knots-becoming-so-popular/" target="_blank" rel="noopener">Bitfinex Blog</a>; <a href="https://news.bitcoin.com/from-peak-to-plunge-bitcoin-knots-loses-nearly-a-third-of-its-nodes-since-sept-14/" target="_blank" rel="noopener">Bitcoin.com News, citing Coin Dance</a></li>
+      <li>BIP-110's author, Luke-Jr's original draft, creation date, 34- and 83-byte limits, one-year expiry, 55% threshold, version bit 4, and Closed status (version 1.0.1, August 9, 2026) &mdash; <a href="https://github.com/bitcoin/bips/blob/master/bip-0110.mediawiki" target="_blank" rel="noopener">BIP 110 text, bitcoin/bips on GitHub</a></li>
+      <li>BIP-110's earlier number, BIP-444 &mdash; <a href="https://thebitcoinmanual.com/articles/bip-110/" target="_blank" rel="noopener">"BIP-110," The Bitcoin Manual</a></li>
+      <li>The first BIP-110 signaling block, mined by Barefoot Mining through Ocean in March 2026 &mdash; <a href="https://www.coindesk.com/tech/2026/03/02/battle-for-bitcoin-s-soul-opens-as-first-block-supporting-clean-up-proposal-is-mined" target="_blank" rel="noopener">CoinDesk, March 2, 2026</a></li>
+      <li>July 2026 signaling levels &mdash; <a href="https://bitcoinmagazine.com/bitcoin-mining/ocean-mining-vp-jason-hughes-bip-110-on-track-to-fail-as-miner-signaling-stays-below-1" target="_blank" rel="noopener">Bitcoin Magazine</a>; <a href="https://news.bitcoin.com/less-than-2-weeks-left-bitcoins-bip-110-clock-starts-ticking-as-miner-support-creeps-higher-before-showdown/" target="_blank" rel="noopener">Bitcoin.com News</a></li>
+      <li>Foundry's 51% condition &mdash; <a href="https://bitcoinmagazine.com/news/foundry-asks-bitcoin-miners-vote-bip-110" target="_blank" rel="noopener">"Foundry Asks Bitcoin Miners to Vote on BIP-110," Bitcoin Magazine</a></li>
+      <li>51 signaling blocks (2.53%) in the final period, and the split &mdash; <a href="https://www.theblock.co/news/ecosystems/2026-08-08-bitcoins-bip-110-supporters-split-onto-minority-chain-as-main-network-pulls-ahead-411213" target="_blank" rel="noopener">The Block, August 8, 2026</a></li>
+      <li>Blocks 961,631 and 961,632 on Bitcoin, miner and time &mdash; <a href="https://mempool.space/block/961632" target="_blank" rel="noopener">mempool.space</a></li>
+      <li>Estimates of Knots and BIP-110 node counts, including the 2&ndash;8% range for BIP-110-capable listening nodes and the 10,361 BIP-110 signaling nodes counted by Smart Wicked Bitcoin &mdash; <a href="https://www.simplemining.io/insights/post/bip-110" target="_blank" rel="noopener">SimpleMining</a>; <a href="https://cryptoslate.com/power-struggle-hits-bitcoin-network-over-anti-spam-proposal-with-claims-of-faked-node-support/" target="_blank" rel="noopener">CryptoSlate</a>; <a href="https://www.kucoin.com/news/flash/bitcoin-network-faces-governance-debate-over-bip-110-and-node-support-claims" target="_blank" rel="noopener">KuCoin News, citing Coin Dance</a>; <a href="https://www.bit.com/knowledge-hub/bip-110" target="_blank" rel="noopener">bit.com</a></li>
+      <li>400,000+ unconfirmed transactions in the BIP-110 chain's mempool &mdash; <a href="https://www.gncrypto.news/news/bip-110-fork-stalled-after-four-blocks-blake2b-swap-planned/" target="_blank" rel="noopener">GNcrypto</a></li>
+      <li>The August 10 Knots meeting and the Testnet4 lottery that picked BLAKE2b &mdash; <a href="https://bitcoin-takeover.com/bitcoin-blake2b-the-fork-that-fired-the-miners/" target="_blank" rel="noopener">"Bitcoin BLAKE2b: The Fork That Fired the Miners," Bitcoin Takeover</a></li>
+      <li>The opt-in, one-way replay protection and the 45-day (6,480-block) maturity &mdash; <a href="https://bitcoin-blake2b.org/faq" target="_blank" rel="noopener">Bitcoin BLAKE2b FAQ</a></li>
+      <li>Block 961,640, mined by SilentWave &mdash; <a href="https://mempool.guide/block/961640" target="_blank" rel="noopener">mempool.guide</a></li>
+      <li>17 PH/s across 27 pools, and Alphapool above 50% &mdash; <a href="https://news.bitcoin.com/featured/minority-chain-meltdown-xbt-ticker-grab-and-mining-revolt-grip-btcb2/" target="_blank" rel="noopener">Bitcoin.com News, September 8, 2026</a></li>
+      <li>Knots PR #419, long coinbase maturity &mdash; <a href="https://github.com/bitcoinknots/bitcoin/pull/419" target="_blank" rel="noopener">bitcoinknots/bitcoin PR #419, GitHub</a></li>
       <li>Reachable nodes, user agents and reported heights, snapshot of October 2, 2026, 19:43 UTC &mdash; <a href="https://bitnodes.io/api/v1/snapshots/latest/" target="_blank" rel="noopener">Bitnodes snapshot API</a> (now served from btcnodes.io)</li>
       <li>Estimated total nodes, including unreachable ones &mdash; <a href="https://luke.dashjr.org/programs/bitcoin/files/charts/software.html" target="_blank" rel="noopener">Luke Dashjr, "Bitcoin Node Software"</a></li>
       <li>Block 961,639 mined August 28, 2026, and block 961,640, the first BLAKE2b block, mined August 30 &mdash; <a href="https://mempool.guide/block/961639" target="_blank" rel="noopener">mempool.guide block explorer</a></li>
-      <li>Knots 29.3 ships BIP-110 (May 9, 2026); Knots 29.4.1 activates it at the BLAKE2b hard fork &mdash; <a href="https://github.com/bitcoinknots/bitcoin/releases" target="_blank" rel="noopener">Bitcoin Knots releases, GitHub</a></li>
+      <li>Knots 29.3 ships BIP-110 as an opt-in (May 9, 2026); Knots 29.4.1 activates it at the BLAKE2b hard fork &mdash; <a href="https://github.com/bitcoinknots/bitcoin/releases" target="_blank" rel="noopener">Bitcoin Knots releases, GitHub</a></li>
       <li>Every transaction's size, fee, data flags and OP_RETURN outputs, blocks 961,632 to 969,505 (BTC) and 961,632 to 975,086 (BTCB2) &mdash; first-party crawl of <a href="https://mempool.space/docs/api/rest" target="_blank" rel="noopener">mempool.space</a> and <a href="https://mempool.guide" target="_blank" rel="noopener">mempool.guide</a> (<code>/api/v1/block/:hash/summary</code> and raw blocks)</li>
       <li>Daily closing prices: BTC from <a href="https://finance.yahoo.com/quote/BTC-USD/history/" target="_blank" rel="noopener">Yahoo Finance (BTC-USD)</a>; BTCB2 from <a href="https://neoxa.exchange" target="_blank" rel="noopener">Neoxa</a>, its only exchange (BTCB2/USDC daily candles)</li>
       <li>BIP-110's seven consensus rules, applied to every BTC transaction from block 961,632 as if BIP-110 had been active from the split (coins created before then exempt, as the BIP specifies) &mdash; <a href="https://bips.dev/110/" target="_blank" rel="noopener">BIP 110: Reduced Data Temporary Softfork</a>; first-party check of raw blocks from Blockstream and mempool.space. The same check on BTCB2 after its activation at block 973,440 finds no violations.</li>
+      <li>BTCB2's opt-in replay protection, the unified signature hash (SIGHASH_UNIFIED, hash-type bit 0x20) &mdash; <a href="https://bitcoin-blake2b.org/developers" target="_blank" rel="noopener">"Bitcoin for developers," bitcoin-blake2b.org</a>; <a href="https://github.com/bitcoin-desktop/schema/pull/92" target="_blank" rel="noopener">"Bitcoin Knots' unified opt-in sighash," GitHub</a></li>
       <li>Knots 29.4.2 and its 45-day coinbase maturity rule, blocks 973,440 to 979,920 &mdash; <a href="https://github.com/bitcoinknots/bitcoin/releases/tag/v29.4.2.knots20260508" target="_blank" rel="noopener">Bitcoin Knots v29.4.2 release, GitHub</a></li>
       <li>Bitcoin's soft forks, failed proposals and the 2017&ndash;2018 hard forks &mdash; Swan, "A timeline of Bitcoin forks," as of August 16, 2026</li>
       <li>BIP-110's 2.53% miner signaling, the August 8 split at block 961,632, and the switch to BLAKE2b at block 961,640 &mdash; see this series' research notes and <a href="https://mempool.guide/block/961640" target="_blank" rel="noopener">mempool.guide</a></li>
@@ -818,11 +908,11 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
     {label:'Runes', long:'Runes', color:'var(--sp-rune)'},
     {label:'Stamps', long:'Stamps', color:'var(--sp-stamp)'},
   ];
-  const ORD_REP = {label:'Replayed', long:'Ordinary, replayed from BTC', color:'var(--sp-ord)'};
+  const ORD_REP = {label:'Shared', long:'Ordinary, shared in both chains', color:'var(--sp-ord)'};
   const B2ONLY = {label:'BTCB2-only', long:'BTCB2-only (incl. miner rewards)', color:'var(--sp-b2only)'};
   const BTCONLY = {label:'BTC-only', long:'BTC-only, never on BTCB2 (incl. miner rewards)', color:'var(--sp-btconly)'};
-  const ORD_SHARED = {label:'Also on BTCB2', long:'Ordinary, also replayed on BTCB2', color:'var(--sp-ord)'};
-  const REP_WORD = {blake2b:'Replayed from BTC, all types', sha256:'Also replayed on BTCB2, all types'};
+  const ORD_SHARED = {label:'Shared', long:'Ordinary, shared in both chains', color:'var(--sp-ord)'};
+  const REP_WORD = {blake2b:'Shared in both chains, all types', sha256:'Shared in both chains, all types'};
   const NS = 'http://www.w3.org/2000/svg';
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const fmtDate = d => MONTHS[+d.slice(5,7) - 1] + ' ' + (+d.slice(8,10));
@@ -1021,7 +1111,7 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
     subtitle: r => ' · ' + r[1] + ' block' + (r[1] === 1 ? '' : 's'),
     fmt: (x, st) => fmt1(x, st),
     tiles: (sums, tot, rep, st) => st.chain === 'blake2b' ? [
-      {num:pct(rep / tot * 100), abs:fmt1(rep, st), cap:'Replayed from BTC · ' + WORD[st.measure], color:'var(--sp-ord)'},
+      {num:pct(rep / tot * 100), abs:fmt1(rep, st), cap:'Shared in both chains · ' + WORD[st.measure], color:'var(--sp-ord)'},
       {num:pct(sums[4] / tot * 100), abs:fmt1(sums[4], st), cap:'BTCB2-only · ' + WORD[st.measure], color:B2ONLY.color},
       {num:pct(sums[2] / tot * 100), abs:fmt1(sums[2], st), cap:'Runes · ' + WORD[st.measure], color:CATS[2].color},
       {num:pct(sums[0] / tot * 100), abs:fmt1(sums[0], st), cap:'OP_RETURN over 83 bytes · ' + WORD[st.measure], color:CATS[0].color},
@@ -1029,7 +1119,7 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
       {num:pct(sums[2] / tot * 100), abs:fmt1(sums[2], st), cap:'Runes · ' + WORD[st.measure], color:CATS[2].color},
       {num:pct(sums[1] / tot * 100), abs:fmt1(sums[1], st), cap:'Inscriptions · ' + WORD[st.measure], color:CATS[1].color},
       {num:pct(sums[0] / tot * 100), abs:fmt1(sums[0], st), cap:'OP_RETURN over 83 bytes · ' + WORD[st.measure], color:CATS[0].color},
-      {num:pct(rep / tot * 100), abs:fmt1(rep, st), cap:'Also replayed on BTCB2 · ' + WORD[st.measure], color:'var(--sp-ord)'},
+      {num:pct(rep / tot * 100), abs:fmt1(rep, st), cap:'Shared in both chains · ' + WORD[st.measure], color:'var(--sp-ord)'},
     ],
   });
 
@@ -1060,14 +1150,14 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
       const share = i => pct(sums[i] / tot * 100) + ' ';
       return st.chain === 'blake2b' ? [
         {num:money(tot, st), cap:'Total ' + VWORD[st.measure], color:'var(--ink-mute)'},
-        {num:pct(rep / tot * 100), abs:money(rep, st), cap:'Replayed from BTC', color:'var(--sp-ord)'},
+        {num:pct(rep / tot * 100), abs:money(rep, st), cap:'Shared in both chains', color:'var(--sp-ord)'},
         {num:pct(sums[4] / tot * 100), abs:money(sums[4], st), cap:'BTCB2-only', color:B2ONLY.color},
         {num:pct(sums[2] / tot * 100), abs:money(sums[2], st), cap:'Runes', color:CATS[2].color},
       ] : [
         {num:money(tot, st), cap:'Total ' + VWORD[st.measure], color:'var(--ink-mute)'},
         {num:pct(sums[2] / tot * 100), abs:money(sums[2], st), cap:'Runes', color:CATS[2].color},
         {num:pct(sums[1] / tot * 100), abs:money(sums[1], st), cap:'Inscriptions', color:CATS[1].color},
-        {num:pct(rep / tot * 100), abs:money(rep, st), cap:'Also replayed on BTCB2', color:'var(--sp-ord)'},
+        {num:pct(rep / tot * 100), abs:money(rep, st), cap:'Shared in both chains', color:'var(--sp-ord)'},
       ];
     },
   });
