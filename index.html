@@ -88,6 +88,8 @@
     background:var(--rule); color:var(--ink-soft); font-size:0.68rem;
   }
   .preface-card{border-style:dashed;}
+  .chapter-card.unavailable{opacity:0.6; box-shadow:none; cursor:default;}
+  .chapter-card.unavailable:hover{transform:none; box-shadow:none;}
 
   footer{margin-top:40px; padding-top:18px; border-top:1px solid var(--rule); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); line-height:1.7;}
 
@@ -154,14 +156,14 @@
       <div class="chapter-meta"></div>
     </a>
 
-    <a class="chapter-card" href="blake2b-retrospective.html">
+    <div class="chapter-card unavailable" aria-disabled="true">
       <div class="chapter-num">04</div>
       <div class="chapter-body">
         <h2 id="ch4-h2">Bitcoin BLAKE2b: One Month Retrospective</h2>
         <p id="ch4-p">The newest fork in the series, one month after its own hard fork &mdash; measured against every chapter before it.</p>
       </div>
       <div class="chapter-meta"><span class="soon" id="soon4">Coming soon</span></div>
-    </a>
+    </div>
   </div>
 
   <footer id="footer-text">
