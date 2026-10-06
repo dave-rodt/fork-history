@@ -1132,7 +1132,10 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
 
   // What BIP-110 would reject on BTC, by type, Aug 8 - Oct 1 (spam_breakdown_daily.csv bip110_* columns).
   // All OP_RETURN > 83 B is rejected; inscriptions it lets through are total inscriptions minus these.
-  const BIP_BY = {v:{op83:10883371.25, ins:171799729.25}, t:{op83:16638, ins:378196}};
+  // rune / other: Runes and ordinary txs (plus 3 stamps) caught by rule 1 (output script > 34 bytes)
+  // or rule 7 (OP_IF in tapscript). None of the rejected txs were replayed on BTCB2.
+  const BIP_BY = {v:{op83:10883371.25, ins:171799729.25, rune:263722.25, other:645362.75},
+                  t:{op83:16638, ins:378196, rune:431, other:992}};
   const bipTotal = k => { let a = 0; for (const d in BIP) if (BIP[d]) a += BIP[d][k]; return a; };
 
   // ---- chart 1: block space / transactions, share of each day ----
@@ -1151,23 +1154,29 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
     },
     subtitle: r => ' · ' + r[1] + ' block' + (r[1] === 1 ? '' : 's'),
     fmt: (x, st) => fmt1(x, st),
+    // Tiles split every transaction exactly once, so they add up to 100%:
+    // BIP-110 reject > replayed > Runes > inscriptions BIP-110 allows > everything else.
     tiles: (sums, tot, rep, st) => {
-      const W = ' · ' + WORD[st.measure], tile = (x, cap, color, sub) => ({num:pct(x / tot * 100), abs:fmt1(x, st), sub, cap:cap + W, color});
-      const head = [
-        st.measure === 'v' ? {num:fmt1(tot, st), cap:'Total block space', color:'var(--ink-mute)'}
-          : {num:(tot / 1e6).toFixed(2) + 'M txs', abs:fmt1(tot, st), cap:'Total transactions', color:'var(--ink-mute)'},
-        tile(rep, st.chain === 'blake2b' ? 'Replayed from BTC' : 'Replayed on BTCB2', 'var(--sp-ord)'),
-      ];
-      if (st.chain === 'blake2b') return [...head,
-        tile(sums[4], 'BTCB2-only', B2ONLY.color),
-        tile(sums[2], 'Runes', CATS[2].color),
+      const k = IDX[st.measure] + 3, repRunes = sum(SP[st.chain].map(r => r[k][2]));
+      const p2 = x => x > 0 && x < 0.01 ? '<0.01%' : x.toFixed(2) + '%';
+      const W = ' · ' + WORD[st.measure], tile = (x, cap, color, sub) => ({num:p2(x / tot * 100), abs:fmt1(x, st), sub, cap:cap + W, color});
+      const total = st.measure === 'v' ? {num:fmt1(tot, st), cap:'Total block space', color:'var(--ink-mute)'}
+          : {num:(tot / 1e6).toFixed(2) + 'M txs', abs:fmt1(tot, st), cap:'Total transactions', color:'var(--ink-mute)'};
+      if (st.chain === 'blake2b') return [total,
+        tile(rep, 'Replayed from BTC', 'var(--sp-ord)'),
+        tile(tot - rep - (sums[2] - repRunes), 'BTCB2-only, not Runes', B2ONLY.color),
+        tile(sums[2] - repRunes, 'BTCB2-only Runes', CATS[2].color),
       ];
       const by = BIP_BY[st.measure], bip = bipTotal(st.measure === 'v' ? 0 : 1);
-      return [...head,
-        tile(sums[4], 'Ordinary, not replayed', BTCONLY.color),
-        tile(sums[2], 'Runes', CATS[2].color),
-        tile(bip, 'Would be rejected under BIP-110', 'var(--ink)', 'Of this, OP_RETURN over 83 bytes: ' + fmt1(by.op83, st) + ' (' + pct(by.op83 / bip * 100) + ')'),
-        tile(sums[1] - by.ins, 'Inscriptions BIP-110 would allow', CATS[1].color),
+      const runes = sums[2] - repRunes - by.rune, ins = sums[1] - by.ins;
+      const part = (x, name) => name + ': ' + fmt1(x, st) + ' (' + pct(x / bip * 100) + ')';
+      return [total,
+        tile(rep, 'Replayed on BTCB2', 'var(--sp-ord)'),
+        tile(tot - rep - bip - runes - ins, 'Everything else, not replayed', BTCONLY.color),
+        tile(runes, 'Runes, not replayed', CATS[2].color),
+        tile(bip, 'Would be rejected under BIP-110', 'var(--ink)',
+          [part(by.ins, 'Inscriptions'), part(by.op83, 'OP_RETURN over 83 bytes'), part(by.rune + by.other, 'Other')].join('<br>')),
+        tile(ins, 'Inscriptions BIP-110 would allow', CATS[1].color),
       ];
     },
   });
