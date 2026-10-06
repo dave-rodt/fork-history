@@ -1169,13 +1169,13 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
       ];
       const by = BIP_BY[st.measure], bip = bipTotal(st.measure === 'v' ? 0 : 1);
       const runes = sums[2] - repRunes - by.rune, ins = sums[1] - by.ins;
-      const part = (x, name) => name + ': ' + fmt1(x, st) + ' (' + pct(x / bip * 100) + ')';
+      const part = (x, name) => name + ' ' + pct(x / bip * 100);
       return [total,
         tile(rep, 'Also exists on BTCB2', 'var(--sp-ord)'),
         tile(tot - rep - bip - runes - ins, 'Transactions not on BTCB2', BTCONLY.color),
         tile(runes, 'Runes, only on BTC', CATS[2].color),
         tile(bip, 'Would be rejected under BIP-110', 'var(--ink)',
-          [part(by.ins, 'Inscriptions'), part(by.op83, 'OP_RETURN over 83 bytes'), part(by.rune + by.other, 'Other')].join('<br>')),
+          [part(by.ins, 'Inscriptions'), part(by.op83, 'OP_RETURN'), part(by.rune + by.other, 'Other')].join(' · ')),
         tile(ins, 'Inscriptions BIP-110 would allow', CATS[1].color),
       ];
     },
