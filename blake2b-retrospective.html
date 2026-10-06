@@ -1172,7 +1172,7 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
       const part = (x, name) => name + ': ' + fmt1(x, st) + ' (' + pct(x / bip * 100) + ')';
       return [total,
         tile(rep, 'Also exists on BTCB2', 'var(--sp-ord)'),
-        tile(tot - rep - bip - runes - ins, st.measure === 'v' ? 'Blockspace of transactions not on BTCB2' : 'Transactions not on BTCB2', BTCONLY.color, undefined, true),
+        tile(tot - rep - bip - runes - ins, st.measure === 'v' ? 'Transactions not on BTCB2 % of block space' : 'Transactions not on BTCB2', BTCONLY.color, undefined, true),
         tile(runes, 'Runes, only on BTC', CATS[2].color),
         tile(bip, 'Would be rejected under BIP-110', 'var(--ink)',
           [part(by.ins, 'Inscriptions'), part(by.op83, 'OP_RETURN over 83 bytes'), part(by.rune + by.other, 'Other')].join('<br>')),
