@@ -1023,9 +1023,11 @@ slides.forEach((sl, k) => {
   sl.prepend(h);
 });
 
-// #inicio (or nothing) opens on the map, #n on slide n
-{ const h = location.hash.slice(1), n = parseInt(h);
-  go(n ? stops.indexOf(Math.max(0, Math.min(slides.length - 1, n - 1))) : 0, true); }
+// #inicio (or nothing) opens on the map, #n on slide n. Typing a new #n in the address bar
+// of an open deck flies there too (go() updates the hash with replaceState, which doesn't re-fire this).
+const stopFromHash = () => { const n = parseInt(location.hash.slice(1)); return n ? stops.indexOf(Math.max(0, Math.min(slides.length - 1, n - 1))) : 0; };
+go(stopFromHash(), true);
+addEventListener('hashchange', () => go(stopFromHash()));
 </script>
 </body>
 </html>
