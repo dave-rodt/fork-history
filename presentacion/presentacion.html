@@ -1,0 +1,1028 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Historia de los Forks</title>
+<link rel="icon" href="quantbitcoin-logo-rounded.png">
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+  /* Slides are drawn on a fixed 1600x900 canvas and scaled to the window. */
+  :root{
+    --bg:#EDEFEF; --panel:#FFFFFF; --ink:#1A1D22; --ink-soft:#4B5158; --ink-mute:#7A8087; --rule:#D9DCDF;
+    --dark:#14161B; --dark-panel:#1B1E24; --dark-ink:#EDECE6; --dark-soft:#A8ADB4;
+    --brand-orange:#F08A1E; --brand-yellow:#FDCA1E; --neutral:#B9BEC4;
+    --btc:#C8700A; --eth:#627EEA; --etc:#008000; --bch:#0AC18E; --btg:#2A4DB0; --b2:#7A52C7; --ins:#2a78d6;
+  }
+  *{box-sizing:border-box; margin:0;}
+  html,body{height:100%; background:#0D0F13; overflow:hidden;}
+  body{font-family:'IBM Plex Sans',sans-serif; color:var(--ink); -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-family:'Source Serif 4',serif; font-weight:600; letter-spacing:-0.015em; text-wrap:balance;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  .stage{position:fixed; inset:0; display:flex; align-items:center; justify-content:center;}
+  .deck{position:relative; width:1600px; height:900px; flex-shrink:0; transform-origin:center center;}
+  /* One continuous canvas (the world). Every slide is a block placed on it for good; only the camera moves.
+     The camera is the world's transform: translate(800,450) scale(s) translate(-cx,-cy). */
+  /* --k = 1 / camera zoom, so chain strokes and overview labels keep a steady on-screen size when zoomed out */
+  @property --k{syntax:'<number>'; inherits:true; initial-value:1;}
+  .world{position:absolute; left:0; top:0; transform-origin:0 0; will-change:transform; transition:--k 1.6s ease-in-out;}
+  .world.overview .slide{opacity:1;}
+  .world-chain .wire{opacity:0; transition:opacity .9s ease;}
+  .world.overview .world-chain .wire{opacity:1;}
+  .world-chain .links{transition:opacity .9s ease;}
+  .world.overview .world-chain .links{opacity:0;}
+  .world-chain .lbl{font-family:'IBM Plex Mono',monospace; font-weight:600; opacity:0; transition:opacity .8s ease .9s;}
+  .world.overview .world-chain .lbl.on{opacity:1;}
+
+  /* charts build when the camera arrives (--arrive = flight time), then stay built */
+  .slide .draw{stroke-dasharray:1; stroke-dashoffset:1;}
+  .slide .appear{opacity:0;}
+  .slide .grow-x{transform-box:fill-box; transform-origin:left center; transform:scaleX(0);}
+  .slide.play .draw{animation:draw 1.8s cubic-bezier(.4,0,.2,1) var(--arrive, 0ms) forwards;}
+  .slide.play .appear{animation:fadein .6s ease calc(var(--arrive, 0ms) + 1.6s) forwards;}
+  .slide.play .grow-x{animation:growx 1.1s cubic-bezier(.3,.7,.2,1) var(--arrive, 0ms) forwards;}
+  .slide.played .draw, .world.overview .slide .draw{stroke-dashoffset:0; animation:none;}
+  .slide.played .appear, .world.overview .slide .appear{opacity:1; animation:none;}
+  .slide.played .grow-x, .world.overview .slide .grow-x{transform:none; animation:none;}
+  @keyframes fadein{to{opacity:1;}}
+  @keyframes growx{to{transform:scaleX(1);}}
+  .world-chain{position:absolute; left:0; top:0; overflow:visible; pointer-events:none;}
+  .slide{position:absolute; width:1600px; height:900px; padding:90px 110px 80px; background:#fff; display:flex; flex-direction:column;
+    opacity:.28; transition:opacity .7s ease;}
+  .slide.active{opacity:1;}
+  .slide.dark{outline:2px solid #2A2E36;}
+  /* slides 7-9: Bitcoin Cash's own #0AC18E as the background, with dark text and darker series colors */
+  .slide.bch{background:#0AC18E; outline:none; --bch:#053B2C; --btg:#1B2F7A; color:#fff;}
+  .bch .kicker, .bch .foot, .bch .lede, .bch .stat .l{color:#fff;}
+  .bch .bhead{background:#08A97F; border-color:#078F6C; color:rgba(255,255,255,.85);}
+  .bch .bhead b, .bch .bhead .meta{color:#fff;}
+  .bch .grid{stroke:rgba(255,255,255,.28);}
+  .bch .tick, .bch .marklab{fill:#fff;}
+  .bch .mark{stroke:rgba(255,255,255,.75);}
+  .bch .num span{color:#fff !important;}
+  .bch .accent{position:relative; padding-left:34px;}
+  .bch .accent::before{content:''; position:absolute; left:4px; top:6px; bottom:6px; width:12px; border-radius:6px; background:var(--c); box-shadow:0 0 0 3px #fff;}
+  /* slide 8: the fork timeline from btg-vs-btc.html, on a white panel */
+  .tlpanel{--tl-btc:#C8700A; --tl-bch:#07875F; --btg:#2A4DB0; --btg2:#8E3F6E; --rule-strong:#9AA0A6; --ink-mute:#7A8087;}
+  .tl-link{fill:none; stroke-width:2;}
+  .tl-link.btc{stroke:var(--tl-btc);} .tl-link.bch{stroke:var(--tl-bch);} .tl-link.bsv{stroke:var(--ink-mute);}
+  .tl-link.btg{stroke:var(--btg);} .tl-link.btg2{stroke:var(--btg2);}
+  .tl-node.btc{fill:var(--tl-btc);} .tl-node.bch{fill:var(--tl-bch);}
+  .tl-ring{fill:none; stroke:var(--ink-soft); stroke-width:1.5;}
+  .tl-pointer{stroke:var(--rule-strong); stroke-width:1;}
+  .tl-line-label{font-family:'IBM Plex Mono',monospace; font-size:13.5px; font-weight:600; fill:var(--ink-soft);}
+  .tl-callout{fill:#fff; stroke:var(--rule-strong); stroke-width:1;}
+  .tl-callout-text{font-family:'IBM Plex Sans',sans-serif; font-size:12.5px; font-weight:600; fill:var(--ink);}
+  .tl-callout-date{font-family:'IBM Plex Mono',monospace; font-size:10.5px; fill:var(--ink-mute);}
+  .timeline-stem{stroke:var(--rule-strong); stroke-width:1;}
+  .timeline-label{font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; fill:var(--ink);}
+  .timeline-date{font-family:'IBM Plex Mono',monospace; font-size:11.5px; fill:var(--ink-soft);}
+  .timeline-marker{fill:var(--btg); stroke:#fff; stroke-width:2;}
+  .timeline-marker.seg2{fill:var(--btg2);}
+  .timeline-marker.delist{fill:#fff; stroke:var(--btg); stroke-width:2;}
+  .timeline-marker.delist.seg2{fill:#fff; stroke:var(--btg2);}
+  .timeline-marker.attack{fill:var(--btg); stroke:#fff; stroke-width:2;}
+  .timeline-marker.attack.seg2{fill:var(--btg2);}
+  /* slide 8's chart sits on a white panel, with #4D4D4D letters */
+  .bch .panel{background:#fff; border-radius:18px; padding:22px 26px 14px; display:flex; box-shadow:0 8px 24px rgba(0,0,0,.12);}
+  .bch .panel .tick, .bch .panel .marklab, .bch .panel .endlab{fill:#4D4D4D;}
+  .bch .panel .grid{stroke:rgba(77,77,77,.18);}
+  .bch .panel .mark{stroke:rgba(77,77,77,.6);}
+  .bch .card h3{color:var(--ink);}                      /* slide 7's cards stay white, so their text stays dark */
+  .bch .card.gray{background:#4D4D4D; box-shadow:none;}  /* slide 9's cards */
+  .retro{display:grid; grid-template-columns:1fr 1fr; gap:34px; margin:auto 0;}
+  .retro .card{padding:38px 42px;}
+  .retro .date{font-size:20px; letter-spacing:.08em;}
+  .bch .retro .card p{font-size:34px; line-height:1.35; color:#E6E6E6; margin:0;}
+  .bch .retro .card p.want{margin-top:18px;}
+  .bch .retro .card p.but{margin-top:20px; color:#fff; font-weight:600;}
+  .bch .retro .card p{font-size:30px;}
+  .retro-stats{display:flex; gap:40px; margin-top:30px; padding-top:24px; border-top:1px solid rgba(255,255,255,.18);}
+  .retro-stats div{display:flex; flex-direction:column;}
+  .retro-stats b{font-family:'IBM Plex Mono',monospace; font-size:52px; font-weight:600; color:#0AC18E; line-height:1;}
+  .retro-stats span{font-size:18px; color:#E6E6E6; margin-top:8px; max-width:16ch; line-height:1.3;}
+  .retro-when{font-family:'IBM Plex Mono',monospace; font-size:15px; color:#BDBDBD; margin-top:16px; letter-spacing:.04em;}
+  .bch .card.gray h3{color:#fff;} .bch .card.gray p{color:#E6E6E6;} .bch .card.gray .date{color:#BDBDBD;}
+  /* slides 1-3: plain white */
+  .slide.white{background:#fff;}
+  .white.cover .sub{color:var(--ink-soft);}
+  .white.cover .who b{color:var(--ink);}
+  .white.cover .who span{color:var(--ink-soft);}
+  .closing{display:grid; grid-template-columns:1fr 380px; gap:90px; align-items:center;}
+  .closing .quote{font-size:44px;}
+  .closing .sub{font-size:28px;}
+  .closing .qrbox span{font-size:15px; white-space:nowrap;}
+  .qa h1{font-size:150px;}
+  .series{display:grid; grid-template-columns:1fr 400px; gap:90px; align-items:center; margin-top:10px;}
+  .chapters{display:flex; flex-direction:column; gap:34px;}
+  .chap{display:flex; align-items:center; gap:30px;}
+  .chap i{width:12px; align-self:stretch; border-radius:6px;}
+  .chap h3{font-size:46px; line-height:1.12; margin-top:4px;}
+  .chap span{display:block; font-family:'IBM Plex Mono',monospace; font-size:22px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-mute);}
+  .qrbox{background:#fff; border:1px solid var(--rule); border-radius:22px; padding:34px 34px 28px; text-align:center; box-shadow:0 8px 24px rgba(0,0,0,.06);}
+  .qrbox .qr{width:100%; display:block;}
+  .qrbox p{font-size:24px; margin-top:22px; color:var(--ink);}
+  .qrbox span{display:block; font-family:'IBM Plex Mono',monospace; font-size:17px; color:var(--ink-mute); margin-top:8px;}
+  .eth-hero{display:grid; grid-template-columns:1fr 600px; gap:64px; align-items:center;}
+  .eth-hero .num{font-size:100px;}
+  .eth-hero h2{font-size:78px; max-width:none; margin-top:6px;}
+  .eth-hero .lede{font-size:30px; margin-top:20px;}
+  .eth-hero .stats{gap:32px;}
+  .eth-hero .stat .n{font-size:54px;}
+  .eth-hero .stat .l{font-size:21px; margin-top:12px; max-width:17ch;}
+  .hackimg{margin:0; height:640px; border-radius:22px; overflow:hidden; border:1px solid #2A2620; box-shadow:0 20px 50px rgba(0,0,0,.5);}
+  .hackimg img{width:100%; height:100%; object-fit:cover; object-position:78% 50%; display:block;}
+  /* slides 10-13 (BTCB2): Bitcoin orange for now, white text; slide 13's chart on a white panel */
+  .scale-hero{display:grid; grid-template-columns:1fr 640px; gap:50px; align-items:center;}
+  .slide.divider .scale-hero h2{font-size:68px; max-width:none; margin-top:6px;}
+  .scale-hero .lede{font-size:30px;}
+  .scale-hero svg{width:100%; height:auto;}
+  .slide.btcb2{background:#F7931A; color:#fff; outline:none;}
+  .btcb2 .kicker, .btcb2 .foot, .btcb2 .lede, .btcb2 .stat .l{color:#fff;}
+  .btcb2 .num, .btcb2 .stat .n{color:#fff !important;}
+  .btcb2 .bhead{background:#E5850F; border-color:#CF770B; color:rgba(255,255,255,.85);}
+  .btcb2 .bhead b, .btcb2 .bhead .meta{color:#fff;}
+  .btcb2 #b2-timeline text{fill:#fff;}
+  .btcb2 #b2-timeline line{stroke:rgba(255,255,255,.55);}
+  .btcb2 #b2-timeline circle{fill:#fff; stroke:#CF770B;}
+  .btcb2 .panel{background:#fff; border-radius:18px; padding:22px 28px 16px; display:flex; box-shadow:0 8px 24px rgba(0,0,0,.12);}
+  /* slide 15: title with the small Bitcoin-ship illustration (bitcoin_ship_small.png, from bitcoin_ship.png) */
+  .lessons-head{display:flex; align-items:center; justify-content:space-between; gap:40px; margin-top:-30px;}
+  .lessons-head img{height:200px; width:auto; display:block;}
+  /* slide 15: four lessons */
+  .lessons{display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin:14px 0 auto;}
+  .lessons .card{padding:34px 34px;}
+  .lessons .card h3{font-size:29px;}
+  .lessons .card p{font-size:22px;}
+  .lessons .card .proof{font-family:'IBM Plex Mono',monospace; font-size:17px; color:var(--ink-mute); margin-top:16px; padding-top:12px; border-top:1px solid var(--rule);}
+  .lessons .peaks{margin:12px 0 0; padding-left:26px; font-size:25px; line-height:1.45; color:var(--ink-soft);}
+  .lessons .peaks li{margin-top:6px;}
+  /* slide 5: official logos beside each name (Ethereum icon; Ethereum Classic from its Media_Kit, flat green logo) */
+  .logohead{display:flex; align-items:center; gap:24px; margin-bottom:18px;}
+  .logohead img{height:92px; width:auto; display:block;}
+  .divider .logohead img{height:84px;}
+  .logohead h3{margin:0;}
+  /* slide 13: dangers of the jungle (jaguar hiding by the tree, snake on its branch), inline SVG */
+  .jungle-hero{display:grid; grid-template-columns:1fr 560px; gap:40px; align-items:center;}
+  .jungle-hero .quote{font-size:40px;}
+  .danger{width:100%; height:auto; display:block;}
+  .danger .dg-eye{animation:blink 5s infinite; transform-box:fill-box; transform-origin:center;}
+  .danger .dg-tongue{animation:flick 2.6s infinite;}
+  @keyframes blink{0%,46%,50%,100%{transform:scaleY(1);} 48%{transform:scaleY(.1);}}
+  @keyframes flick{0%,70%,100%{opacity:0;} 75%,90%{opacity:1;}}
+  .slide.eth{background:#12100B; outline-color:#2A2620;}
+  .eth .bhead{background:#1B1813; border-color:#2A2620;}
+  .eth .card{background:#1B1813; border-color:#2A2620;}
+  .dark .grid{stroke:#2A2620;}
+  .dark .marklab{fill:#A8ADB4;}
+  .dark .mark{stroke:#6C727A;}
+  .slide{padding-top:122px;}
+  /* every slide is a block: a header with its number, its hash and the previous block's hash */
+  .bhead{position:absolute; left:0; right:0; top:0; height:60px; display:flex; align-items:center; gap:12px; padding:0 40px;
+    font-family:'IBM Plex Mono',monospace; font-size:16px; letter-spacing:.05em; color:var(--ink-mute);
+    background:#E0E3E5; border-bottom:1px solid var(--rule);}
+  .dark .bhead{background:#1F2229; border-color:#2A2E36; color:#7E848C;}
+  .bhead b{font-weight:600; color:var(--ink);}
+  .dark .bhead b{color:var(--dark-ink);}
+  .bhead .meta{margin-left:auto; color:var(--ink-soft); font-weight:600;}
+  .dark .bhead .meta{color:var(--dark-soft);}
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  @keyframes mine{from{transform:scale(0); opacity:0;} to{transform:scale(1); opacity:1;}}
+  @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.55;}}
+  @media (prefers-reduced-motion:reduce){ .slide, .slide *, .chain *, .world-chain *, .world{transition:none !important; animation:none !important;}
+    .slide .draw{stroke-dashoffset:0;} .slide .appear{opacity:1;} .slide .grow-x{transform:none;} }
+  .world-chain .grow{stroke-dasharray:1; stroke-dashoffset:1; animation:draw 1s ease-out forwards;}
+  .world-chain .pop{transform-box:fill-box; transform-origin:center; animation:mine .5s cubic-bezier(.3,1.6,.5,1) both;}
+  .slide.dark{background:var(--dark); color:var(--dark-ink);}
+
+  /* chrome on every content slide */
+  .kicker{font-family:'IBM Plex Mono',monospace; font-size:20px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:18px;}
+  .dark .kicker{color:#8A9099;}
+  .slide h2{font-size:64px; line-height:1.08; max-width:22ch;}
+  .lede{font-size:28px; line-height:1.45; color:var(--ink-soft); max-width:46ch; margin-top:22px;}
+  .dark .lede{color:var(--dark-soft);}
+  .foot{position:absolute; left:110px; right:110px; bottom:34px; display:flex; justify-content:space-between; align-items:center;
+    font-family:'IBM Plex Mono',monospace; font-size:16px; color:var(--ink-mute);}
+  .dark .foot{color:#6C727A;}
+  .foot img{height:28px; border-radius:6px; vertical-align:middle; margin-right:10px;}
+  .grow{flex:1; min-height:0;}
+
+  /* big numbers */
+  .stats{display:grid; gap:28px; margin:auto 0;}
+  .stat .n{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:78px; line-height:1; letter-spacing:-0.02em;}
+  .stat .l{font-size:24px; line-height:1.35; color:var(--ink-soft); margin-top:12px; max-width:22ch;}
+  .dark .stat .l{color:var(--dark-soft);}
+
+  /* cards */
+  .card{background:var(--panel); border-radius:18px; padding:34px 36px; box-shadow:0 1px 2px rgba(0,0,0,.05), 0 8px 24px rgba(0,0,0,.06);}
+  .dark .card{background:var(--dark-panel); box-shadow:none; border:1px solid #2A2E36;}
+  .card h3{font-size:36px; margin-bottom:12px;}
+  .card p{font-size:24px; line-height:1.45; color:var(--ink-soft);}
+  .dark .card p{color:var(--dark-soft);}
+  .bar{height:8px; border-radius:4px; margin-bottom:22px; width:64px;}
+  .date{font-family:'IBM Plex Mono',monospace; font-size:19px; color:var(--ink-mute); margin-bottom:10px;}
+
+  /* charts */
+  svg.chart{width:100%; height:100%; overflow:visible; font-family:'IBM Plex Mono',monospace;}
+  .grid{stroke:var(--rule); stroke-width:1;}
+  .tick{fill:var(--ink-mute); font-size:18px;}
+  .endlab{font-size:22px; font-weight:600;}
+  .mark{stroke:var(--ink-mute); stroke-width:1.5; stroke-dasharray:4 5;}
+  .marklab{fill:var(--ink-soft); font-size:17px;}
+
+  /* title slide */
+  .cover{justify-content:center;}
+  .cover h1{font-size:120px; line-height:1; letter-spacing:-0.03em;}
+  .cover .sub{font-size:34px; color:var(--dark-soft); margin-top:30px; max-width:30ch; line-height:1.35;}
+  .cover .who{margin-top:70px; font-size:26px; display:flex; align-items:center; gap:22px;}
+  .cover .who img{height:76px; border-radius:16px;}
+  .cover .who b{display:block; font-weight:600; color:var(--dark-ink);}
+  .cover .who span{display:block; color:var(--dark-soft); font-size:22px;}
+
+  /* section dividers */
+  .divider{justify-content:center;}
+  .divider .num{font-family:'IBM Plex Mono',monospace; font-size:120px; font-weight:600; line-height:1; opacity:.9;}
+  .divider h2{font-size:96px; max-width:16ch; margin-top:14px;}
+  .divider .lede{font-size:34px;}
+
+  .quote{font-family:'Source Serif 4',serif; font-size:48px; line-height:1.3; max-width:30ch;}
+  .quote em{font-style:normal; font-weight:700; text-decoration:underline; text-decoration-thickness:3px; text-underline-offset:9px; text-decoration-color:rgba(128,134,140,.6);}
+
+  .hint{position:fixed; right:18px; bottom:14px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#6C727A; opacity:.8; z-index:2;}
+  .nav-btn{position:fixed; top:0; bottom:0; width:12%; z-index:1; cursor:pointer;}
+  .nav-btn.prev{left:0;} .nav-btn.next{right:0;}
+  @media print{ .hint,.nav-btn{display:none;} }
+</style>
+</head>
+<body>
+<div class="nav-btn prev" id="prev" aria-label="Anterior"></div>
+<div class="nav-btn next" id="next" aria-label="Siguiente"></div>
+<div class="hint">← → para navegar · F pantalla completa</div>
+
+<div class="stage"><div class="deck" id="deck"><div class="world" id="world">
+  <svg class="world-chain" id="world-chain" aria-hidden="true"></svg>
+
+  <!-- 1 Portada -->
+  <section data-row="0" data-c="--neutral" class="slide white cover">
+    <h1>Historia de los Forks</h1>
+    <p class="sub" style="max-width:none;">La historia nunca se repite, pero a veces rima.</p>
+    <div class="who"><img src="quantbitcoin-logo.png" alt="Logo de QuantBitcoin"><div><b>David Rodriguez</b><span>Ingeniero de Finanzas en Swan Bitcoin</span><span>Bitcoin y Lightning Guadalajara</span></div></div>
+  </section>
+
+  <!-- 2 La serie -->
+  <section data-row="0" data-c="--neutral" class="slide white">
+    <div class="kicker">La serie</div>
+    <h2>Cuatro capítulos</h2>
+    <div class="series grow">
+      <div class="chapters">
+        <div class="chap"><i style="background:var(--eth)"></i><div><span>Ethereum · 2016</span><h3>¿Quién decide la ley?</h3></div></div>
+        <div class="chap"><i style="background:var(--bch)"></i><div><span>Bitcoin Cash · 2017</span><h3>¿Cómo escala Bitcoin?</h3></div></div>
+        <div class="chap"><i style="background:var(--btg)"></i><div><span>Bitcoin Gold · 2017</span><h3>¿Quién controla la cadena?</h3></div></div>
+        <div class="chap"><i style="background:var(--b2)"></i><div><span>BIP-110 · 2026</span><h3>¿Qué es aceptable en los bloques?</h3></div></div>
+      </div>
+      <div class="qrbox"><svg class="qr" viewBox="0 0 29 29" shape-rendering="crispEdges" role="img" aria-label="Código QR: dave-rodt.github.io/fork-history"><path d="M0 0.5h7m3 0h1m1 0h1m2 0h1m3 0h1m2 0h7m-29 1h1m5 0h1m1 0h1m1 0h1m1 0h8m2 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m5 0h1m1 0h3m3 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h4m1 0h3m1 0h1m3 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m4 0h3m2 0h2m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h1m1 0h1m2 0h3m2 0h1m2 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h3m1 0h3m1 0h1m1 0h2m-21 1h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m1 0h1m1 0h4m5 0h1m2 0h1m-28 1h1m2 0h3m1 0h3m1 0h1m1 0h2m1 0h1m3 0h4m1 0h1m2 0h1m-29 1h1m1 0h2m1 0h3m2 0h1m1 0h3m1 0h2m3 0h1m1 0h2m1 0h3m-29 1h3m5 0h1m2 0h1m1 0h1m1 0h1m1 0h1m1 0h1m7 0h1m-28 1h1m2 0h1m2 0h2m1 0h1m3 0h1m1 0h3m1 0h4m2 0h1m1 0h2m-29 1h1m3 0h1m2 0h1m3 0h2m1 0h1m1 0h1m3 0h1m1 0h1m2 0h1m2 0h1m-29 1h1m1 0h7m2 0h2m1 0h1m3 0h1m3 0h1m2 0h1m1 0h2m-28 1h1m1 0h1m1 0h1m1 0h1m1 0h1m3 0h6m1 0h3m2 0h1m1 0h1m-24 1h1m1 0h1m1 0h3m1 0h6m2 0h4m1 0h1m1 0h2m-28 1h4m2 0h1m1 0h4m7 0h3m2 0h2m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m3 0h2m3 0h1m2 0h2m1 0h2m2 0h2m-28 1h1m1 0h3m3 0h6m2 0h2m1 0h1m1 0h2m1 0h1m1 0h1m-28 1h1m2 0h1m1 0h2m2 0h1m4 0h11m-17 1h2m1 0h1m1 0h1m2 0h1m2 0h2m3 0h1m1 0h3m-29 1h7m7 0h1m1 0h2m1 0h2m1 0h1m1 0h2m1 0h2m-29 1h1m5 0h1m3 0h4m3 0h4m3 0h2m-26 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h1m2 0h1m2 0h5m-25 1h1m1 0h3m1 0h1m9 0h2m1 0h1m3 0h2m1 0h3m-29 1h1m1 0h3m1 0h1m1 0h6m3 0h1m1 0h2m2 0h3m2 0h1m-29 1h1m5 0h1m2 0h2m5 0h2m2 0h1m2 0h1m3 0h1m-28 1h7m1 0h1m5 0h4m1 0h2m1 0h3m2 0h2" stroke="#000" fill="none"/></svg><p>Escanea para leer la serie</p><span>dave-rodt.github.io/fork-history</span></div>
+    </div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span></span></div>
+  </section>
+
+  <!-- 3 Qué es un fork -->
+  <section data-row="0" data-c="--neutral" class="slide white">
+    <div class="kicker">Antes de empezar</div>
+    <h2>¿Qué es un fork?</h2>
+    <div class="grow" style="margin-top:30px;"><svg class="chart" id="fork-diagram" viewBox="0 0 1380 400"></svg></div>
+    <p class="lede" style="max-width:62ch; margin-top:0; margin-bottom:34px; font-size:26px;"><b style="color:var(--ink); font-weight:600;">Un mismo pasado. Dos futuros.</b><br>El fork separa las reglas, pero no resuelve quién tiene razón. Mientras existan comunidades detrás de cada visión, ambas seguirán compitiendo por el futuro.</p>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span></span></div>
+  </section>
+
+  <!-- 4 ETH divisor -->
+  <section data-row="0" data-block="DIVISIÓN EN EL BLOQUE 1,920,000 · 20 JUL 2016" data-c="--eth" class="slide dark eth divider">
+    <div class="eth-hero">
+      <div>
+        <div class="num" style="color:var(--eth)">01</div>
+        <h2>Ethereum vs. Ethereum Classic</h2>
+        <p class="lede">El fork que tuvo éxito.</p>
+        <div class="stats" style="grid-template-columns:auto auto; justify-content:start; column-gap:72px; margin-top:56px;">
+          <div class="stat"><div class="n">3.6M ETH</div><div class="l">drenados de The DAO por un atacante</div></div>
+          <div class="stat"><div class="n">~5%</div><div class="l">de todo el ETH que existía</div></div>
+        </div>
+      </div>
+      <figure class="hackimg"><img src="hack.jpg" alt="Un atacante encapuchado frente al logo de Ethereum"></figure>
+    </div>
+  </section>
+
+  <!-- 5 El dilema -->
+  <section data-row="1" data-v="0.32" data-vl="ETC 0.32%" data-c="--eth" class="slide dark eth">
+    <div class="kicker">Ethereum vs. Ethereum Classic</div>
+    <h2>¿Preservar las reglas o el propósito?</h2>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:36px; margin:auto 0;">
+      <div class="card"><div class="logohead"><img src="logos/ethereum.svg" alt="Logo de Ethereum"><h3>Ethereum</h3></div>
+        <p>Revertir el robo. El consenso es la capacidad de la comunidad para coordinarse y adaptar las reglas cuando el futuro de la red está en juego.</p></div>
+      <div class="card"><div class="logohead"><img src="logos/ethereum-classic.png" alt="Logo de Ethereum Classic"><h3>Ethereum Classic</h3></div>
+        <p>El código es la ley. El valor de un registro depende de no reescribirlo, aunque cueste en el corto plazo.</p></div>
+    </div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>01 · ETH vs. ETC</span></div>
+  </section>
+
+  <!-- 6 ETC % de ETH -->
+  <section data-row="1" data-v="0.32" data-vl="ETC 0.32%" data-c="--eth" class="slide dark eth">
+    <div class="kicker">Ethereum vs. Ethereum Classic</div>
+    <h2 style="max-width:none;">El lado que cambió las reglas se quedó con el valor</h2>
+    <div class="grow" style="margin-top:26px;"><svg class="chart" id="chart-etcbars" viewBox="0 0 1380 520"></svg></div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>ETC como % de ETH · escala log · CoinMetrics, Electric Capital y GitHub</span></div>
+  </section>
+
+  <!-- 7 BCH + BTG divisor -->
+  <section data-row="0" data-link="--eth" data-block="BCH: BLOQUE 478,559 · BTG: BLOQUE 491,407" data-c="--bch" class="slide bch divider">
+    <div class="num"><span style="color:var(--bch)">02</span></div>
+    <h2>Bitcoin Cash y Bitcoin Gold</h2>
+    <p class="lede">Dos respuestas distintas, el mismo año.</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:36px; margin-top:60px;">
+      <div class="card"><div class="date">1 AGO 2017</div><div class="logohead"><img src="logos/bitcoin-cash.svg" alt="Logo de Bitcoin Cash"><h3>Bitcoin Cash</h3></div><p>Bloques más grandes para bajar comisiones y escalar on-chain.</p></div>
+      <div class="card"><div class="date">24 OCT 2017</div><div class="logohead"><img src="logos/bitcoin-gold.png" alt="Logo de Bitcoin Gold"><h3>Bitcoin Gold</h3></div><p>Cambiar el algoritmo de minería (Equihash) para sacar a los ASIC y que cualquiera pudiera minar con GPU.</p></div>
+    </div>
+  </section>
+
+  <!-- 8 Línea de tiempo de forks: BCH, BSV y BTG -->
+  <section data-row="-1" data-v="0.33" data-vl="BCH 0.33%" data-c="--bch" class="slide bch">
+    <div class="kicker">Bitcoin Cash y Bitcoin Gold</div>
+    <h2 style="max-width:none;">¿Qué sucedió?</h2>
+    <div class="grow panel tlpanel" style="margin-top:22px;"><svg class="chart appear" id="chart-forktl" viewBox="0 0 820 378"></svg></div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Diagrama del capítulo de Bitcoin Gold · fuentes en el sitio</span></div>
+  </section>
+
+  <!-- 9 Retrospectivas de BCH y BTG -->
+  <section data-row="-1" data-v="0.0004" data-vl="BTG 0.0004%" data-c="--btg" class="slide bch">
+    <div class="kicker">Bitcoin Cash y Bitcoin Gold</div>
+    <h2 style="max-width:none;">Retrospectivas</h2>
+    <div class="retro">
+      <div class="card gray"><div class="date">BCH · BITCOIN CASH</div><p class="want">Quiso bloques más grandes para procesar más transacciones,</p><p class="but">pero al perder la red terminó procesando menos que Bitcoin.</p>
+        <div class="retro-stats"><div><b>1.8%</b><span>de las transacciones de BTC</span></div><div><b>0.32%</b><span>del valor movido en USD de BTC</span></div></div><div class="retro-when">Septiembre 2026</div></div>
+      <div class="card gray"><div class="date">BTG · BITCOIN GOLD</div><p class="want">Quiso cambiar quién podía minar para lograr mayor descentralización,</p><p class="but">pero terminó sufriendo dos ataques del 51%.</p>
+        <div class="retro-stats"><div><b>−97%</b><span>de hashrate desde su cambio de algoritmo</span></div></div><div class="retro-when">Ago 2018 → sep 2026, en Equihash-BTG</div></div>
+    </div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>02 · BCH y BTG</span></div>
+  </section>
+
+  <!-- 10 BTCB2: título y línea de tiempo -->
+  <section data-row="0" data-link="--btc" data-block="DIVISIÓN EN EL BLOQUE 961,632 · 8 AGO 2026" data-c="--b2" class="slide btcb2 divider">
+    <div class="scale-hero">
+      <div>
+        <div class="num">03</div>
+        <h2>Bitcoin en BLAKE2b (BTCB2)</h2>
+        <p class="lede">La disputa entre combatir el spam y darle espacio.</p>
+      </div>
+      <svg class="chart" id="b2-scale" viewBox="0 0 700 640" role="img" aria-label="Una balanza: hostil al spam con cambios al protocolo, contra relajar el relay para alinearlo con el protocolo"></svg>
+    </div>
+  </section>
+
+  <!-- 12 BTCB2 números -->
+  <section data-row="1" data-v="0.48" data-vl="BTCB2 0.48%" data-c="--b2" class="slide btcb2">
+    <div class="kicker">Bitcoin BLAKE2b</div>
+    <h2 style="max-width:none;">De Soft Fork a Hard Fork</h2>
+    <div class="grow" style="margin-top:20px;"><svg class="chart" id="b2-timeline" viewBox="0 0 1380 470"></svg></div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>03 · BTCB2</span></div>
+  </section>
+
+  <!-- 13 BTCB2 frente a BTC: precio y espacio de bloque -->
+  <section data-row="1" data-v="0.48" data-vl="BTCB2 0.48%" data-c="--b2" class="slide btcb2">
+    <div class="kicker">Bitcoin BLAKE2b · 8 ago – 1 oct 2026</div>
+    <h2 style="max-width:none; font-size:56px;">BTCB2 frente a BTC</h2>
+    <div class="grow panel" style="margin-top:22px;"><svg class="chart" id="chart-market" viewBox="0 0 1380 574"></svg></div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Precio: Neoxa y Coinbase, cierres por hora · Espacio de bloque: crawl propio de ambas cadenas</span></div>
+  </section>
+
+  <!-- 15 Conclusión divisor -->
+  <section data-row="0" data-link="--btc" data-c="--neutral" class="slide dark divider">
+    <div class="jungle-hero">
+      <div>
+        <div class="num" style="color:var(--dark-ink)">04</div>
+        <h2>¿Qué nos dicen los forks?</h2>
+        <p class="quote" style="margin-top:40px; color:var(--dark-ink);">Cuando ocurre un fork, dos nuevas entidades quedan libres en la jungla. Pero la jungla <em>no tiene piedad</em>.</p>
+      </div>
+<svg class="danger" viewBox="0 0 640 720" role="img" aria-label="Un árbol de la jungla: un jaguar se esconde entre las hojas y una serpiente cuelga de una rama">
+  <defs>
+    <radialGradient id="dg-glow" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#1F5A3C" stop-opacity=".55"/><stop offset="1" stop-color="#14161B" stop-opacity="0"/></radialGradient>
+    <pattern id="dg-spots" width="34" height="30" patternUnits="userSpaceOnUse" patternTransform="rotate(12)">
+      <circle cx="9" cy="9" r="5.5" fill="none" stroke="#2B1A08" stroke-width="3"/><circle cx="9" cy="9" r="1.8" fill="#2B1A08"/>
+      <circle cx="26" cy="23" r="4.5" fill="none" stroke="#2B1A08" stroke-width="3"/>
+    </pattern>
+  </defs>
+  <ellipse cx="320" cy="360" rx="310" ry="350" fill="url(#dg-glow)"/>
+  <!-- ground -->
+  <path d="M40 690 Q320 650 600 690 L600 720 L40 720 Z" fill="#0F3523"/>
+  <!-- jaguar body, behind the trunk -->
+  <g class="dg-jaguar">
+    <path d="M150 600 Q170 520 260 512 L410 512 Q480 520 490 600 L490 640 L150 640 Z" fill="#D99A2B"/>
+    <path d="M150 600 Q170 520 260 512 L410 512 Q480 520 490 600 L490 640 L150 640 Z" fill="url(#dg-spots)"/>
+    <path d="M488 590 Q560 560 560 500 Q560 470 585 470" fill="none" stroke="#D99A2B" stroke-width="16" stroke-linecap="round"/>
+  </g>
+  <!-- trunk -->
+  <path d="M290 690 Q300 520 286 380 Q280 300 300 230 L346 230 Q362 300 356 380 Q344 520 360 690 Z" fill="#5A3A22"/>
+  <path d="M312 680 Q318 520 306 380" fill="none" stroke="#3E2715" stroke-width="5" stroke-linecap="round"/>
+  <path d="M338 660 Q344 540 334 420" fill="none" stroke="#3E2715" stroke-width="4" stroke-linecap="round"/>
+  <!-- canopy -->
+  <g fill="#1E7A4B">
+    <ellipse cx="320" cy="190" rx="210" ry="120"/>
+    <ellipse cx="190" cy="230" rx="110" ry="80"/>
+    <ellipse cx="450" cy="220" rx="120" ry="80"/>
+  </g>
+  <g fill="#2A9460"><ellipse cx="280" cy="150" rx="120" ry="70"/><ellipse cx="420" cy="170" rx="80" ry="50"/></g>
+  <g fill="#16623E"><ellipse cx="230" cy="270" rx="90" ry="40"/><ellipse cx="400" cy="270" rx="70" ry="34"/></g>
+  <!-- jaguar head, peeking out beside the trunk -->
+  <g class="dg-jaguar">
+    <path d="M150 540 Q140 470 200 452 Q260 442 278 500 Q284 560 220 572 Q160 574 150 540 Z" fill="#D99A2B"/>
+    <path d="M150 540 Q140 470 200 452 Q260 442 278 500 Q284 560 220 572 Q160 574 150 540 Z" fill="url(#dg-spots)" opacity=".8"/>
+    <path d="M160 470 L150 432 L186 456 Z" fill="#D99A2B"/><path d="M236 452 L262 424 L262 470 Z" fill="#D99A2B"/>
+    <ellipse cx="186" cy="500" rx="14" ry="9" fill="#F4D35E"/><ellipse cx="236" cy="500" rx="14" ry="9" fill="#F4D35E"/>
+    <ellipse class="dg-eye" cx="186" cy="500" rx="3.5" ry="8" fill="#14161B"/><ellipse class="dg-eye" cx="236" cy="500" rx="3.5" ry="8" fill="#14161B"/>
+    <path d="M200 526 L222 526 L211 538 Z" fill="#3E2715"/>
+  </g>
+  <!-- bush hiding the jaguar's body -->
+  <g fill="#1E7A4B"><ellipse cx="230" cy="630" rx="150" ry="70"/><ellipse cx="420" cy="640" rx="110" ry="60"/></g>
+  <g fill="#2A9460"><ellipse cx="170" cy="610" rx="70" ry="40"/><ellipse cx="460" cy="615" rx="60" ry="34"/></g>
+  <!-- foliage in front of the jaguar -->
+  <g fill="#16623E">
+    <path d="M90 690 Q120 560 200 540 Q150 600 160 690 Z"/>
+    <path d="M140 690 Q190 590 280 580 Q220 630 230 690 Z"/>
+    <path d="M60 690 Q60 610 120 600 Q100 640 110 690 Z" fill="#1E7A4B"/>
+  </g>
+  <g fill="#2A9460"><path d="M420 690 Q450 600 540 590 Q480 630 490 690 Z"/><path d="M500 690 Q540 620 610 630 Q570 650 570 690 Z"/></g>
+  <!-- snake, wrapped on the branch and hanging down -->
+  <g class="dg-snake">
+    <path id="dg-sp" d="M250 92 Q300 60 350 82 Q400 104 450 84 Q500 66 520 110 Q536 150 512 190 Q490 226 520 262" fill="none" stroke="#7CB518" stroke-width="18" stroke-linecap="round"/>
+    <path d="M250 92 Q300 60 350 82 Q400 104 450 84 Q500 66 520 110 Q536 150 512 190 Q490 226 520 262" fill="none" stroke="#4F7A0E" stroke-width="18" stroke-dasharray="4 20" stroke-linecap="round"/>
+    <ellipse cx="524" cy="278" rx="20" ry="15" fill="#7CB518"/>
+    <circle cx="517" cy="274" r="3.2" fill="#14161B"/><circle cx="532" cy="274" r="3.2" fill="#14161B"/>
+    <path class="dg-tongue" d="M524 292 L524 308 M524 308 L518 316 M524 308 L530 316" fill="none" stroke="#E34948" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+</svg>
+    </div>
+  </section>
+
+  <!-- 14 Lecciones: cada fork frente a su cadena padre, hoy -->
+  <section data-row="0" data-c="--neutral" class="slide">
+    <div class="kicker">Lecciones de la jungla · cada fork frente a su cadena padre</div>
+    <h2 style="max-width:none;">En la jungla, pelear por una idea tiene un costo</h2>
+    <div class="grow" style="margin-top:26px;"><svg class="chart" id="chart-vsparent" viewBox="0 0 1380 520"></svg></div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Escala logarítmica · último mes: sep 2026 (precio de BTG: jul 2026; de BTCB2: 6 oct) · CoinMetrics, crawl propio</span></div>
+  </section>
+
+  <!-- 15 Cuatro lecciones -->
+  <section data-row="0" data-c="--neutral" class="slide">
+    <div class="lessons-head">
+      <div><div class="kicker">Lecciones de los forks</div><h2 style="max-width:none;">Tres lecciones</h2></div>
+      <img src="bitcoin_ship_small.png" alt="Un barco con una vela de Bitcoin navegando en la jungla">
+    </div>
+    <div class="lessons">
+      <div class="card"><div class="date">01</div><h3>Un fork hereda la historia, no la economía</h3><p>Hereda los saldos y el código, pero no los usuarios, la liquidez ni el consenso. Puedes cambiar las reglas y tener la razón, pero el valor sigue a la red que la mayoría decide usar.</p></div>
+      <div class="card"><div class="date">02</div><h3>Los problemas son parte de ser relevante</h3><p>Spam, comisiones, minería o cambios de protocolo se convierten en grandes debates cuando una cadena tiene algo que perder. <b style="color:var(--ink); font-weight:600;">Mientras una cadena importe, habrá distintas ideas sobre qué debe ser y hacia dónde debe ir.</b></p></div>
+      <div class="card"><div class="date">03</div><h3>Mientras exista una comunidad que sostenga una idea, la idea seguirá viva</h3><p>Un fork puede perder usuarios, valor y relevancia, pero mientras haya personas dispuestas a mantenerlo, desarrollarlo y defender lo que representa, su visión no desaparece.</p></div>
+    </div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Conclusión</span></div>
+  </section>
+
+  <!-- 18 Cierre -->
+  <section data-row="0" data-c="--neutral" class="slide dark cover">
+    <div class="kicker">Para cerrar</div>
+    <div class="closing">
+    <div>
+    <p class="quote" style="color:var(--dark-ink);">Bitcoin no es solo código. También es una colección de ideas sobre cómo debería funcionar el dinero.</p>
+    <p class="sub" style="margin-top:30px; max-width:none;">Aprende cuáles son esas ideas, por qué chocan y qué ocurre cuando una comunidad deja de ponerse de acuerdo.</p>
+    <p class="sub" style="margin-top:18px; max-width:none; color:var(--dark-ink);">Así no solo eliges qué idea seguir.</p>
+    <div class="who" style="margin-top:60px;"><img src="quantbitcoin-logo.png" alt="Logo de QuantBitcoin"><div><b>Gracias · David Rodriguez</b><span>dave-rodt.github.io/fork-history</span></div></div>
+    </div>
+    <div class="qrbox"><svg class="qr" viewBox="0 0 29 29" shape-rendering="crispEdges" role="img" aria-label="Código QR: dave-rodt.github.io/fork-history"><path d="M0 0.5h7m3 0h1m1 0h1m2 0h1m3 0h1m2 0h7m-29 1h1m5 0h1m1 0h1m1 0h1m1 0h8m2 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m5 0h1m1 0h3m3 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h4m1 0h3m1 0h1m3 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m4 0h3m2 0h2m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m2 0h1m1 0h1m2 0h3m2 0h1m2 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-20 1h3m1 0h3m1 0h1m1 0h2m-21 1h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m1 0h1m1 0h4m5 0h1m2 0h1m-28 1h1m2 0h3m1 0h3m1 0h1m1 0h2m1 0h1m3 0h4m1 0h1m2 0h1m-29 1h1m1 0h2m1 0h3m2 0h1m1 0h3m1 0h2m3 0h1m1 0h2m1 0h3m-29 1h3m5 0h1m2 0h1m1 0h1m1 0h1m1 0h1m1 0h1m7 0h1m-28 1h1m2 0h1m2 0h2m1 0h1m3 0h1m1 0h3m1 0h4m2 0h1m1 0h2m-29 1h1m3 0h1m2 0h1m3 0h2m1 0h1m1 0h1m3 0h1m1 0h1m2 0h1m2 0h1m-29 1h1m1 0h7m2 0h2m1 0h1m3 0h1m3 0h1m2 0h1m1 0h2m-28 1h1m1 0h1m1 0h1m1 0h1m1 0h1m3 0h6m1 0h3m2 0h1m1 0h1m-24 1h1m1 0h1m1 0h3m1 0h6m2 0h4m1 0h1m1 0h2m-28 1h4m2 0h1m1 0h4m7 0h3m2 0h2m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m3 0h2m3 0h1m2 0h2m1 0h2m2 0h2m-28 1h1m1 0h3m3 0h6m2 0h2m1 0h1m1 0h2m1 0h1m1 0h1m-28 1h1m2 0h1m1 0h2m2 0h1m4 0h11m-17 1h2m1 0h1m1 0h1m2 0h1m2 0h2m3 0h1m1 0h3m-29 1h7m7 0h1m1 0h2m1 0h2m1 0h1m1 0h2m1 0h2m-29 1h1m5 0h1m3 0h4m3 0h4m3 0h2m-26 1h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h1m2 0h1m2 0h5m-25 1h1m1 0h3m1 0h1m9 0h2m1 0h1m3 0h2m1 0h3m-29 1h1m1 0h3m1 0h1m1 0h6m3 0h1m1 0h2m2 0h3m2 0h1m-29 1h1m5 0h1m2 0h2m5 0h2m2 0h1m2 0h1m3 0h1m-28 1h7m1 0h1m5 0h4m1 0h2m1 0h3m2 0h2" stroke="#000" fill="none"/></svg><p>Escanea para leer la serie</p><span>dave-rodt.github.io/fork-history</span></div>
+    </div>
+  </section>
+
+  <!-- 19 Preguntas -->
+  <section data-row="0" data-c="--neutral" class="slide dark cover qa">
+    <div class="kicker">Q&amp;A</div>
+    <h1>¿Preguntas?</h1>
+    <div class="who" style="margin-top:70px;"><img src="quantbitcoin-logo.png" alt="Logo de QuantBitcoin"><div><b>David Rodriguez</b><span>Ingeniero de Finanzas en Swan Bitcoin</span><span>Bitcoin y Lightning Guadalajara</span></div></div>
+  </section>
+
+</div>
+</div></div>
+
+<script>
+const D = {"replay":[["2016-07-20",78.0],["2016-07-27",25.9],["2016-08-03",10.9],["2016-08-10",9.5],["2016-08-17",6.5],["2016-08-24",8.4],["2016-08-31",13.9],["2016-09-07",7.9],["2016-09-14",7.9],["2016-09-21",7.1],["2016-09-28",5.2],["2016-10-05",8.2],["2016-10-12",27.1],["2016-10-19",9.7],["2016-10-26",6.8],["2016-11-02",5.5],["2016-11-09",4.3],["2016-11-16",4.0],["2016-11-23",12.7],["2016-11-30",2.0],["2016-12-07",1.3],["2016-12-14",2.4],["2016-12-21",1.7],["2016-12-28",0.8],["2017-01-04",1.9],["2017-01-11",4.1],["2017-01-18",1.4],["2017-01-25",0.7],["2017-02-01",0.6],["2017-02-08",0.9],["2017-02-15",0.3],["2017-02-22",0.7],["2017-03-01",2.0],["2017-03-08",0.8],["2017-03-15",1.2],["2017-03-22",1.3]]};
+
+// ---- navigation ----
+const slides = [...document.querySelectorAll('.slide')], deck = document.getElementById('deck');
+let cur = 0;
+const seen = new Set(), row = slides.map(sl => +sl.dataset.row);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const world = document.getElementById('world');
+
+// World geometry, the same for every fork. A normal step is SX to the right. A fork grows one step
+// diagonally down-right (SX, SY). Leaving a fork, the camera goes back up-left by (SX, SY) to meet the
+// main chain, then SX right, so the next main slide sits right above the last block of the fork.
+const SX = 2000, SY = 1300;
+const pos = [];
+// row: 0 main chain, 1 a fork below, -1 a fork above (mirrored geometry).
+slides.forEach((sl, k) => {
+  const q = pos[k - 1], r = row[k], rp = row[k - 1];
+  pos.push(k === 0 ? [0, 0] : r === rp ? [q[0] + SX, q[1]]
+    : rp === 0 ? [q[0] + SX, q[1] + r * SY]   // into a fork: one step diagonally down-right (or up-right)
+    : [q[0], q[1] - rp * SY]);                // back to the main chain: right above (or below) the fork's last block
+});
+const top0 = Math.min(...pos.map(p => p[1]));
+pos.forEach((p, k) => { p[1] -= top0; slides[k].style.left = p[0] + 'px'; slides[k].style.top = p[1] + 'px'; });
+const center = k => [pos[k][0] + 800, pos[k][1] + 450];
+const cam = ([x, y], z) => `translate(800px, 450px) scale(${z}) translate(${-x}px, ${-y}px)`;
+
+// Camera stops between two neighbouring slides. Returning to the main chain adds the up-left leg.
+function route(a, b){
+  if (Math.abs(a - b) !== 1) return [center(a), center(b)];
+  const lo = Math.min(a, b), hi = Math.max(a, b), pts = [center(lo)];
+  if (row[lo] && !row[hi]) pts.push([center(lo)[0] - SX, center(lo)[1] - row[lo] * SY]);  // reconnect point on the main chain
+  pts.push(center(hi));
+  return a < b ? pts : pts.reverse();
+}
+// Stops: the whole map, slides 1-14, the whole map again (before the conclusion), slides 15-18.
+const OV = 'ov';
+const stops = [OV, ...slides.map((_, k) => k)];  // the whole map first, then every slide
+let st = 0;
+const ARROW = 2600, CUBE = 150;  // CUBE: depth of each slide-block's top and left faces  // world px of main chain drawn past the last slide, ending in an arrow
+function mapView(){
+  const W = Math.max(...pos.map(p => p[0])) + 1600 + ARROW, H = Math.max(...pos.map(p => p[1])) + 900;
+  return {pt:[W / 2, H / 2 + 120], z:Math.min(1600 / W, 900 / H) * .9};
+}
+const view = v => v === OV ? mapView() : {pt:center(v), z:1};
+
+let flight = null;
+function fly(a, b){  // a, b: stop values (slide index or OV); returns the flight time in ms
+  const A = view(a), B = view(b);
+  let frames, dur;
+  if (a !== OV && b !== OV && Math.abs(a - b) === 1){
+    const pts = route(a, b), legs = pts.length - 1;
+    dur = 1100 * legs;
+    frames = [{transform:cam(pts[0], 1), easing:'ease-in-out'},
+      legs === 1 ? {offset:.5, transform:cam([(pts[0][0] + pts[1][0]) / 2, (pts[0][1] + pts[1][1]) / 2], .72), easing:'ease-in-out'}
+                 : {offset:.5, transform:cam(pts[1], .55), easing:'ease-in-out'},
+      {transform:cam(pts[legs], 1)}];
+  } else if (a === OV || b === OV){
+    dur = 1800;
+    frames = [{transform:cam(A.pt, A.z), easing:'cubic-bezier(.6,0,.25,1)'}, {transform:cam(B.pt, B.z)}];
+  } else {  // jump between far slides: pull back toward the map on the way
+    const M = mapView(); dur = 2000;
+    frames = [{transform:cam(A.pt, 1), easing:'ease-in-out'}, {offset:.5, transform:cam(M.pt, M.z * 1.4), easing:'ease-in-out'}, {transform:cam(B.pt, 1)}];
+  }
+  if (flight) flight.cancel();
+  world.style.transform = cam(B.pt, B.z);
+  world.style.setProperty('--k', Math.max(1, 1 / B.z));
+  if (reduce) return 0;
+  flight = world.animate(frames, {duration:dur});
+  return dur;
+}
+
+// Count a stat's last number from data-count to its final value (log steps when it shrinks).
+function countUp(n, delay){
+  const final = n.dataset.final ?? (n.dataset.final = n.innerHTML);
+  const m = final.match(/([\d,]*\.?\d+)(?![\s\S]*\d)/), to = parseFloat(m[1].replace(/,/g, '')), from = parseFloat(n.dataset.count);
+  const dec = (m[1].split('.')[1] || '').length, head = final.slice(0, m.index), tail = final.slice(m.index + m[1].length);
+  const fmt = v => from > to ? String(+v.toPrecision(2)) : v.toFixed(dec);
+  n.innerHTML = head + fmt(from) + tail;
+  const t0 = performance.now() + delay, T = 1300;
+  (function tick(now){
+    const u = Math.min(1, Math.max(0, (now - t0) / T)), e = 1 - Math.pow(1 - u, 3);
+    const v = from > to && to > 0 ? Math.exp(Math.log(from) + (Math.log(to) - Math.log(from)) * e) : from + (to - from) * e;
+    n.innerHTML = u >= 1 ? final : head + fmt(v) + tail;
+    if (u < 1) requestAnimationFrame(tick);
+  })(performance.now());
+}
+
+function go(i, first){
+  const nst = Math.max(0, Math.min(stops.length - 1, i));
+  if (nst === st && !first) return;
+  if (!first) document.querySelector('.hint').style.display = 'none';  // the hint only matters before the first move
+  const from = stops[st], to = stops[nst];
+  st = nst;
+  if (to !== OV) for (let k = 0; k <= to; k++) seen.add(k);
+  cur = to === OV ? -1 : to;
+  slides.forEach((sl, k) => sl.classList.toggle('active', k === cur));
+  world.classList.toggle('overview', to === OV);
+  let dur = 0;
+  if (first){ const V = view(to); world.style.transform = cam(V.pt, V.z); world.style.setProperty('--k', Math.max(1, 1 / V.z)); }
+  else dur = fly(from, to);
+  if (to !== OV && !reduce){
+    const sl = slides[to];
+    if (!sl.classList.contains('played')){
+      const arrive = Math.round(dur * .8);
+      sl.style.setProperty('--arrive', arrive + 'ms');
+      sl.classList.add('play');
+      sl.querySelectorAll('[data-count]').forEach(n => countUp(n, arrive));
+      setTimeout(() => { sl.classList.remove('play'); sl.classList.add('played'); }, arrive + 2600);
+    }
+  }
+  drawWorldChain();
+  history.replaceState(null, '', to === OV ? '#inicio' : '#' + (to + 1));
+}
+
+// The blockchain drawn on the canvas between slides. Main chain links run along the top row; a fork
+// leaves its parent block with an S-curve down-right. The main chain keeps growing above every fork.
+function drawWorldChain(){
+  const svg = document.getElementById('world-chain');
+  const W = Math.max(...pos.map(p => p[0])) + 1600 + ARROW, H = Math.max(...pos.map(p => p[1])) + 900;
+  svg.setAttribute('width', W); svg.setAttribute('height', H);
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.innerHTML = '';
+  const defs = el('defs', {}, svg);
+  const dots = el('pattern', {id:'dots', width:80, height:80, patternUnits:'userSpaceOnUse'}, defs);
+  el('circle', {cx:2, cy:2, r:2, fill:'#2A2E36'}, dots);
+  el('rect', {x:-4000, y:-3000, width:W + 8000, height:H + 6000, fill:'url(#dots)'}, svg);
+
+  // Every slide is a block, drawn the way mempool.space draws them: the slide is the front face, with a
+  // dark top face leaning up-left and a darker left side. Height above, the time legend below.
+  const D = CUBE;
+  const face = (pts, fill) => el('polygon', {points:pts.map(p => p.join(',')).join(' '), fill}, svg);
+  slides.forEach((sl, k) => {
+    const [x, y] = pos[k];
+    face([[x, y], [x + 1600, y], [x + 1600 - D, y - D], [x - D, y - D]], '#2B3142');   // top
+    face([[x, y], [x - D, y - D], [x - D, y + 900 - D], [x, y + 900]], '#1B1F2B');     // left side
+    el('text', {x:x + 800 - D / 2, y:y - D - 40, 'text-anchor':'middle', fill:'#C9CDD2', 'font-family':'IBM Plex Mono', 'font-size':64, 'font-weight':600}, svg, String(k + 1).padStart(6, '0'));
+    el('text', {x:x + 800, y:y + 900 + 80, 'text-anchor':'middle', fill:'#8A9099', 'font-family':'IBM Plex Mono', 'font-size':44}, svg, 'En ~2 minutos');
+  });
+
+  // A chain between blocks: links alternate between an open ring and one seen edge-on, as on a real chain.
+  // On the map views the links are too small to read, so a solid wire takes over there (.wire / .links).
+  const links = (a, b, c) => {
+    const g = el('g', {class:'links'}, svg), ang = Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI;
+    const len = Math.hypot(b[0] - a[0], b[1] - a[1]), P = 78, n = Math.max(2, Math.round(len / P));
+    for (let i = 0; i < n; i++){
+      const t = (i + .5) / n, cx = a[0] + (b[0] - a[0]) * t, cy = a[1] + (b[1] - a[1]) * t;
+      const lk = el('g', {transform:`translate(${cx} ${cy}) rotate(${ang})`}, g);
+      if (i % 2 === 0) el('rect', {x:-56, y:-30, width:112, height:60, rx:30, fill:'none', stroke:c, 'stroke-width':15}, lk);
+      else el('rect', {x:-56, y:-9, width:112, height:18, rx:9, fill:c}, lk);
+    }
+  };
+
+  // the main chain keeps going: an arrow off the right end of the last block
+  const last = slides.length - 1, ay = pos[last][1] + 450, ax = pos[last][0] + 1600;
+  const mk = el('marker', {id:'arrowhead', viewBox:'0 0 10 10', refX:5, refY:5, markerWidth:4, markerHeight:4, orient:'auto'}, defs);
+  el('path', {d:'M0 0 L10 5 L0 10 z', fill:css('--neutral')}, mk);
+  el('path', {d:`M${ax} ${ay} L ${ax + ARROW - 200} ${ay}`, stroke:css('--neutral'), style:'stroke-width:calc(var(--k) * 9px)', 'marker-end':'url(#arrowhead)', fill:'none', class:'wire'}, svg);
+  links([ax, ay], [ax + 700, ay], css('--neutral'));
+
+  let nl = 0;  // labels alternate between two lines so neighbouring branches never overlap on the map
+  for (let k = 1; k < slides.length; k++){
+    let p = k - 1;
+    if (!row[k]) while (row[p]) p--;          // main-chain parent: the last main block before k
+    const on = seen.has(k), c = css(slides[k].dataset.link || slides[k].dataset.c), dn = row[k] > 0;
+    // same row: level, from the parent's right edge to the outer edge of the block's left side. A fork runs
+    // at 45 degrees: down, from the parent's bottom-right corner to the block's outer top-left corner;
+    // up, from the parent's top-right corner to the block's bottom-left corner.
+    const fork = row[k] !== row[p], [x, y] = pos[k];
+    const a = fork ? [pos[p][0] + 1600, pos[p][1] + (dn ? 900 : 0)] : [pos[p][0] + 1600, pos[p][1] + 450];
+    const b = fork ? (dn ? [x - D, y - D] : [x, y + 900]) : [x - D, y + 450];
+    // wire width in screen px (times --k): the main chain 9; a branch by its price today vs its parent, log scale
+    const v = +slides[k].dataset.v, w = row[k] ? 9 * Math.max(.13, (6 + Math.log10(v / 100)) / 6) : 9;
+    el('path', {d:`M${a[0]} ${a[1]} L ${b[0]} ${b[1]}`, fill:'none', stroke:c, style:`stroke-width:calc(var(--k) * ${w.toFixed(2)}px)`, 'stroke-linecap':'round', class:'wire'}, svg);
+    links(a, b, c);
+    if (row[k] && slides[k].dataset.vl !== slides[k - 1].dataset.vl)
+      el('text', {x:x, y:y + (dn ? 900 : 0), dy:(nl++ % 2 ? (dn ? 2.7 : -1.9) : (dn ? 1.3 : -.6)) + 'em', fill:css(slides[k].dataset.c), class:'lbl' + (on ? ' on' : ''), style:'font-size:calc(var(--k) * 20px)'}, svg, slides[k].dataset.vl);
+  }
+}
+
+function fit(){ const s = Math.min(innerWidth / 1600, innerHeight / 900); deck.style.transform = 'scale(' + s + ')'; }
+addEventListener('resize', fit);
+// hide the mouse pointer while presenting; it comes back when the mouse moves
+let idle;
+addEventListener('mousemove', () => { document.body.style.cursor = ''; clearTimeout(idle); idle = setTimeout(() => { document.body.style.cursor = 'none'; }, 2500); });
+addEventListener('keydown', e => {
+  if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); go(st + 1); }
+  else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); go(st - 1); }
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(stops.length - 1);
+  else if (e.key === 'f' || e.key === 'F') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+});
+document.getElementById('next').addEventListener('click', () => go(st + 1));
+document.getElementById('prev').addEventListener('click', () => go(st - 1));
+let tx = null;
+addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+addEventListener('touchend', e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 40) go(st + (dx < 0 ? 1 : -1)); tx = null; });
+
+// ---- tiny SVG helpers ----
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent, text){ const n = document.createElementNS(NS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (text != null) n.textContent = text; if (parent) parent.appendChild(n); return n; }
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const monthX = m => +m.slice(0, 4) + (+m.slice(5, 7) - 1) / 12;
+const pctLabel = v => (v >= 1 ? v.toFixed(0) : v >= 0.1 ? v.toFixed(1) : v >= 0.01 ? v.toFixed(2) : v.toFixed(v >= 0.001 ? 3 : 4)) + '%';
+
+// Line chart on a log or linear y axis. series: [{pts:[[x,y]], color, label}]
+function lineChart(svg, series, o){
+  const [W, H] = svg.getAttribute('viewBox').split(' ').slice(2).map(Number);
+  const mL = 90, mR = o.mR || 150, mT = 16, mB = 44, pw = W - mL - mR, ph = H - mT - mB;
+  const xs = series.flatMap(s => s.pts.map(p => p[0])), ys = series.flatMap(s => s.pts.map(p => p[1])).filter(y => y > 0);
+  const x0 = o.x0 ?? Math.min(...xs), x1 = o.x1 ?? Math.max(...xs);
+  const X = x => mL + (x - x0) / (x1 - x0) * pw;
+  let Y, ticks;
+  if (o.log){
+    const lo = Math.floor(Math.log10(Math.min(...ys))), hi = Math.ceil(Math.log10(Math.max(...ys)));
+    Y = y => mT + ph - (Math.log10(y) - lo) / (hi - lo) * ph;
+    ticks = []; for (let e = lo; e <= hi; e++) ticks.push(10 ** e);
+  } else {
+    const top = o.yTop; Y = y => mT + ph - y / top * ph; ticks = o.yTicks;
+  }
+  ticks.forEach(t => { el('line', {x1:mL, x2:mL + pw, y1:Y(t), y2:Y(t), class:'grid'}, svg); el('text', {x:mL - 14, y:Y(t) + 6, 'text-anchor':'end', class:'tick'}, svg, (o.yfmt || pctLabel)(t)); });
+  o.xTicks.forEach(([x, lab]) => el('text', {x:X(x), y:H - 8, 'text-anchor':'middle', class:'tick'}, svg, lab));
+  (o.marks || []).forEach(([x, lab], i) => { el('line', {x1:X(x), x2:X(x), y1:mT, y2:mT + ph, class:'mark'}, svg); el('text', {x:X(x) + 8, y:mT + 18 + (i % 2) * 22, class:'marklab'}, svg, lab); });
+  series.forEach(s => {
+    const pts = s.pts.filter(p => p[1] > 0);
+    el('path', {d:'M' + pts.map(p => X(p[0]).toFixed(1) + ' ' + Y(p[1]).toFixed(1)).join(' L'), fill:'none', stroke:s.color, 'stroke-width':4, 'stroke-linejoin':'round', 'stroke-linecap':'round', pathLength:1, class:'draw'}, svg);
+    const last = pts[pts.length - 1];
+    el('circle', {cx:X(last[0]), cy:Y(last[1]), r:7, fill:s.color, stroke:o.ring || css('--bg'), 'stroke-width':3, class:'appear'}, svg);
+    el('text', {x:X(last[0]) + 16, y:Y(last[1]) + 8 + (s.dy || 0), class:'endlab appear', fill:s.color}, svg, s.label);
+  });
+}
+
+// ---- slide 3: fork diagram ----
+(function(){
+  const svg = document.getElementById('fork-diagram'), w = 92, h = 64, gap = 22, y0 = 168;
+  const block = (x, y, fill, lab) => { el('rect', {x, y, width:w, height:h, rx:12, fill}, svg); if (lab) el('text', {x:x + w / 2, y:y + h / 2 + 7, 'text-anchor':'middle', fill:'#fff', 'font-size':20, 'font-weight':600}, svg, lab); };
+  for (let i = 0; i < 5; i++) block(20 + i * (w + gap), y0, '#7A8087', i === 4 ? 'X' : '');
+  el('text', {x:20, y:y0 - 26, class:'marklab', 'font-size':22}, svg, 'Historia compartida');
+  const sx = 20 + 5 * (w + gap) - gap;
+  [[70, '#4B5158', 'Cadena A: reglas originales'], [266, css('--b2'), 'Cadena B: reglas nuevas']].forEach(([y, c, lab]) => {
+    el('path', {d:`M${sx} ${y0 + h / 2} C ${sx + 60} ${y0 + h / 2}, ${sx + 40} ${y + h / 2}, ${sx + 100} ${y + h / 2}`, fill:'none', stroke:c, 'stroke-width':4}, svg);
+    for (let i = 0; i < 5; i++) block(sx + 100 + i * (w + gap), y, c, '');
+    el('text', {x:sx + 100, y:y - 14, class:'marklab', 'font-size':22, fill:c}, svg, lab);
+  });
+  el('text', {x:20 + 4 * (w + gap) + w / 2, y:y0 + h + 40, 'text-anchor':'middle', class:'marklab', 'font-size':20}, svg, 'punto de división');
+})();
+
+// ---- slide 6: ETC as % of ETH ----
+// ---- slide 6: ETC as % of ETH at the fork (Jul 2016) and now (Sep 2026), four measures, log scale ----
+(function(){
+  const svg = document.getElementById('chart-etcbars'), X0 = 430, W = 800, lo = -3, hi = 2;
+  const X = v => X0 + (Math.log10(v) - lo) / (hi - lo) * W;
+  const T = (x, y, t, o = {}) => el('text', Object.assign({x, y, fill:'#A8ADB4', 'font-family':'IBM Plex Sans', 'font-size':20}, o), svg, t);
+  const fmt = v => (v >= 1 ? +v.toFixed(1) : v >= 0.1 ? v.toFixed(2) : v.toFixed(3)) + '%';
+  [0.001, 0.01, 0.1, 1, 10, 100].forEach(v => {
+    el('line', {x1:X(v), x2:X(v), y1:30, y2:510, stroke:'#2A2620', 'stroke-dasharray':'3 5'}, svg);
+    T(X(v), 18, {0.001:'0.001%', 0.01:'0.01%', 0.1:'0.1%', 1:'1%', 10:'10%', 100:'100% = igual'}[v], {'text-anchor':'middle', 'font-size':16, fill:'#7E848C', 'font-family':'IBM Plex Mono'});
+  });
+  // ETC / ETH: first month after the fork and the latest month (eth-vs-etc.html DATA, CoinMetrics + Electric Capital)
+  const rows = [['Precio', 12.6, 0.32], ['Transacciones', 48.2, 0.47], ['Fees pagados', 3.5, 0.006], ['Desarrolladores|activos', 57.0, 3.5]];
+  rows.forEach(([name, start, now], i) => {
+    const y = 48 + i * 118, lines = name.split('|');
+    lines.forEach((ln, k) => T(0, y + 46 + (k - (lines.length - 1) / 2) * 32, ln, {'font-size':28, 'font-weight':600, fill:'#EDECE6', 'font-family':'IBM Plex Sans'}));
+    [['jul 2016', start, '#5E6670'], ['sep 2026', now, '#008000']].forEach(([lab, v, c], r) => {
+      const by = y + 6 + r * 46;
+      T(300, by + 21, lab, {'font-size':18, 'font-family':'IBM Plex Mono', fill:'#7E848C'});
+      el('rect', {x:X0, y:by, width:W, height:28, rx:6, fill:'#1C1913'}, svg);
+      el('rect', {x:X0, y:by, width:X(v) - X0, height:28, rx:6, fill:c, class:'grow-x'}, svg);
+      T(X(v) + 12, by + 22, fmt(v), {'font-size':21, 'font-weight':600, fill:'#EDECE6', 'font-family':'IBM Plex Mono', class:'appear'});
+    });
+  });
+})();
+
+// ---- slide 8: BCH and BTG as % of BTC ----
+// ---- slide 10: a balance that sways between the two ways of answering spam ----
+(function(){
+  const svg = document.getElementById('b2-scale'), PX = 350, PY = 170, HALF = 230, DISH = 105;
+  const white = '#fff', line = (a, o) => el('line', Object.assign({stroke:white, 'stroke-linecap':'round'}, a), svg);
+  el('text', {x:PX, y:60, 'text-anchor':'middle', fill:white, 'font-size':26, 'font-family':'IBM Plex Mono', 'letter-spacing':'.08em'}, svg, '¿CUÁL ES MEJOR?');
+  // stand
+  el('path', {d:'M255 604 L445 604 L418 574 L282 574 Z', fill:white, 'fill-opacity':.92}, svg);
+  el('rect', {x:PX - 10, y:PY, width:20, height:410, rx:8, fill:white, 'fill-opacity':.92}, svg);
+  const beam = line({'stroke-width':14});
+  const pan = (title, subs) => {
+    const g = el('g', {}, svg);
+    [-DISH, DISH].forEach(dx => el('line', {x1:0, y1:0, x2:dx, y2:170, stroke:white, 'stroke-width':3, 'stroke-opacity':.9}, g));
+    el('path', {d:`M${-DISH} 170 A${DISH} 62 0 0 0 ${DISH} 170 Z`, fill:white}, g);
+    el('text', {x:0, y:270, 'text-anchor':'middle', fill:white, 'font-size':28, 'font-weight':700, 'font-family':'IBM Plex Sans'}, g, title);
+    subs.forEach((t, i) => el('text', {x:0, y:304 + i * 28, 'text-anchor':'middle', fill:white, 'font-size':22, 'font-family':'IBM Plex Sans', 'fill-opacity':.95}, g, t));
+    return g;
+  };
+  const left = pan('Hostil al spam', ['Cambiar el protocolo', '(BIP-110)']);
+  const right = pan('Relajar el relay', ['Alinear las políticas', 'con el protocolo', '(Core v30)']);
+  el('circle', {cx:PX, cy:PY, r:24, fill:white}, svg); el('circle', {cx:PX, cy:PY, r:9, fill:'#F7931A'}, svg);
+  const set = deg => {
+    const a = deg * Math.PI / 180, dx = HALF * Math.cos(a), dy = HALF * Math.sin(a);
+    beam.setAttribute('x1', PX - dx); beam.setAttribute('y1', PY - dy); beam.setAttribute('x2', PX + dx); beam.setAttribute('y2', PY + dy);
+    left.setAttribute('transform', `translate(${PX - dx} ${PY - dy})`); right.setAttribute('transform', `translate(${PX + dx} ${PY + dy})`);
+  };
+  set(-3);
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches)
+    (function sway(now){ set(6 * Math.sin(now / 1700)); requestAnimationFrame(sway); })(performance.now());
+})();
+
+// ---- slide 14: each fork today as % of its parent chain, price and transactions (log scale) ----
+(function(){
+  const svg = document.getElementById('chart-vsparent'), X0 = 420, W = 820, lo = -4, hi = 2;
+  const X = v => X0 + (Math.log10(v) - lo) / (hi - lo) * W;
+  const T = (x, y, t, o = {}) => el('text', Object.assign({x, y, fill:css('--ink-soft'), 'font-family':'IBM Plex Sans', 'font-size':20}, o), svg, t);
+  const fmt = v => (v >= 1 ? v.toFixed(1) : v >= 0.01 ? v.toFixed(2) : v.toFixed(v >= 0.001 ? 3 : 4)) + '%';
+  [0.0001, 0.01, 1, 100].forEach(v => {
+    el('line', {x1:X(v), x2:X(v), y1:30, y2:510, stroke:css('--rule'), 'stroke-dasharray':'3 5'}, svg);
+    T(X(v), 18, {0.0001:'0.0001%', 0.01:'0.01%', 1:'1%', 100:'100% = igual'}[v], {'text-anchor':'middle', 'font-size':16, fill:css('--ink-mute'), 'font-family':'IBM Plex Mono'});
+  });
+  // latest month: price and transactions, each as % of the parent chain
+  const rows = [
+    ['ETC', 'frente a ETH', css('--etc'), 0.32, 0.47],
+    ['BCH', 'frente a BTC', '#07A57B', 0.33, 1.84],
+    ['BTG', 'frente a BTC', css('--btg'), 0.0004, 0.005],
+    ['BTCB2', 'frente a BTC · tx sin replay', css('--b2'), 0.82, 0.22],  // Sep: 46,508 own txs vs 20,879,212 on BTC (10.9% with replay)
+  ];
+  rows.forEach(([name, sub, c, price, tx], i) => {
+    const y = 50 + i * 118;
+    T(0, y + 34, name, {'font-size':36, 'font-weight':600, fill:css('--ink'), 'font-family':'Source Serif 4'});
+    T(0, y + 64, sub, {'font-size':18, fill:css('--ink-mute')});
+    [['Precio', price, 1], ['Tx propias', tx, .45]].forEach(([lab, v, op], r) => {
+      const by = y + 6 + r * 46;
+      T(250, by + 21, lab, {'font-size':18, 'font-family':'IBM Plex Mono', fill:css('--ink-mute')});
+      el('rect', {x:X0, y:by, width:W, height:28, rx:6, fill:'#F0F2F4'}, svg);
+      el('rect', {x:X0, y:by, width:X(v) - X0, height:28, rx:6, fill:c, 'fill-opacity':op, class:'grow-x'}, svg);
+      T(X(v) + 12, by + 22, fmt(v), {'font-size':21, 'font-weight':600, fill:css('--ink'), 'font-family':'IBM Plex Mono', class:'appear'});
+    });
+  });
+})();
+
+// ---- slide 8: the fork diagram from the BTG chapter (btg-vs-btc.html): Bitcoin in the middle, BCH and BSV below, BTG above ----
+(function(){
+  const svg = document.getElementById('chart-forktl'), W = 820;
+  const E = (tag, attrs, text) => el(tag, attrs, svg, text);
+  const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  const fmtDate = iso => { const [y, m, d] = iso.split('-').map(Number); return d + ' ' + MES[m - 1] + ' ' + y; };
+  const Y = {btg:78, btc:172, bch:252, bsv:322};
+  const MAIN = [
+    {date:'2017-08-01', callout:'Hard fork de Bitcoin Cash'}, {date:'2017-08-24', callout:'Soft fork de SegWit'},
+    {date:'2017-10-24', callout:'Hard fork de Bitcoin Gold'}, {date:'2021-11-14', callout:'Soft fork de Taproot'}];
+  const BSV = {date:'2018-11-15', callout:'Hard fork de Bitcoin SV'};
+  const BTG = [
+    {type:'listing', date:'2017-10-24', label:'Listado'}, {type:'protocol', date:'2017-11-12', label:'Lanzamiento'},
+    {type:'attack', date:'2018-05-16', label:'Ataque 51%'}, {type:'protocol', date:'2018-07-03', label:'Nuevo PoW'},
+    {type:'delist', date:'2018-09-14', label:'Sale Bittrex'}, {type:'attack', date:'2020-01-23', label:'Ataques 51%'},
+    {type:'delist', date:'2022-10-24', label:'Sale Binance'}, {type:'delist', date:'2023-07-11', label:'Sale Bitfinex'}];
+
+  const link = (x1, y1, x2, y2, cls) => {
+    E('line', {x1, y1, x2, y2, class:'tl-link ' + cls});
+    const ang = Math.atan2(y2 - y1, x2 - x1), ax = x2 - Math.cos(ang), ay = y2 - Math.sin(ang);
+    const p = (d, o) => `${(ax - Math.cos(ang) * d + Math.cos(ang + Math.PI / 2) * o).toFixed(1)},${(ay - Math.sin(ang) * d + Math.sin(ang + Math.PI / 2) * o).toFixed(1)}`;
+    E('path', {d:`M${p(7, -4)} L${ax.toFixed(1)},${ay.toFixed(1)} L${p(7, 4)}`, class:'tl-link ' + cls});
+  };
+  const callout = (x, y, text, date) => {
+    const w = Math.max(text.length * 7.2, date.length * 6.6) + 18;
+    E('rect', {x:x - w / 2, y, width:w, height:36, rx:5, class:'tl-callout'});
+    E('text', {x, y:y + 15, class:'tl-callout-text', 'text-anchor':'middle'}, text);
+    E('text', {x, y:y + 29, class:'tl-callout-date', 'text-anchor':'middle'}, date);
+  };
+  const lineEnd = (x, y, text) => E('text', {x:x + 6, y:y + 4, class:'tl-line-label'}, text);
+  const pointer = (x1, y1, x2, y2) => E('line', {x1, y1, x2, y2, class:'tl-pointer'});
+
+  // Bitcoin's row, with a node at the splits and upgrades
+  const mainX = [100, 164, 228, 646];
+  link(24, Y.btc, 770, Y.btc, 'btc'); lineEnd(770, Y.btc, 'BTC');
+  mainX.forEach(x => { E('circle', {cx:x, cy:Y.btc, r:6, class:'tl-node btc'}); E('circle', {cx:x, cy:Y.btc, r:10, class:'tl-ring'}); });
+  // BCH branch, and BSV off it
+  E('line', {x1:mainX[0] + 5, y1:Y.btc + 7, x2:150, y2:Y.bch, class:'tl-link bch'});
+  link(150, Y.bch, 770, Y.bch, 'bch'); lineEnd(770, Y.bch, 'BCH');
+  const bsvX = 582;
+  E('circle', {cx:bsvX, cy:Y.bch, r:6, class:'tl-node bch'}); E('circle', {cx:bsvX, cy:Y.bch, r:10, class:'tl-ring'});
+  E('line', {x1:bsvX + 4, y1:Y.bch + 7, x2:bsvX + 40, y2:Y.bsv, class:'tl-link bsv'});
+  link(bsvX + 40, Y.bsv, 770, Y.bsv, 'bsv'); lineEnd(770, Y.bsv, 'BSV');
+  // callouts
+  pointer(mainX[3], Y.btc + 10, mainX[3], 200);  callout(mainX[3], 200, MAIN[3].callout, fmtDate(MAIN[3].date));
+  pointer(520, 292, 604, 292);                    callout(440, 274, BSV.callout, fmtDate(BSV.date));
+  pointer(188, 218, 132, 218);                    callout(262, 200, MAIN[0].callout, fmtDate(MAIN[0].date));
+  pointer(mainX[1], 150, mainX[1], Y.btc - 10);  callout(mainX[1], 118, MAIN[1].callout, fmtDate(MAIN[1].date));
+  pointer(240, 88, 258, 127);                     callout(158, 56, MAIN[2].callout, fmtDate(MAIN[2].date));
+  // BTG's own branch: navy until the July 2018 algorithm change, plum after
+  const x0 = 300, x1 = 740, step = (x1 - x0) / (BTG.length - 1), xs = BTG.map((_, i) => x0 + i * step);
+  const sw = BTG.findIndex(e => e.date >= '2018-07-03');
+  link(mainX[2] + 4, Y.btc - 7, xs[0] - 8, Y.btg + 7, 'btg');
+  BTG.forEach((e, i) => {
+    const x = xs[i], seg = i >= sw ? ' seg2' : '';
+    if (i) link(xs[i - 1] + 9, Y.btg, x - 9, Y.btg, i >= sw ? 'btg2' : 'btg');
+    const stem = i % 2 ? 30 : 16;
+    E('line', {x1:x, x2:x, y1:Y.btg - 8, y2:Y.btg - stem, class:'timeline-stem'});
+    E('text', {x, y:Y.btg - stem - 5, class:'timeline-label', 'text-anchor':'middle'}, e.label);
+    E('text', {x:i ? x : x - 7, y:Y.btg + (i % 2 ? 36 : 23), class:'timeline-date', 'text-anchor':i ? 'middle' : 'start'}, fmtDate(e.date));
+    if (e.type === 'listing') E('circle', {cx:x, cy:Y.btg, r:7, class:'timeline-marker' + seg});
+    else if (e.type === 'delist') E('circle', {cx:x, cy:Y.btg, r:7, class:'timeline-marker delist' + seg});
+    else if (e.type === 'attack') E('rect', {x:x - 5.5, y:Y.btg - 5.5, width:11, height:11, class:'timeline-marker attack' + seg, transform:`rotate(45 ${x} ${Y.btg})`});
+    else E('rect', {x:x - 6, y:Y.btg - 6, width:12, height:12, rx:1.5, class:'timeline-marker' + seg});
+  });
+  link(xs[xs.length - 1] + 9, Y.btg, 770, Y.btg, 'btg2'); lineEnd(770, Y.btg, 'BTG');
+  // legend
+  const LY = 360, items = [['circle', 'Listado en exchange'], ['delist', 'Deslistado'], ['attack', 'Ataque 51%'], ['protocol', 'Evento de protocolo']];
+  items.forEach(([k, t], i) => {
+    const x = 24 + i * 200;
+    if (k === 'circle') E('circle', {cx:x + 6, cy:LY, r:6, class:'timeline-marker'});
+    else if (k === 'delist') E('circle', {cx:x + 6, cy:LY, r:6, class:'timeline-marker delist'});
+    else if (k === 'attack') E('rect', {x:x + 1, y:LY - 5, width:10, height:10, class:'timeline-marker attack', transform:`rotate(45 ${x + 6} ${LY})`});
+    else E('rect', {x:x, y:LY - 6, width:12, height:12, rx:1.5, class:'timeline-marker'});
+    E('text', {x:x + 22, y:LY + 4, 'font-size':14, fill:css('--ink-soft'), 'font-family':'IBM Plex Sans'}, t);
+  });
+})();
+
+// ---- slide 11: BTCB2 timeline ----
+(function(){
+  const svg = document.getElementById('b2-timeline');
+  const ev = [
+    ['OCT 2025', 'Core v30', 'quita el límite de 83 bytes a OP_RETURN', css('--btc')],
+    ['MAR 2026', 'Primer bloque', 'que señaliza BIP-110', css('--b2')],
+    ['8 AGO', 'División', 'bloque 961,632; >99% del hashrate se queda en BTC', css('--b2')],
+    ['12 AGO', 'Lotería', 'en Testnet4 elige BLAKE2b como nueva prueba de trabajo', css('--b2')],
+    ['30 AGO', 'BLAKE2b', 'primer bloque, el 961,640: nace BTCB2', css('--b2')],
+    ['21 SEP', 'Regla de 45 días', 'las recompensas de minería esperan ~45 días para gastarse', css('--b2')],
+  ];
+  const x0 = 120, x1 = 1260, y = 150, step = (x1 - x0) / (ev.length - 1);
+  el('line', {x1:x0, x2:x1, y1:y, y2:y, stroke:css('--rule'), 'stroke-width':4}, svg);
+  ev.forEach(([d, t, sub, c], i) => {
+    const x = x0 + i * step, anchor = 'middle';
+    el('circle', {cx:x, cy:y, r:17, fill:c, stroke:'#fff', 'stroke-width':5}, svg);
+    el('text', {x, y:y - 42, 'text-anchor':anchor, class:'tick', 'font-size':22}, svg, d);
+    el('text', {x, y:y + 66, 'text-anchor':anchor, 'font-size':30, 'font-weight':600, fill:css('--ink'), 'font-family':'IBM Plex Sans'}, svg, t);
+    // wrap the description to ~22 characters per line
+    const words = sub.split(' '), lines = [''];
+    words.forEach(w => { if ((lines[lines.length - 1] + ' ' + w).trim().length > 17) lines.push(w); else lines[lines.length - 1] = (lines[lines.length - 1] + ' ' + w).trim(); });
+    lines.forEach((ln, k) => el('text', {x, y:y + 108 + k * 32, 'text-anchor':anchor, 'font-size':23, fill:css('--ink-soft'), 'font-family':'IBM Plex Sans'}, svg, ln));
+  });
+})();
+
+// ---- slide 13: BTCB2's market (price range) and block space by transaction type, BTCB2 over BTC ----
+(function(){
+  const svg = document.getElementById('chart-market'), W = 1380, SANS = 'IBM Plex Sans', MONO = 'IBM Plex Mono';
+  const ink = css('--ink'), soft = css('--ink-soft'), b2 = css('--b2');
+  const T = (x, y, txt, o = {}) => el('text', Object.assign({x, y, 'font-family':SANS, fill:soft, 'font-size':22}, o), svg, txt);
+
+  // 1) Price: BTCB2 as % of BTC, lowest and highest hourly close (Neoxa BTCB2/USDC, Coinbase BTC/USD),
+  //    and the latest: $689 on 6 Oct against BTC at $84,107 (Coinbase, same moment) = 0.82%.
+  const MIN = {v:0.0841, usd:'$65', d:'2 sep'}, MAX = {v:2.0864, usd:'$1,670', d:'5 sep'}, NOW = {v:689 / 84107 * 100, usd:'$689', d:'6 oct'};
+  const X = v => v / 2.5 * W;
+  T(0, 18, 'Precio de BTCB2 como % del precio de BTC: mínimo, máximo y hoy');
+  el('rect', {x:0, y:45, width:W, height:14, rx:7, fill:'#E3E6E8'}, svg);
+  el('rect', {x:X(MIN.v), y:45, width:X(MAX.v) - X(MIN.v), height:14, rx:7, fill:b2, class:'grow-x'}, svg);
+  [MIN, MAX].forEach(m => el('circle', {cx:X(m.v), cy:52, r:12, fill:b2, stroke:css('--bg'), 'stroke-width':3, class:'appear'}, svg));
+  T(0, 86, '0%', {'font-size':16, fill:css('--ink-mute'), 'font-family':MONO});
+  T(W, 86, '2.5%', {'font-size':16, fill:css('--ink-mute'), 'font-family':MONO, 'text-anchor':'end'});
+  T(0, 124, 'MÍN ' + MIN.v.toFixed(2) + '%', {'font-size':32, 'font-weight':600, fill:b2, 'font-family':MONO, class:'appear'});
+  T(0, 148, MIN.usd + ' · ' + MIN.d, {'font-size':19, 'font-family':MONO, class:'appear'});
+  T(X(MAX.v) + 12, 124, 'MÁX ' + MAX.v.toFixed(2) + '%', {'font-size':32, 'font-weight':600, fill:b2, 'font-family':MONO, 'text-anchor':'end', class:'appear'});
+  T(X(MAX.v) + 12, 148, MAX.usd + ' · ' + MAX.d, {'font-size':19, 'font-family':MONO, 'text-anchor':'end', class:'appear'});
+  el('circle', {cx:X(NOW.v), cy:52, r:13, fill:'#fff', stroke:ink, 'stroke-width':4, class:'appear'}, svg);
+  T(X(NOW.v), 124, 'HOY ' + NOW.v.toFixed(2) + '%', {'font-size':32, 'font-weight':600, fill:ink, 'font-family':MONO, 'text-anchor':'middle', class:'appear'});
+  T(X(NOW.v), 148, NOW.usd + ' · ' + NOW.d, {'font-size':19, 'font-family':MONO, 'text-anchor':'middle', class:'appear'});
+
+  // 2) Block space by kind of transaction, 8 Aug - 1 Oct 2026 (% of each chain's block space, spam_breakdown_daily.csv).
+  //    Each transaction counts once: replay (also confirmed on the other chain) first, then Runes, inscriptions,
+  //    OP_RETURN > 83 B; originals are everything else that exists only on that chain.
+  const C = {orig:'#5E656D', rep:'#B4BAC0', repRune:'#E87BA4', rune:'#E87BA4', ins:'#2A78D6', op83:'#E34948'};
+  const NAME = {orig:'Originales', rep:'Replay', repRune:'Runas replay', rune:'Runas', ins:'Inscripciones', op83:'OP_RETURN > 83 B'};
+  const TXT = {orig:'#fff', rep:'#1A1D22', rune:'#3D1022', ins:'#fff', op83:'#fff'};
+  const hatch = el('pattern', {id:'replay-hatch', width:12, height:12, patternUnits:'userSpaceOnUse', patternTransform:'rotate(45)'}, el('defs', {}, svg));
+  el('rect', {x:0, y:0, width:4, height:12, fill:'#fff', 'fill-opacity':.6}, hatch);
+  const row = (y, name, total, parts, notes = {}) => {
+    T(0, y, name, {'font-size':32, 'font-weight':600, fill:ink, 'font-family':'Source Serif 4'});
+    T(W, y, total, {'font-size':19, 'font-family':MONO, 'text-anchor':'end'});
+    let x = 0; const below = [];
+    parts.forEach(([k, p, mvb]) => {
+      const w = p / 100 * W, lab = NAME[k] + ' ' + (p < 10 ? p.toFixed(1) : p.toFixed(0)) + '%' + (mvb ? ' · ' + mvb + ' MvB' : '');
+      el('rect', {x, y:y + 14, width:w, height:54, fill:C[k], class:'grow-x'}, svg);
+      if (k === 'rep' || k === 'repRune') el('rect', {x, y:y + 14, width:w, height:54, fill:'url(#replay-hatch)', class:'grow-x'}, svg);
+      if (w > lab.length * 13 + 30) T(x + 18, y + 49, lab, {'font-size':23, 'font-weight':600, fill:TXT[k], stroke:C[k], 'stroke-width':7, 'paint-order':'stroke', class:'appear'});
+      else if (!['ins', 'op83', 'repRune'].includes(k)) below.push([x, k === 'rep' && notes.rep ? lab + notes.rep : lab, k]);
+      x += w;
+    });
+    below.forEach(([bx, lab, k]) => T(bx, y + 98, lab, {'font-size':20, 'font-weight':600, fill:k === 'rune' ? '#B03A64' : ink, class:'appear'}));
+  };
+  row(204, 'BTCB2', '816 MvB de espacio de bloque', [['orig', 6.03], ['rep', 92.07], ['repRune', 1.90]]);
+  // replayed Runes: 18,494 of the 3,235,470 replayed transactions (0.6%), 2% of replayed block space
+  T(W, 302, 'Runas replay: 18,494 de 3.2M transacciones replay (0.6%) · 1.9% del espacio', {'font-size':20, 'font-weight':600, fill:'#B03A64', 'text-anchor':'end', class:'appear'});
+
+  // MvB used by each kind of transaction on BTC (spam_breakdown_daily.csv, 8 Aug - 1 Oct)
+  row(364, 'BTC', '7,729 MvB de espacio de bloque usado', [['orig', 47.72, '3,688'], ['rep', 9.92, '767'], ['rune', 39.97, '3,089'], ['ins', 2.24], ['op83', 0.14]], {rep:' · Runas 0.2%'});
+  // what BIP-110 would have rejected on BTC: 2.38% of block space (184 MvB)
+  const rx = W * (1 - 0.0238);
+  el('rect', {x:rx - 3, y:374, width:W - rx + 3, height:74, rx:4, fill:'none', stroke:ink, 'stroke-width':3, class:'appear'}, svg);
+  el('path', {d:`M${rx} 458 V466 H${W} V458 M${(rx + W) / 2} 466 V478`, fill:'none', stroke:ink, 'stroke-width':2.5, class:'appear'}, svg);
+  T(W, 510, 'BIP-110 habría rechazado el 2.38% del espacio de BTC (184 MvB)', {'font-size':25, 'font-weight':600, fill:ink, 'text-anchor':'end', class:'appear'});
+  T(W, 535, '94% inscripciones · 6% OP_RETURN > 83 B', {'font-size':20, 'text-anchor':'end', class:'appear'});
+  // legend
+  let lx = 0;
+  ['orig', 'rep', 'rune', 'ins', 'op83'].forEach(k => {
+    el('rect', {x:lx, y:550, width:18, height:18, rx:4, fill:C[k]}, svg);
+    if (k === 'rep') el('rect', {x:lx, y:550, width:18, height:18, rx:4, fill:'url(#replay-hatch)'}, svg);
+    T(lx + 28, 566, NAME[k], {'font-size':19}); lx += 28 + NAME[k].length * 10.5 + 34;
+  });
+  T(W, 566, 'Replay: la misma transacción confirmada en ambas cadenas', {'font-size':17, fill:css('--ink-mute'), 'text-anchor':'end'});
+})();
+
+
+fit();
+// every slide is a block: its header carries the block number (001, 002, …) and, on the fork titles, the real split block
+slides.forEach((sl, k) => {
+  const h = document.createElement('div'); h.className = 'bhead';
+  h.innerHTML = '<b>' + String(k + 1).padStart(6, '0') + '</b>' + (sl.dataset.block ? '<span class="meta">' + sl.dataset.block + '</span>' : '');
+  sl.prepend(h);
+});
+
+// #inicio (or nothing) opens on the map, #n on slide n
+{ const h = location.hash.slice(1), n = parseInt(h);
+  go(n ? stops.indexOf(Math.max(0, Math.min(slides.length - 1, n - 1))) : 0, true); }
+</script>
+</body>
+</html>
