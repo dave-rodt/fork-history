@@ -390,7 +390,7 @@
     <div class="kicker">Bitcoin BLAKE2b · 8 ago – 1 oct 2026</div>
     <h2 style="max-width:none; font-size:56px;">BTCB2 frente a BTC</h2>
     <div class="grow panel" style="margin-top:22px;"><svg class="chart" id="chart-market" viewBox="0 0 1380 574"></svg></div>
-    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Precio: Neoxa y Coinbase, cierres por hora · Espacio de bloque: crawl propio de ambas cadenas</span></div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Precio: Neoxa y Coinbase, cierres por hora · Transacciones: crawl propio de ambas cadenas</span></div>
   </section>
 
   <!-- 15 Conclusión divisor -->
@@ -970,7 +970,7 @@ function lineChart(svg, series, o){
   T(X(NOW.v), 124, 'HOY ' + NOW.v.toFixed(2) + '%', {'font-size':32, 'font-weight':600, fill:ink, 'font-family':MONO, 'text-anchor':'middle', class:'appear'});
   T(X(NOW.v), 148, NOW.usd + ' · ' + NOW.d, {'font-size':19, 'font-family':MONO, 'text-anchor':'middle', class:'appear'});
 
-  // 2) Block space by kind of transaction, 8 Aug - 1 Oct 2026 (% of each chain's block space, spam_breakdown_daily.csv).
+  // 2) Transactions by kind, 8 Aug - 1 Oct 2026 (% of each chain's transaction count, spam_breakdown_daily.csv).
   //    Each transaction counts once: replay (also confirmed on the other chain) first, then Runes, inscriptions,
   //    OP_RETURN > 83 B; originals are everything else that exists only on that chain.
   const C = {orig:'#5E656D', rep:'#B4BAC0', repRune:'#E87BA4', rune:'#E87BA4', ins:'#2A78D6', op83:'#E34948'};
@@ -983,7 +983,7 @@ function lineChart(svg, series, o){
     T(W, y, total, {'font-size':19, 'font-family':MONO, 'text-anchor':'end'});
     let x = 0; const below = [];
     parts.forEach(([k, p, mvb]) => {
-      const w = p / 100 * W, lab = NAME[k] + ' ' + (p < 10 ? p.toFixed(1) : p.toFixed(0)) + '%' + (mvb ? ' · ' + mvb + ' MvB' : '');
+      const w = p / 100 * W, lab = NAME[k] + ' ' + (p < 10 ? p.toFixed(1) : p.toFixed(0)) + '%' + (mvb ? ' · ' + mvb : '');
       el('rect', {x, y:y + 14, width:w, height:54, fill:C[k], class:'grow-x'}, svg);
       if (k === 'rep' || k === 'repRune') el('rect', {x, y:y + 14, width:w, height:54, fill:'url(#replay-hatch)', class:'grow-x'}, svg);
       if (w > lab.length * 13 + 30) T(x + 18, y + 49, lab, {'font-size':23, 'font-weight':600, fill:TXT[k], stroke:C[k], 'stroke-width':7, 'paint-order':'stroke', class:'appear'});
@@ -992,18 +992,18 @@ function lineChart(svg, series, o){
     });
     below.forEach(([bx, lab, k]) => T(bx, y + 98, lab, {'font-size':20, 'font-weight':600, fill:k === 'rune' ? '#B03A64' : ink, class:'appear'}));
   };
-  row(204, 'BTCB2', '816 MvB de espacio de bloque', [['orig', 6.03], ['rep', 92.07], ['repRune', 1.90]]);
-  // replayed Runes: 18,494 of the 3,235,470 replayed transactions (0.6%), 2% of replayed block space
-  T(W, 302, 'Runas replay: 18,494 de 3.2M transacciones replay (0.6%) · 1.9% del espacio', {'font-size':20, 'font-weight':600, fill:'#B03A64', 'text-anchor':'end', class:'appear'});
+  row(204, 'BTCB2', '3.29M transacciones', [['orig', 1.53], ['rep', 97.91], ['repRune', 0.56]]);
+  // replayed Runes: 18,494 of the 3,285,701 BTCB2 transactions (0.56%)
+  T(W, 302, 'Runas replay: 18,494 transacciones (0.56%)', {'font-size':20, 'font-weight':600, fill:'#B03A64', 'text-anchor':'end', class:'appear'});
 
-  // MvB used by each kind of transaction on BTC (spam_breakdown_daily.csv, 8 Aug - 1 Oct)
-  row(364, 'BTC', '7,729 MvB de espacio de bloque usado', [['orig', 47.72, '3,688'], ['rep', 9.92, '767'], ['rune', 39.97, '3,089'], ['ins', 2.24], ['op83', 0.14]], {rep:' · Runas 0.2%'});
-  // what BIP-110 would have rejected on BTC: 2.38% of block space (184 MvB)
-  const rx = W * (1 - 0.0238);
+  // transactions of each kind on BTC (spam_breakdown_daily.csv, 8 Aug - 1 Oct; 37,079,013 in all)
+  row(364, 'BTC', '37.08M transacciones', [['orig', 29.08, '10.8M'], ['rep', 8.73, '3.24M'], ['rune', 61.13, '22.7M'], ['ins', 1.02], ['op83', 0.05]], {rep:' · Runas 0.05%'});
+  // what BIP-110 would have rejected on BTC: 1.07% of transactions (396,257)
+  const rx = W * (1 - 0.0107);
   el('rect', {x:rx - 3, y:374, width:W - rx + 3, height:74, rx:4, fill:'none', stroke:ink, 'stroke-width':3, class:'appear'}, svg);
   el('path', {d:`M${rx} 458 V466 H${W} V458 M${(rx + W) / 2} 466 V478`, fill:'none', stroke:ink, 'stroke-width':2.5, class:'appear'}, svg);
-  T(W, 510, 'BIP-110 habría rechazado el 2.38% del espacio de BTC (184 MvB)', {'font-size':25, 'font-weight':600, fill:ink, 'text-anchor':'end', class:'appear'});
-  T(W, 535, '94% inscripciones · 6% OP_RETURN > 83 B', {'font-size':20, 'text-anchor':'end', class:'appear'});
+  T(W, 510, 'BIP-110 habría rechazado el 1.07% de las transacciones de BTC (396,257)', {'font-size':25, 'font-weight':600, fill:ink, 'text-anchor':'end', class:'appear'});
+  T(W, 535, '95% inscripciones · 4% OP_RETURN > 83 B', {'font-size':20, 'text-anchor':'end', class:'appear'});
   // legend
   let lx = 0;
   ['orig', 'rep', 'rune', 'ins', 'op83'].forEach(k => {
