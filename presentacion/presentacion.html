@@ -353,7 +353,7 @@
   </section>
 
   <!-- 9 Retrospectivas de BCH y BTG -->
-  <section data-row="-1" data-v="0.0004" data-vl="BTG 0.0004%" data-c="--btg" class="slide bch">
+  <section data-row="-1" data-v="0.00068" data-vl="BTG 0.0007%" data-c="--btg" class="slide bch">
     <div class="kicker">Bitcoin Cash y Bitcoin Gold</div>
     <h2 style="max-width:none;">Retrospectivas</h2>
     <div class="retro">
@@ -466,7 +466,7 @@
     <div class="kicker">Lecciones de la jungla · cada fork frente a su cadena padre</div>
     <h2 style="max-width:none;">En la jungla, pelear por una idea tiene un costo</h2>
     <div class="grow" style="margin-top:26px;"><svg class="chart" id="chart-vsparent" viewBox="0 0 1380 520"></svg></div>
-    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Escala logarítmica · último mes: sep 2026 (precio de BTG: jul 2026; de BTCB2: 7 oct) · CoinMetrics, crawl propio</span></div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Escala log · sep 2026 (BTCB2: 7 oct) · Precio de BTG: Gate.io · CoinMetrics, crawl propio</span></div>
   </section>
 
   <!-- 15 Cuatro lecciones -->
@@ -824,7 +824,7 @@ function lineChart(svg, series, o){
   const rows = [
     ['ETC', 'frente a ETH', css('--etc'), 0.32, 0.47],
     ['BCH', 'frente a BTC', '#07A57B', 0.33, 1.84],
-    ['BTG', 'frente a BTC', css('--btg'), 0.0004, 0.005],
+    ['BTG', 'frente a BTC', css('--btg'), 0.00068, 0.005],  // Sep price: Gate.io BTG/USDT mean daily close $0.543 over BTC's Sep mean $80,366
     ['BTCB2', 'frente a BTC · tx sin replay', css('--b2'), 0.84, 0.22],  // Sep: 46,508 own txs vs 20,879,212 on BTC (10.9% with replay)
   ];
   rows.forEach(([name, sub, c, price, tx], i) => {
