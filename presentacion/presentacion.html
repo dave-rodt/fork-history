@@ -466,7 +466,7 @@
     <div class="kicker">Lecciones de la jungla · cada fork frente a su cadena padre</div>
     <h2 style="max-width:none;">En la jungla, pelear por una idea tiene un costo</h2>
     <div class="grow" style="margin-top:26px;"><svg class="chart" id="chart-vsparent" viewBox="0 0 1380 520"></svg></div>
-    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Escala log · sep 2026 (BTCB2: 7 oct) · Precio de BTG: Gate.io · CoinMetrics, crawl propio</span></div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Escala log · inicio ≈ primer mes · último: sep 2026 · BTCB2 tx: 1ª y última semana · CoinMetrics, crawl, Gate.io</span></div>
   </section>
 
   <!-- 15 Cuatro lecciones -->
@@ -810,33 +810,52 @@ function lineChart(svg, series, o){
     (function sway(now){ set(6 * Math.sin(now / 1700)); requestAnimationFrame(sway); })(performance.now());
 })();
 
-// ---- slide 14: each fork today as % of its parent chain, price and transactions (log scale) ----
+// ---- slide 14: each fork as % of its parent chain, at the start and at the latest month (log scale) ----
 (function(){
-  const svg = document.getElementById('chart-vsparent'), X0 = 420, W = 820, lo = -4, hi = 2;
+  const svg = document.getElementById('chart-vsparent'), X0 = 420, W = 700, lo = -4, hi = 2, LX = 1148;
   const X = v => X0 + (Math.log10(v) - lo) / (hi - lo) * W;
   const T = (x, y, t, o = {}) => el('text', Object.assign({x, y, fill:css('--ink-soft'), 'font-family':'IBM Plex Sans', 'font-size':20}, o), svg, t);
   const fmt = v => (v >= 1 ? v.toFixed(1) : v >= 0.01 ? v.toFixed(2) : v.toFixed(v >= 0.001 ? 3 : 4)) + '%';
   [0.0001, 0.01, 1, 100].forEach(v => {
-    el('line', {x1:X(v), x2:X(v), y1:30, y2:510, stroke:css('--rule'), 'stroke-dasharray':'3 5'}, svg);
-    T(X(v), 18, {0.0001:'0.0001%', 0.01:'0.01%', 1:'1%', 100:'100% = igual'}[v], {'text-anchor':'middle', 'font-size':16, fill:css('--ink-mute'), 'font-family':'IBM Plex Mono'});
+    el('line', {x1:X(v), x2:X(v), y1:44, y2:510, stroke:css('--rule'), 'stroke-dasharray':'3 5'}, svg);
+    T(X(v), 38, {0.0001:'0.0001%', 0.01:'0.01%', 1:'1%', 100:'100%'}[v], {'text-anchor':'middle', 'font-size':16, fill:css('--ink-mute'), 'font-family':'IBM Plex Mono'});
   });
-  // latest month: price and transactions, each as % of the parent chain
+  // legend: hollow circle = start, filled bar = latest
+  el('circle', {cx:X0 + 9, cy:10, r:8, fill:'#fff', stroke:css('--ink'), 'stroke-width':3}, svg);
+  T(X0 + 26, 16, 'inicio', {'font-size':17, 'font-family':'IBM Plex Mono'});
+  el('rect', {x:X0 + 120, y:2, width:26, height:16, rx:4, fill:css('--ink-soft')}, svg);
+  T(X0 + 154, 16, 'último dato', {'font-size':17, 'font-family':'IBM Plex Mono'});
+  T(X0 + 300, 16, '100% = igual que su cadena padre', {'font-size':17, 'font-family':'IBM Plex Mono', fill:css('--ink-mute')});
+  T(LX, 16, 'inicio → último', {'font-size':17, fill:css('--ink-mute'), 'font-family':'IBM Plex Mono'});
+  // [name, sub, color, price [start, latest], transactions [start, latest]]
+  //   price start: first month of trading (ETC Jul 2016, BCH Aug 2017, BTG Oct 2017); BTCB2: first real hour (1 Sep 2026).
+  //   ETC txs: exactly slide 6's figures (48.2% at the fork INCLUDES replayed ETH txs, user: align 14 with 6).
+  //   BCH / BTG had replay protection from day one, so all their txs are their own: BCH first 30 days 7.78%,
+  //   BTG first 30 live days (from 13 Nov 2017) 2.42%.
+  //   BTCB2 own txs (not replays) vs BTC, same days: first week without day one (31 Aug - 6 Sep) 17,310 / 4,853,721 = 0.357%;
+  //   last week (25 Sep - 1 Oct) 5,662 / 4,771,432 = 0.119%.
+  //   latest: Sep 2026 (BTG price from Gate.io; BTCB2 price 7 Oct).
   const rows = [
-    ['ETC', 'frente a ETH', css('--etc'), 0.32, 0.47],
-    ['BCH', 'frente a BTC', '#07A57B', 0.33, 1.84],
-    ['BTG', 'frente a BTC', css('--btg'), 0.00068, 0.005],  // Sep price: Gate.io BTG/USDT mean daily close $0.543 over BTC's Sep mean $80,366
-    ['BTCB2', 'frente a BTC · tx sin replay', css('--b2'), 0.84, 0.22],  // Sep: 46,508 own txs vs 20,879,212 on BTC (10.9% with replay)
+    ['ETC', 'frente a ETH · con replay', css('--etc'), [12.6, 0.32], [48.2, 0.47]],
+    ['BCH', 'frente a BTC', '#07A57B', [11.6, 0.33], [7.78, 1.84]],
+    ['BTG', 'frente a BTC', css('--btg'), [2.39, 0.00068], [2.42, 0.005]],
+    ['BTCB2', 'frente a BTC · tx sin replay', css('--b2'), [0.127, 0.84], [0.357, 0.119]],
   ];
   rows.forEach(([name, sub, c, price, tx], i) => {
-    const y = 50 + i * 118;
+    const y = 56 + i * 112;
     T(0, y + 34, name, {'font-size':36, 'font-weight':600, fill:css('--ink'), 'font-family':'Source Serif 4'});
     T(0, y + 64, sub, {'font-size':18, fill:css('--ink-mute')});
-    [['Precio', price, 1], ['Tx propias', tx, .45]].forEach(([lab, v, op], r) => {
-      const by = y + 6 + r * 46;
+    [['Precio', price, 1], ['Transacciones', tx, .45]].forEach(([lab, [a, b], op], r) => {
+      const by = y + 6 + r * 46, cy = by + 14;
       T(250, by + 21, lab, {'font-size':18, 'font-family':'IBM Plex Mono', fill:css('--ink-mute')});
       el('rect', {x:X0, y:by, width:W, height:28, rx:6, fill:'#F0F2F4'}, svg);
-      el('rect', {x:X0, y:by, width:X(v) - X0, height:28, rx:6, fill:c, 'fill-opacity':op, class:'grow-x'}, svg);
-      T(X(v) + 12, by + 22, fmt(v), {'font-size':21, 'font-weight':600, fill:css('--ink'), 'font-family':'IBM Plex Mono', class:'appear'});
+      el('rect', {x:X0, y:by, width:X(b) - X0, height:28, rx:6, fill:c, 'fill-opacity':op, class:'grow-x'}, svg);
+      // start marker, joined to the latest value by a dashed line
+      el('line', {x1:X(a), x2:X(b), y1:cy, y2:cy, stroke:css('--ink'), 'stroke-width':2, 'stroke-dasharray':'4 4', class:'appear'}, svg);
+      el('circle', {cx:X(a), cy, r:10, fill:'#fff', stroke:css('--ink'), 'stroke-width':3, class:'appear'}, svg);
+      const t = T(LX, by + 22, '', {'font-size':21, 'font-weight':600, fill:css('--ink'), 'font-family':'IBM Plex Mono', class:'appear'});
+      const s1 = el('tspan', {fill:css('--ink-mute'), 'font-weight':500}, t, fmt(a) + ' → ');
+      el('tspan', {}, t, fmt(b));
     });
   });
 })();
