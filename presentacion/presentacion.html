@@ -330,7 +330,7 @@
     <div class="kicker">Ethereum vs. Ethereum Classic</div>
     <h2 style="max-width:none;">El lado que cambió las reglas se quedó con el valor</h2>
     <div class="grow" style="margin-top:26px;"><svg class="chart" id="chart-etcbars" viewBox="0 0 1380 520"></svg></div>
-    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>ETC como % de ETH · escala log · CoinMetrics, Electric Capital y GitHub</span></div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>ETC como % de ETH · tx sin replay · escala log · CoinMetrics, Electric Capital, GitHub</span></div>
   </section>
 
   <!-- 7 BCH + BTG divisor -->
@@ -466,7 +466,7 @@
     <div class="kicker">Lecciones de la jungla · cada fork frente a su cadena padre</div>
     <h2 style="max-width:none;">En la jungla, pelear por una idea tiene un costo</h2>
     <div class="grow" style="margin-top:26px;"><svg class="chart" id="chart-vsparent" viewBox="0 0 1380 520"></svg></div>
-    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Escala log · inicio ≈ primer mes · último: sep 2026 · BTCB2 tx: 1ª y última semana · CoinMetrics, crawl, Gate.io</span></div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Escala log · inicio ≈ primer mes · último: sep 2026 · BTCB2 tx: 1ª vs última sem. de sep</span></div>
   </section>
 
   <!-- 15 Cuatro lecciones -->
@@ -765,7 +765,7 @@ function lineChart(svg, series, o){
     T(X(v), 18, {0.001:'0.001%', 0.01:'0.01%', 0.1:'0.1%', 1:'1%', 10:'10%', 100:'100% = igual'}[v], {'text-anchor':'middle', 'font-size':16, fill:'#7E848C', 'font-family':'IBM Plex Mono'});
   });
   // ETC / ETH: first month after the fork and the latest month (eth-vs-etc.html DATA, CoinMetrics + Electric Capital)
-  const rows = [['Precio', 12.6, 0.32], ['Transacciones', 48.2, 0.47], ['Fees pagados', 3.5, 0.006], ['Desarrolladores|activos', 57.0, 3.5]];
+  const rows = [['Precio', 12.6, 0.32], ['Transacciones|propias', 17.1, 0.47], ['Fees pagados', 3.5, 0.006], ['Desarrolladores|activos', 57.0, 3.5]];
   rows.forEach(([name, start, now], i) => {
     const y = 48 + i * 118, lines = name.split('|');
     lines.forEach((ln, k) => T(0, y + 46 + (k - (lines.length - 1) / 2) * 32, ln, {'font-size':28, 'font-weight':600, fill:'#EDECE6', 'font-family':'IBM Plex Sans'}));
@@ -827,25 +827,24 @@ function lineChart(svg, series, o){
   T(X0 + 154, 16, 'último dato', {'font-size':17, 'font-family':'IBM Plex Mono'});
   T(X0 + 300, 16, '100% = igual que su cadena padre', {'font-size':17, 'font-family':'IBM Plex Mono', fill:css('--ink-mute')});
   T(LX, 16, 'inicio → último', {'font-size':17, fill:css('--ink-mute'), 'font-family':'IBM Plex Mono'});
-  // [name, sub, color, price [start, latest], transactions [start, latest]]
+  // [name, sub, color, price [start, latest], own transactions [start, latest]]
   //   price start: first month of trading (ETC Jul 2016, BCH Aug 2017, BTG Oct 2017); BTCB2: first real hour (1 Sep 2026).
-  //   ETC txs: exactly slide 6's figures (48.2% at the fork INCLUDES replayed ETH txs, user: align 14 with 6).
-  //   BCH / BTG had replay protection from day one, so all their txs are their own: BCH first 30 days 7.78%,
-  //   BTG first 30 live days (from 13 Nov 2017) 2.42%.
-  //   BTCB2 own txs (not replays) vs BTC, same days: first week without day one (31 Aug - 6 Sep) 17,310 / 4,853,721 = 0.357%;
-  //   last week (25 Sep - 1 Oct) 5,662 / 4,771,432 = 0.119%.
+  //   txs are each chain's OWN (no replays), % of the parent's txs on the same days:
+  //   ETC Jul 2016 (from the fork) 98,843 / 578,029 = 17.1% (same figure as slide 6); BCH and BTG had replay protection
+  //   from day one: BCH first 30 days 7.78%, BTG first 30 live days (from 13 Nov 2017) 2.42%;
+  //   BTCB2 first week of Sep (1-7) 19,472 / 4,855,677 = 0.401%; last week of Sep (24-30) 5,065 / 4,869,748 = 0.104%.
   //   latest: Sep 2026 (BTG price from Gate.io; BTCB2 price 7 Oct).
   const rows = [
-    ['ETC', 'frente a ETH · con replay', css('--etc'), [12.6, 0.32], [48.2, 0.47]],
+    ['ETC', 'frente a ETH · tx sin replay', css('--etc'), [12.6, 0.32], [17.1, 0.47]],
     ['BCH', 'frente a BTC', '#07A57B', [11.6, 0.33], [7.78, 1.84]],
     ['BTG', 'frente a BTC', css('--btg'), [2.39, 0.00068], [2.42, 0.005]],
-    ['BTCB2', 'frente a BTC · tx sin replay', css('--b2'), [0.127, 0.84], [0.357, 0.119]],
+    ['BTCB2', 'frente a BTC · tx sin replay', css('--b2'), [0.127, 0.84], [0.401, 0.104]],
   ];
   rows.forEach(([name, sub, c, price, tx], i) => {
     const y = 56 + i * 112;
     T(0, y + 34, name, {'font-size':36, 'font-weight':600, fill:css('--ink'), 'font-family':'Source Serif 4'});
     T(0, y + 64, sub, {'font-size':18, fill:css('--ink-mute')});
-    [['Precio', price, 1], ['Transacciones', tx, .45]].forEach(([lab, [a, b], op], r) => {
+    [['Precio', price, 1], ['Tx propias', tx, .45]].forEach(([lab, [a, b], op], r) => {
       const by = y + 6 + r * 46, cy = by + 14;
       T(250, by + 21, lab, {'font-size':18, 'font-family':'IBM Plex Mono', fill:css('--ink-mute')});
       el('rect', {x:X0, y:by, width:W, height:28, rx:6, fill:'#F0F2F4'}, svg);
