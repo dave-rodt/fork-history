@@ -145,6 +145,7 @@
   .btcb2 .bhead b, .btcb2 .bhead .meta{color:#fff;}
   .btcb2 #b2-timeline text{fill:#fff;}
   .btcb2 #b2-timeline line{stroke:rgba(255,255,255,.55);}
+  .btcb2 #b2-timeline path{fill:rgba(255,255,255,.85);}
   .btcb2 #b2-timeline circle{fill:#fff; stroke:#CF770B;}
   .btcb2 .panel{background:#fff; border-radius:18px; padding:22px 28px 16px; display:flex; box-shadow:0 8px 24px rgba(0,0,0,.12);}
   /* slide 15: title with the small Bitcoin-ship illustration (bitcoin_ship_small.png, from bitcoin_ship.png) */
@@ -930,7 +931,9 @@ function lineChart(svg, series, o){
     ['21 SEP', 'Regla de 45 días', 'las recompensas de minería esperan ~45 días para gastarse', css('--b2')],
   ];
   const x0 = 120, x1 = 1260, y = 150, step = (x1 - x0) / (ev.length - 1);
-  el('line', {x1:x0, x2:x1, y1:y, y2:y, stroke:css('--rule'), 'stroke-width':4}, svg);
+  el('line', {x1:x0, x2:x1 + 70, y1:y, y2:y, stroke:css('--rule'), 'stroke-width':4}, svg);
+  // the story keeps going: the line runs past the last event into an arrow
+  el('path', {d:`M${x1 + 66} ${y - 16} L${x1 + 96} ${y} L${x1 + 66} ${y + 16} Z`, fill:css('--rule')}, svg);
   ev.forEach(([d, t, sub, c], i) => {
     const x = x0 + i * step, anchor = 'middle';
     el('circle', {cx:x, cy:y, r:17, fill:c, stroke:'#fff', 'stroke-width':5}, svg);
