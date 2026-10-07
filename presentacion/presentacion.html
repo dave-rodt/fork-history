@@ -378,7 +378,7 @@
   </section>
 
   <!-- 12 BTCB2 números -->
-  <section data-row="1" data-v="0.48" data-vl="BTCB2 0.48%" data-c="--b2" class="slide btcb2">
+  <section data-row="1" data-v="0.84" data-vl="BTCB2 0.84%" data-c="--b2" class="slide btcb2">
     <div class="kicker">Bitcoin BLAKE2b</div>
     <h2 style="max-width:none;">De Soft Fork a Hard Fork</h2>
     <div class="grow" style="margin-top:20px;"><svg class="chart" id="b2-timeline" viewBox="0 0 1380 470"></svg></div>
@@ -386,7 +386,7 @@
   </section>
 
   <!-- 13 BTCB2 frente a BTC: precio y espacio de bloque -->
-  <section data-row="1" data-v="0.48" data-vl="BTCB2 0.48%" data-c="--b2" class="slide btcb2">
+  <section data-row="1" data-v="0.84" data-vl="BTCB2 0.84%" data-c="--b2" class="slide btcb2">
     <div class="kicker">Bitcoin BLAKE2b · 8 ago – 1 oct 2026</div>
     <h2 style="max-width:none; font-size:56px;">BTCB2 frente a BTC</h2>
     <div class="grow panel" style="margin-top:22px;"><svg class="chart" id="chart-market" viewBox="0 0 1380 574"></svg></div>
@@ -466,7 +466,7 @@
     <div class="kicker">Lecciones de la jungla · cada fork frente a su cadena padre</div>
     <h2 style="max-width:none;">En la jungla, pelear por una idea tiene un costo</h2>
     <div class="grow" style="margin-top:26px;"><svg class="chart" id="chart-vsparent" viewBox="0 0 1380 520"></svg></div>
-    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Escala logarítmica · último mes: sep 2026 (precio de BTG: jul 2026; de BTCB2: 6 oct) · CoinMetrics, crawl propio</span></div>
+    <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Escala logarítmica · último mes: sep 2026 (precio de BTG: jul 2026; de BTCB2: 7 oct) · CoinMetrics, crawl propio</span></div>
   </section>
 
   <!-- 15 Cuatro lecciones -->
@@ -825,7 +825,7 @@ function lineChart(svg, series, o){
     ['ETC', 'frente a ETH', css('--etc'), 0.32, 0.47],
     ['BCH', 'frente a BTC', '#07A57B', 0.33, 1.84],
     ['BTG', 'frente a BTC', css('--btg'), 0.0004, 0.005],
-    ['BTCB2', 'frente a BTC · tx sin replay', css('--b2'), 0.82, 0.22],  // Sep: 46,508 own txs vs 20,879,212 on BTC (10.9% with replay)
+    ['BTCB2', 'frente a BTC · tx sin replay', css('--b2'), 0.84, 0.22],  // Sep: 46,508 own txs vs 20,879,212 on BTC (10.9% with replay)
   ];
   rows.forEach(([name, sub, c, price, tx], i) => {
     const y = 50 + i * 118;
@@ -953,8 +953,8 @@ function lineChart(svg, series, o){
   const T = (x, y, txt, o = {}) => el('text', Object.assign({x, y, 'font-family':SANS, fill:soft, 'font-size':22}, o), svg, txt);
 
   // 1) Price: BTCB2 as % of BTC, lowest and highest hourly close (Neoxa BTCB2/USDC, Coinbase BTC/USD),
-  //    and the latest: $689 on 6 Oct against BTC at $84,107 (Coinbase, same moment) = 0.82%.
-  const MIN = {v:0.0841, usd:'$65', d:'2 sep'}, MAX = {v:2.0864, usd:'$1,670', d:'5 sep'}, NOW = {v:689 / 84107 * 100, usd:'$689', d:'6 oct'};
+  //    and the latest: $700 on 7 Oct against BTC at $83,495.93 = 0.84%.
+  const MIN = {v:0.0841, usd:'$65', d:'2 sep'}, MAX = {v:2.0864, usd:'$1,670', d:'5 sep'}, NOW = {v:700 / 83495.93 * 100, usd:'$700', d:'7 oct'};
   const X = v => v / 2.5 * W;
   T(0, 18, 'Precio de BTCB2 como % del precio de BTC: mínimo, máximo y hoy');
   el('rect', {x:0, y:45, width:W, height:14, rx:7, fill:'#E3E6E8'}, svg);
