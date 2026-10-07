@@ -114,6 +114,7 @@
     font-size:0.85rem; color:var(--ink-soft); text-decoration:none;
   }
   .back-link:hover{color:var(--brand-orange);}
+  .back-link.next-soon, .back-link.next-soon:hover{color:var(--ink-mute); cursor:default; opacity:.7;}  /* Chapter 4 not linked until it is published */
   .home-link{display:inline-flex; align-items:center; padding:4px;}
   .home-link svg{width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block;}
 
@@ -508,7 +509,7 @@
     <a class="back-link home-link" id="home-link" href="index.html" aria-label="Go to History of Forks">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
     </a>
-    <a class="back-link" href="blake2b-retrospective.html" id="nextlink">Next: Bitcoin BLAKE2b: One Month Retrospective &rarr;</a>
+    <span class="back-link next-soon" id="nextlink" aria-disabled="true">Next: Bitcoin BLAKE2b · Coming soon</span>
   </div>
 
 </div>
@@ -1170,7 +1171,7 @@ globalToggle.querySelectorAll('button').forEach(btn => {
     'sources-h3': "Fuentes",
     'footer-text': "DATOS: API COMUNITARIA DE COINMETRICS (PRECIO, TRANSACCIONES, <em>HASHRATE</em>). PARTE DE LA SERIE \"UNA HISTORIA DE <em>FORKS</em>\".",
     'backlink': "&larr; Anterior: Ethereum vs. Ethereum Classic",
-    'nextlink': "Siguiente: Bitcoin BLAKE2b: retrospectiva de un mes &rarr;",
+    'nextlink': "Siguiente: Bitcoin BLAKE2b · Próximamente",
     'src1': "La altura del <em>fork</em> de Bitcoin Gold, bloque 491,407 &mdash; <a href=\"https://github.com/BTCGPU/BTCGPU/blob/master/src/chainparams.cpp\" target=\"_blank\" rel=\"noopener\">BTCGPU/BTCGPU chainparams.cpp, GitHub</a>",
     'src2': "Lanzamiento de la red principal, 12 de noviembre de 2017 &mdash; <a href=\"https://bitcoingold.org/bitcoin-gold-blockchain-is-live/\" target=\"_blank\" rel=\"noopener\">\"Bitcoin Gold Blockchain is Live,\" Bitcoin Gold</a>",
     'src3': "Binance lista BTG, 24 de octubre de 2017 &mdash; <a href=\"https://www.binance.com/en/support/announcement/115002358672\" target=\"_blank\" rel=\"noopener\">Binance announcement</a>",
