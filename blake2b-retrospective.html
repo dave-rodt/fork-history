@@ -1165,11 +1165,12 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
         sums = sums.map((x, i) => x + pre.layers[i].v); tot += pre.tot; rep += pre.rep; repRunes += SP_B2_PRE[k - 2][2];
       }
       const p2 = x => x > 0 && x < 0.01 ? '<0.01%' : x.toFixed(2) + '%';
+      const incl = 'Includes Runes: ' + fmt1(repRunes, st) + ' (' + pct(repRunes / tot * 100) + ')';  // replayed Runes are inside this tile
       const W = ' % ' + WORD[st.measure], tile = (x, cap, color, sub) => ({num:p2(x / tot * 100), abs:fmt1(x, st), sub, cap:cap + W, color});
       const total = st.measure === 'v' ? {num:fmt1(tot, st), cap:'Total block space', color:'var(--ink-mute)'}
           : {num:(tot / 1e6).toFixed(2) + 'M txs', abs:fmt1(tot, st), cap:'Total transactions', color:'var(--ink-mute)'};
       if (st.chain === 'blake2b') return [total,
-        tile(rep, 'Also exists on BTC', 'var(--sp-ord)'),
+        tile(rep, 'Also exists on BTC', 'var(--sp-ord)', incl),
         tile(tot - rep - (sums[2] - repRunes), 'BTCB2-only, not Runes', B2ONLY.color),
         tile(sums[2] - repRunes, 'BTCB2-only Runes', CATS[2].color),
       ];
@@ -1177,7 +1178,7 @@ document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener
       const runes = sums[2] - repRunes - by.rune, ins = sums[1] - by.ins;
       const part = (x, name) => name + ' ' + pct(x / bip * 100);
       return [total,
-        tile(rep, 'Also exists on BTCB2', 'var(--sp-ord)'),
+        tile(rep, 'Also exists on BTCB2', 'var(--sp-ord)', incl),
         tile(tot - rep - bip - runes - ins, 'Transactions not on BTCB2', BTCONLY.color),
         tile(runes, 'Runes, only on BTC', CATS[2].color),
         tile(bip, 'Would be rejected under BIP-110', 'var(--ink)',
