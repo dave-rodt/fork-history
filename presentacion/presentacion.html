@@ -293,8 +293,15 @@
   <section data-row="0" data-c="--neutral" class="slide white">
     <div class="kicker">Antes de empezar</div>
     <h2>¿Qué es un fork?</h2>
-    <div class="grow" style="margin-top:30px;"><svg class="chart" id="fork-diagram" viewBox="0 0 1380 400"></svg></div>
-    <p class="lede" style="max-width:62ch; margin-top:0; margin-bottom:34px; font-size:26px;"><b style="color:var(--ink); font-weight:600;">Un mismo pasado. Dos futuros.</b><br>El fork separa las reglas, pero no resuelve quién tiene razón. Mientras existan comunidades detrás de cada visión, ambas seguirán compitiendo por el futuro.</p>
+    <div style="display:grid; grid-template-columns:327px 327px 678px; gap:24px; margin-top:20px;">
+      <div class="card" style="padding:20px 24px;"><h3 style="font-size:28px; margin-bottom:6px;"><i>Soft fork</i></h3><p style="font-size:20px; line-height:1.38;">Reglas más estrictas. Los nodos viejos siguen aceptando los bloques nuevos, así que la cadena sigue siendo una. Ej.: SegWit, 2017.</p></div>
+      <div class="card" style="padding:20px 24px;"><h3 style="font-size:28px; margin-bottom:6px;"><i>Fork</i> contencioso</h3><p style="font-size:20px; line-height:1.38;">Un <i>fork</i> sin acuerdo en la comunidad. Si un grupo conserva las reglas viejas, nacen dos monedas. Ej.: Bitcoin Cash, 2017.</p></div>
+      <div class="card" style="padding:20px 24px;"><h3 style="font-size:28px; margin-bottom:6px;"><i>Hard fork</i></h3><p style="font-size:20px; line-height:1.38;">Reglas incompatibles. Los nodos viejos rechazan los bloques nuevos: o todos se actualizan, o la cadena se parte en dos. Ej.: Ethereum, The Merge (2022).</p></div>
+    </div>
+    <div style="display:flex; gap:24px; margin-top:14px;">
+      <svg class="chart" id="fork-btc" viewBox="0 0 678 300" style="height:300px; flex:1; min-width:0;"></svg>
+      <svg class="chart" id="fork-eth" viewBox="0 0 678 300" style="height:300px; flex:1; min-width:0;"></svg>
+    </div>
     <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span></span></div>
   </section>
 
@@ -380,7 +387,7 @@
   </section>
 
   <!-- 12 BTCB2 números -->
-  <section data-row="1" data-v="0.84" data-vl="BTCB2 0.84%" data-c="--b2" class="slide btcb2">
+  <section data-row="1" data-v="0.73" data-vl="BTCB2 0.73%" data-c="--b2" class="slide btcb2">
     <div class="kicker">Bitcoin BLAKE2b</div>
     <h2 style="max-width:none;">De Soft Fork a Hard Fork</h2>
     <div class="grow" style="margin-top:20px;"><svg class="chart" id="b2-timeline" viewBox="0 0 1380 470"></svg></div>
@@ -388,7 +395,7 @@
   </section>
 
   <!-- 13 BTCB2 frente a BTC: precio y espacio de bloque -->
-  <section data-row="1" data-v="0.84" data-vl="BTCB2 0.84%" data-c="--b2" class="slide btcb2">
+  <section data-row="1" data-v="0.73" data-vl="BTCB2 0.73%" data-c="--b2" class="slide btcb2">
     <div class="kicker">Bitcoin BLAKE2b · 8 ago – 1 oct 2026</div>
     <h2 style="max-width:none; font-size:56px;">BTCB2 frente a BTC</h2>
     <div class="grow panel" style="margin-top:22px;"><svg class="chart" id="chart-market" viewBox="0 0 1380 574"></svg></div>
@@ -471,7 +478,7 @@
     <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Escala log · inicio ≈ primer mes · último: sep 2026 · BTCB2 tx: 1ª vs última sem. de sep</span></div>
   </section>
 
-  <!-- 15 Cuatro lecciones -->
+  <!-- 15 Tres lecciones -->
   <section data-row="0" data-c="--neutral" class="slide">
     <div class="lessons-head">
       <div><div class="kicker">Lecciones de los forks</div><h2 style="max-width:none;">Tres lecciones</h2></div>
@@ -482,6 +489,7 @@
       <div class="card"><div class="date">02</div><h3>Los problemas son parte de ser relevante</h3><p>Spam, comisiones, minería o cambios de protocolo se convierten en grandes debates cuando una cadena tiene algo que perder. <b style="color:var(--ink); font-weight:600;">Mientras una cadena importe, habrá distintas ideas sobre qué debe ser y hacia dónde debe ir.</b></p></div>
       <div class="card"><div class="date">03</div><h3>Mientras exista una comunidad que sostenga una idea, la idea seguirá viva</h3><p>Un fork puede perder usuarios, valor y relevancia, pero mientras haya personas dispuestas a mantenerlo, desarrollarlo y defender lo que representa, su visión no desaparece.</p></div>
     </div>
+    <p style="font-family:'Source Serif 4',serif; font-size:27px; line-height:1.35; color:var(--ink); margin:22px 0 0;">Bitcoin no es solo código, sino una visión del dinero: comprender las ideas detrás de cada <i>fork</i>, cuestionar tus convicciones y asumir la responsabilidad de decidir qué reglas merecen tu apoyo, aunque el mercado no las valore.</p>
     <div class="foot"><span><img src="quantbitcoin-logo.png" alt="">Historia de los Forks</span><span>Conclusión</span></div>
   </section>
 
@@ -745,19 +753,35 @@ function lineChart(svg, series, o){
   });
 }
 
-// ---- slide 3: fork diagram ----
+// ---- slide 3: two fork diagrams (Bitcoin 2017: soft fork vs. contentious hard fork; Ethereum: planned hard forks) ----
 (function(){
-  const svg = document.getElementById('fork-diagram'), w = 92, h = 64, gap = 22, y0 = 168;
-  const block = (x, y, fill, lab) => { el('rect', {x, y, width:w, height:h, rx:12, fill}, svg); if (lab) el('text', {x:x + w / 2, y:y + h / 2 + 7, 'text-anchor':'middle', fill:'#fff', 'font-size':20, 'font-weight':600}, svg, lab); };
-  for (let i = 0; i < 5; i++) block(20 + i * (w + gap), y0, '#7A8087', i === 4 ? 'X' : '');
-  el('text', {x:20, y:y0 - 26, class:'marklab', 'font-size':22}, svg, 'Historia compartida');
-  const sx = 20 + 5 * (w + gap) - gap;
-  [[70, '#4B5158', 'Cadena A: reglas originales'], [266, css('--b2'), 'Cadena B: reglas nuevas']].forEach(([y, c, lab]) => {
-    el('path', {d:`M${sx} ${y0 + h / 2} C ${sx + 60} ${y0 + h / 2}, ${sx + 40} ${y + h / 2}, ${sx + 100} ${y + h / 2}`, fill:'none', stroke:c, 'stroke-width':4}, svg);
-    for (let i = 0; i < 5; i++) block(sx + 100 + i * (w + gap), y, c, '');
-    el('text', {x:sx + 100, y:y - 14, class:'marklab', 'font-size':22, fill:c}, svg, lab);
+  const w = 60, h = 46, p = 78, T = (svg, x, y, t, o = {}) => el('text', Object.assign({x, y, class:'marklab', 'font-size':18}, o), svg, t);
+  const blk = (svg, x, y, fill, lab) => { el('rect', {x, y, width:w, height:h, rx:10, fill}, svg); if (lab) T(svg, x + w / 2, y + h / 2 + 6, lab, {'text-anchor':'middle', fill:'#fff', 'font-weight':600, 'font-size':18, class:''}); };
+  // Bitcoin, Aug 2017: BCH splits off at block 478,559 (1 Aug); SegWit activates on BTC (24 Aug) with no split
+  const a = document.getElementById('fork-btc'), grey = '#7A8087', btc = css('--btc'), bch = css('--bch'), yA = 66, yB = 200;
+  T(a, 0, 22, 'Bitcoin, agosto 2017', {'font-weight':600, fill:css('--ink')});
+  for (let i = 0; i < 4; i++) blk(a, 4 + i * p, yA, grey, i === 3 ? 'X' : '');
+  const sx = 4 + 3 * p + w;
+  T(a, 4 + 3 * p + w / 2, yA - 12, 'bloque 478,559 · 1 ago', {'text-anchor':'middle', 'font-size':16});
+  el('line', {x1:sx, x2:sx + 38, y1:yA + h / 2, y2:yA + h / 2, stroke:grey, 'stroke-width':4}, a);
+  for (let i = 0; i < 4; i++) blk(a, sx + 38 + i * p, yA, i === 0 ? grey : btc, i === 1 ? 'S' : '');
+  T(a, sx + 38 + p + w / 2, yA + h + 26, 'SegWit · 24 ago', {'text-anchor':'middle', 'font-size':17, fill:btc, 'font-weight':600});
+  T(a, sx + 38 + p + w / 2, yA + h + 46, 'soft fork: misma cadena', {'text-anchor':'middle', 'font-size':16});
+  el('path', {d:`M${sx} ${yA + h / 2} C ${sx + 30} ${yA + h / 2}, ${sx + 10} ${yB + h / 2}, ${sx + 38} ${yB + h / 2}`, fill:'none', stroke:bch, 'stroke-width':4}, a);
+  for (let i = 0; i < 4; i++) blk(a, sx + 38 + i * p, yB, bch, '');
+  T(a, sx + 38, yB + h + 26, 'Bitcoin Cash · hard fork', {'font-size':17, fill:bch, 'font-weight':600});
+  T(a, sx + 38, yB + h + 46, 'contencioso: la cadena se parte', {'font-size':16});
+  // Ethereum: one chain, six planned hard forks that everyone adopts
+  const b = document.getElementById('fork-eth'), eth = css('--eth'), yE = 110, q = 112;
+  T(b, 0, 22, 'Ethereum: hard forks planificados', {'font-weight':600, fill:css('--ink')});
+  el('line', {x1:0, x2:678, y1:yE + h / 2, y2:yE + h / 2, stroke:grey, 'stroke-width':4, 'stroke-dasharray':'2 10', 'stroke-linecap':'round'}, b);
+  [['2017', 'Byzantium'], ['2021', 'London'], ['2022', 'The Merge'], ['2023', 'Shapella'], ['2024', 'Dencun'], ['2025', 'Pectra']].forEach(([yr, nm], i) => {
+    const x = 4 + i * q;
+    blk(b, x, yE, eth, '');
+    T(b, x + w / 2, yE - 12, yr, {'text-anchor':'middle', 'font-size':17});
+    T(b, x + w / 2, yE + h + 26, nm, {'text-anchor':'middle', 'font-size':16, fill:css('--ink'), 'font-weight':600});
   });
-  el('text', {x:20 + 4 * (w + gap) + w / 2, y:y0 + h + 40, 'text-anchor':'middle', class:'marklab', 'font-size':20}, svg, 'punto de división');
+  T(b, 0, 236, 'Una sola cadena: todos se actualizan juntos.', {'font-size':17});
 })();
 
 // ---- slide 6: ETC as % of ETH ----
@@ -840,12 +864,12 @@ function lineChart(svg, series, o){
   //   ETC Jul 2016 (from the fork) 98,843 / 578,029 = 17.1% (same figure as slide 6); BCH and BTG had replay protection
   //   from day one: BCH first 30 days 7.78%, BTG first 30 live days (from 13 Nov 2017) 2.42%;
   //   BTCB2 first week of Sep (1-7) 19,472 / 4,855,677 = 0.401%; last week of Sep (24-30) 5,065 / 4,869,748 = 0.104%.
-  //   latest: Sep 2026 (BTG price from Gate.io; BTCB2 price 7 Oct).
+  //   latest: Sep 2026 (BTG price from Gate.io; BTCB2 price 20 Oct).
   const rows = [
     ['ETC', 'frente a ETH · tx sin replay', css('--etc'), [12.6, 0.32], [17.1, 0.47]],
     ['BCH', 'frente a BTC', '#07A57B', [11.6, 0.33], [7.78, 1.84]],
     ['BTG', 'frente a BTC', css('--btg'), [2.39, 0.00068], [2.42, 0.005]],
-    ['BTCB2', 'frente a BTC · tx sin replay', css('--b2'), [0.127, 0.84], [0.401, 0.104]],
+    ['BTCB2', 'frente a BTC · tx sin replay', css('--b2'), [0.127, 0.73], [0.401, 0.104]],
   ];
   rows.forEach(([name, sub, c, price, tx], i) => {
     const y = 56 + i * 112;
@@ -978,8 +1002,8 @@ function lineChart(svg, series, o){
   const T = (x, y, txt, o = {}) => el('text', Object.assign({x, y, 'font-family':SANS, fill:soft, 'font-size':22}, o), svg, txt);
 
   // 1) Price: BTCB2 as % of BTC, lowest and highest hourly close (Neoxa BTCB2/USDC, Coinbase BTC/USD),
-  //    and the latest: $700 on 7 Oct against BTC at $83,495.93 = 0.84%.
-  const MIN = {v:0.0841, usd:'$65', d:'2 sep'}, MAX = {v:2.0864, usd:'$1,670', d:'5 sep'}, NOW = {v:700 / 83495.93 * 100, usd:'$700', d:'7 oct'};
+  //    and the latest: $597 on 20 Oct against BTC at $82,312 = 0.73%.
+  const MIN = {v:0.0841, usd:'$65', d:'2 sep'}, MAX = {v:2.0864, usd:'$1,670', d:'5 sep'}, NOW = {v:597 / 82312 * 100, usd:'$597', d:'20 oct'};
   const X = v => v / 2.5 * W;
   T(0, 18, 'Precio de BTCB2 como % del precio de BTC: mínimo, máximo y hoy');
   el('rect', {x:0, y:45, width:W, height:14, rx:7, fill:'#E3E6E8'}, svg);
