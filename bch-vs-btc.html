@@ -23,7 +23,7 @@
 <meta name="twitter:image" content="https://dave-rodt.github.io/fork-history/assets/og-bch-vs-btc.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root{
     color-scheme: light dark;
@@ -125,7 +125,7 @@
   .hero{padding:44px 0 30px; border-bottom:1px solid var(--rule);}
   .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--brand-orange); letter-spacing:0.03em; margin-bottom:10px;}
   .hero h1{font-size:clamp(1.9rem,4.4vw,2.9rem); line-height:1.14; max-width:18ch;}
-  .hero p.lede{max-width:62ch; font-size:1.08rem; color:var(--ink-soft); margin-top:16px;}
+  .hero p.lede{font-size:1.08rem; color:var(--ink-soft); margin-top:16px;}
   .read-time{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute); margin-top:14px;}
 
   section.phase{padding:40px 0; border-bottom:1px solid var(--rule);}
@@ -134,11 +134,11 @@
   .phase-num{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--brand-orange); flex-shrink:0;}
   .phase-head h2{font-size:1.5rem;}
   .phase-time{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); margin-left:auto;}
-  .phase p{max-width:66ch; margin:0 0 14px;}
+  .phase p{margin:0 0 18px;}
   .phase p:last-child{margin-bottom:0;}
-  .phase ul{max-width:66ch; padding-left:20px; margin:0 0 14px;}
+  .phase ul{padding-left:20px; margin:0 0 14px;}
   .phase li{margin-bottom:6px;}
-  .phase h3{font-size:1.05rem; margin:22px 0 8px;}
+  .phase h3{font-size:1.25rem; margin:36px 0 12px;}
   .phase h3:first-of-type{margin-top:0;}
 
   .stat-inline{font-family:'IBM Plex Mono',monospace; font-weight:600; color:var(--ink);}
@@ -209,7 +209,7 @@
   .view-toggle button + button{border-left:1px solid var(--rule-strong);}
   .view-toggle button.active{background:var(--brand-orange); color:#000;}
   .view-toggle button:hover:not(.active){color:var(--ink);}
-  .chart-caption{font-size:0.84rem; color:var(--ink-soft); margin:0 0 12px; max-width:64ch;}
+  .chart-caption{font-size:0.84rem; color:var(--ink-soft); margin:0 0 12px;}
   .chart-wrap{
     position:relative; background:var(--panel); border:1px solid var(--rule); border-radius:10px;
     padding:18px 18px 12px; box-shadow:var(--shadow-sm);
@@ -270,7 +270,7 @@
 
   .sources-note{margin-top:30px; padding-top:18px; border-top:1px solid var(--rule);}
   .sources-note h3{font-size:0.9rem; margin:0 0 10px; color:var(--ink-soft);}
-  .sources-note ol{max-width:70ch; padding-left:20px; margin:0; font-size:0.78rem; color:var(--ink-mute); line-height:1.6;}
+  .sources-note ol{padding-left:20px; margin:0; font-size:0.78rem; color:var(--ink-mute); line-height:1.6;}
   .sources-note li{margin-bottom:6px;}
   .sources-note a{color:var(--ink-soft);}
   .sources-note a:hover{color:var(--brand-orange);}
@@ -278,6 +278,39 @@
   @media (max-width:600px){
     section.phase{padding:30px 0;}
   }
+  /* ---------- reading aids: sticky section bar, takeaways, pull quotes, key numbers ---------- */
+  .toc{position:sticky; top:0; z-index:20; margin:0 -20px; padding:0 20px; background:var(--bg); border-bottom:1px solid var(--rule);}
+  .toc ol{list-style:none; display:flex; gap:4px; margin:0; padding:8px 0; overflow-x:auto; scrollbar-width:none;}
+  .toc ol::-webkit-scrollbar{display:none;}
+  .toc a{display:block; white-space:nowrap; padding:4px 10px; border-radius:14px; font-family:'IBM Plex Mono',monospace; font-size:0.74rem; color:var(--ink-mute); text-decoration:none;}
+  .toc a .n{color:var(--brand-orange); margin-right:6px;}
+  .toc a:hover{color:var(--ink);}
+  .toc a.on{color:var(--ink); background:var(--panel); box-shadow:var(--shadow-sm);}
+  section.phase, .chart-block, #sources{scroll-margin-top:56px;}
+  .phase p.takeaway{font-family:'Source Serif 4',serif; font-size:1.2rem; line-height:1.45; color:var(--ink); margin:0 0 22px;}
+  .phase p.pull{margin:30px 0; padding:4px 0 4px 20px; border-left:3px solid var(--brand-orange); font-family:'Source Serif 4',serif; font-size:clamp(1.3rem,3.2vw,1.6rem); line-height:1.3; color:var(--ink); text-wrap:balance;}
+  .key-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:6px 0 30px;}
+  @media (max-width:700px){ .key-stats{grid-template-columns:repeat(2,1fr);} }
+  .key-stat{background:var(--panel); border:1px solid var(--rule); border-radius:10px; padding:14px; box-shadow:var(--shadow-sm);}
+  .key-stat b{display:block; font-family:'Source Serif 4',serif; font-size:clamp(1.6rem,4vw,2.1rem); font-weight:600; line-height:1.1; color:var(--ink);}
+  .key-stat span{display:block; font-size:0.8rem; line-height:1.4; color:var(--ink-soft); margin-top:6px;}
+  .key-dates{margin:22px 0 26px; padding:16px 18px; background:var(--panel); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow-sm);}
+  .key-dates h4{margin:0 0 10px; font-family:'IBM Plex Mono',monospace; font-size:0.74rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--brand-orange);}
+  .key-dates ol{list-style:none; margin:0; padding:0;}
+  .key-dates li{display:grid; grid-template-columns:6.4em 1fr; gap:12px; margin:0; padding:5px 0; border-top:1px solid var(--rule); font-size:0.9rem;}
+  .key-dates li:first-child{border-top:none;}
+  .key-dates time{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--ink-mute); padding-top:2px;}
+  .chart-kicker{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.04em; text-transform:uppercase; color:var(--brand-orange); margin-bottom:4px;}
+  .chart-block .chart-title{font-family:'Source Serif 4',serif; font-size:1.2rem; line-height:1.3; margin-bottom:8px; text-wrap:balance;}
+  /* the timeline keeps a readable width on phones and scrolls sideways inside its box */
+  .tl-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  .tl-scroll-inner{min-width:760px;}
+  details.sources-note > summary{cursor:pointer; list-style:none; font-family:'Source Serif 4',serif; font-size:0.95rem; font-weight:600; color:var(--ink-soft);}
+  details.sources-note > summary::-webkit-details-marker{display:none;}
+  details.sources-note > summary::before{content:'+'; display:inline-block; width:1.1em; font-family:'IBM Plex Mono',monospace; color:var(--brand-orange);}
+  details.sources-note[open] > summary::before{content:'\2212';}
+  details.sources-note > summary:hover{color:var(--ink);}
+  details.sources-note[open] > summary{margin-bottom:10px;}
 </style>
 </head>
 <body>
@@ -303,6 +336,17 @@
     <div class="read-time" id="read-time">~9 min read</div>
   </div>
 
+  <nav class="toc" aria-label="Sections">
+    <ol>
+      <li><a href="#background"><span class="n">01</span><span id="toc1">Background</span></a></li>
+      <li><a href="#why-split"><span class="n">02</span><span id="toc2">Why bigger blocks</span></a></li>
+      <li><a href="#how-it-happened"><span class="n">03</span><span id="toc3">How it happened</span></a></li>
+      <li><a href="#tweets"><span class="n">04</span><span id="toc4">Tweets</span></a></li>
+      <li><a href="#metrics"><span class="n">05</span><span id="toc5">Data</span></a></li>
+      <li><a href="#similarities"><span class="n">06</span><span id="toc6">BTCB2 parallels</span></a></li>
+    </ol>
+  </nav>
+
   <!-- ================= PHASE 1: BACKGROUND ================= -->
   <section class="phase" id="background">
     <div class="phase-head">
@@ -310,27 +354,28 @@
       <h2 id="bg-h2">Background</h2>
       <span class="phase-time">~3 min</span>
     </div>
-    <p id="bg1">In 2010, Satoshi Nakamoto added a 1 MB block size limit to Bitcoin. At the time, blocks were mostly empty, and the limit was largely a defensive measure designed to protect a young network from abuse.</p>
+    <p class="takeaway" id="tk1">A fight over block size grew into a fight over who decides Bitcoin's rules.</p>
+    <p id="bg1">In 2010, Satoshi Nakamoto added a <strong>1 MB block size limit</strong> to Bitcoin. At the time, blocks were mostly empty, and the limit was largely a defensive measure designed to protect a young network from abuse.</p>
     <p id="bg2">But Bitcoin was growing.</p>
     <p id="bg3">By 2013, transaction volume had increased enough for developers to begin asking an uncomfortable question: what happens when Bitcoin actually reaches the limit? For the moment, it was a problem for the future. Within a few years, that future arrived.</p>
     <p id="bg4">By 2016, congestion was no longer theoretical. Blocks were filling up, fees were rising, and the community faced a fundamental question: how should Bitcoin scale?</p>
     <p id="bg5">The answer divided the ecosystem.</p>
     <p id="bg6">Many of the largest mining pools, which collectively controlled most of Bitcoin's hash rate, favored the simplest solution: make the blocks bigger. From their perspective, larger blocks meant more transactions could be processed directly on the blockchain, preserving throughput and the fee revenue that came with it.</p>
-    <p id="bg7">They were also deeply skeptical of Segregated Witness (SegWit), which proposed increasing effective transaction capacity through a soft fork rather than simply raising the block size limit. Some miners considered SegWit's implementation unnecessarily complex and objected to changes that they believed would reduce their influence over the protocol. There was also a more technical source of opposition: SegWit threatened to undermine covert ASICBoost, a patented mining optimization that some miners considered commercially valuable.</p>
+    <p id="bg7">They were also deeply skeptical of <em>Segregated Witness</em> (SegWit), which proposed increasing effective transaction capacity through a <em>soft fork</em> rather than simply raising the block size limit. Some miners considered SegWit's implementation unnecessarily complex and objected to changes that they believed would reduce their influence over the protocol. There was also a more technical source of opposition: SegWit threatened to undermine <strong>covert ASICBoost</strong>, a patented mining optimization that some miners considered commercially valuable.</p>
     <p id="bg8">The disagreement was becoming dangerous. Bitcoin had no central authority capable of settling the dispute, so the major stakeholders tried to negotiate one.</p>
-    <p id="bg9">In February 2016, miners, businesses, and developers gathered at the Hong Kong Roundtable. The resulting agreement attempted to bridge the divide: activate SegWit as a soft fork while simultaneously preparing a hard fork that would increase the non-witness block capacity to roughly 2 MB, with a maximum block size of 4 MB.</p>
+    <p id="bg9">In February 2016, miners, businesses, and developers gathered at the Hong Kong Roundtable. The resulting agreement attempted to bridge the divide: activate SegWit as a soft fork while simultaneously preparing a <em>hard fork</em> that would increase the non-witness block capacity to roughly 2 MB, with a maximum block size of 4 MB.</p>
     <p id="bg10">For a moment, compromise seemed possible.</p>
     <p id="bg11">Then Bitcoin entered one of the most explosive growth periods in its history.</p>
-    <p id="bg12">In 2017, a powerful bull market brought an influx of users and transactions. Congestion intensified, and fees surged, eventually reaching an average of nearly $55 at the peak. The scaling debate was no longer about a problem that might eventually appear. It was happening in real time, and the Hong Kong agreement began to unravel.</p>
-    <p id="bg13">What had started as an engineering debate was becoming a struggle over something much bigger: what Bitcoin should become, and who had the authority to decide.</p>
+    <p id="bg12">In 2017, a powerful bull market brought an influx of users and transactions. Congestion intensified, and fees surged, eventually reaching <strong>an average of nearly $55</strong> at the peak. The scaling debate was no longer about a problem that might eventually appear. It was happening in real time, and the Hong Kong agreement began to unravel.</p>
+    <p class="pull" id="bg13">What had started as an engineering debate was becoming a struggle over something much bigger: what Bitcoin should become, and who had the authority to decide.</p>
     <p id="bg14">In May 2017, major mining pools and businesses attempted another compromise through the New York Agreement, better known as SegWit2x. The proposal tied SegWit activation to a commitment to follow it with a 2 MB hard fork.</p>
     <p id="bg15">But this time, another group entered the fight: users and node operators.</p>
-    <p id="bg16">Rather than negotiating with the miners, the grassroots User Activated Soft Fork (UASF) movement proposed enforcing SegWit directly from the economic side of the network. Under BIP 148, nodes would begin rejecting blocks that did not signal support for SegWit starting August 1.</p>
+    <p id="bg16">Rather than negotiating with the miners, the grassroots <em>User Activated Soft Fork</em> (UASF) movement proposed enforcing SegWit directly from the economic side of the network. Under BIP 148, nodes would begin rejecting blocks that did not signal support for SegWit starting August 1.</p>
     <p id="bg17">This created a very different kind of threat for miners. They could continue mining blocks that rejected SegWit, but if the economically significant portion of the network refused to accept those blocks, the rewards from that mining could become worthless.</p>
     <p id="bg18">The balance of power was shifting.</p>
     <p id="bg19">As the August 1 deadline approached, major mining pools began signaling for SegWit through BIP 91, effectively clearing the way for its activation. The immediate threat of a UASF-driven split receded, and SegWit was ultimately locked in on the main chain.</p>
     <p id="bg20">For the big-block camp, however, the larger question remained unresolved. The promised 2 MB hard fork from SegWit2x was increasingly unlikely to happen, while the path toward scaling Bitcoin through larger base-layer blocks had lost the battle on the main chain.</p>
-    <p id="bg21">The disagreement did not disappear. It became a fork.</p>
+    <p class="pull" id="bg21">The disagreement did not disappear. It became a fork.</p>
     <p id="bg22">On August 1, 2017, Bitcoin Cash split from Bitcoin, preserving the big-block approach and rejecting SegWit. On August 24, SegWit activated on the other chain.</p>
     <p id="bg23">The block size debate had finally produced its answer, not through a vote or a central authority, but by creating two competing networks.</p>
   </section>
@@ -343,6 +388,7 @@
       <span class="phase-time">~1.5 min</span>
     </div>
 
+    <p class="takeaway" id="tk2">The big-block camp wanted Bitcoin to scale on-chain, as cash for everyday payments.</p>
     <h3 id="wh1">1. Fulfilling the "Electronic Cash" Vision</h3>
     <p id="wp1">To the big-block camp, Satoshi's 1 MB limit, added in 2010 to guard against abuse, was always meant to be temporary, never a permanent ceiling. Their argument was that increasing block capacity would preserve Bitcoin as a globally accessible medium of exchange, keeping on-chain transactions affordable for everyday commerce, micro-payments, and users in developing economies.</p>
 
@@ -360,17 +406,29 @@
       <h2 id="how-h2">How Did It Happen?</h2>
       <span class="phase-time">~2 min</span>
     </div>
+    <p class="takeaway" id="tk3">BCH split off on August 1, 2017, then split twice more over its own rules.</p>
+    <div class="key-dates">
+      <h4 id="kd-h">Key dates</h4>
+      <ol>
+        <li id="kd1"><time>Aug 1, 2017</time><span>BCH splits off at block 478,558</span></li>
+        <li id="kd2"><time>Aug 24, 2017</time><span>SegWit activates on Bitcoin at block 481,824</span></li>
+        <li id="kd3"><time>Nov 13, 2017</time><span>BCH replaces its EDA difficulty rule</span></li>
+        <li id="kd4"><time>May 2018</time><span>BCH blocks grow from 8 MB to 32 MB</span></li>
+        <li id="kd5"><time>Nov 2018</time><span>Hash war: Bitcoin SV splits off</span></li>
+        <li id="kd6"><time>Nov 2020</time><span>eCash splits off</span></li>
+      </ol>
+    </div>
     <p id="hp1">On August 1, 2017, Bitcoin's shared history split in two.</p>
-    <p id="hp2">At block 478,558, a user-activated hard fork created Bitcoin Cash (BCH). It was the last block shared by both chains. From there, BCH accepted blocks larger than Bitcoin's 1 MB limit, initially allowing up to 8 MB, while the other chain continued under the existing rules.</p>
-    <p id="hp3">BCH kept SHA-256 proof-of-work, so the same mining hardware could secure either chain. It also added replay protection, preventing transactions on one chain from being replayed on the other. The two networks now shared a history, but they no longer shared the same rules.</p>
+    <p id="hp2"><strong>At block 478,558</strong>, a user-activated hard fork created Bitcoin Cash (BCH). It was the last block shared by both chains. From there, BCH accepted blocks larger than Bitcoin's 1 MB limit, initially allowing up to 8 MB, while the other chain continued under the existing rules.</p>
+    <p id="hp3">BCH kept SHA-256 proof-of-work, so the same mining hardware could secure either chain. It also added <em>replay protection</em>, preventing transactions on one chain from being replayed on the other. The two networks now shared a history, but they no longer shared the same rules.</p>
     <p id="hp4">Less than a month later, on August 24, the other chain activated SegWit at block 481,824, setting the two networks on different scaling paths. Over time, most of the market value, hash power, and liquidity remained there, while its scaling roadmap increasingly turned toward off-chain solutions such as the Lightning Network.</p>
     <p id="hp5">BCH had its own problems to solve.</p>
-    <p id="hp6">Its first difficulty adjustment mechanism, the EDA, was designed to attract miners but instead created wild swings in hash power and block times as miners moved between the competing chains. The problem was serious enough to force BCH into its first major hard fork just three months after launch, replacing the EDA on November 13, 2017 with a new Difficulty Adjustment Algorithm (DAA) that recalculated difficulty after every block.</p>
+    <p id="hp6">Its first difficulty adjustment mechanism, the EDA, was designed to attract miners but instead created <strong>wild swings in hash power and block times</strong> as miners moved between the competing chains. The problem was serious enough to force BCH into its first major hard fork just three months after launch, replacing the EDA on November 13, 2017 with a new Difficulty Adjustment Algorithm (DAA) that recalculated difficulty after every block.</p>
     <p id="hp7">Six months later, BCH increased its maximum block size from 8 MB to 32 MB and re-enabled several Satoshi-era opcodes, expanding its capacity for more complex transactions.</p>
-    <p id="hp8">But bigger blocks did not eliminate disagreements over governance.</p>
+    <p class="pull" id="hp8">But bigger blocks did not eliminate disagreements over governance.</p>
     <p id="hp9">In November 2018, a dispute between Bitcoin ABC and a faction led by Craig Wright and Calvin Ayre escalated into a "hash war," producing another chain split. The Wright and Ayre-backed chain became Bitcoin SV (BSV), while the other chain retained the Bitcoin Cash name.</p>
     <p id="hp10">Two years later, BCH split again. This time, the dispute centered on Bitcoin ABC's proposal to direct part of the block reward toward development funding. The chain rejecting the proposal kept the Bitcoin Cash name; the Bitcoin ABC chain became eCash.</p>
-    <p id="hp11">Nine years later, BCH is a much smaller network by price and market-cap ranking than it was at launch. Yet it remains active, with ongoing development, miners securing the chain, and a community still committed to the big-block approach.</p>
+    <p id="hp11">Nine years later, BCH is <strong>a much smaller network</strong> by price and market-cap ranking than it was at launch. Yet it remains active, with ongoing development, miners securing the chain, and a community still committed to the big-block approach.</p>
     <p id="hp12">The block-size war didn't produce a simple winner. It produced competing experiments in scaling, mining economics, and decentralized governance. BCH is what happens when a disagreement over Bitcoin's rules stops being a debate and becomes a network.</p>
   </section>
 
@@ -381,13 +439,14 @@
       <h2 id="tweets-h2">What People Were Saying About BCH vs. BTC</h2>
       <span class="phase-time">~1 min</span>
     </div>
+    <p class="takeaway" id="tk4">For years after the fork, BCH's supporters kept making their case in public.</p>
     <p id="tweets-intro">Five Twitter (X) posts from January 2018 through September 2023, showing how Bitcoin Cash supporters and observers argued the case for BCH over Bitcoin in the years after the fork.</p>
 
     <div class="tweet-grid">
       <!-- TWEET 1 — replace image src, href, and caption below -->
       <figure class="tweet-card">
         <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Roger Ver tweet, May 6, 2018">
-          <img src="tweets/993125898277699586.png" alt="Roger Ver tweet, May 6, 2018">
+          <img src="tweets/993125898277699586.webp" width="599" height="768" loading="lazy" decoding="async" alt="Roger Ver tweet, May 6, 2018">
         </button>
         <div class="tweet-footer">
           <a class="view-link" href="https://x.com/rogerkver/status/993125898277699586" target="_blank" rel="noopener">
@@ -400,7 +459,7 @@
       <!-- TWEET 2 -->
       <figure class="tweet-card">
         <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Roger Ver tweet, June 2, 2022">
-          <img src="tweets/1532405409520181248.png" alt="Roger Ver tweet, June 2, 2022">
+          <img src="tweets/1532405409520181248.webp" width="592" height="362" loading="lazy" decoding="async" alt="Roger Ver tweet, June 2, 2022">
         </button>
         <div class="tweet-footer">
           <a class="view-link" href="https://x.com/rogerkver/status/1532405409520181248" target="_blank" rel="noopener">
@@ -413,7 +472,7 @@
       <!-- TWEET 3 -->
       <figure class="tweet-card">
         <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: DavidShares tweet, September 21, 2023">
-          <img src="tweets/1704870337463177517.png" alt="DavidShares tweet, September 21, 2023">
+          <img src="tweets/1704870337463177517.webp" width="587" height="417" loading="lazy" decoding="async" alt="DavidShares tweet, September 21, 2023">
         </button>
         <div class="tweet-footer">
           <a class="view-link" href="https://x.com/DavidShares/status/1704870337463177517" target="_blank" rel="noopener">
@@ -426,7 +485,7 @@
       <!-- TWEET 4 -->
       <figure class="tweet-card">
         <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Kim Dotcom tweet, September 14, 2021">
-          <img src="tweets/1437614544512176132.png" alt="Kim Dotcom tweet, September 14, 2021">
+          <img src="tweets/1437614544512176132.webp" width="594" height="310" loading="lazy" decoding="async" alt="Kim Dotcom tweet, September 14, 2021">
         </button>
         <div class="tweet-footer">
           <a class="view-link" href="https://x.com/KimDotcom/status/1437614544512176132" target="_blank" rel="noopener">
@@ -439,7 +498,7 @@
       <!-- TWEET 5 -->
       <figure class="tweet-card">
         <button type="button" class="tweet-img-btn" aria-label="Enlarge screenshot: Ross Gerber tweet, January 29, 2018">
-          <img src="tweets/958127176053764096.png" alt="Ross Gerber tweet, January 29, 2018">
+          <img src="tweets/958127176053764096.webp" width="595" height="448" loading="lazy" decoding="async" alt="Ross Gerber tweet, January 29, 2018">
         </button>
         <div class="tweet-footer">
           <a class="view-link" href="https://x.com/GerberKawasaki/status/958127176053764096" target="_blank" rel="noopener">
@@ -458,6 +517,13 @@
       <h2 id="metrics-h2">Nine Years of Data</h2>
       <span class="phase-time">~1.5 min</span>
     </div>
+    <p class="takeaway" id="tk5">Nine years on, BCH is still running, but small: about 0.3% of Bitcoin's price and 1.8% of its transactions.</p>
+    <div class="key-stats">
+      <div class="key-stat" id="ks1"><b>0.33%</b><span>BCH's price as a share of Bitcoin's, Sep 2026. It started at 11.6%.</span></div>
+      <div class="key-stat" id="ks2"><b>1.8%</b><span>BCH's transactions as a share of Bitcoin's, Sep 2026</span></div>
+      <div class="key-stat" id="ks3"><b>0.35%</b><span>BCH's hashrate as a share of Bitcoin's, Sep 2026. It started at 15.9%.</span></div>
+      <div class="key-stat" id="ks4"><b>&lt;1¢</b><span>BCH's average fee over the last 12 months, against $0.44 on Bitcoin</span></div>
+    </div>
     <p id="metrics-intro">Monthly figures from CoinMetrics' public dataset, August 2017 through September 2026. All five line charts share the same time axis and log-scaled y-axis, so a doubling always covers the same vertical distance whether it's early 2017 or today.</p>
 
     <div class="view-toggle-row">
@@ -469,7 +535,8 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title" id="ct1">Price: BCH vs. Bitcoin, monthly (USD)</div>
+      <div class="chart-kicker" id="ck1">Price: BCH vs. Bitcoin, monthly (USD)</div>
+      <div class="chart-title" id="ct1">BCH fell from 11.6% of Bitcoin's price to 0.33%</div>
       <p class="chart-caption" id="cc1">BCH opened at roughly 11.6% of Bitcoin's price in its first month, briefly rose toward 16% by early 2018, then decayed steadily, and sits under 0.4% today.</p>
       <div class="chart-wrap">
         <svg class="chart" id="chart-ratio" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
@@ -479,7 +546,8 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title" id="ct2">Transaction volume: BCH vs. Bitcoin, monthly count</div>
+      <div class="chart-kicker" id="ck2">Transaction volume: BCH vs. Bitcoin, monthly count</div>
+      <div class="chart-title" id="ct2">BCH now handles about 1.8% as many transactions as Bitcoin</div>
       <p class="chart-caption" id="cc2">Total transactions confirmed each month on each chain. Flagged points are known spam/stress-test floods, not organic usage. One such flood in March–April 2021 briefly pushed BCH's monthly transaction count past Bitcoin's own.</p>
       <div class="chart-wrap">
         <svg class="chart" id="chart-tx" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
@@ -489,8 +557,9 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title" id="ct3">Network hashrate: BCH vs. Bitcoin, monthly average</div>
-      <p class="chart-caption" id="cc3">Both chains share the SHA-256 algorithm, so miners can point hardware at either. BCH's own hashrate has roughly tripled since launch, but shown against Bitcoin's it tells the opposite story: from 15.9% of Bitcoin's hashrate at the fork to under 0.4% today. Hover for the actual hashrate on each chain.</p>
+      <div class="chart-kicker" id="ck3">Network hashrate: BCH vs. Bitcoin, monthly average</div>
+      <div class="chart-title" id="ct3">BCH's hashrate tripled, yet fell from 15.9% of Bitcoin's to 0.35%</div>
+      <p class="chart-caption" id="cc3">Both chains share the SHA-256 algorithm, so miners can point hardware at either. BCH's own hashrate has roughly tripled since launch, but shown against Bitcoin's it tells the opposite story: from 15.9% of Bitcoin's hashrate at the fork to under 0.4% today. Hover or tap for the actual hashrate on each chain.</p>
       <div class="chart-wrap">
         <svg class="chart" id="chart-hash" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
         <div class="tooltip" id="tooltip-hash"></div>
@@ -499,7 +568,8 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title" id="ct5">Average fee per transaction: BCH vs. Bitcoin, monthly</div>
+      <div class="chart-kicker" id="ck5">Average fee per transaction: BCH vs. Bitcoin, monthly</div>
+      <div class="chart-title" id="ct5">Bitcoin's average fee peaked near $30; BCH's is under a cent</div>
       <p class="chart-caption" id="cc5">What the average transaction paid each month, in each chain's own coin or in US dollars at each day's price. At the fork, a Bitcoin transaction cost about $4.47 and a BCH one about $0.18. Bitcoin's average peaked near $30 in April 2021. Over the last 12 months it averaged about $0.43, against less than a cent on BCH. In fee per unit of block space (sat/vB on Bitcoin, sat/B on BCH, which has no SegWit), Bitcoin peaked near 400 in December 2017. Over the last 12 months both chains averaged only 2 to 2.5. The % of BTC view compares the dollar amounts.</p>
       <div class="view-toggle-row" id="fee-unit-row">
         <span class="view-toggle-label" id="fee-unit-label">Units:</span>
@@ -517,7 +587,8 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title" id="ct6">Value moved: BCH vs. Bitcoin, monthly total</div>
+      <div class="chart-kicker" id="ck6">Value moved: BCH vs. Bitcoin, monthly total</div>
+      <div class="chart-title" id="ct6">BCH moves about 0.3% of Bitcoin's dollar value</div>
       <p class="chart-caption" id="cc6">Total value of all transaction outputs each month, in each chain's own coin or in US dollars at each day's price. The total includes change, the coins a sender pays back to their own wallet, so it overstates real transfers on both chains. Over the last 12 months, Bitcoin moved about $1.9 trillion a month and BCH about $180 billion. Much of BCH's total is the same coins moving over and over: in February 2026 its outputs added up to 1.3 billion BCH, more than 60 times its whole supply. Flagged points mark the two largest such months.</p>
       <div class="view-toggle-row" id="moved-unit-row">
         <span class="view-toggle-label" id="moved-unit-label">Units:</span>
@@ -534,17 +605,20 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title" id="ct4">Timeline: exchange listings and key network events</div>
+      <div class="chart-kicker" id="ck4">Timeline: exchange listings and key network events</div>
+      <div class="chart-title" id="ct4">Kraken and Binance listed BCH at once; Coinbase followed in December 2017</div>
       <p class="chart-caption" id="cc4">Both sides of the split, from the fork itself through the first BCH split of its own, measured in days since Aug 1, 2017.</p>
       <div class="chart-wrap">
-        <svg class="chart" id="chart-timeline" viewBox="0 0 820 130" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tl-scroll" id="tl-scroll"><div class="tl-scroll-inner">
+          <svg class="chart" id="chart-timeline" viewBox="0 0 820 130" preserveAspectRatio="xMidYMid meet"></svg>
+        </div></div>
         <div class="tooltip" id="tooltip-timeline"></div>
       </div>
       <div class="timeline-legend">
         <span><span class="dot"></span><span id="tll1">Exchange listing</span></span>
         <span><span class="dot proxy"></span><span id="tll2">Confirmed live by this date (exact listing date unconfirmed)</span></span>
         <span><span class="square"></span><span id="tll3">Protocol / network event</span></span>
-        <span id="tll4">Hover a point for details</span>
+        <span id="tll4">Hover or tap a point for details</span>
       </div>
     </div>
   </section>
@@ -557,6 +631,7 @@
       <span class="phase-time">~1.5 min</span>
     </div>
 
+    <p class="takeaway" id="tk6">BTCB2 echoes both sides of 2017: a minority chain like BCH, with BTC's case for tight block space.</p>
     <h3 id="sim-h3a">Parallels with the BCH Fork</h3>
     <ul>
       <li id="sim-a1"><strong>Contentious, Ideological Origins:</strong> Both emerged from bitter governance disputes involving factions that believed the main chain had moved away from Bitcoin's original vision.</li>
@@ -573,8 +648,8 @@
     </ul>
   </section>
 
-  <div class="sources-note">
-    <h3 id="sources-h3">Sources</h3>
+  <details class="sources-note" id="sources">
+    <summary id="sources-h3">Sources (13)</summary>
     <ol>
       <li id="src1">Bitcoin's original 1 MB block size limit, added in 2010 — <a href="https://en.bitcoin.it/wiki/Block_size_limit_controversy" target="_blank" rel="noopener">Block size limit controversy, Bitcoin Wiki</a></li>
       <li id="src2">The Hong Kong Roundtable agreement, February 2016 — <a href="https://medium.com/@bitcoinroundtable/bitcoin-roundtable-consensus-266d475a61ff" target="_blank" rel="noopener">Bitcoin Roundtable Consensus (official statement)</a></li>
@@ -590,7 +665,7 @@
       <li id="src12">The November 2020 miner-tax dispute and the eCash split — <a href="https://bitcoin-takeover.com/bitcoin-cash-big-block-breakaway/" target="_blank" rel="noopener">Bitcoin Cash: The Big Block Breakaway</a></li>
       <li id="src13">The average fee peak near $55 ($54.64 on Dec 22, 2017) — <a href="https://www.spark.money/tools/bitcoin-fee-rate-history" target="_blank" rel="noopener">Bitcoin Fee Rate History, Spark</a>; contemporaneous coverage: <a href="https://www.coindesk.com/markets/2017/12/18/bought-your-first-bitcoin-or-ether-brace-for-the-fees" target="_blank" rel="noopener">CoinDesk, Dec 18, 2017</a></li>
     </ol>
-  </div>
+  </details>
 
   <footer id="footer-text">
     DATA: COINMETRICS COMMUNITY API (PRICE, TRANSACTION COUNT, HASHRATE), MONTHLY, AUG 2017–SEP 2026. PART OF THE "HISTORY OF FORKS" SERIES.
@@ -620,6 +695,24 @@ function clampTip(tip){
   const r = tip.getBoundingClientRect(), vw = document.documentElement.clientWidth;
   const shift = r.left < 6 ? 6 - r.left : r.right > vw - 6 ? vw - 6 - r.right : 0;
   tip.style.marginLeft = shift + 'px';
+}
+// Phones: draw a chart at the width it is shown at, so its text keeps its real
+// size instead of shrinking with the whole SVG. Returns the drawing width.
+function fitW(svg, base){
+  const w = Math.round(svg.getBoundingClientRect().width), W = w && w < base ? Math.max(300, w) : base;
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + svg.viewBox.baseVal.height);
+  return W;
+}
+// Draw charts only when they near the screen, then again whenever their width changes.
+function lazyRender(box, fn){
+  let w = -1;
+  const run = () => { const nw = Math.round(box.getBoundingClientRect().width); if (Math.abs(nw - w) < 24) return; w = nw; fn(); };
+  if (!('IntersectionObserver' in window)) { run(); addEventListener('resize', run); return; }
+  const io = new IntersectionObserver(es => {
+    if (!es.some(e => e.isIntersecting)) return;
+    io.disconnect(); run(); new ResizeObserver(run).observe(box);
+  }, {rootMargin:'600px 0px'});
+  io.observe(box);
 }
 document.addEventListener('click', e => {
   if (!e.target.closest('.chart-wrap')) document.querySelectorAll('.tooltip').forEach(t => { t.style.opacity = 0; });
@@ -672,6 +765,8 @@ function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts
   axisFmt = axisFmt || yFmt;
   opts = opts || {};
   const svg = document.getElementById(svgId);
+  if (!svg.dataset.w) svg.dataset.w = svg.viewBox.baseVal.width;  // the desktop width, kept so the chart can grow back
+  fitW(svg, +svg.dataset.w);
   const vb = svg.viewBox.baseVal;
   const W = vb.width, H = vb.height;
   const mL = 58, mR = 14, mT = 12, mB = 26;
@@ -714,7 +809,9 @@ function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts
       yearTicks.push(i); lastYear = yr;
     }
   });
-  yearTicks.forEach(i => {
+  // narrow charts: label every other year so the labels never touch
+  const every = plotW / yearTicks.length < 44 ? 2 : 1;
+  yearTicks.filter((_, k) => k % every === 0).forEach(i => {
     const lbl = svg.appendChild(el('text', {x:xAt(i), y:H-6, class:'axis-label', 'text-anchor':'middle'}));
     lbl.textContent = DATA[i].month.slice(0,4);
   });
@@ -722,13 +819,24 @@ function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts
   // optional flagged points — a dashed guide + short label calling out a
   // month worth a second look (e.g. a known spam/stress-test spike), so it
   // reads as "flagged, hover for the number" rather than an unexplained jump
-  (opts.annotations || []).forEach(a => {
+  (opts.annotations || []).forEach((a, k) => {
     const i = DATA.findIndex(d => d.month === a.month);
     if (i < 0) return;
     const x = xAt(i);
     svg.appendChild(el('line', {x1:x, x2:x, y1:mT, y2:mT+plotH, class:'annotation-line'}));
-    const lbl = svg.appendChild(el('text', {x, y:mT + 9, class:'annotation-label', 'text-anchor': i < n/2 ? 'start' : 'end'}));
+    const row = W < 560 ? k % 2 : 0;  // narrow charts: alternate rows so two flags never overlap
+    const lbl = svg.appendChild(el('text', {x, y:mT + 9 + row * 11, class:'annotation-label', 'text-anchor': i < n/2 ? 'start' : 'end'}));
     lbl.textContent = a.label;
+    // keep the label inside the chart: flip it to the other side of its line, or, if
+    // neither side fits (long Spanish labels on phones), center it on the line
+    const len = lbl.getComputedTextLength(), fits = l => l >= 2 && l + len <= W - 2;
+    const start = lbl.getAttribute('text-anchor') === 'start';
+    let left = start ? x : x - len;
+    if (!fits(left)) {
+      left = start ? x - len : x;
+      if (!fits(left)) left = Math.max(2, Math.min(W - 2 - len, x - len / 2));
+      lbl.setAttribute('text-anchor', 'start'); lbl.setAttribute('x', left);
+    }
   });
 
   const baseline = mT + plotH;
@@ -811,7 +919,7 @@ function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts
   }
   overlay.addEventListener('mousemove', e => onMove(e.clientX));
   overlay.addEventListener('mouseleave', hide);
-  overlay.addEventListener('touchmove', e => { onMove(e.touches[0].clientX); e.preventDefault(); }, {passive:false});
+  overlay.addEventListener('touchmove', e => onMove(e.touches[0].clientX), {passive:true});  // no preventDefault: a swipe still scrolls the page
   overlay.addEventListener('touchend', hide);
 
   const legend = document.getElementById(legendId);
@@ -1191,7 +1299,8 @@ function renderTimeline(svgId, tooltipId, events){
       tooltip.innerHTML = `<div class="t-date">${e.title}</div>`
         + `<div class="row"><span class="k">${fmtLongDate(e.date)}${e.proxy ? orEarlier : ''} · ${dayWord} ${dayOffsets[i]}</span></div>`
         + `<div class="row" style="max-width:220px; white-space:normal;"><span class="k">${e.detail}</span></div>`;
-      tooltip.style.left = ((x / W) * 100) + '%';
+      const r = hit.getBoundingClientRect(), wr = tooltip.parentElement.getBoundingClientRect();
+      tooltip.style.left = (r.left + r.width / 2 - wr.left) + 'px';
       tooltip.style.opacity = 1; clampTip(tooltip);
     }
     function hide(){ tooltip.style.opacity = 0; }
@@ -1201,8 +1310,9 @@ function renderTimeline(svgId, tooltipId, events){
   });
 }
 
-renderMainCharts('en');
+lazyRender(document.getElementById('metrics'), () => renderMainCharts(CURRENT_LANG));
 renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS.en);
+document.getElementById('tl-scroll').addEventListener('scroll', () => { document.getElementById('tooltip-timeline').style.opacity = 0; }, {passive:true});
 
 // ---------------- tweet screenshot lightbox ----------------
 (function(){
@@ -1248,6 +1358,9 @@ renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS.en);
     'sim-h2','sim-h3a','sim-a1','sim-a2','sim-a3','sim-a4','sim-h3b','sim-b1','sim-b2','sim-b3',
     'sources-h3','src1','src2','src3','src4','src5','src6','src7','src8','src9','src10','src11','src12','src13',
     'footer-text','backlink','nextlink',
+    'toc1','toc2','toc3','toc4','toc5','toc6','tk1','tk2','tk3','tk4','tk5','tk6',
+    'kd-h','kd1','kd2','kd3','kd4','kd5','kd6','ks1','ks2','ks3','ks4',
+    'ck1','ck2','ck3','ck4','ck5','ck6',
   ];
 
   const EN = {};
@@ -1265,22 +1378,22 @@ renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS.en);
     'read-time': '~9 min de lectura',
 
     'bg-h2': 'Contexto',
-    'bg1': 'En 2010, Satoshi Nakamoto añadió un límite de tamaño de bloque de 1 MB a Bitcoin. En ese momento, los bloques estaban en su mayoría vacíos, y el límite era sobre todo una medida defensiva pensada para proteger a una red joven de abusos.',
+    'bg1': 'En 2010, Satoshi Nakamoto añadió un <strong>límite de tamaño de bloque de 1 MB</strong> a Bitcoin. En ese momento, los bloques estaban en su mayoría vacíos, y el límite era sobre todo una medida defensiva pensada para proteger a una red joven de abusos.',
     'bg2': 'Pero Bitcoin estaba creciendo.',
     'bg3': 'Para 2013, el volumen de transacciones había crecido lo suficiente como para que los desarrolladores empezaran a hacerse una pregunta incómoda: ¿qué pasa cuando Bitcoin realmente alcance el límite? Por el momento, era un problema para el futuro. Pocos años después, ese futuro llegó.',
     'bg4': 'Para 2016, la congestión ya no era teórica. Los bloques se estaban llenando, las comisiones subían, y la comunidad enfrentaba una pregunta fundamental: ¿cómo debía escalar Bitcoin?',
     'bg5': 'La respuesta dividió al ecosistema.',
     'bg6': 'Muchos de los mayores <em>pools</em> de minería, que en conjunto controlaban la mayor parte del <em>hash</em> rate de Bitcoin, favorecían la solución más simple: hacer los bloques más grandes. Desde su perspectiva, bloques más grandes significaban que se podían procesar más transacciones directamente en la <em>blockchain</em>, preservando el rendimiento y los ingresos por comisiones que venían con él.',
-    'bg7': 'También eran profundamente escépticos de Segregated Witness (SegWit), que proponía aumentar la capacidad efectiva de transacciones mediante un <em>soft fork</em> en lugar de simplemente elevar el límite de tamaño de bloque. Algunos mineros consideraban que la implementación de SegWit era innecesariamente compleja y se oponían a cambios que, según creían, reducirían su influencia sobre el protocolo. También había una fuente de oposición más técnica: SegWit amenazaba con socavar el covert ASICBoost, una optimización de minería patentada que algunos mineros consideraban comercialmente valiosa.',
+    'bg7': 'También eran profundamente escépticos de <em>Segregated Witness</em> (SegWit), que proponía aumentar la capacidad efectiva de transacciones mediante un <em>soft fork</em> en lugar de simplemente elevar el límite de tamaño de bloque. Algunos mineros consideraban que la implementación de SegWit era innecesariamente compleja y se oponían a cambios que, según creían, reducirían su influencia sobre el protocolo. También había una fuente de oposición más técnica: SegWit amenazaba con socavar el <strong><em>covert ASICBoost</em></strong>, una optimización de minería patentada que algunos mineros consideraban comercialmente valiosa.',
     'bg8': 'El desacuerdo se estaba volviendo peligroso. Bitcoin no tenía una autoridad central capaz de resolver la disputa, así que los principales actores intentaron negociar una salida.',
     'bg9': 'En febrero de 2016, mineros, empresas y desarrolladores se reunieron en la Mesa Redonda de Hong Kong. El acuerdo resultante intentó tender un puente entre las posturas: activar SegWit como <em>soft fork</em> mientras se preparaba simultáneamente un <em>hard fork</em> que aumentaría la capacidad de bloque sin contar los datos de testigo a aproximadamente 2 MB, con un tamaño máximo de bloque de 4 MB.',
     'bg10': 'Por un momento, el compromiso pareció posible.',
     'bg11': 'Entonces Bitcoin entró en uno de los períodos de crecimiento más explosivos de su historia.',
-    'bg12': 'En 2017, un poderoso mercado alcista trajo una oleada de usuarios y transacciones. La congestión se intensificó, y las comisiones se dispararon, llegando a un promedio de casi 55 dólares en su punto máximo. El debate sobre escalabilidad ya no trataba de un problema que quizás aparecería algún día. Estaba ocurriendo en tiempo real, y el acuerdo de Hong Kong empezó a desmoronarse.',
+    'bg12': 'En 2017, un poderoso mercado alcista trajo una oleada de usuarios y transacciones. La congestión se intensificó, y las comisiones se dispararon, llegando a <strong>un promedio de casi 55 dólares</strong> en su punto máximo. El debate sobre escalabilidad ya no trataba de un problema que quizás aparecería algún día. Estaba ocurriendo en tiempo real, y el acuerdo de Hong Kong empezó a desmoronarse.',
     'bg13': 'Lo que había comenzado como un debate de ingeniería se estaba convirtiendo en una lucha por algo mucho más grande: en qué debía convertirse Bitcoin, y quién tenía la autoridad para decidirlo.',
     'bg14': 'En mayo de 2017, los principales <em>pools</em> de minería y empresas intentaron otro compromiso mediante el Acuerdo de Nueva York, más conocido como SegWit2x. La propuesta ataba la activación de SegWit a un compromiso de seguirla con un <em>hard fork</em> de 2 MB.',
     'bg15': 'Pero esta vez, otro grupo entró en la pelea: los usuarios y los operadores de nodos.',
-    'bg16': 'En lugar de negociar con los mineros, el movimiento de base User Activated <em>Soft Fork</em> (UASF) propuso hacer cumplir SegWit directamente desde el lado económico de la red. Bajo BIP 148, los nodos comenzarían a rechazar los bloques que no señalizaran soporte para SegWit a partir del 1 de agosto.',
+    'bg16': 'En lugar de negociar con los mineros, el movimiento de base <em>User Activated Soft Fork</em> (UASF) propuso hacer cumplir SegWit directamente desde el lado económico de la red. Bajo BIP 148, los nodos comenzarían a rechazar los bloques que no señalizaran soporte para SegWit a partir del 1 de agosto.',
     'bg17': 'Esto creó un tipo de amenaza muy distinto para los mineros. Podían seguir minando bloques que rechazaran SegWit, pero si la parte económicamente significativa de la red se negaba a aceptar esos bloques, las recompensas de esa minería podían quedar sin valor.',
     'bg18': 'El equilibrio de poder estaba cambiando.',
     'bg19': 'A medida que se acercaba el plazo del 1 de agosto, los principales <em>pools</em> de minería comenzaron a señalizar a favor de SegWit mediante BIP 91, despejando efectivamente el camino para su activación. La amenaza inmediata de una división impulsada por el UASF retrocedió, y SegWit finalmente quedó fijado en la cadena principal.',
@@ -1299,16 +1412,16 @@ renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS.en);
 
     'how-h2': '¿Cómo sucedió?',
     'hp1': 'El 1 de agosto de 2017, la historia compartida de Bitcoin se dividió en dos.',
-    'hp2': 'En el bloque 478,558, un <em>hard fork</em> activado por los usuarios dio origen a Bitcoin Cash (BCH). Fue el último bloque compartido por ambas cadenas. A partir de ahí, BCH comenzó a aceptar bloques mayores que el límite de 1 MB, inicialmente de hasta 8 MB, mientras la otra cadena continuó bajo las reglas existentes.',
+    'hp2': '<strong>En el bloque 478,558</strong>, un <em>hard fork</em> activado por los usuarios dio origen a Bitcoin Cash (BCH). Fue el último bloque compartido por ambas cadenas. A partir de ahí, BCH comenzó a aceptar bloques mayores que el límite de 1 MB, inicialmente de hasta 8 MB, mientras la otra cadena continuó bajo las reglas existentes.',
     'hp3': 'BCH mantuvo la prueba de trabajo SHA-256, por lo que el mismo hardware de minería podía asegurar cualquiera de las dos cadenas. También incorporó protección contra <em>replay</em>, evitando que una transacción emitida en una cadena pudiera repetirse automáticamente en la otra. Las dos redes ahora compartían una historia, pero ya no compartían las mismas reglas.',
     'hp4': 'Menos de un mes después, el 24 de agosto, la otra cadena activó SegWit en el bloque 481,824, colocando a ambas redes en caminos de escalabilidad diferentes. Con el tiempo, la mayor parte del valor de mercado, poder de cómputo y liquidez permaneció allí, mientras su estrategia de escalabilidad se orientaba cada vez más hacia soluciones fuera de la cadena, como Lightning Network.',
     'hp5': 'BCH tenía sus propios problemas que resolver.',
-    'hp6': 'Su primer mecanismo de ajuste de dificultad, el EDA, fue diseñado para atraer mineros, pero terminó provocando fuertes oscilaciones en el poder de cómputo y en los tiempos entre bloques a medida que los mineros se movían entre las cadenas en competencia. El problema fue lo suficientemente grave como para obligar a BCH a realizar su primer gran <em>hard fork</em> apenas tres meses después de su lanzamiento. El 13 de noviembre de 2017, reemplazó el EDA por un nuevo Algoritmo de Ajuste de Dificultad (DAA) que recalculaba la dificultad después de cada bloque.',
+    'hp6': 'Su primer mecanismo de ajuste de dificultad, el EDA, fue diseñado para atraer mineros, pero terminó provocando <strong>fuertes oscilaciones en el poder de cómputo y en los tiempos entre bloques</strong> a medida que los mineros se movían entre las cadenas en competencia. El problema fue lo suficientemente grave como para obligar a BCH a realizar su primer gran <em>hard fork</em> apenas tres meses después de su lanzamiento. El 13 de noviembre de 2017, reemplazó el EDA por un nuevo Algoritmo de Ajuste de Dificultad (DAA) que recalculaba la dificultad después de cada bloque.',
     'hp7': 'Seis meses después, BCH volvió a modificar sus reglas: aumentó el tamaño máximo de los bloques de 8 MB a 32 MB y reactivó varios <em>opcodes</em> de la era de Satoshi, ampliando su capacidad para procesar transacciones más complejas.',
     'hp8': 'Pero los bloques más grandes no eliminaron los desacuerdos sobre cómo debía gobernarse la red.',
     'hp9': 'En noviembre de 2018, una disputa entre Bitcoin ABC y una facción liderada por Craig Wright y Calvin Ayre escaló hasta convertirse en una "guerra de <em>hash</em>", provocando otra división de la cadena. La cadena respaldada por Wright y Ayre se convirtió en Bitcoin SV (BSV), mientras la otra conservó el nombre de Bitcoin Cash.',
     'hp10': 'Dos años después, BCH volvió a dividirse. Esta vez, la disputa giró en torno a la propuesta de Bitcoin ABC de destinar una parte de la recompensa por bloque a financiar el desarrollo. La cadena que rechazó la propuesta conservó el nombre de Bitcoin Cash; la cadena de Bitcoin ABC pasó a llamarse eCash.',
-    'hp11': 'Nueve años después, BCH es una red mucho más pequeña en términos de precio y posición por capitalización de mercado que cuando fue lanzada. Aun así, continúa activa, con desarrollo constante, mineros asegurando la red y una comunidad que sigue apostando por el enfoque de bloques grandes.',
+    'hp11': 'Nueve años después, BCH es <strong>una red mucho más pequeña</strong> en términos de precio y posición por capitalización de mercado que cuando fue lanzada. Aun así, continúa activa, con desarrollo constante, mineros asegurando la red y una comunidad que sigue apostando por el enfoque de bloques grandes.',
     'hp12': 'La guerra por el tamaño de los bloques no produjo un ganador sencillo. Produjo experimentos en competencia sobre escalabilidad, economía de la minería y gobernanza descentralizada. BCH es lo que ocurre cuando un desacuerdo sobre las reglas de Bitcoin deja de ser un debate y se convierte en una red.',
 
     'tweets-h2': 'Qué decía la gente sobre BCH vs. BTC',
@@ -1323,24 +1436,30 @@ renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS.en);
     'metrics-h2': 'Nueve años de datos',
     'metrics-intro': 'Cifras mensuales del conjunto de datos público de CoinMetrics, de agosto de 2017 a septiembre de 2026. Los cinco gráficos de líneas comparten el mismo eje temporal y un eje Y en escala logarítmica, de modo que una duplicación siempre cubre la misma distancia vertical, ya sea a inicios de 2017 o en la actualidad.',
     'view-label': 'Vista del gráfico:', 'view-abs': 'Absoluto', 'view-ratio': 'BCH como % de BTC',
-    'ct1': 'Precio: BCH vs. Bitcoin, mensual (USD)',
+    'ct1': 'BCH cayó del 11.6% del precio de Bitcoin al 0.33%',
+    'ck1': 'Precio: BCH vs. Bitcoin, mensual (USD)',
     'cc1': 'BCH abrió en aproximadamente el 11.6% del precio de Bitcoin en su primer mes, subió brevemente hacia el 16% a inicios de 2018, luego decayó de forma constante, y hoy se sitúa por debajo del 0.4%.',
-    'ct2': 'Volumen de transacciones: BCH vs. Bitcoin, conteo mensual',
+    'ct2': 'BCH procesa hoy cerca del 1.8% de las transacciones de Bitcoin',
+    'ck2': 'Volumen de transacciones: BCH vs. Bitcoin, conteo mensual',
     'cc2': 'Total de transacciones confirmadas cada mes en cada cadena. Los puntos señalados son inundaciones conocidas de <em>spam</em> o pruebas de estrés, no uso orgánico. Una de esas inundaciones, entre marzo y abril de 2021, hizo que el conteo mensual de transacciones de BCH superara brevemente al de Bitcoin.',
-    'ct3': '<em>Hashrate</em> de la red: BCH vs. Bitcoin, promedio mensual',
-    'cc3': 'Ambas cadenas comparten el algoritmo SHA-256, así que los mineros pueden apuntar su hardware a cualquiera de las dos. El <em>hashrate</em> propio de BCH se ha triplicado aproximadamente desde su lanzamiento, pero comparado con el de Bitcoin cuenta la historia opuesta: del 15.9% del <em>hashrate</em> de Bitcoin en el <em>fork</em> a menos del 0.4% hoy. Pasa el cursor para ver el <em>hashrate</em> real de cada cadena.',
-    'ct5': 'Comisión media por transacción: BCH vs. Bitcoin, mensual',
+    'ct3': 'El <em>hashrate</em> de BCH se triplicó, pero cayó del 15.9% del de Bitcoin al 0.35%',
+    'ck3': '<em>Hashrate</em> de la red: BCH vs. Bitcoin, promedio mensual',
+    'cc3': 'Ambas cadenas comparten el algoritmo SHA-256, así que los mineros pueden apuntar su hardware a cualquiera de las dos. El <em>hashrate</em> propio de BCH se ha triplicado aproximadamente desde su lanzamiento, pero comparado con el de Bitcoin cuenta la historia opuesta: del 15.9% del <em>hashrate</em> de Bitcoin en el <em>fork</em> a menos del 0.4% hoy. Pasa el cursor o toca para ver el <em>hashrate</em> real de cada cadena.',
+    'ct5': 'La comisión media de Bitcoin llegó a cerca de $30; la de BCH es menor a un centavo',
+    'ck5': 'Comisión media por transacción: BCH vs. Bitcoin, mensual',
     'cc5': 'Lo que pagó la transacción media cada mes, en la moneda propia de cada cadena o en dólares al precio de cada día. En el <em>fork</em>, una transacción de Bitcoin costaba unos $4.47 y una de BCH unos $0.18. La media de Bitcoin llegó a cerca de $30 en abril de 2021. En los últimos 12 meses promedió unos $0.43, frente a menos de un centavo en BCH. En comisión por unidad de espacio de bloque (sat/vB en Bitcoin, sat/B en BCH, que no tiene SegWit), Bitcoin llegó a cerca de 400 en diciembre de 2017. En los últimos 12 meses ambas cadenas promediaron solo entre 2 y 2.5. La vista como % de BTC compara los montos en dólares.',
     'fee-unit-label': 'Unidades:',
-    'ct6': 'Valor movido: BCH vs. Bitcoin, total mensual',
+    'ct6': 'BCH mueve cerca del 0.3% del valor en dólares de Bitcoin',
+    'ck6': 'Valor movido: BCH vs. Bitcoin, total mensual',
     'cc6': "Valor total de todas las salidas de transacciones cada mes, en la moneda propia de cada cadena o en dólares al precio de cada día. El total incluye el cambio, las monedas que quien envía se devuelve a su propia billetera, así que exagera las transferencias reales en ambas cadenas. En los últimos 12 meses, Bitcoin movió unos $1.9 billones al mes y BCH unos $180 mil millones. Gran parte del total de BCH son las mismas monedas moviéndose una y otra vez: en febrero de 2026 sus salidas sumaron 1,300 millones de BCH, más de 60 veces todo su suministro. Los puntos señalados marcan los dos meses más extremos.",
     'moved-unit-label': 'Unidades:',
-    'ct4': 'Cronología: listados en <em>exchanges</em> y eventos clave de la red',
+    'ct4': 'Kraken y Binance listaron BCH de inmediato; Coinbase lo hizo en diciembre de 2017',
+    'ck4': 'Cronología: listados en <em>exchanges</em> y eventos clave de la red',
     'cc4': 'Ambos lados de la división, desde el <em>fork</em> mismo hasta la primera división propia de BCH, medidos en días desde el 1 de agosto de 2017.',
     'tll1': 'Listado en <em>exchange</em>',
     'tll2': 'Confirmado activo para esta fecha (fecha exacta de listado no confirmada)',
     'tll3': 'Evento de protocolo / red',
-    'tll4': 'Pasa el cursor sobre un punto para más detalles',
+    'tll4': 'Pasa el cursor o toca un punto para ver detalles',
 
     'sim-h2': 'Similitudes de BTCB2 con Cada Cadena',
     'sim-h3a': 'Paralelismos con el <em>Fork</em> de BCH',
@@ -1353,7 +1472,7 @@ renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS.en);
     'sim-b2': '<strong>Un Rol Más Acotado para la Capa Base:</strong> BTC enfatizó la cadena base como una capa de liquidación monetaria, rechazando la idea de que todo tipo de actividad debía ocurrir directamente <em>on-chain</em>. BTCB2 enfatiza de forma similar la <em>blockchain</em> como un libro contable monetario y aplica restricciones más estrictas a los datos arbitrarios.',
     'sim-b3': '<strong>Consenso Impuesto por los Nodos:</strong> Durante el conflicto de 2017, los defensores de BTC enfatizaron que el consenso dependía en última instancia de los nodos que hacían cumplir las reglas, y no simplemente de las preferencias de los <em>pools</em> de minería. BTCB2 surgió de forma similar con un respaldo importante de usuarios que corren nodos y hacen cumplir sus reglas.',
 
-    'sources-h3': 'Fuentes',
+    'sources-h3': 'Fuentes (13)',
     'src1': 'El límite original de 1 MB por bloque de Bitcoin, añadido en 2010 — <a href="https://en.bitcoin.it/wiki/Block_size_limit_controversy" target="_blank" rel="noopener">Block size limit controversy, Bitcoin Wiki</a>',
     'src2': 'El acuerdo de la Mesa Redonda de Hong Kong, febrero de 2016 — <a href="https://medium.com/@bitcoinroundtable/bitcoin-roundtable-consensus-266d475a61ff" target="_blank" rel="noopener">Bitcoin Roundtable Consensus (comunicado oficial)</a>',
     'src3': 'El covert ASICBoost como fuente de oposición minera a SegWit — <a href="https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2017-April/013996.html" target="_blank" rel="noopener">Gregory Maxwell, lista de correo bitcoin-dev</a>',
@@ -1369,6 +1488,24 @@ renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS.en);
     'src13': 'El pico promedio de comisiones cerca de 55 dólares (54.64 dólares el 22 de dic. de 2017) — <a href="https://www.spark.money/tools/bitcoin-fee-rate-history" target="_blank" rel="noopener">Bitcoin Fee Rate History, Spark</a>; cobertura de la época: <a href="https://www.coindesk.com/markets/2017/12/18/bought-your-first-bitcoin-or-ether-brace-for-the-fees" target="_blank" rel="noopener">CoinDesk, 18 de dic. de 2017</a>',
     'footer-text': 'DATOS: API COMUNITARIA DE COINMETRICS (PRECIO, CONTEO DE TRANSACCIONES, HASHRATE), MENSUAL, AGO 2017–SEP 2026. PARTE DE LA SERIE "UNA HISTORIA DE FORKS".',
     'backlink': '&larr; Volver al Prólogo',
+    'toc1': 'Contexto', 'toc2': 'Por qué bloques más grandes', 'toc3': 'Cómo sucedió', 'toc4': 'Tweets', 'toc5': 'Datos', 'toc6': 'Paralelos con BTCB2',
+    'tk1': 'Una disputa sobre el tamaño de bloque se convirtió en una disputa sobre quién decide las reglas de Bitcoin.',
+    'tk2': 'El bando de los bloques grandes quería que Bitcoin escalara <em>on-chain</em>, como efectivo para pagos cotidianos.',
+    'tk3': 'BCH se separó el 1 de agosto de 2017 y luego se dividió dos veces más por sus propias reglas.',
+    'tk4': 'Durante años después del <em>fork</em>, los defensores de BCH siguieron defendiendo su postura en público.',
+    'tk5': 'Nueve años después, BCH sigue activa, pero es pequeña: cerca del 0.3% del precio de Bitcoin y el 1.8% de sus transacciones.',
+    'tk6': 'BTCB2 recuerda a ambos lados de 2017: una cadena minoritaria como BCH, con la postura de BTC a favor de un espacio de bloque limitado.',
+    'kd-h': 'Fechas clave',
+    'kd1': '<time>1 ago 2017</time><span>BCH se separa en el bloque 478,558</span>',
+    'kd2': '<time>24 ago 2017</time><span>SegWit se activa en Bitcoin en el bloque 481,824</span>',
+    'kd3': '<time>13 nov 2017</time><span>BCH reemplaza su regla de dificultad EDA</span>',
+    'kd4': '<time>may 2018</time><span>Los bloques de BCH pasan de 8 MB a 32 MB</span>',
+    'kd5': '<time>nov 2018</time><span>Guerra de <em>hash</em>: Bitcoin SV se separa</span>',
+    'kd6': '<time>nov 2020</time><span>eCash se separa</span>',
+    'ks1': '<b>0.33%</b><span>Precio de BCH como parte del de Bitcoin, sep 2026. Empezó en 11.6%.</span>',
+    'ks2': '<b>1.8%</b><span>Transacciones de BCH como parte de las de Bitcoin, sep 2026</span>',
+    'ks3': '<b>0.35%</b><span><em>Hashrate</em> de BCH como parte del de Bitcoin, sep 2026. Empezó en 15.9%.</span>',
+    'ks4': '<b>&lt;1¢</b><span>Comisión media de BCH en los últimos 12 meses, frente a $0.44 en Bitcoin</span>',
     'nextlink': 'Siguiente: Ethereum vs. Ethereum Classic &rarr;',
   };
 
@@ -1403,6 +1540,30 @@ renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS.en);
   let saved = null;
   try { saved = localStorage.getItem('site-lang'); } catch(e){}
   if (saved === 'es') applyLang('es');
+})();
+
+// Page-wide: screen readers hear which toggle button is on; a link to a source
+// opens the collapsed list; the sticky section bar marks the section being read.
+document.querySelectorAll('.view-toggle, .lang-toggle').forEach(g => {
+  const sync = () => g.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.classList.contains('active')));
+  sync(); g.addEventListener('click', () => setTimeout(sync));
+});
+const openSource = () => {
+  const t = location.hash && document.querySelector(location.hash), d = t && t.closest('details');
+  if (d && !d.open) { d.open = true; t.scrollIntoView(); }
+};
+addEventListener('hashchange', openSource); openSource();
+(function(){
+  const links = [...document.querySelectorAll('.toc a')];
+  const secs = links.map(a => document.querySelector(a.getAttribute('href')));
+  const mark = () => {
+    let i = secs.length - 1;
+    while (i > 0 && secs[i].getBoundingClientRect().top > 120) i--;
+    links.forEach((a, k) => { a.classList.toggle('on', k === i); if (k === i) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    const on = links[i], bar = on.closest('ol');  // keep the current section visible in the bar on phones
+    if (on.offsetLeft < bar.scrollLeft || on.offsetLeft + on.offsetWidth > bar.scrollLeft + bar.clientWidth) bar.scrollLeft = on.offsetLeft - 20;
+  };
+  addEventListener('scroll', mark, {passive:true}); mark();
 })();
 </script>
 </body>

@@ -21,7 +21,7 @@
 <meta name="twitter:image" content="https://dave-rodt.github.io/fork-history/assets/og-btg-vs-btc.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root{
     color-scheme: light dark;
@@ -121,7 +121,7 @@
   .hero{padding:44px 0 30px; border-bottom:1px solid var(--rule);}
   .hero .eyebrow{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--brand-orange); letter-spacing:0.03em; margin-bottom:10px;}
   .hero h1{font-size:clamp(1.9rem,4.4vw,2.9rem); line-height:1.14; max-width:20ch;}
-  .hero p.lede{max-width:62ch; font-size:1.08rem; color:var(--ink-soft); margin-top:16px;}
+  .hero p.lede{font-size:1.08rem; color:var(--ink-soft); margin-top:16px;}
   .read-time{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--ink-mute); margin-top:14px;}
 
   section.phase{padding:40px 0; border-bottom:1px solid var(--rule);}
@@ -130,11 +130,11 @@
   .phase-num{font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--brand-orange); flex-shrink:0;}
   .phase-head h2{font-size:1.5rem;}
   .phase-time{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); margin-left:auto;}
-  .phase p{max-width:66ch; margin:0 0 14px;}
+  .phase p{margin:0 0 18px;}
   .phase p:last-child{margin-bottom:0;}
-  .phase ul{max-width:66ch; padding-left:20px; margin:0 0 14px;}
+  .phase ul{padding-left:20px; margin:0 0 14px;}
   .phase li{margin-bottom:6px;}
-  .phase h3{font-size:1.05rem; margin:22px 0 8px;}
+  .phase h3{font-size:1.25rem; margin:36px 0 12px;}
   .phase h3:first-of-type{margin-top:0;}
 
   .placeholder-box{
@@ -156,7 +156,7 @@
   .view-toggle button + button{border-left:1px solid var(--rule-strong);}
   .view-toggle button.active{background:var(--brand-orange); color:#000;}
   .view-toggle button:hover:not(.active){color:var(--ink);}
-  .chart-caption{font-size:0.84rem; color:var(--ink-soft); margin:0 0 12px; max-width:64ch;}
+  .chart-caption{font-size:0.84rem; color:var(--ink-soft); margin:0 0 12px;}
   .chart-wrap{
     position:relative; background:var(--panel); border:1px solid var(--rule); border-radius:10px;
     padding:18px 18px 12px; box-shadow:var(--shadow-sm);
@@ -193,7 +193,7 @@
 
   .sources-note{margin-top:30px; padding-top:18px; border-top:1px solid var(--rule);}
   .sources-note h3{font-size:0.9rem; margin:0 0 10px; color:var(--ink-soft);}
-  .sources-note ol{max-width:70ch; padding-left:20px; margin:0; font-size:0.78rem; color:var(--ink-mute); line-height:1.6;}
+  .sources-note ol{padding-left:20px; margin:0; font-size:0.78rem; color:var(--ink-mute); line-height:1.6;}
   .sources-note li{margin-bottom:6px;}
   .sources-note a{color:var(--ink-soft);}
   .sources-note a:hover{color:var(--brand-orange);}
@@ -294,8 +294,46 @@
 
   footer{margin-top:30px; padding-top:18px; font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); line-height:1.7;}
 
+  /* ---------- reading aids: sticky section bar, takeaways, pull quotes, key numbers ---------- */
+  .toc{position:sticky; top:0; z-index:20; margin:0 -20px; padding:0 20px; background:var(--bg); border-bottom:1px solid var(--rule);}
+  .toc ol{list-style:none; display:flex; gap:4px; margin:0; padding:8px 0; overflow-x:auto; scrollbar-width:none;}
+  .toc ol::-webkit-scrollbar{display:none;}
+  .toc a{display:block; white-space:nowrap; padding:4px 10px; border-radius:14px; font-family:'IBM Plex Mono',monospace; font-size:0.74rem; color:var(--ink-mute); text-decoration:none;}
+  .toc a span{color:var(--brand-orange); margin-right:6px;}
+  .toc a:hover{color:var(--ink);}
+  .toc a.on{color:var(--ink); background:var(--panel); box-shadow:var(--shadow-sm);}
+  section.phase, .chart-block, [id^="src"]{scroll-margin-top:56px;}
+  .phase p.takeaway{font-family:'Source Serif 4',serif; font-size:1.2rem; line-height:1.45; color:var(--ink); margin:0 0 22px;}
+  .pull{margin:30px 0; padding:4px 0 4px 20px; border-left:3px solid var(--brand-orange); font-family:'Source Serif 4',serif; font-size:clamp(1.3rem,3.2vw,1.6rem); line-height:1.3; color:var(--ink); text-wrap:balance;}
+  .phase p.pull:last-child{margin-bottom:0;}
+  .key-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:6px 0 30px;}
+  @media (max-width:700px){ .key-stats{grid-template-columns:repeat(2,1fr);} }
+  .key-stat{background:var(--panel); border:1px solid var(--rule); border-radius:10px; padding:14px; box-shadow:var(--shadow-sm);}
+  .key-stat b{display:block; font-family:'Source Serif 4',serif; font-size:clamp(1.6rem,4vw,2.1rem); font-weight:600; line-height:1.1; color:var(--ink);}
+  .key-stat span{display:block; font-size:0.8rem; line-height:1.4; color:var(--ink-soft); margin-top:6px;}
+  .key-dates{margin:22px 0 26px; padding:16px 18px; background:var(--panel); border:1px solid var(--rule); border-radius:10px; box-shadow:var(--shadow-sm);}
+  .key-dates h4{margin:0 0 10px; font-family:'IBM Plex Mono',monospace; font-size:0.74rem; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--brand-orange);}
+  .key-dates ol{list-style:none; margin:0; padding:0;}
+  .key-dates li{display:grid; grid-template-columns:5.2em 1fr; gap:12px; margin:0; padding:5px 0; border-top:1px solid var(--rule); font-size:0.9rem;}
+  .key-dates li:first-child{border-top:none;}
+  .key-dates time{font-family:'IBM Plex Mono',monospace; font-size:0.8rem; color:var(--ink-mute); padding-top:2px;}
+  .chart-kicker{font-family:'IBM Plex Mono',monospace; font-size:0.72rem; letter-spacing:0.04em; text-transform:uppercase; color:var(--brand-orange); margin-bottom:4px; font-weight:400;}
+  .chart-block .chart-title{font-family:'Source Serif 4',serif; font-size:1.2rem; line-height:1.3; margin-bottom:8px; text-wrap:balance;}
+  .chart-block + .chart-block{margin-top:52px;}
+  /* On phones the fork diagram keeps a readable width and scrolls sideways inside its box */
+  .tl-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+  .tl-scroll-inner{min-width:760px;}
+  details.sources-note > summary{cursor:pointer; list-style:none; font-family:'Source Serif 4',serif; font-size:0.95rem; font-weight:600; color:var(--ink-soft);}
+  details.sources-note > summary::-webkit-details-marker{display:none;}
+  details.sources-note > summary::before{content:'+'; display:inline-block; width:1.1em; font-family:'IBM Plex Mono',monospace; color:var(--brand-orange);}
+  details.sources-note[open] > summary::before{content:'\2212';}
+  details.sources-note > summary:hover{color:var(--ink);}
+  details.sources-note[open] > summary{margin-bottom:10px;}
+
   @media (max-width:600px){
     section.phase{padding:30px 0;}
+    .phase-head{flex-wrap:nowrap;}  /* keep the number beside a long title */
+    .phase-head h2{flex:1; min-width:0;}
   }
 </style>
 </head>
@@ -322,21 +360,33 @@
     <div class="read-time" id="read-time">~7 min read</div>
   </div>
 
+  <nav class="toc" aria-label="Sections">
+    <ol id="toc-list">
+      <li><a href="#background"><span>01</span>Background</a></li>
+      <li><a href="#why-fork"><span>02</span>Why</a></li>
+      <li><a href="#how-it-happened"><span>03</span>How it happened</a></li>
+      <li><a href="#outcome"><span>04</span>Outcome</a></li>
+      <li><a href="#metrics"><span>05</span>Data</a></li>
+      <li><a href="#similarities"><span>06</span>Parallels</a></li>
+    </ol>
+  </nav>
+
   <section class="phase" id="background">
     <div class="phase-head">
       <span class="phase-num">01</span>
       <h2 id="bg-h2">Background</h2>
       <span class="phase-time">~1 min</span>
     </div>
+    <p class="takeaway" id="tk1">A handful of large miners had real influence over Bitcoin's rules.</p>
     <p id="bg1">By 2017, Bitcoin's original vision of "one CPU, one vote" was already a relic.</p>
-    <p id="bg2">Mining had left the bedroom and moved into warehouses filled with ASICs, machines built for one job: mining Bitcoin. The economics favored whoever could buy the most hardware, secure the cheapest electricity, and operate at the largest scale.</p>
-    <p id="bg3">At the center of that world was Bitmain, led by Jihan Wu. The company was both a dominant hardware manufacturer and a major mining pool operator. A miner could end up buying machines from the same company that was competing with them for blocks.</p>
-    <p id="bg4">And the concentration was becoming hard to ignore. For long stretches, a handful of Chinese mining pools controlled a large share of Bitcoin's hash rate.</p>
+    <p id="bg2">Mining had left the bedroom and moved into warehouses filled with <em>ASICs</em>, machines built for one job: mining Bitcoin. The economics favored whoever could buy the most hardware, secure the cheapest electricity, and operate at the largest scale.</p>
+    <p id="bg3">At the center of that world was Bitmain, led by Jihan Wu. The company was <strong>both a dominant hardware manufacturer and a major mining pool operator</strong>. A miner could end up buying machines from the same company that was competing with them for blocks.</p>
+    <p id="bg4">And the concentration was becoming hard to ignore. For long stretches, a handful of Chinese mining pools controlled a large share of Bitcoin's <em>hash rate</em>.</p>
     <p id="bg5">Then Bitcoin faced one of its fiercest political battles yet.</p>
     <p id="bg6">SegWit promised to change how Bitcoin handled transaction data, but some large miners resisted. Critics also pointed to AsicBoost, a technique that could provide compatible hardware with a significant efficiency advantage, one that SegWit would largely eliminate. Bitmain's chips supported the technique, although the company denied using it on Bitcoin.</p>
     <p id="bg7">The conflict exposed an uncomfortable possibility: the people with the greatest influence over Bitcoin's security could also have economic reasons to resist changes to the protocol.</p>
     <p id="bg8">SegWit activated in August 2017. But the battle had demonstrated something that was difficult to unsee:</p>
-    <p id="bg9">Mining was not just about securing Bitcoin. It was also a source of power.</p>
+    <p class="pull" id="bg9">Mining was not just about securing Bitcoin. It was also a source of power.</p>
   </section>
   <section class="phase" id="why-fork">
     <div class="phase-head">
@@ -344,10 +394,11 @@
       <h2 id="why-h2">Why Change the Mining Algorithm?</h2>
       <span class="phase-time">~1 min</span>
     </div>
+    <p class="takeaway" id="tk2">Bitcoin Gold's answer: change the algorithm so Bitcoin's mining machines no longer work.</p>
     <p id="why1">If the miners securing Bitcoin could influence which changes the network accepted, Bitcoin Gold asked a sharper question:</p>
-    <p id="why2">What if you made the existing miners obsolete?</p>
+    <p class="pull" id="why2">What if you made the existing miners obsolete?</p>
     <p id="why3">The founders saw a structural problem. SHA-256 rewarded specialized hardware, large capital, and cheap electricity, conditions that favored industrial operators. Reforming that industry looked difficult. So they chose a different route: make the existing hardware useless.</p>
-    <p id="why4">By replacing SHA-256 with a different proof-of-work algorithm, Bitcoin Gold aimed to remove the advantage held by Bitcoin's specialized miners and give ordinary GPU miners a chance to compete.</p>
+    <p id="why4">By replacing SHA-256 with a different proof-of-work algorithm, Bitcoin Gold aimed to remove the advantage held by Bitcoin's specialized miners and <strong>give ordinary GPU miners a chance to compete</strong>.</p>
     <p id="why5">The goal was not simply to create another version of Bitcoin. It was to change the economics of who could secure the network.</p>
   </section>
   <section class="phase" id="how-it-happened">
@@ -356,11 +407,23 @@
       <h2 id="how-h2">How Did It Happen?</h2>
       <span class="phase-time">~1 min</span>
     </div>
+    <p class="takeaway" id="tk3">A copy of Bitcoin's history, a new mining algorithm, and a premine of about 100,000 BTG.</p>
+    <div class="key-dates" id="kd">
+      <h4>Key dates</h4>
+      <ol>
+        <li><time>Oct 2017</time><span>BTG copies Bitcoin's history and splits off</span></li>
+        <li><time>Nov 2017</time><span>Public mining opens</span></li>
+        <li><time>May 2018</time><span>Bitmain announces an Equihash ASIC; first 51% attack</span></li>
+        <li><time>Jul 2018</time><span>Second hard fork, to Equihash-BTG</span></li>
+        <li><time>Jan 2020</time><span>Two more 51% attacks</span></li>
+        <li><time>2024</time><span>Fight over the bitcoingold.org domain</span></li>
+      </ol>
+    </div>
     <p id="how1">Led by Jack Liao of LightningASIC, Bitcoin Gold was announced and built in public during 2017.</p>
-    <p id="how2">The project chose Equihash, a memory-hard algorithm designed to favor GPUs over Bitcoin's specialized ASICs. The idea was straightforward: if Bitcoin's mining industry had become concentrated around specialized machines, changing the algorithm could open the door to a broader base of miners.</p>
+    <p id="how2">The project chose Equihash, a <em>memory-hard</em> algorithm designed to favor GPUs over Bitcoin's specialized ASICs. The idea was straightforward: if Bitcoin's mining industry had become concentrated around specialized machines, changing the algorithm could open the door to a broader base of miners.</p>
     <p id="how3">On October 24, 2017, after Bitcoin block 491,406, Bitcoin Gold took a snapshot of the Bitcoin blockchain. From that moment, the chains shared the same history but followed different mining rules. Every Bitcoin holder at the snapshot was entitled to BTG on a 1:1 basis.</p>
-    <p id="how4">But before public mining began, the project mined 8,000 blocks at minimum difficulty, producing roughly 100,000 BTG. The coins were placed in 4-of-6 multisig wallets as an "endowment." Critics simply called it a premine.</p>
-    <p id="how5">Public mining opened on November 13, 2017. Alongside Equihash, the chain launched with replay protection, new address prefixes (G and A), per-block difficulty adjustment, and the SegWit code already present in Bitcoin.</p>
+    <p id="how4">But before public mining began, the project <strong>mined 8,000 blocks at minimum difficulty, producing roughly 100,000 BTG</strong>. The coins were placed in 4-of-6 multisig wallets as an "endowment." Critics simply called it a <em>premine</em>.</p>
+    <p id="how5">Public mining opened on November 13, 2017. Alongside Equihash, the chain launched with <em>replay protection</em>, new address prefixes (G and A), per-block difficulty adjustment, and the SegWit code already present in Bitcoin.</p>
     <p id="how6">The fork was live. Bitcoin Gold had changed the rules of mining and was now putting its central idea to the test.</p>
   </section>
 
@@ -371,28 +434,36 @@
       <h2 id="out-h2">The Outcome</h2>
       <span class="phase-time">~2 min</span>
     </div>
+    <p class="takeaway" id="tk4">ASICs followed it, attackers rented hash power, and the project ended up fighting over its own website.</p>
     <p id="out1">The first challenge arrived almost immediately.</p>
-    <p id="out2">In May 2018, Bitmain announced an Equihash ASIC. The hardware Bitcoin Gold had tried to escape had followed it.</p>
+    <p id="out2"><strong>In May 2018, Bitmain announced an Equihash ASIC.</strong> The hardware Bitcoin Gold had tried to escape had followed it.</p>
     <p id="out3">That same month, the network suffered 51% attacks. Attackers, likely using rented hash power, reorganized the chain and double-spent BTG. Bitcoin Gold responded on July 3, 2018 with a second hard fork, switching to Equihash-BTG to break the new ASICs and make hash-power rental harder to use.</p>
-    <p id="out4">The sequence revealed the first hard lesson of ASIC resistance: it is a moving target. Enough economic reward creates an incentive to build specialized hardware. Changing the algorithm can delay the process; it cannot erase the incentive.</p>
+    <p id="out4">The sequence revealed the first hard lesson of ASIC resistance: <strong>it is a moving target</strong>. Enough economic reward creates an incentive to build specialized hardware. Changing the algorithm can delay the process; it cannot erase the incentive.</p>
     <p id="out5">The attacks revealed a second lesson. Making mining accessible does not automatically make a network secure. Bitcoin Gold had changed the hardware, but not the underlying economics. Cheap power still mattered. Scale still mattered. Hash power could still be concentrated or rented.</p>
-    <p id="out6">The same vulnerability returned in January 2020. Attackers carried out two deep reorganizations and double-spent roughly 7,000 BTG.</p>
+    <p id="out6">The same vulnerability returned in January 2020. Attackers carried out two deep reorganizations and <strong>double-spent roughly 7,000 BTG</strong>.</p>
     <p id="out7">Then came another problem, this time closer to home.</p>
     <p id="out8">The project had promised more decentralized mining, yet it had allocated 100,000 BTG to itself during the first 8,000 blocks. Whatever the intended use of the endowment, critics had an easy objection: decentralization is not only about who can mine. It is also about who receives the coins.</p>
     <p id="out9">And eventually, even control of the project itself became contested.</p>
-    <p id="out10">Jack Liao stepped down from the Bitcoin Gold board in late 2018, leaving the remaining team to run the project. Years later, a dispute erupted over the project's website. In 2024, Liao took control of the bitcoingold.org domain, while the remaining team moved to a new domain. Each side offered a different account of what happened: the team said Liao had left and sold his holdings; Liao presented the takeover as a rebirth of the project.</p>
+    <p id="out10">Jack Liao stepped down from the Bitcoin Gold board in late 2018, leaving the remaining team to run the project. Years later, a dispute erupted over the project's website. <strong>In 2024, Liao took control of the bitcoingold.org domain</strong>, while the remaining team moved to a new domain. Each side offered a different account of what happened: the team said Liao had left and sold his holdings; Liao presented the takeover as a rebirth of the project.</p>
     <p id="out11">There was something almost paradoxical about it.</p>
-    <p id="out12">A project created to reduce the concentration of power in Bitcoin's mining industry had ended up fighting over who controlled its own infrastructure.</p>
+    <p class="pull" id="out12">A project created to reduce the concentration of power in Bitcoin's mining industry had ended up fighting over who controlled its own infrastructure.</p>
     <p id="out13">And that brought the story back to Bitcoin.</p>
     <p id="out14">The 2017 SegWit battle had shown that large miners could exert significant pressure on Bitcoin's development, but they did not have the final say. SegWit activated after months of conflict, with user-activated soft-fork pressure helping tip the balance.</p>
     <p id="out15">Bitcoin Gold changed the miners, the hardware, and the algorithm. But Bitcoin's miners were never the only ones with power.</p>
-    <p id="out16">Bitcoin Gold changed who could mine, but it did not change how power works in a decentralized network.</p>
+    <p class="pull" id="out16">Bitcoin Gold changed who could mine, but it did not change how power works in a decentralized network.</p>
   </section>
   <section class="phase" id="metrics">
     <div class="phase-head">
       <span class="phase-num">05</span>
       <h2 id="metrics-h2">Years of Data</h2>
       <span class="phase-time">~1 min</span>
+    </div>
+    <p class="takeaway" id="tk5">Price, transactions and hashrate all fell to a sliver of where they started.</p>
+    <div class="key-stats" id="ks">
+      <div class="key-stat"><b>2.9%</b><span>BTG's peak price as a share of Bitcoin's, Nov 2017</span></div>
+      <div class="key-stat"><b>0.0004%</b><span>its last price as a share of Bitcoin's, Jul 2026</span></div>
+      <div class="key-stat"><b>0.005%</b><span>of Bitcoin's transactions, Sep 2026 (about 1,000 a month)</span></div>
+      <div class="key-stat"><b>&minus;97%</b><span>BTG hashrate, Aug 2018 to Sep 2026</span></div>
     </div>
     <p id="metrics-intro">Monthly figures from CoinMetrics' public dataset, from BTG's fork (October 2017) through September 2026. BTG's price ends in July 2026: after that no exchange quotes it, and the last prices only repeat the day before.</p>
 
@@ -405,7 +476,8 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title" id="ct1">Price: BTG vs. BTC, monthly (USD)</div>
+      <div class="chart-kicker" id="ct1">Price: BTG vs. BTC, monthly (USD)</div>
+      <div class="chart-title" id="ctt1">BTG fell from 2.9% of Bitcoin's price to 0.0004%</div>
       <p class="chart-caption" id="cc1">BTG opened at about 2.9% of Bitcoin's price in November 2017, its high point. It recovered briefly to about 0.19% in the 2021 bull market, collapsed in early 2025, and last traded at about $0.26 in July 2026, roughly 0.0004% of Bitcoin's price. Average daily close per month, log-scaled.</p>
       <div class="chart-wrap">
         <svg class="chart" id="chart-price" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
@@ -415,7 +487,8 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title" id="ct2">Transactions: BTG vs. BTC, monthly count</div>
+      <div class="chart-kicker" id="ct2">Transactions: BTG vs. BTC, monthly count</div>
+      <div class="chart-title" id="ctt2">BTG went from 167,000 transactions a month to about 1,000</div>
       <p class="chart-caption" id="cc2">In its first full month, December 2017, BTG processed about 167,000 transactions, about 1.5% of Bitcoin's count. By September 2026 it was down to about 1,000 a month, roughly 0.005% of Bitcoin's 20 million. Counts start at BTG's mainnet launch (November 12, 2017).</p>
       <div class="chart-wrap">
         <svg class="chart" id="chart-tx" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
@@ -425,7 +498,8 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title" id="ct3">Hashrate: BTG, monthly average (Sol/s)</div>
+      <div class="chart-kicker" id="ct3">Hashrate: BTG, monthly average (Sol/s)</div>
+      <div class="chart-title" id="ctt3">BTG's hashrate is down 97% since its 2018 algorithm change</div>
       <p class="chart-caption" id="cc3">BTG's own network hashrate, in Equihash solutions per second. It can't be shown as a share of Bitcoin's: the two chains use different mining algorithms. In July 2018 BTG switched to a new algorithm, Equihash-BTG, which changed the units. The line changes color there, and values on either side aren't comparable. Dashed lines mark the algorithm change and the two 51% attacks.</p>
       <div class="chart-wrap">
         <svg class="chart" id="chart-hash" viewBox="0 0 820 260" preserveAspectRatio="xMidYMid meet"></svg>
@@ -435,10 +509,13 @@
     </div>
 
     <div class="chart-block">
-      <div class="chart-title" id="ct4">Timeline: Bitcoin's forks and BTG's branch</div>
+      <div class="chart-kicker" id="ct4">Timeline: Bitcoin's forks and BTG's branch</div>
+      <div class="chart-title" id="ctt4">Both exchanges that listed BTG on day one later dropped it</div>
       <p class="chart-caption" id="cc4">Bitcoin split twice in 2017, with SegWit activating between the two splits, and added Taproot in 2021. BCH split again in 2018, into BCH and BSV. BTG's own branch carries its listings, attacks, second algorithm change, and delistings. Its color changes at the algorithm change, as in the hashrate chart. Events are evenly spaced, not to scale in time. The date under each point gives the actual timing.</p>
       <div class="chart-wrap">
-        <svg class="chart" id="chart-timeline" viewBox="0 0 820 345" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="tl-scroll" id="tl-scroll"><div class="tl-scroll-inner">
+          <svg class="chart" id="chart-timeline" viewBox="0 0 820 345" preserveAspectRatio="xMidYMid meet"></svg>
+        </div></div>
         <div class="tooltip" id="tooltip-timeline"></div>
       </div>
       <div class="timeline-legend">
@@ -451,7 +528,7 @@
         <span><span class="dot delist"></span><span id="tll2">Exchange delisting</span></span>
         <span><span class="diamond"></span><span id="tll3">51% attack</span></span>
         <span><span class="square"></span><span id="tll5">Protocol / network event</span></span>
-        <span id="tll4">Hover a point for details</span>
+        <span id="tll4">Hover or tap a point for details</span>
       </div>
     </div>
   </section>
@@ -462,6 +539,7 @@
       <span class="phase-time">~1 min</span>
     </div>
 
+    <p class="takeaway" id="tk6">The same diagnosis as BTCB2, but a different claim to Bitcoin's name.</p>
     <h3 id="sim-h3a">Parallels</h3>
     <ul>
       <li id="sim1"><strong>Miners as the problem:</strong> Both emerged from the belief that miners had gained too much influence over Bitcoin's rules. BTG pointed to the SegWit conflict; BTCB2's supporters point to miners rejecting their proposed soft fork.</li>
@@ -476,8 +554,8 @@
       <li id="sim6"><strong>Market access:</strong> BTG secured listings on major exchanges such as Binance and Bitfinex. BTCB2 has so far remained limited to two smaller exchanges.</li>
     </ul>
   </section>
-  <div class="sources-note">
-    <h3 id="sources-h3">Sources</h3>
+  <details class="sources-note" id="sources">
+    <summary id="sources-h3">Sources (18)</summary>
     <ol>
       <li id="src1">Bitcoin Gold's fork height, block 491,407 &mdash; <a href="https://github.com/BTCGPU/BTCGPU/blob/master/src/chainparams.cpp" target="_blank" rel="noopener">BTCGPU/BTCGPU chainparams.cpp, GitHub</a></li>
       <li id="src2">Mainnet launch, November 12, 2017 &mdash; <a href="https://bitcoingold.org/bitcoin-gold-blockchain-is-live/" target="_blank" rel="noopener">"Bitcoin Gold Blockchain is Live," Bitcoin Gold</a></li>
@@ -498,7 +576,7 @@
       <li id="src17">Jack Liao steps down from the board, November 19, 2018 &mdash; <a href="https://bitcoingold.org/leadership-for-another-year/" target="_blank" rel="noopener">"Leadership for Another Year," Bitcoin Gold</a></li>
       <li id="src18">The 2024 dispute over the bitcoingold.org domain (the team's account) &mdash; <a href="https://bitcoin-takeover.com/bitcoin-gold-one-gpu-one-vote/" target="_blank" rel="noopener">"Bitcoin Gold: One GPU, One Vote," Bitcoin Takeover</a></li>
     </ol>
-  </div>
+  </details>
 
   <footer id="footer-text">
     DATA: COINMETRICS COMMUNITY API (PRICE, TRANSACTIONS, HASHRATE). PART OF THE "HISTORY OF FORKS" SERIES.
@@ -527,6 +605,24 @@ function clampTip(tip){
   const r = tip.getBoundingClientRect(), vw = document.documentElement.clientWidth;
   const shift = r.left < 6 ? 6 - r.left : r.right > vw - 6 ? vw - 6 - r.right : 0;
   tip.style.marginLeft = shift + 'px';
+}
+// Phones: draw a chart at the width it is shown at, so its text keeps its real
+// size instead of shrinking with the whole SVG. Returns the drawing width.
+function fitW(svg, base){
+  const w = Math.round(svg.getBoundingClientRect().width), W = w && w < base ? Math.max(300, w) : base;
+  svg.setAttribute('viewBox', '0 0 ' + W + ' ' + svg.viewBox.baseVal.height);
+  return W;
+}
+// Draw a chart only when it nears the screen, then again whenever its width changes.
+function lazyRender(box, fn){
+  let w = -1;
+  const run = () => { const nw = Math.round(box.getBoundingClientRect().width); if (Math.abs(nw - w) < 24) return; w = nw; fn(); };
+  if (!('IntersectionObserver' in window)) { run(); addEventListener('resize', run); return; }
+  const io = new IntersectionObserver(es => {
+    if (!es.some(e => e.isIntersecting)) return;
+    io.disconnect(); run(); new ResizeObserver(run).observe(box);
+  }, {rootMargin:'600px 0px'});
+  io.observe(box);
 }
 document.addEventListener('click', e => {
   if (!e.target.closest('.chart-wrap')) document.querySelectorAll('.tooltip').forEach(t => { t.style.opacity = 0; });
@@ -580,8 +676,8 @@ function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts
   axisFmt = axisFmt || yFmt;
   opts = opts || {};
   const svg = document.getElementById(svgId);
-  const vb = svg.viewBox.baseVal;
-  const W = vb.width, H = vb.height;
+  if (!svg.dataset.w) svg.dataset.w = svg.viewBox.baseVal.width;
+  const W = fitW(svg, +svg.dataset.w), H = svg.viewBox.baseVal.height;
   const mL = 58, mR = 14, mT = 12, mB = 26;
   const plotW = W - mL - mR, plotH = H - mT - mB;
   const n = DATA.length;
@@ -623,19 +719,21 @@ function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts
       yearTicks.push(i); lastYear = yr;
     }
   });
-  yearTicks.forEach(i => {
+  const every = xStep * 12 < 36 ? 2 : 1;  // phones: label every other year so years never touch
+  yearTicks.filter((_, k) => k % every === 0).forEach(i => {
     const lbl = svg.appendChild(el('text', {x:xAt(i), y:H-6, class:'axis-label', 'text-anchor':'middle'}));
     lbl.textContent = DATA[i].month.slice(0,4);
   });
 
   // optional flagged months: a dashed guide + short label (same as the BCH chapter)
-  (opts.annotations || []).forEach(a => {
+  (opts.annotations || []).forEach((a, k) => {
+    const row = W < 560 ? k : (a.row || 0);  // phones: one row per flag, so labels don't overlap
     const i = DATA.findIndex(d => d.month === a.month);
     if (i < 0) return;
     const x = xAt(i);
     svg.appendChild(el('line', {x1:x, x2:x, y1:mT, y2:mT+plotH, class:'annotation-line'}));
     const left = i < n/2;
-    const lbl = svg.appendChild(el('text', {x: x + (left ? 4 : -4), y:mT + 9 + (a.row || 0) * 11, class:'annotation-label', 'text-anchor': left ? 'start' : 'end'}));
+    const lbl = svg.appendChild(el('text', {x: x + (left ? 4 : -4), y:mT + 9 + row * 11, class:'annotation-label', 'text-anchor': left ? 'start' : 'end'}));
     lbl.textContent = CURRENT_LANG === 'es' ? a.labelEs : a.label;
   });
 
@@ -711,7 +809,7 @@ function renderChart(svgId, tooltipId, legendId, seriesDefs, yFmt, axisFmt, opts
   }
   overlay.addEventListener('mousemove', e => onMove(e.clientX));
   overlay.addEventListener('mouseleave', hide);
-  overlay.addEventListener('touchmove', e => { onMove(e.touches[0].clientX); e.preventDefault(); }, {passive:false});
+  overlay.addEventListener('touchmove', e => onMove(e.touches[0].clientX), {passive:true});
   overlay.addEventListener('touchend', hide);
 
   const legend = document.getElementById(legendId);
@@ -774,7 +872,11 @@ function renderMetricChart(name, mode){
   renderChart(cfg.svgId, cfg.tooltipId, cfg.legendId, view.seriesDefs, view.yFmt, view.axisFmt, {annotations: view.annotations});
 }
 
-Object.keys(CHART_CONFIGS).forEach(name => renderMetricChart(name, 'absolute'));
+const currentMode = () => document.querySelector('#global-view-toggle button.active').dataset.mode;
+Object.keys(CHART_CONFIGS).forEach(name => {
+  const box = document.getElementById(CHART_CONFIGS[name].svgId).parentElement;
+  lazyRender(box, () => renderMetricChart(name, currentMode()));
+});
 
 // ---------------- timeline: listings, attacks, delistings ----------------
 // Sources for every event are in btg_timeline_research.md and the page's
@@ -879,8 +981,9 @@ function renderTimeline(svgId, tooltipId, events){
       tooltip.innerHTML = `<div class="t-date">${es ? e.titleEs : e.title}</div>`
         + `<div class="row"><span class="k">${fmtLongDate(e.date)} · ${es ? 'Día' : 'Day'} ${day}</span></div>`
         + `<div class="row" style="max-width:220px; white-space:normal;"><span class="k">${es ? e.detailEs : e.detail}</span></div>`;
-      tooltip.style.left = ((x / W) * 100) + '%';
-      tooltip.style.top = ((y / svg.viewBox.baseVal.height) * 100) + '%';
+      const c = hit.getBoundingClientRect(), w = tooltip.parentElement.getBoundingClientRect();
+      tooltip.style.left = (c.left + c.width / 2 - w.left) + 'px';
+      tooltip.style.top = (c.top + c.height / 2 - w.top) + 'px';
       tooltip.style.opacity = 1; clampTip(tooltip);
     }
     function hide(){ tooltip.style.opacity = 0; }
@@ -962,6 +1065,7 @@ function renderTimeline(svgId, tooltipId, events){
 }
 
 renderTimeline('chart-timeline', 'tooltip-timeline', TIMELINE_EVENTS);
+document.getElementById('tl-scroll').addEventListener('scroll', () => { document.getElementById('tooltip-timeline').style.opacity = 0; }, {passive:true});
 
 const globalToggle = document.getElementById('global-view-toggle');
 globalToggle.querySelectorAll('button').forEach(btn => {
@@ -1066,6 +1170,7 @@ globalToggle.querySelectorAll('button').forEach(btn => {
     'tll4',
     'sources-h3',
     'footer-text',
+    'toc-list', 'tk1', 'tk2', 'tk3', 'tk4', 'tk5', 'tk6', 'kd', 'ks', 'ctt1', 'ctt2', 'ctt3', 'ctt4',
     'backlink',
     'nextlink',
     'src1',
@@ -1106,15 +1211,15 @@ globalToggle.querySelectorAll('button').forEach(btn => {
     'how-h2': "¿Cómo sucedió?",
     'out-h2': "El resultado",
     'out1': "El primer desafío llegó casi de inmediato.",
-    'out2': "En mayo de 2018, Bitmain anunció un ASIC para Equihash. El <em>hardware</em> del que Bitcoin Gold había intentado escapar lo había seguido hasta allí.",
+    'out2': "<strong>En mayo de 2018, Bitmain anunció un ASIC para Equihash.</strong> El <em>hardware</em> del que Bitcoin Gold había intentado escapar lo había seguido hasta allí.",
     'out3': "Ese mismo mes, la red sufrió ataques del 51%. Los atacantes, probablemente utilizando poder de <em>hash</em> alquilado, reorganizaron la cadena y realizaron doble gasto de BTG. Bitcoin Gold respondió el 3 de julio de 2018 con un segundo <em>hard fork</em>, cambiando a Equihash-BTG para inutilizar los nuevos ASICs y dificultar el alquiler de poder de <em>hash</em>.",
-    'out4': "La secuencia reveló la primera lección difícil de la resistencia a los ASICs: es un objetivo en movimiento. Mientras exista suficiente recompensa económica, habrá un incentivo para construir <em>hardware</em> especializado. Cambiar el algoritmo puede retrasar el proceso, pero no puede eliminar ese incentivo.",
+    'out4': "La secuencia reveló la primera lección difícil de la resistencia a los ASICs: <strong>es un objetivo en movimiento</strong>. Mientras exista suficiente recompensa económica, habrá un incentivo para construir <em>hardware</em> especializado. Cambiar el algoritmo puede retrasar el proceso, pero no puede eliminar ese incentivo.",
     'out5': "Los ataques revelaron una segunda lección. Hacer que la minería sea accesible no hace automáticamente que una red sea segura. Bitcoin Gold había cambiado el <em>hardware</em>, pero no la economía subyacente. La electricidad barata seguía importando. La escala seguía importando. El poder de <em>hash</em> todavía podía concentrarse o alquilarse.",
-    'out6': "La misma vulnerabilidad reapareció en enero de 2020. Los atacantes realizaron dos reorganizaciones profundas de la cadena y gastaron dos veces aproximadamente 7,000 BTG.",
+    'out6': "La misma vulnerabilidad reapareció en enero de 2020. Los atacantes realizaron dos reorganizaciones profundas de la cadena y <strong>gastaron dos veces aproximadamente 7,000 BTG</strong>.",
     'out7': "Entonces apareció otro problema, esta vez más cerca de casa.",
     'out8': "El proyecto había prometido una minería más descentralizada, pero había asignado 100,000 BTG al propio proyecto durante los primeros 8,000 bloques. Cualquiera que fuera el uso previsto del <em>endowment</em>, los críticos tenían una objeción sencilla: la descentralización no se trata únicamente de quién puede minar. También se trata de quién recibe las monedas.",
     'out9': "Y con el tiempo, incluso el control del propio proyecto terminó siendo motivo de disputa.",
-    'out10': "Jack Liao dejó la junta directiva de Bitcoin Gold a finales de 2018, dejando al equipo restante a cargo del proyecto. Años después, surgió una disputa por el sitio web del proyecto. En 2024, Liao tomó el control del dominio bitcoingold.org, mientras que el equipo restante se trasladó a un nuevo dominio. Cada lado ofreció una versión diferente de lo ocurrido: el equipo afirmó que Liao había abandonado el proyecto y vendido sus participaciones; Liao presentó la toma del dominio como un renacimiento del proyecto.",
+    'out10': "Jack Liao dejó la junta directiva de Bitcoin Gold a finales de 2018, dejando al equipo restante a cargo del proyecto. Años después, surgió una disputa por el sitio web del proyecto. <strong>En 2024, Liao tomó el control del dominio bitcoingold.org</strong>, mientras que el equipo restante se trasladó a un nuevo dominio. Cada lado ofreció una versión diferente de lo ocurrido: el equipo afirmó que Liao había abandonado el proyecto y vendido sus participaciones; Liao presentó la toma del dominio como un renacimiento del proyecto.",
     'out11': "Había algo casi paradójico en todo aquello.",
     'out12': "Un proyecto creado para reducir la concentración de poder en la industria minera de Bitcoin había terminado peleando por quién controlaba su propia infraestructura.",
     'out13': "Y eso llevó la historia de vuelta a Bitcoin.",
@@ -1123,7 +1228,7 @@ globalToggle.querySelectorAll('button').forEach(btn => {
     'out16': "Bitcoin Gold cambió quién podía minar, pero no cambió cómo funciona el poder en una red descentralizada.",
     'bg1': "Para 2017, la visión original de Bitcoin de \"una CPU, un voto\" ya era cosa del pasado.",
     'bg2': "La minería había salido del dormitorio y se había trasladado a almacenes llenos de ASICs, máquinas diseñadas para una sola tarea: minar Bitcoin. La economía favorecía a quien podía comprar más <em>hardware</em>, conseguir la electricidad más barata y operar a mayor escala.",
-    'bg3': "En el centro de ese mundo estaba Bitmain, dirigida por Jihan Wu. La empresa era tanto un fabricante dominante de <em>hardware</em> como un importante operador de <em>pools</em> de minería. Un minero podía terminar comprando máquinas a la misma empresa que competía con él por encontrar bloques.",
+    'bg3': "En el centro de ese mundo estaba Bitmain, dirigida por Jihan Wu. La empresa era <strong>tanto un fabricante dominante de <em>hardware</em> como un importante operador de <em>pools</em> de minería</strong>. Un minero podía terminar comprando máquinas a la misma empresa que competía con él por encontrar bloques.",
     'bg4': "Y la concentración era cada vez más difícil de ignorar. Durante largos períodos, un puñado de <em>pools</em> de minería chinos controlaba una gran parte del <em>hash rate</em> de Bitcoin.",
     'bg5': "Entonces Bitcoin enfrentó una de sus batallas políticas más intensas hasta ese momento.",
     'bg6': "SegWit prometía cambiar la forma en que Bitcoin manejaba los datos de las transacciones, pero algunos grandes mineros se opusieron. Los críticos también señalaron AsicBoost, una técnica que podía proporcionar a cierto <em>hardware</em> compatible una ventaja significativa de eficiencia, una ventaja que SegWit eliminaría en gran medida. Los chips de Bitmain eran compatibles con la técnica, aunque la empresa negó utilizarla en Bitcoin.",
@@ -1133,12 +1238,12 @@ globalToggle.querySelectorAll('button').forEach(btn => {
     'why1': "Si los mineros que aseguraban Bitcoin podían influir en qué cambios aceptaba la red, Bitcoin Gold planteó una pregunta más directa:",
     'why2': "¿Y si hacías obsoletos a los mineros existentes?",
     'why3': "Los fundadores veían un problema estructural. SHA-256 premiaba el <em>hardware</em> especializado, el gran capital y la electricidad barata, condiciones que favorecían a los operadores industriales. Reformar esa industria parecía difícil. Así que eligieron otra ruta: hacer inútil el <em>hardware</em> existente.",
-    'why4': "Al reemplazar SHA-256 por un algoritmo de prueba de trabajo diferente, Bitcoin Gold buscaba eliminar la ventaja de los mineros especializados de Bitcoin y dar a los mineros comunes con GPU una oportunidad de competir.",
+    'why4': "Al reemplazar SHA-256 por un algoritmo de prueba de trabajo diferente, Bitcoin Gold buscaba eliminar la ventaja de los mineros especializados de Bitcoin y <strong>dar a los mineros comunes con GPU una oportunidad de competir</strong>.",
     'why5': "El objetivo no era simplemente crear otra versión de Bitcoin. Era cambiar la economía de quién podía asegurar la red.",
     'how1': "Liderado por Jack Liao de LightningASIC, Bitcoin Gold fue anunciado y desarrollado públicamente durante 2017.",
     'how2': "El proyecto eligió Equihash, un algoritmo que requiere mucha memoria y que fue diseñado para favorecer las GPUs sobre los ASICs especializados de Bitcoin. La idea era sencilla: si la industria minera de Bitcoin se había concentrado alrededor de máquinas especializadas, cambiar el algoritmo podía abrir la puerta a una base más amplia de mineros.",
     'how3': "El 24 de octubre de 2017, después del bloque 491,406 de Bitcoin, Bitcoin Gold tomó una fotografía del estado de la <em>blockchain</em> de Bitcoin. A partir de ese momento, las cadenas compartían la misma historia, pero seguirían reglas de minería diferentes. Cada persona que tuviera Bitcoin en ese momento tenía derecho a recibir BTG en una proporción 1:1.",
-    'how4': "Pero antes de que comenzara la minería pública, el proyecto minó 8,000 bloques con la dificultad mínima, produciendo aproximadamente 100,000 BTG. Las monedas fueron depositadas en billeteras <em>multisig</em> 4-de-6 como un \"<em>endowment</em>\". Los críticos simplemente lo llamaron un <em>premine</em>.",
+    'how4': "Pero antes de que comenzara la minería pública, el proyecto <strong>minó 8,000 bloques con la dificultad mínima, produciendo aproximadamente 100,000 BTG</strong>. Las monedas fueron depositadas en billeteras <em>multisig</em> 4-de-6 como un \"<em>endowment</em>\". Los críticos simplemente lo llamaron un <em>premine</em>.",
     'how5': "La minería pública comenzó el 13 de noviembre de 2017. Junto con Equihash, la cadena incorporó protección contra ataques de <em>replay</em>, nuevos prefijos de direcciones (G y A), ajuste de dificultad por bloque y el código de SegWit que ya estaba presente en Bitcoin.",
     'how6': "El <em>fork</em> estaba activo. Bitcoin Gold había cambiado las reglas de la minería y ahora estaba poniendo a prueba su idea central.",
     'sim-h2': "BTCB2 y Bitcoin Gold: Paralelismos y diferencias",
@@ -1167,8 +1272,21 @@ globalToggle.querySelectorAll('button').forEach(btn => {
     'tll2': "Deslistado de <em>exchange</em>",
     'tll3': "Ataque del 51%",
     'tll5': "Evento de protocolo / red",
-    'tll4': "Pasa el cursor sobre un punto para más detalles",
-    'sources-h3': "Fuentes",
+    'tll4': "Pasa el cursor o toca un punto para ver detalles",
+    'toc-list': '<li><a href="#background"><span>01</span>Antecedentes</a></li><li><a href="#why-fork"><span>02</span>Por qué</a></li><li><a href="#how-it-happened"><span>03</span>Cómo sucedió</a></li><li><a href="#outcome"><span>04</span>Resultado</a></li><li><a href="#metrics"><span>05</span>Datos</a></li><li><a href="#similarities"><span>06</span>Paralelismos</a></li>',
+    'tk1': "Un puñado de grandes mineros tenía una influencia real sobre las reglas de Bitcoin.",
+    'tk2': "La respuesta de Bitcoin Gold: cambiar el algoritmo para que las máquinas de minería de Bitcoin dejaran de servir.",
+    'tk3': "Una copia de la historia de Bitcoin, un nuevo algoritmo de minería y una preminería de unos 100,000 BTG.",
+    'tk4': "Los ASIC lo alcanzaron, los atacantes alquilaron poder de <em>hash</em> y el proyecto terminó peleando por su propio sitio web.",
+    'tk5': "El precio, las transacciones y el <em>hashrate</em> cayeron a una fracción mínima de su punto de partida.",
+    'tk6': "El mismo diagnóstico que BTCB2, pero una pretensión distinta sobre el nombre de Bitcoin.",
+    'kd': '<h4>Fechas clave</h4><ol><li><time>oct 2017</time><span>BTG copia la historia de Bitcoin y se separa</span></li><li><time>nov 2017</time><span>Comienza la minería pública</span></li><li><time>may 2018</time><span>Bitmain anuncia un ASIC para Equihash; primer ataque del 51%</span></li><li><time>jul 2018</time><span>Segundo <em>hard fork</em>, a Equihash-BTG</span></li><li><time>ene 2020</time><span>Otros dos ataques del 51%</span></li><li><time>2024</time><span>Disputa por el dominio bitcoingold.org</span></li></ol>',
+    'ks': '<div class="key-stat"><b>2.9%</b><span>precio máximo de BTG como porcentaje del de Bitcoin, nov 2017</span></div><div class="key-stat"><b>0.0004%</b><span>su último precio como porcentaje del de Bitcoin, jul 2026</span></div><div class="key-stat"><b>0.005%</b><span>de las transacciones de Bitcoin, sep 2026 (unas 1,000 al mes)</span></div><div class="key-stat"><b>&minus;97%</b><span><em>hashrate</em> de BTG, de ago 2018 a sep 2026</span></div>',
+    'ctt1': "BTG cayó del 2.9% del precio de Bitcoin al 0.0004%",
+    'ctt2': "BTG pasó de 167,000 transacciones al mes a unas 1,000",
+    'ctt3': "El <em>hashrate</em> de BTG cayó un 97% desde su cambio de algoritmo de 2018",
+    'ctt4': "Los dos <em>exchanges</em> que listaron BTG el primer día terminaron retirándolo",
+    'sources-h3': "Fuentes (18)",
     'footer-text': "DATOS: API COMUNITARIA DE COINMETRICS (PRECIO, TRANSACCIONES, <em>HASHRATE</em>). PARTE DE LA SERIE \"UNA HISTORIA DE <em>FORKS</em>\".",
     'backlink': "&larr; Anterior: Ethereum vs. Ethereum Classic",
     'nextlink': "Siguiente: Bitcoin BLAKE2b · Próximamente",
@@ -1239,6 +1357,32 @@ globalToggle.querySelectorAll('button').forEach(btn => {
   let saved = null;
   try { saved = localStorage.getItem('site-lang'); } catch(e){}
   if (saved === 'es') applyLang('es');
+})();
+
+// Page-wide: screen readers hear which toggle button is on; a link to a source
+// opens the collapsed list; the sticky section bar marks the section being read.
+document.querySelectorAll('.view-toggle, .lang-toggle').forEach(g => {
+  const sync = () => g.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b.classList.contains('active')));
+  sync(); g.addEventListener('click', () => setTimeout(sync));
+});
+const openSource = () => {
+  const t = location.hash && document.querySelector(location.hash), d = t && t.closest('details');
+  if (d && !d.open) { d.open = true; t.scrollIntoView(); }
+};
+addEventListener('hashchange', openSource); openSource();
+(function(){
+  const bar = document.getElementById('toc-list');
+  const mark = () => {
+    const links = [...bar.querySelectorAll('a')];  // re-read: the language switch rebuilds the list
+    const secs = links.map(a => document.querySelector(a.getAttribute('href')));
+    let i = secs.length - 1;
+    while (i > 0 && secs[i].getBoundingClientRect().top > 120) i--;
+    links.forEach((a, k) => { a.classList.toggle('on', k === i); if (k === i) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    const on = links[i];  // keep the current section visible in the bar on phones
+    if (on.offsetLeft < bar.scrollLeft || on.offsetLeft + on.offsetWidth > bar.scrollLeft + bar.clientWidth) bar.scrollLeft = on.offsetLeft - 20;
+  };
+  addEventListener('scroll', mark, {passive:true}); mark();
+  document.querySelectorAll('.lang-toggle button').forEach(b => b.addEventListener('click', () => setTimeout(mark)));
 })();
 </script>
 </body>

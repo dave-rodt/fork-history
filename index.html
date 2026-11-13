@@ -8,7 +8,7 @@
 <meta name="description" content="Five case studies in why blockchain forks succeed or fail, built from on-chain and market data.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root{
     color-scheme: light dark;
@@ -90,6 +90,8 @@
   .preface-card{border-style:dashed;}
   .chapter-card.unavailable{opacity:0.6; box-shadow:none; cursor:default;}
   .chapter-card.unavailable:hover{transform:none; box-shadow:none;}
+  .talks-h2{font-size:1.08rem; margin-top:36px;}
+  .talks{margin-top:14px;}
 
   footer{margin-top:40px; padding-top:18px; border-top:1px solid var(--rule); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; color:var(--ink-mute); line-height:1.7;}
 
@@ -159,11 +161,32 @@
     <div class="chapter-card unavailable" aria-disabled="true">
       <div class="chapter-num">04</div>
       <div class="chapter-body">
-        <h2 id="ch4-h2">Bitcoin BLAKE2b: One Month Retrospective</h2>
-        <p id="ch4-p">The newest fork in the series, one month after its own hard fork &mdash; measured against every chapter before it.</p>
+        <h2 id="ch4-h2">Bitcoin BLAKE2b: Three-Month Retrospective</h2>
+        <p id="ch4-p">The newest fork in the series, three months after its own hard fork &mdash; measured against every chapter before it.</p>
       </div>
       <div class="chapter-meta"><span class="soon" id="soon4">Coming soon</span></div>
     </div>
+  </div>
+
+  <h2 class="talks-h2" id="talks-h2">Talk slides</h2>
+  <div class="chapters talks">
+    <a class="chapter-card preface-card" href="presentacion/presentacion.html">
+      <div class="chapter-num">T1</div>
+      <div class="chapter-body">
+        <h2 id="talk1-h2">Full talk</h2>
+        <p id="talk1-p">All four forks, from The DAO to Bitcoin BLAKE2b. In Spanish.</p>
+      </div>
+      <div class="chapter-meta" id="talk1-meta">17 slides</div>
+    </a>
+
+    <a class="chapter-card preface-card" href="presentacion/presentacion-corto.html">
+      <div class="chapter-num">T2</div>
+      <div class="chapter-body">
+        <h2 id="talk2-h2">Short talk</h2>
+        <p id="talk2-p">The same story, without the series slide and the closing slide. In Spanish.</p>
+      </div>
+      <div class="chapter-meta" id="talk2-meta">14 slides</div>
+    </a>
   </div>
 
   <footer id="footer-text">
@@ -174,7 +197,8 @@
 <script>
 (function(){
   var IDS = ['brand-name','hero-h1','eyebrow','hero-p','masthead-sub','pref-h2','pref-p','ch1-p',
-    'ch2-p','soon2','ch3-p','soon3','ch4-h2','ch4-p','soon4','footer-text'];
+    'ch2-p','soon2','ch3-p','soon3','ch4-h2','ch4-p','soon4','talks-h2','talk1-h2','talk1-p','talk1-meta',
+    'talk2-h2','talk2-p','talk2-meta','footer-text'];
 
   var EN = {};
   IDS.forEach(function(id){
@@ -195,9 +219,16 @@
     'soon2': 'Próximamente',
     'ch3-p': 'El <em>fork</em> anti-ASIC construido sobre hardware alquilable, atacado dos veces, más barato la segunda vez.',
     'soon3': 'Próximamente',
-    'ch4-h2': 'Bitcoin BLAKE2b: Retrospectiva de un Mes',
-    'ch4-p': 'El <em>fork</em> más reciente de la serie, un mes después de su propio <em>hard fork</em>, medido frente a cada capítulo anterior.',
+    'ch4-h2': 'Bitcoin BLAKE2b: Retrospectiva de Tres Meses',
+    'ch4-p': 'El <em>fork</em> más reciente de la serie, tres meses después de su propio <em>hard fork</em>, medido frente a cada capítulo anterior.',
     'soon4': 'Próximamente',
+    'talks-h2': 'Presentaciones',
+    'talk1-h2': 'Presentación completa',
+    'talk1-p': 'Los cuatro <em>forks</em>, de <em>The DAO</em> a Bitcoin BLAKE2b.',
+    'talk1-meta': '17 diapositivas',
+    'talk2-h2': 'Presentación corta',
+    'talk2-p': 'La misma historia, sin la diapositiva de la serie ni la de cierre.',
+    'talk2-meta': '14 diapositivas',
     'footer-text': 'DATOS: API COMUNITARIA DE COINMETRICS, APIS DIRECTAS DE EXCHANGES Y UN RASTREO ON-CHAIN PROPIO. CADA CAPÍTULO INDICA SUS PROPIAS FUENTES.'
   };
 
