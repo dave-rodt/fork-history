@@ -43,7 +43,7 @@
     --btc:#C8700A; --b2:#7A52C7;
     /* Timeline-only chain colors, the same as the BTG chapter's fork diagram:
        Bitcoin orange and Bitcoin Cash green, each line also labeled by name. */
-    --tl-btc:#C8700A; --tl-bch:#07875F;
+    --tl-btc:#C8700A; --tl-bch:#07875F; --tl-gold:#B8850F; --tl-rust:#A9370F;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -52,7 +52,7 @@
       --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
       --node-other:#8A9096; --node-core-old:#3987e5; --node-core-new:#199e70; --node-knots:#e66767;
       --node-stuck:#9085e9; --node-b2-new:#d55181; --node-b2-mid:#5c6bc0; --node-b2-old:#008300;
-      --btc:#CC6F0A; --b2:#9275E6; --tl-btc:#CC6F0A; --tl-bch:#0E9A72;
+      --btc:#CC6F0A; --b2:#9275E6; --tl-btc:#CC6F0A; --tl-bch:#0E9A72; --tl-gold:#D99A2B; --tl-rust:#C94A1C;
     }
   }
   :root[data-theme="dark"]{
@@ -61,7 +61,7 @@
     --shadow-sm:0 1px 2px rgba(0,0,0,0.30), 0 1px 1px rgba(0,0,0,0.20);
     --node-other:#8A9096; --node-core-old:#3987e5; --node-core-new:#199e70; --node-knots:#e66767;
     --node-stuck:#9085e9; --node-b2-new:#d55181; --node-b2-mid:#5c6bc0; --node-b2-old:#008300;
-    --btc:#CC6F0A; --b2:#9275E6; --tl-btc:#CC6F0A; --tl-bch:#0E9A72;
+    --btc:#CC6F0A; --b2:#9275E6; --tl-btc:#CC6F0A; --tl-bch:#0E9A72; --tl-gold:#D99A2B; --tl-rust:#C94A1C;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -965,8 +965,9 @@ const TL_B2 = [
   // The line that continues the shared history is always Bitcoin orange. In the neutral and XBT views
   // BTC's own branch is white; in the XBT view XBT takes the orange (its claim to the original line).
   block.style.setProperty('--main', 'var(--tl-btc)');
-  block.style.setProperty('--btcline', view === 'btc' ? 'var(--tl-btc)' : 'var(--ink)');
-  block.style.setProperty('--xbtline', view === 'xbt' ? 'var(--tl-btc)' : 'var(--b2)');
+  // Neutral: two other tones of orange, rust for BTC and orangey-gold for XBT (validated as a pair).
+  block.style.setProperty('--btcline', view === 'btc' ? 'var(--tl-btc)' : view === 'neutral' ? 'var(--tl-rust)' : 'var(--ink)');
+  block.style.setProperty('--xbtline', view === 'xbt' ? 'var(--tl-btc)' : view === 'neutral' ? 'var(--tl-gold)' : 'var(--b2)');
   document.getElementById('tl-pre-key').style.display = view === 'neutral' ? '' : 'none';
   // Branches first, so nodes and labels draw on top.
   const bch = TL_MAIN[8], btg = TL_MAIN[10], ubtc = TL_MAIN[11], air = TL_MAIN[12], bip = TL_MAIN.find(e => e.kind === 'split'), ecash = TL_MAIN.find(e => e.kind === 'ecash');
