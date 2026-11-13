@@ -244,18 +244,19 @@
   .legend{display:flex; gap:18px; margin-top:10px; font-size:0.78rem; color:var(--ink-soft);}
   .legend .key{display:inline-block; width:14px; height:2px; vertical-align:middle; margin-right:6px; border-radius:1px;}
   .tl-link{fill:none; stroke-width:2;}
-  .tl-link.btc{stroke:var(--tl-btc);} .tl-link.bch{stroke:var(--tl-bch);} .tl-link.b2{stroke:var(--b2);}
-  .tl-link.b2-sha{stroke:var(--b2); stroke-dasharray:5 3;}
+  .tl-link.btc{stroke:var(--tl-btc);} .tl-link.bch{stroke:var(--tl-bch);} .tl-link.b2{stroke:var(--xbtline, var(--b2));}
+  .tl-link.b2-sha{stroke:var(--xbtline, var(--b2)); stroke-dasharray:5 3;}
   .tl-link.dead{stroke:var(--ink-mute);}
+  .tl-link.main{stroke:var(--main, var(--tl-btc));} .tl-link.btcl{stroke:var(--btcline, var(--tl-btc));} .tl-node.main{fill:var(--main, var(--tl-btc));}
   .tl-link.proposed{stroke:var(--ink-mute); stroke-width:1.5; stroke-dasharray:3 3;}
   .tl-link.announced{stroke:var(--ink-mute); stroke-width:1.5; stroke-dasharray:3 3;}
-  .tl-node.btc{fill:var(--tl-btc);} .tl-node.bch{fill:var(--tl-bch);} .tl-node.b2{fill:var(--b2);}
+  .tl-node.btc{fill:var(--tl-btc);} .tl-node.bch{fill:var(--tl-bch);} .tl-node.b2{fill:var(--xbtline, var(--b2));}
   .tl-node.hard{fill:var(--ink-soft);}
   .tl-ring{fill:none; stroke:var(--ink-soft); stroke-width:1.5;}
   .tl-genesis{fill:var(--ink); stroke:var(--panel); stroke-width:2;}
   .tl-proposed-node{fill:var(--panel); stroke:var(--ink-mute); stroke-width:1.5;}
   .tl-open{fill:var(--panel); stroke:var(--ink-mute); stroke-width:1.5; stroke-dasharray:3 2;}
-  .tl-policy{fill:var(--panel); stroke:var(--tl-btc); stroke-width:2;}
+  .tl-policy{fill:var(--panel); stroke:var(--main, var(--tl-btc)); stroke-width:2;}
   .tl-cross{stroke:var(--ink-mute); stroke-width:1.5;}
   .tl-pointer{stroke:var(--rule-strong); stroke-width:1;}
   /* On phones the timeline keeps a readable width and scrolls sideways inside its box */
@@ -605,6 +606,15 @@
       <div data-es="Cronología" class="chart-kicker">Timeline</div>
       <div data-es="Las reglas de consenso de BTC no han cambiado desde Taproot, en 2021&lt;sup class=&quot;fn&quot;&gt;&lt;a href=&quot;#fn04-9&quot;&gt;9&lt;/a&gt;&lt;/sup&gt;" class="chart-title">BTC’s consensus rules haven’t changed since Taproot in 2021<sup class="fn"><a href="#fn04-9">9</a></sup></div>
       <p data-es="Los acontecimientos posteriores en la cadena más pesada han sido cambios en la política de retransmisión (Core 30) o la creación de cadenas independientes (BIP-110 / XBT y la posterior bifurcación de eCash).&lt;sup class=&quot;fn src&quot;&gt;&lt;a href=&quot;#src-28&quot;&gt;F28&lt;/a&gt;&lt;/sup&gt;&lt;sup class=&quot;fn src&quot;&gt;&lt;a href=&quot;#src-31&quot;&gt;F31&lt;/a&gt;&lt;/sup&gt; La cronología de XBT está marcada por la separación del 8 de agosto, la transición a BLAKE2b del 30 de agosto y las dos extensiones sucesivas del periodo de maduración de las recompensas de minería.&lt;sup class=&quot;fn src&quot;&gt;&lt;a href=&quot;#src-29&quot;&gt;F29&lt;/a&gt;&lt;/sup&gt;" class="chart-caption">Subsequent events on the heaviest chain have been relay-policy changes (Core 30) or the creation of separate chains (BIP-110 / XBT and the later eCash fork).<sup class="fn src"><a href="#src-28">S28</a></sup><sup class="fn src"><a href="#src-31">S31</a></sup> The XBT timeline is marked by the August 8 split, the August 30 transition to BLAKE2b, and the two successive extensions of coinbase maturity.<sup class="fn src"><a href="#src-29">S29</a></sup></p>
+      <p class="chart-caption" data-es="La cronología tiene tres vistas. &lt;strong&gt;Neutral&lt;/strong&gt; muestra la separación sin sugerir cuál de las dos cadenas sigue siendo Bitcoin. Las vistas &lt;strong&gt;BTC&lt;/strong&gt; y &lt;strong&gt;XBT&lt;/strong&gt; muestran cómo cada lado interpreta los mismos hechos: cada una dibuja su propia cadena como la que continúa la línea original.">The timeline has three views. <strong>Neutral</strong> shows the split without suggesting which chain remains Bitcoin. The <strong>BTC</strong> and <strong>XBT</strong> views show how each side sees the same events: each draws its own chain as the one that continues the original line.</p>
+      <div class="view-toggle-row">
+        <span class="view-toggle-label" data-es="Vista:">View:</span>
+        <div class="view-toggle" id="tl-view-toggle">
+          <button type="button" class="active" data-v="neutral">Neutral</button>
+          <button type="button" data-v="btc">BTC</button>
+          <button type="button" data-v="xbt">XBT</button>
+        </div>
+      </div>
       <div class="chart-wrap">
         <div class="tl-scroll" id="tl-scroll"><div class="tl-scroll-inner">
           <svg class="chart" id="chart-timeline" viewBox="0 0 900 416" role="img" aria-label="Fork diagram of Bitcoin from 2009 to 2026: soft forks on BTC's line, failed proposals, the 2017 to 2018 hard forks including Bitcoin Cash and its splits, and the 2026 XBT branch." data-es-aria-label="Diagrama de los forks de Bitcoin de 2009 a 2026: soft forks en la línea de BTC, hard forks que crearon nuevas monedas, propuestas que nunca dividieron la cadena, y la rama de XBT desde la separación de BIP-110."></svg>
@@ -612,13 +622,15 @@
         <div class="tooltip" id="tooltip-timeline"></div>
       </div>
       <div class="tl-legend">
-        <span><span class="ln" style="background:var(--tl-btc)"></span>BTC</span>
+        <span><span class="ln" style="background:var(--btcline, var(--tl-btc))"></span>BTC</span>
         <span><span class="ln" style="background:var(--tl-bch)"></span>BCH</span>
-        <span><span class="ln" style="background:var(--b2)"></span>XBT</span>
+        <span><span class="ln" style="background:var(--xbtline, var(--b2))"></span>XBT</span>
+        <span><span class="ln" style="background:repeating-linear-gradient(90deg, var(--xbtline, var(--b2)) 0 4px, transparent 4px 7px)"></span><span data-es="XBT en SHA-256: solo 8 bloques (8–28 ago)">XBT on SHA-256: only 8 blocks (Aug 8–28)</span></span>
+        <span id="tl-pre-key"><span class="ln" style="background:var(--tl-btc)"></span><span data-es="Antes de la separación">Before the split</span></span>
         <span data-es="&lt;span class=&quot;ln&quot; style=&quot;background:var(--ink-mute)&quot;&gt;&lt;/span&gt;&lt;span&gt;Otros &lt;em&gt;forks&lt;/em&gt;&lt;/span&gt;"><span class="ln" style="background:var(--ink-mute)"></span>Other forks</span>
-        <span data-es="&lt;span class=&quot;dt&quot; style=&quot;background:var(--tl-btc)&quot;&gt;&lt;/span&gt;&lt;span&gt;&lt;em&gt;Soft fork&lt;/em&gt;&lt;/span&gt;"><span class="dt" style="background:var(--tl-btc)"></span>Soft fork</span>
+        <span data-es="&lt;span class=&quot;dt&quot; style=&quot;background:var(--main, var(--tl-btc))&quot;&gt;&lt;/span&gt;&lt;span&gt;&lt;em&gt;Soft fork&lt;/em&gt;&lt;/span&gt;"><span class="dt" style="background:var(--main, var(--tl-btc))"></span>Soft fork</span>
         <span data-es="&lt;span class=&quot;dt&quot; style=&quot;background:var(--ink-soft)&quot;&gt;&lt;/span&gt;&lt;span&gt;&lt;em&gt;Hard fork&lt;/em&gt;, nueva moneda&lt;/span&gt;"><span class="dt" style="background:var(--ink-soft)"></span>Hard fork, new coin</span>
-        <span data-es="&lt;span class=&quot;dt&quot; style=&quot;background:var(--panel); border:2px solid var(--tl-btc)&quot;&gt;&lt;/span&gt;Cambio de política de retransmisión"><span class="dt" style="background:var(--panel); border:2px solid var(--tl-btc)"></span>Relay policy change</span>
+        <span data-es="&lt;span class=&quot;dt&quot; style=&quot;background:var(--panel); border:2px solid var(--main, var(--tl-btc))&quot;&gt;&lt;/span&gt;Cambio de política de retransmisión"><span class="dt" style="background:var(--panel); border:2px solid var(--main, var(--tl-btc))"></span>Relay policy change</span>
         <span data-es="&lt;span class=&quot;dt&quot; style=&quot;background:var(--panel); border:1.5px solid var(--ink-mute)&quot;&gt;&lt;/span&gt;Propuesto, nunca se separó"><span class="dt" style="background:var(--panel); border:1.5px solid var(--ink-mute)"></span>Proposed, never split</span>
       </div>
     </div>
@@ -943,11 +955,29 @@ const TL_B2 = [
     hit.addEventListener('click', ev => { ev.stopPropagation(); show(); });
   };
 
+  // View of the August 8 split: 'neutral' (both chains branch off a line that ends there),
+  // 'btc' (BTC continues the line, XBT branches) or 'xbt' (XBT continues it, BTC branches).
+  // The continuing line, and the soft forks on it, take that chain's color.
+  let view = 'neutral';
+  const block = svg.closest('.chart-block');
   function draw(){
   svg.innerHTML = '';
+  // The line that continues the shared history is always Bitcoin orange. In the neutral and XBT views
+  // BTC's own branch is white; in the XBT view XBT takes the orange (its claim to the original line).
+  block.style.setProperty('--main', 'var(--tl-btc)');
+  block.style.setProperty('--btcline', view === 'btc' ? 'var(--tl-btc)' : 'var(--ink)');
+  block.style.setProperty('--xbtline', view === 'xbt' ? 'var(--tl-btc)' : 'var(--b2)');
+  document.getElementById('tl-pre-key').style.display = view === 'neutral' ? '' : 'none';
   // Branches first, so nodes and labels draw on top.
   const bch = TL_MAIN[8], btg = TL_MAIN[10], ubtc = TL_MAIN[11], air = TL_MAIN[12], bip = TL_MAIN.find(e => e.kind === 'split'), ecash = TL_MAIN.find(e => e.kind === 'ecash');
-  arrow(18, Y.btc, END, Y.btc, 'btc'); end(END, Y.btc, 'BTC');
+  const bipX = TL_MAIN.find(e => e.kind === 'split').x, powX = TL_B2[0].x;
+  if (view === 'btc') { arrow(18, Y.btc, END, Y.btc, 'main'); end(END, Y.btc, 'BTC'); }
+  else if (view === 'xbt') {  // XBT's SHA-256 weeks dashed, then BLAKE2b
+    line(18, Y.btc, bipX, Y.btc, 'main'); line(bipX, Y.btc, powX - 9, Y.btc, 'b2-sha');
+    arrow(powX + 9, Y.btc, END, Y.btc, 'b2'); end(END, Y.btc, 'XBT');
+  } else line(18, Y.btc, bipX - 6, Y.btc, 'main');  // neutral: the shared line ends at the split
+  const yX = view === 'xbt' ? Y.btc : Y.b2;                                // XBT's line
+  const yB = view === 'btc' ? Y.btc : view === 'xbt' ? Y.b2 : Y.btc + 40;  // BTC's line (neutral: below, XBT above)
   // Bitcoin Cash, with its own two splits.
   line(bch.x + 4, Y.btc + 7, bch.x + 40, Y.bch, 'bch'); arrow(bch.x + 40, Y.bch, END, Y.bch, 'bch'); end(END, Y.bch, 'BCH');
   TL_BCH.forEach((e, i) => {
@@ -965,15 +995,21 @@ const TL_B2 = [
   cross(air.x + 6, Y.btc + 43);
   // The XBT branch: BIP-110's SHA-256 chain, then BLAKE2b.
   const [pow, rule] = TL_B2;
-  line(bip.x + 3, Y.btc - 8, bip.x + 10, Y.b2, 'b2-sha');
-  line(bip.x + 10, Y.b2, pow.x - 9, Y.b2, 'b2-sha');
-  line(pow.x + 5, Y.b2 - 7, pow.x + 26, Y.b2 - 40, 'dead'); cross(pow.x + 28, Y.b2 - 43);
-  el('text', {x:pow.x + 38, y:Y.b2 - 46, class:'tl-date'}, T('BIP-110 only, stuck', 'Solo BIP-110, detenido'));
-  el('text', {x:pow.x + 38, y:Y.b2 - 35, class:'tl-date'}, T('at block 961,639', 'en el bloque 961,639'));
-  arrow(pow.x + 9, Y.b2, END, Y.b2, 'b2'); end(END, Y.b2, 'XBT');
-  // eCash (ECX): a hard fork off BTC's line on Aug 23, still running as its own chain.
-  line(ecash.x + 4, Y.btc + 7, ecash.x + 18, Y.btc + 52, 'dead');
-  arrow(ecash.x + 18, Y.btc + 52, END, Y.btc + 52, 'dead'); end(END, Y.btc + 52, 'ECX');
+  if (view !== 'xbt') {
+    line(bip.x + 3, Y.btc - 8, bip.x + 10, Y.b2, 'b2-sha');
+    line(bip.x + 10, Y.b2, pow.x - 9, Y.b2, 'b2-sha');
+    arrow(pow.x + 9, Y.b2, END, Y.b2, 'b2'); end(END, Y.b2, 'XBT');
+  }
+  line(pow.x + 5, yX - 7, pow.x + 26, yX - 40, 'dead'); cross(pow.x + 28, yX - 43);
+  el('text', {x:pow.x + 38, y:yX - 46, class:'tl-date'}, T('BIP-110 only, stuck', 'Solo BIP-110, detenido'));
+  el('text', {x:pow.x + 38, y:yX - 35, class:'tl-date'}, T('at block 961,639', 'en el bloque 961,639'));
+  // BTC's own line when it branches off (neutral: a gentle branch; xbt: the upper branch)
+  if (view === 'xbt') { line(bip.x + 3, Y.btc - 8, bip.x + 10, yB, 'btcl'); arrow(bip.x + 10, yB, END, yB, 'btcl'); end(END, yB, 'BTC'); }
+  if (view === 'neutral') { line(bip.x + 3, Y.btc + 8, bip.x + 10, yB, 'btcl'); arrow(bip.x + 10, yB, END, yB, 'btcl'); end(END, yB, 'BTC'); }
+  // eCash (ECX): a hard fork off BTC's line on Aug 23, still running as its own chain (above it in the XBT view).
+  const yE = view === 'xbt' ? yB - 40 : view === 'neutral' ? yB + 22 : Y.btc + 52, dn = yE > yB ? 1 : -1;
+  line(ecash.x + 4, yB + 7 * dn, ecash.x + 18, yE, 'dead');
+  arrow(ecash.x + 18, yE, END, yE, 'dead'); end(END, yE, 'ECX');
 
   // Events on Bitcoin's row.
   TL_MAIN.forEach(e => {
@@ -982,7 +1018,7 @@ const TL_B2 = [
       el('circle', {cx:x, cy:Y.btc, r:6.5, class:'tl-genesis'});
       label(x - 4, Y.btc + 26, tx(e, 'label'), e.date, 'start');
     } else if (e.kind === 'soft') {
-      node(x, Y.btc, 'btc');
+      node(x, Y.btc, 'main');
       const top = Y.btc - (e.tier ? 64 : 34);
       el('line', {x1:x, x2:x, y1:Y.btc - 10, y2:top + 16, class:'tl-pointer'});
       label(x, top, tx(e, 'label'), e.date);
@@ -999,28 +1035,33 @@ const TL_B2 = [
       else if (e === btg) label(x + 32, Y.btg + 16, tx(e, 'label'), e.date, 'start');
       else label(x + 15, Y.btc + 58, 'UBTC', e.date);
     } else if (e.kind === 'split') {
-      node(x, Y.btc, 'b2');
+      node(x, Y.btc, view === 'neutral' ? 'main' : 'b2');  // neutral: the split point belongs to neither chain
       label(x - 12, Y.btc - 36, tx(e, 'label'), e.date, 'end');
     } else if (e.kind === 'policy') {
       el('circle', {cx:x, cy:Y.btc, r:5, class:'tl-policy'});
       label(x, Y.btc + 26, tx(e, 'label'), e.date);
     } else if (e.kind === 'ecash') {
-      node(x, Y.btc, 'hard');
-      label(x + 26, Y.btc + 28, tx(e, 'label'), e.date, 'start');
+      node(x, yB, 'hard');
+      label(x + 26, yB + (view === 'xbt' ? 26 : view === 'neutral' ? -26 : 28), tx(e, 'label'), e.date, 'start');
+      hover(x, yB, e); return;
     }
     hover(x, Y.btc, e);
   });
   // Events on the XBT branch.
   TL_B2.forEach(e => {
-    if (e.kind === 'hard') { el('rect', {x:e.x - 6, y:Y.b2 - 6, width:12, height:12, rx:1.5, class:'tl-node b2'}); }
-    else node(e.x, Y.b2, 'b2');
+    if (e.kind === 'hard') { el('rect', {x:e.x - 6, y:yX - 6, width:12, height:12, rx:1.5, class:'tl-node b2'}); }
+    else node(e.x, yX, 'b2');
     if (e.sub) {
-      el('text', {x:e.x, y:Y.b2 + 24, class:'tl-label', 'text-anchor':'middle'}, tx(e, 'label'));
-      label(e.x, Y.b2 + 36, tx(e, 'sub'), e.date);
-    } else label(e.x, Y.b2 + 24, tx(e, 'label'), e.date);
-    hover(e.x, Y.b2, e);
+      el('text', {x:e.x, y:yX + 24, class:'tl-label', 'text-anchor':'middle'}, tx(e, 'label'));
+      label(e.x, yX + 36, tx(e, 'sub'), e.date);
+    } else label(e.x, yX + 24, tx(e, 'label'), e.date);
+    hover(e.x, yX, e);
   });
   }
+  document.querySelectorAll('#tl-view-toggle button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('#tl-view-toggle button').forEach(x => x.classList.toggle('active', x === b));
+    view = b.dataset.v; tip.style.opacity = '0'; draw();
+  }));
   draw();
   document.addEventListener('langchange', draw);
 })();
