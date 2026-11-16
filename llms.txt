@@ -1,0 +1,17 @@
+# History of Forks
+
+> A four-chapter, data-driven study of blockchain forks: Bitcoin Cash, Ethereum Classic,
+> Bitcoin Gold, and the 2026 BIP-110 / BLAKE2b split of Bitcoin (BTC and XBT).
+> English and Spanish.
+
+## Chapters
+- [Preface: The Chain Multiverse](https://dave-rodt.github.io/fork-history/preface.html)
+- [Chapter 1: Bitcoin Cash vs. Bitcoin](https://dave-rodt.github.io/fork-history/bch-vs-btc.html)
+- [Chapter 2: Ethereum vs. Ethereum Classic](https://dave-rodt.github.io/fork-history/eth-vs-etc.html)
+- [Chapter 3: Bitcoin Gold vs. Bitcoin](https://dave-rodt.github.io/fork-history/btg-vs-btc.html)
+- [Chapter 4: Bitcoin BLAKE2b, Three-Month Retrospective](https://dave-rodt.github.io/fork-history/blake2b-retrospective.html)
+
+## Data and methods
+- [Methodology](https://github.com/dave-rodt/fork-history/blob/main/methods/METHODOLOGY.md): how every number was collected, and the choices behind it
+- [Guide for AI tools](https://github.com/dave-rodt/fork-history/blob/main/methods/CLAUDE.md): rebuild the headline figures from the data and audit them
+- [Data](https://github.com/dave-rodt/fork-history/tree/main/methods/data): the derived datasets behind every chart

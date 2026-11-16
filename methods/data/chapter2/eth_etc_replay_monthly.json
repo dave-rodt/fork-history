@@ -1,0 +1,83 @@
+[
+ {
+  "month": "2016-07",
+  "etc_tx": 265092,
+  "etc_replayed": 166249,
+  "etc_replayed_pct": 62.714,
+  "eth_tx": 578029,
+  "eth_replayed": 170173,
+  "eth_replayed_pct": 29.44
+ },
+ {
+  "month": "2016-08",
+  "etc_tx": 491067,
+  "etc_replayed": 49623,
+  "etc_replayed_pct": 10.105,
+  "eth_tx": 1405743,
+  "eth_replayed": 47575,
+  "eth_replayed_pct": 3.384
+ },
+ {
+  "month": "2016-09",
+  "etc_tx": 426772,
+  "etc_replayed": 38639,
+  "etc_replayed_pct": 9.054,
+  "eth_tx": 1387412,
+  "eth_replayed": 37911,
+  "eth_replayed_pct": 2.732
+ },
+ {
+  "month": "2016-10",
+  "etc_tx": 515381,
+  "etc_replayed": 64508,
+  "etc_replayed_pct": 12.517,
+  "eth_tx": 1329847,
+  "eth_replayed": 64060,
+  "eth_replayed_pct": 4.817
+ },
+ {
+  "month": "2016-11",
+  "etc_tx": 324952,
+  "etc_replayed": 24035,
+  "etc_replayed_pct": 7.396,
+  "eth_tx": 1301586,
+  "eth_replayed": 23966,
+  "eth_replayed_pct": 1.841
+ },
+ {
+  "month": "2016-12",
+  "etc_tx": 508180,
+  "etc_replayed": 9057,
+  "etc_replayed_pct": 1.782,
+  "eth_tx": 1316131,
+  "eth_replayed": 9019,
+  "eth_replayed_pct": 0.685
+ },
+ {
+  "month": "2017-01",
+  "etc_tx": 566374,
+  "etc_replayed": 10956,
+  "etc_replayed_pct": 1.934,
+  "eth_tx": 1409664,
+  "eth_replayed": 10038,
+  "eth_replayed_pct": 0.712
+ },
+ {
+  "month": "2017-02",
+  "etc_tx": 563292,
+  "etc_replayed": 3078,
+  "etc_replayed_pct": 0.546,
+  "eth_tx": 1410048,
+  "eth_replayed": 3278,
+  "eth_replayed_pct": 0.232
+ },
+ {
+  "month": "2017-03",
+  "etc_tx": 660392,
+  "etc_replayed": 9131,
+  "etc_replayed_pct": 1.383,
+  "eth_tx": 2426471,
+  "eth_replayed": 9256,
+  "eth_replayed_pct": 0.381
+ }
+]

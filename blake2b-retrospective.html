@@ -327,6 +327,7 @@
   .fn-flash{animation:fn-flash 2.4s ease-out;}
   @keyframes fn-flash{0%, 35%{background:rgba(240,138,30,0.24); box-shadow:0 0 0 4px rgba(240,138,30,0.24);} 100%{background:transparent; box-shadow:0 0 0 4px transparent;}}
   .fn-backs{margin-left:6px; white-space:nowrap;}
+  .methods-link{margin:18px 0 0; font-size:0.84rem; color:var(--ink-soft);}
   .fn-pop{position:fixed; z-index:50; max-height:50vh; overflow:auto; padding:10px 12px; background:var(--panel); color:var(--ink-soft);
     border:1px solid var(--rule-strong); border-radius:8px; box-shadow:0 6px 24px rgba(0,0,0,.28); font-size:0.8rem; line-height:1.5;
     opacity:0; pointer-events:none; transition:opacity .12s;}
@@ -604,8 +605,18 @@
 
     <div class="chart-block">
       <div data-es="Cronología" class="chart-kicker">Timeline</div>
+      <div data-tlview="neutral">
+      <div data-es="Bitcoin se dividió en dos cadenas el 8 de agosto de 2026&lt;sup class=&quot;fn&quot;&gt;&lt;a href=&quot;#fn04-9&quot;&gt;9&lt;/a&gt;&lt;/sup&gt;" class="chart-title">Bitcoin split into two chains on August 8, 2026<sup class="fn"><a href="#fn04-9">9</a></sup></div>
+      <p data-es="En esta vista, Bitcoin como una sola cadena murió el 8 de agosto, cuando sus participantes no lograron llegar a un consenso. La separación creó dos cadenas nuevas, BTC y XBT, y cada una afirma ser Bitcoin.&lt;sup class=&quot;fn src&quot;&gt;&lt;a href=&quot;#src-28&quot;&gt;F28&lt;/a&gt;&lt;/sup&gt;&lt;sup class=&quot;fn src&quot;&gt;&lt;a href=&quot;#src-29&quot;&gt;F29&lt;/a&gt;&lt;/sup&gt; El autor no comparte esta visión, pero le corresponde al lector sacar sus propias conclusiones." class="chart-caption">In this view, Bitcoin as a single chain died on August 8, when its participants failed to reach consensus. The split created two new chains, BTC and XBT, each claiming to be Bitcoin.<sup class="fn src"><a href="#src-28">S28</a></sup><sup class="fn src"><a href="#src-29">S29</a></sup> The author does not share this view, but it is up to the reader to reach their own conclusion.</p>
+      </div>
+      <div data-tlview="btc" hidden>
       <div data-es="Las reglas de consenso de BTC no han cambiado desde Taproot, en 2021&lt;sup class=&quot;fn&quot;&gt;&lt;a href=&quot;#fn04-9&quot;&gt;9&lt;/a&gt;&lt;/sup&gt;" class="chart-title">BTC’s consensus rules haven’t changed since Taproot in 2021<sup class="fn"><a href="#fn04-9">9</a></sup></div>
       <p data-es="Los acontecimientos posteriores en la cadena más pesada han sido cambios en la política de retransmisión (Core 30) o la creación de cadenas independientes (BIP-110 / XBT y la posterior bifurcación de eCash).&lt;sup class=&quot;fn src&quot;&gt;&lt;a href=&quot;#src-28&quot;&gt;F28&lt;/a&gt;&lt;/sup&gt;&lt;sup class=&quot;fn src&quot;&gt;&lt;a href=&quot;#src-31&quot;&gt;F31&lt;/a&gt;&lt;/sup&gt; La cronología de XBT está marcada por la separación del 8 de agosto, la transición a BLAKE2b del 30 de agosto y las dos extensiones sucesivas del periodo de maduración de las recompensas de minería.&lt;sup class=&quot;fn src&quot;&gt;&lt;a href=&quot;#src-29&quot;&gt;F29&lt;/a&gt;&lt;/sup&gt;" class="chart-caption">Subsequent events on the heaviest chain have been relay-policy changes (Core 30) or the creation of separate chains (BIP-110 / XBT and the later eCash fork).<sup class="fn src"><a href="#src-28">S28</a></sup><sup class="fn src"><a href="#src-31">S31</a></sup> The XBT timeline is marked by the August 8 split, the August 30 transition to BLAKE2b, and the two successive extensions of coinbase maturity.<sup class="fn src"><a href="#src-29">S29</a></sup></p>
+      </div>
+      <div data-tlview="xbt" hidden>
+      <div data-es="Para XBT, BTC es la cadena que hizo un &lt;em&gt;hard fork&lt;/em&gt;&lt;sup class=&quot;fn&quot;&gt;&lt;a href=&quot;#fn04-9&quot;&gt;9&lt;/a&gt;&lt;/sup&gt;" class="chart-title">In XBT’s view, BTC is the chain that hard-forked<sup class="fn"><a href="#fn04-9">9</a></sup></div>
+      <p data-es="Para XBT, BIP-110 pasó a formar parte de las reglas de Bitcoin cuando sus nodos comenzaron a aplicarlo el 8 de agosto. BTC mantuvo las reglas más laxas y siguió aceptando bloques que esos nodos rechazan, así que, desde el lado de XBT, BTC es la cadena que hizo un &lt;em&gt;hard fork&lt;/em&gt;. La cronología de XBT continúa con el cambio a BLAKE2b del 30 de agosto y las dos extensiones del periodo de maduración de las recompensas de minería.&lt;sup class=&quot;fn src&quot;&gt;&lt;a href=&quot;#src-29&quot;&gt;F29&lt;/a&gt;&lt;/sup&gt;" class="chart-caption">In XBT’s view, BIP-110 became part of Bitcoin’s rules once its nodes enforced it on August 8. BTC kept the looser rules and went on accepting blocks those nodes reject, so from XBT’s side BTC is the chain that hard-forked away. XBT’s timeline then continues with the August 30 switch to BLAKE2b and the two extensions of coinbase maturity.<sup class="fn src"><a href="#src-29">S29</a></sup></p>
+      </div>
       <p class="chart-caption" data-es="La cronología tiene tres vistas. &lt;strong&gt;Neutral&lt;/strong&gt; muestra la separación sin sugerir cuál de las dos cadenas sigue siendo Bitcoin. Las vistas &lt;strong&gt;BTC&lt;/strong&gt; y &lt;strong&gt;XBT&lt;/strong&gt; muestran cómo cada lado interpreta los mismos hechos: cada una dibuja su propia cadena como la que continúa la línea original.">The timeline has three views. <strong>Neutral</strong> shows the split without suggesting which chain remains Bitcoin. The <strong>BTC</strong> and <strong>XBT</strong> views show how each side sees the same events: each draws its own chain as the one that continues the original line.</p>
       <div class="view-toggle-row">
         <span class="view-toggle-label" data-es="Vista:">View:</span>
@@ -706,6 +717,7 @@
       <li id="src-35" data-es="Foundry USA, AntPool y F2Pool minaron el 62% de los bloques de BTC (2,747 de 4,419) en el mes previo al 13 de noviembre de 2026: &lt;a href=&quot;https://mempool.space/graphs/mining/pools&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;pools de minería en mempool.space&lt;/a&gt;">Foundry USA, AntPool and F2Pool mined 62% of BTC blocks (2,747 of 4,419) in the month to November 13, 2026 &mdash; <a href="https://mempool.space/graphs/mining/pools" target="_blank" rel="noopener">mempool.space mining pools</a></li>
     </ol>
   </details>
+  <p class="methods-link" data-es="Todos los datos detrás de estos gráficos, cómo se recopilaron y las decisiones tomadas, además de una guía para revisarlos con una herramienta de IA: &lt;a href=&quot;https://github.com/dave-rodt/fork-history/tree/main/methods&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Datos y métodos&lt;/a&gt;.">All the data behind these charts, how it was collected and the choices made, plus a guide for checking it with an AI tool: <a href="https://github.com/dave-rodt/fork-history/tree/main/methods" target="_blank" rel="noopener">Data and methods</a>.</p>
   <div class="chapter-nav">
     <a data-es="&amp;larr; Anterior: Bitcoin Gold vs. Bitcoin" class="back-link" href="btg-vs-btc.html">&larr; Previous: Bitcoin Gold vs. Bitcoin</a>
     <a class="back-link home-link" href="index.html" aria-label="Go to History of Forks" data-es-aria-label="Ir a Una historia de Forks">
@@ -1062,6 +1074,8 @@ const TL_B2 = [
   document.querySelectorAll('#tl-view-toggle button').forEach(b => b.addEventListener('click', () => {
     document.querySelectorAll('#tl-view-toggle button').forEach(x => x.classList.toggle('active', x === b));
     view = b.dataset.v; tip.style.opacity = '0'; draw();
+    document.querySelectorAll('[data-tlview]').forEach(d => { d.hidden = d.dataset.tlview !== view; });
+    document.dispatchEvent(new Event('tlview'));
   }));
   draw();
   document.addEventListener('langchange', draw);
@@ -1648,7 +1662,7 @@ addEventListener('hashchange', openSource); openSource();
   let from = null;
   const smooth = () => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
   const flash = el => { el.classList.remove('fn-flash'); void el.offsetWidth; el.classList.add('fn-flash'); };
-  const refsTo = li => [...document.querySelectorAll('a[href="#' + li.id + '"]')].filter(a => !a.closest('#notes, #sources'));
+  const refsTo = li => [...document.querySelectorAll('a[href="#' + li.id + '"]')].filter(a => !a.closest('#notes, #sources, [hidden]'));
   function backs(li){
     li.querySelectorAll('.fn-backs').forEach(x => x.remove());
     const refs = refsTo(li);
@@ -1690,7 +1704,7 @@ addEventListener('hashchange', openSource); openSource();
   }
   document.addEventListener('focusin', e => { if (isRef(e.target)) showPop(e.target); else hidePop(); });
   addEventListener('scroll', hidePop, {passive:true});
-  all(); document.addEventListener('langchange', all);
+  all(); document.addEventListener('langchange', all); document.addEventListener('tlview', all);
   document.addEventListener('click', e => {
     const back = e.target.closest('.fn-back');
     if (back) {

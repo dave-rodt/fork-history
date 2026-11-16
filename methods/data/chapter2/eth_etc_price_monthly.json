@@ -1,0 +1,1109 @@
+[
+  {
+    "month": "2016-07",
+    "eth_price_avg": 13.027942340541584,
+    "eth_price_first": 12.5035100672122,
+    "eth_price_last": 11.9461159415546,
+    "etc_price_avg": 1.6458564198699235,
+    "etc_price_first": 0.6090051637515635,
+    "etc_price_last": 1.8011298182573847
+  },
+  {
+    "month": "2016-08",
+    "eth_price_avg": 11.135687733762568,
+    "eth_price_first": 11.0070294517826,
+    "eth_price_last": 11.6065258129749,
+    "etc_price_avg": 1.8362913425084955,
+    "etc_price_first": 2.299635978023185,
+    "etc_price_last": 1.1817294812187193
+  },
+  {
+    "month": "2016-09",
+    "eth_price_avg": 12.50904980254238,
+    "eth_price_first": 12.1157511525424,
+    "eth_price_last": 13.2596977603741,
+    "etc_price_avg": 1.322878539050652,
+    "etc_price_first": 1.4694207803315207,
+    "etc_price_last": 1.2526943848048553
+  },
+  {
+    "month": "2016-10",
+    "eth_price_avg": 12.067942704285368,
+    "eth_price_first": 13.2374148895383,
+    "eth_price_last": 10.976982628872,
+    "etc_price_avg": 1.068903719028803,
+    "etc_price_first": 1.194029087921899,
+    "etc_price_last": 0.8955905818958387
+  },
+  {
+    "month": "2016-11",
+    "eth_price_avg": 9.985928749425288,
+    "eth_price_first": 10.8072025587376,
+    "eth_price_last": 8.60721732904734,
+    "etc_price_avg": 0.8735223911591379,
+    "etc_price_first": 0.881988079303929,
+    "etc_price_last": 0.7461290623981671
+  },
+  {
+    "month": "2016-12",
+    "eth_price_avg": 7.838758222346863,
+    "eth_price_first": 8.45638715955582,
+    "eth_price_last": 8.12632962185856,
+    "etc_price_avg": 1.0114180831474895,
+    "etc_price_first": 0.7636407082111365,
+    "etc_price_last": 1.4193584356705273
+  },
+  {
+    "month": "2017-01",
+    "eth_price_avg": 10.20808659092967,
+    "eth_price_first": 8.17785176797195,
+    "eth_price_last": 10.7060901987142,
+    "etc_price_avg": 1.343918146972337,
+    "etc_price_first": 1.3886690838158207,
+    "etc_price_last": 1.352264622863671
+  },
+  {
+    "month": "2017-02",
+    "eth_price_avg": 12.424828277719799,
+    "eth_price_first": 10.7228105669199,
+    "eth_price_last": 15.6533547393337,
+    "etc_price_avg": 1.2795215514002887,
+    "etc_price_first": 1.3495646087003732,
+    "etc_price_last": 1.235770666824388
+  },
+  {
+    "month": "2017-03",
+    "eth_price_avg": 34.29874073771233,
+    "eth_price_first": 17.2656843547633,
+    "eth_price_last": 50.0319167153711,
+    "etc_price_avg": 1.842888509473658,
+    "etc_price_first": 1.40261402571014,
+    "etc_price_last": 2.812308313602288
+  },
+  {
+    "month": "2017-04",
+    "eth_price_avg": 50.62365201817651,
+    "eth_price_first": 50.6856101426067,
+    "eth_price_last": 80.5040275862069,
+    "etc_price_avg": 3.295325636986283,
+    "etc_price_first": 2.7400851252548843,
+    "etc_price_last": 6.682517614713755
+  },
+  {
+    "month": "2017-05",
+    "eth_price_avg": 122.8971627080843,
+    "eth_price_first": 78.3656599269433,
+    "eth_price_last": 229.102651646406,
+    "etc_price_avg": 9.282134703314235,
+    "etc_price_first": 6.752223151690188,
+    "etc_price_last": 16.92351582484079
+  },
+  {
+    "month": "2017-06",
+    "eth_price_avg": 303.9266683367621,
+    "eth_price_first": 220.986285654588,
+    "eth_price_last": 276.846878461718,
+    "etc_price_avg": 18.47346649918462,
+    "etc_price_first": 16.244522205346975,
+    "etc_price_last": 17.313609473173067
+  },
+  {
+    "month": "2017-07",
+    "eth_price_avg": 220.49638569235117,
+    "eth_price_first": 261.219362042665,
+    "eth_price_last": 200.760819609001,
+    "etc_price_avg": 15.714873195386593,
+    "etc_price_first": 16.542039986476585,
+    "etc_price_last": 13.78854070396001
+  },
+  {
+    "month": "2017-08",
+    "eth_price_avg": 301.1141310240757,
+    "eth_price_first": 225.735534699591,
+    "eth_price_last": 388.628983109293,
+    "etc_price_avg": 14.930744367923891,
+    "etc_price_first": 14.565106150809306,
+    "etc_price_last": 16.85094246737046
+  },
+  {
+    "month": "2017-09",
+    "eth_price_avg": 297.84979850769537,
+    "eth_price_first": 391.600977030976,
+    "eth_price_last": 301.653574810053,
+    "etc_price_avg": 14.091687248844476,
+    "etc_price_first": 22.400640622810954,
+    "etc_price_last": 13.14475688432445
+  },
+  {
+    "month": "2017-10",
+    "eth_price_avg": 305.48072301615736,
+    "eth_price_first": 302.921215371128,
+    "eth_price_last": 304.758790181181,
+    "etc_price_avg": 11.39200908839289,
+    "etc_price_first": 12.8114284173417,
+    "etc_price_last": 10.488678219999013
+  },
+  {
+    "month": "2017-11",
+    "eth_price_avg": 357.25473182349504,
+    "eth_price_first": 290.520131209819,
+    "eth_price_last": 438.558600233781,
+    "etc_price_avg": 17.533142014429952,
+    "etc_price_first": 10.209807070029653,
+    "etc_price_last": 26.230123911299632
+  },
+  {
+    "month": "2017-12",
+    "eth_price_avg": 636.1714703719765,
+    "eth_price_first": 461.586232320281,
+    "eth_price_last": 742.255464932788,
+    "etc_price_avg": 30.10976580020531,
+    "etc_price_first": 29.627229543438432,
+    "etc_price_last": 26.355145726717463
+  },
+  {
+    "month": "2018-01",
+    "eth_price_avg": 1086.7152769461359,
+    "eth_price_first": 756.071765634132,
+    "eth_price_last": 1096.25005698422,
+    "etc_price_avg": 32.46492425599528,
+    "etc_price_first": 29.674498149680012,
+    "etc_price_last": 28.05732351583912
+  },
+  {
+    "month": "2018-02",
+    "eth_price_avg": 867.7412055606579,
+    "eth_price_first": 1019.17100789012,
+    "eth_price_last": 851.323646405611,
+    "etc_price_avg": 29.64404574400256,
+    "etc_price_first": 24.495493112892348,
+    "etc_price_last": 33.063675197159334
+  },
+  {
+    "month": "2018-03",
+    "eth_price_avg": 623.6310696913708,
+    "eth_price_first": 869.302266803039,
+    "eth_price_last": 394.512378141438,
+    "etc_price_avg": 20.423725048468896,
+    "etc_price_first": 33.50473721959575,
+    "etc_price_last": 14.284939311747383
+  },
+  {
+    "month": "2018-04",
+    "eth_price_avg": 520.4613353107345,
+    "eth_price_first": 378.066090298071,
+    "eth_price_last": 667.063407656341,
+    "etc_price_avg": 17.003075013367194,
+    "etc_price_first": 13.540340327577612,
+    "etc_price_last": 21.44197808984787
+  },
+  {
+    "month": "2018-05",
+    "eth_price_avg": 676.0452765690692,
+    "eth_price_first": 671.531682349503,
+    "eth_price_last": 575.469864699006,
+    "etc_price_avg": 18.46837796465756,
+    "etc_price_first": 21.459255962139025,
+    "etc_price_last": 15.249473751094703
+  },
+  {
+    "month": "2018-06",
+    "eth_price_avg": 518.3645359633744,
+    "eth_price_first": 578.827563997662,
+    "eth_price_last": 451.723416715371,
+    "etc_price_avg": 15.029035898405159,
+    "etc_price_first": 15.466990790322308,
+    "etc_price_last": 16.10989268829415
+  },
+  {
+    "month": "2018-07",
+    "eth_price_avg": 461.02728641051254,
+    "eth_price_first": 451.798441554646,
+    "eth_price_last": 431.798523670368,
+    "etc_price_avg": 16.86258639675684,
+    "etc_price_first": 16.066170858997182,
+    "etc_price_last": 16.14908941108195
+  },
+  {
+    "month": "2018-08",
+    "eth_price_avg": 320.71608125789476,
+    "eth_price_first": 419.019926651081,
+    "eth_price_last": 282.215765341905,
+    "etc_price_avg": 13.896775735822771,
+    "etc_price_first": 15.444885548890031,
+    "etc_price_last": 12.75732934387871
+  },
+  {
+    "month": "2018-09",
+    "eth_price_avg": 226.92747075784146,
+    "eth_price_first": 294.940272063121,
+    "eth_price_last": 232.215880479252,
+    "etc_price_avg": 11.526733534088361,
+    "etc_price_first": 13.170292747679806,
+    "etc_price_last": 11.303994501259822
+  },
+  {
+    "month": "2018-10",
+    "eth_price_avg": 207.5146351690202,
+    "eth_price_first": 229.918147282291,
+    "eth_price_last": 196.897931911163,
+    "etc_price_avg": 9.940307934187839,
+    "etc_price_first": 11.1752963130319,
+    "etc_price_last": 8.990634012467028
+  },
+  {
+    "month": "2018-11",
+    "eth_price_avg": 167.23340535749077,
+    "eth_price_first": 197.8192106955,
+    "eth_price_last": 111.631448568089,
+    "etc_price_avg": 7.270005286398449,
+    "etc_price_first": 9.019507272078298,
+    "etc_price_last": 4.552724662737577
+  },
+  {
+    "month": "2018-12",
+    "eth_price_avg": 107.5333769159706,
+    "eth_price_first": 116.974022793688,
+    "eth_price_last": 130.790460549386,
+    "etc_price_avg": 4.367163591018941,
+    "etc_price_first": 4.781892803198285,
+    "etc_price_last": 4.958184484881727
+  },
+  {
+    "month": "2019-01",
+    "eth_price_avg": 126.80014148488897,
+    "eth_price_first": 139.154644360023,
+    "eth_price_last": 105.739236119229,
+    "etc_price_avg": 4.496619733772482,
+    "etc_price_first": 5.152290273502764,
+    "etc_price_last": 3.9017214766390405
+  },
+  {
+    "month": "2019-02",
+    "eth_price_avg": 125.56751163688739,
+    "eth_price_first": 106.634947691409,
+    "eth_price_last": 134.754724137931,
+    "etc_price_avg": 4.157791762148983,
+    "etc_price_first": 3.8925999706159273,
+    "etc_price_last": 4.329061247810386
+  },
+  {
+    "month": "2019-03",
+    "eth_price_avg": 135.51720025829076,
+    "eth_price_first": 134.864564582116,
+    "eth_price_last": 141.27678515488,
+    "etc_price_avg": 4.481923170575999,
+    "etc_price_first": 4.299077112992368,
+    "etc_price_last": 4.811781393459252
+  },
+  {
+    "month": "2019-04",
+    "eth_price_avg": 164.8510944223651,
+    "eth_price_first": 141.295688778492,
+    "eth_price_last": 159.938501461134,
+    "etc_price_avg": 6.043587018566003,
+    "etc_price_first": 4.805903793167399,
+    "etc_price_last": 5.81539096196956
+  },
+  {
+    "month": "2019-05",
+    "eth_price_avg": 219.83285066458026,
+    "eth_price_first": 158.222859731151,
+    "eth_price_last": 266.573922559906,
+    "etc_price_avg": 6.834841826672905,
+    "etc_price_first": 5.739260561800939,
+    "etc_price_last": 8.656347643149731
+  },
+  {
+    "month": "2019-06",
+    "eth_price_avg": 273.91046287064097,
+    "eth_price_first": 265.140144360023,
+    "eth_price_last": 291.660696317943,
+    "etc_price_avg": 8.565965475445523,
+    "etc_price_first": 8.584545985441823,
+    "etc_price_last": 7.759488929072194
+  },
+  {
+    "month": "2019-07",
+    "eth_price_avg": 248.09787914914878,
+    "eth_price_first": 293.862392752776,
+    "eth_price_last": 218.08824050263,
+    "etc_price_avg": 6.654374321897132,
+    "etc_price_first": 7.766258722336484,
+    "etc_price_last": 6.049678821039636
+  },
+  {
+    "month": "2019-08",
+    "eth_price_avg": 199.46951124224665,
+    "eth_price_first": 217.353194915254,
+    "eth_price_last": 172.177609877265,
+    "etc_price_avg": 6.139242007917198,
+    "etc_price_first": 5.988328500549233,
+    "etc_price_last": 6.279735301942394
+  },
+  {
+    "month": "2019-09",
+    "eth_price_avg": 185.75671898597298,
+    "eth_price_first": 171.211480479252,
+    "eth_price_last": 179.508727936879,
+    "etc_price_avg": 6.013075220650479,
+    "etc_price_first": 6.253715068310309,
+    "etc_price_last": 4.70950126967306
+  },
+  {
+    "month": "2019-10",
+    "eth_price_avg": 178.60206452838366,
+    "eth_price_first": 176.635159555815,
+    "eth_price_last": 182.430567212157,
+    "etc_price_avg": 4.634151698076835,
+    "etc_price_first": 4.63607593536591,
+    "etc_price_last": 4.810474888149468
+  },
+  {
+    "month": "2019-11",
+    "eth_price_avg": 172.90493301772844,
+    "eth_price_first": 183.362267679719,
+    "eth_price_last": 152.016210111046,
+    "etc_price_avg": 4.519793073146027,
+    "etc_price_first": 4.878874256401512,
+    "etc_price_last": 3.949763279384189
+  },
+  {
+    "month": "2019-12",
+    "eth_price_avg": 137.24715684281978,
+    "eth_price_first": 151.380223378141,
+    "eth_price_last": 128.511079777908,
+    "etc_price_avg": 3.985522493675638,
+    "etc_price_first": 3.9481230747220244,
+    "etc_price_last": 4.4815599287636125
+  },
+  {
+    "month": "2020-01",
+    "eth_price_avg": 156.45152833751243,
+    "eth_price_first": 129.963875336061,
+    "eth_price_last": 180.163670368206,
+    "etc_price_avg": 7.549807895638605,
+    "etc_price_first": 4.484210561116023,
+    "etc_price_last": 11.34854368368468
+  },
+  {
+    "month": "2020-02",
+    "eth_price_avg": 239.19138056389687,
+    "eth_price_first": 183.562507656341,
+    "eth_price_last": 220.10229421391,
+    "etc_price_avg": 10.373560744170321,
+    "etc_price_first": 11.54518685001358,
+    "etc_price_last": 7.406015240267053
+  },
+  {
+    "month": "2020-03",
+    "eth_price_avg": 160.4210765257065,
+    "eth_price_first": 218.6236685564,
+    "eth_price_last": 133.508133372297,
+    "etc_price_avg": 5.8267529363925625,
+    "etc_price_first": 7.7547588099686555,
+    "etc_price_last": 4.95022268731908
+  },
+  {
+    "month": "2020-04",
+    "eth_price_avg": 171.64266569842195,
+    "eth_price_first": 135.85480654588,
+    "eth_price_last": 206.88486528346,
+    "etc_price_avg": 5.5427888080394085,
+    "etc_price_first": 5.027333105266462,
+    "etc_price_last": 6.479053838842568
+  },
+  {
+    "month": "2020-05",
+    "eth_price_avg": 207.70095941535797,
+    "eth_price_first": 212.713617767387,
+    "eth_price_last": 231.444047457627,
+    "etc_price_avg": 6.746623638584004,
+    "etc_price_first": 6.661093216887661,
+    "etc_price_last": 6.897226141347415
+  },
+  {
+    "month": "2020-06",
+    "eth_price_avg": 235.848182674849,
+    "eth_price_first": 249.07495295149,
+    "eth_price_last": 225.722754821742,
+    "etc_price_avg": 6.412662402764132,
+    "etc_price_first": 7.2172098007570895,
+    "etc_price_last": 5.733679905251292
+  },
+  {
+    "month": "2020-07",
+    "eth_price_avg": 259.6333009332404,
+    "eth_price_first": 231.145918468732,
+    "eth_price_last": 346.179992285213,
+    "etc_price_avg": 6.366288911571003,
+    "etc_price_first": 5.717425362501094,
+    "etc_price_last": 7.3808019685158355
+  },
+  {
+    "month": "2020-08",
+    "eth_price_avg": 401.8500902829887,
+    "eth_price_first": 387.185885447107,
+    "eth_price_last": 436.09076943308,
+    "etc_price_avg": 6.920507823006974,
+    "etc_price_first": 7.851326457885793,
+    "etc_price_last": 6.635686272122001
+  },
+  {
+    "month": "2020-09",
+    "eth_price_avg": 367.93643854665885,
+    "eth_price_first": 480.749175862069,
+    "eth_price_last": 359.976752483928,
+    "etc_price_avg": 5.486803947751444,
+    "etc_price_first": 6.768207139644076,
+    "etc_price_last": 5.4962651133377625
+  },
+  {
+    "month": "2020-10",
+    "eth_price_avg": 376.1096160460776,
+    "eth_price_first": 352.360856049094,
+    "eth_price_last": 386.585236119229,
+    "etc_price_avg": 5.413092034790211,
+    "etc_price_first": 5.377305527221881,
+    "etc_price_last": 5.276042271499424
+  },
+  {
+    "month": "2020-11",
+    "eth_price_avg": 486.9749679836353,
+    "eth_price_first": 395.57778264173,
+    "eth_price_last": 613.469492402104,
+    "etc_price_avg": 5.730321905173005,
+    "etc_price_first": 5.2262786956357035,
+    "etc_price_last": 6.785620349885238
+  },
+  {
+    "month": "2020-12",
+    "eth_price_avg": 623.0360675722554,
+    "eth_price_first": 588.2515552308593,
+    "eth_price_last": 739.025849853887,
+    "etc_price_avg": 6.03505696548066,
+    "etc_price_first": 6.229302673922187,
+    "etc_price_last": 5.6697846530796
+  },
+  {
+    "month": "2021-01",
+    "eth_price_avg": 1202.378133841745,
+    "eth_price_first": 730.91432063121,
+    "eth_price_last": 1317.346364173,
+    "etc_price_avg": 7.6864864756032185,
+    "etc_price_first": 5.71104349168985,
+    "etc_price_last": 7.42328063177734
+  },
+  {
+    "month": "2021-02",
+    "eth_price_avg": 1700.9068453118477,
+    "eth_price_first": 1369.95499357101,
+    "eth_price_last": 1425.38586674459,
+    "etc_price_avg": 11.674854657148847,
+    "etc_price_first": 7.52282490495241,
+    "etc_price_last": 10.3936247716192
+  },
+  {
+    "month": "2021-03",
+    "eth_price_avg": 1734.868970443619,
+    "eth_price_first": 1563.23598036236,
+    "eth_price_last": 1916.88001928697,
+    "etc_price_avg": 12.014947463753611,
+    "etc_price_first": 11.0184395014598,
+    "etc_price_last": 14.1616195811822
+  },
+  {
+    "month": "2021-04",
+    "eth_price_avg": 2295.0658942100135,
+    "eth_price_first": 1971.24078258329,
+    "eth_price_last": 2770.29005821157,
+    "etc_price_avg": 26.4532929097524,
+    "etc_price_first": 14.3629776415246,
+    "etc_price_last": 36.2933357834171
+  },
+  {
+    "month": "2021-05",
+    "eth_price_avg": 3146.7476152165314,
+    "eth_price_first": 2949.31864056107,
+    "eth_price_last": 2699.21445762712,
+    "etc_price_avg": 82.19606477794225,
+    "etc_price_first": 44.8416593619092,
+    "etc_price_last": 69.9668249744248
+  },
+  {
+    "month": "2021-06",
+    "eth_price_avg": 2331.9632680479253,
+    "eth_price_first": 2626.20154821742,
+    "eth_price_last": 2272.2690578609,
+    "etc_price_avg": 54.22755959950704,
+    "etc_price_first": 67.7425362216492,
+    "etc_price_last": 57.9249413850978
+  },
+  {
+    "month": "2021-07",
+    "eth_price_avg": 2130.126105403367,
+    "eth_price_first": 2114.55608357686,
+    "eth_price_last": 2544.37537592051,
+    "etc_price_avg": 48.28532296341949,
+    "etc_price_first": 53.4396054940671,
+    "etc_price_last": 51.7670786021679
+  },
+  {
+    "month": "2021-08",
+    "eth_price_avg": 3101.052403823459,
+    "eth_price_first": 2563.73753068381,
+    "eth_price_last": 3431.94775306838,
+    "etc_price_avg": 61.72362728484998,
+    "etc_price_first": 50.4226339940655,
+    "etc_price_last": 63.9655746595986
+  },
+  {
+    "month": "2021-09",
+    "eth_price_avg": 3332.9033704578233,
+    "eth_price_first": 3793.82968188194,
+    "eth_price_last": 3001.52751344243,
+    "etc_price_avg": 56.373232630169575,
+    "etc_price_first": 68.6010445756868,
+    "etc_price_last": 46.8883322320913
+  },
+  {
+    "month": "2021-10",
+    "eth_price_avg": 3817.664748108068,
+    "eth_price_first": 3299.44177030976,
+    "eth_price_last": 4293.96550701344,
+    "etc_price_avg": 53.769855681679054,
+    "etc_price_first": 51.7832061446095,
+    "etc_price_last": 54.440267800661
+  },
+  {
+    "month": "2021-11",
+    "eth_price_avg": 4442.7322137833635,
+    "eth_price_first": 4325.78806049094,
+    "eth_price_last": 4645.05362711864,
+    "etc_price_avg": 52.30624890555283,
+    "etc_price_first": 53.9224610249967,
+    "etc_price_last": 48.4781416307336
+  },
+  {
+    "month": "2021-12",
+    "eth_price_avg": 4051.2088267283802,
+    "eth_price_first": 4584.53445119813,
+    "eth_price_last": 3686.9517918761,
+    "etc_price_avg": 37.63269061186197,
+    "etc_price_first": 47.8434858507842,
+    "etc_price_last": 34.1803170087896
+  },
+  {
+    "month": "2022-01",
+    "eth_price_avg": 3055.0316561113113,
+    "eth_price_first": 3761.05964026885,
+    "eth_price_last": 2686.26782933957,
+    "etc_price_avg": 29.259364164153663,
+    "etc_price_first": 34.7517629902019,
+    "etc_price_last": 25.6822600468365
+  },
+  {
+    "month": "2022-02",
+    "eth_price_avg": 2868.3800125219173,
+    "eth_price_first": 2795.5781528346,
+    "eth_price_last": 2914.46506487434,
+    "etc_price_avg": 29.70365516638605,
+    "etc_price_first": 26.8566907584464,
+    "etc_price_last": 30.0042199342133
+  },
+  {
+    "month": "2022-03",
+    "eth_price_avg": 2877.0100679662905,
+    "eth_price_first": 2969.53468030392,
+    "eth_price_last": 3281.78751081239,
+    "etc_price_avg": 34.846341397648736,
+    "etc_price_first": 30.2789922487061,
+    "etc_price_last": 47.2351427124311
+  },
+  {
+    "month": "2022-04",
+    "eth_price_avg": 3098.0838357354364,
+    "eth_price_first": 3446.51983682057,
+    "eth_price_last": 2729.73245441262,
+    "etc_price_avg": 37.71157531721824,
+    "etc_price_first": 47.0997817752301,
+    "etc_price_last": 25.8118292267722
+  },
+  {
+    "month": "2022-05",
+    "eth_price_avg": 2188.6387730246415,
+    "eth_price_first": 2829.09136440678,
+    "eth_price_last": 1947.31703623612,
+    "etc_price_avg": 23.396586348792084,
+    "etc_price_first": 27.6849161232904,
+    "etc_price_last": 23.8150760922713
+  },
+  {
+    "month": "2022-06",
+    "eth_price_avg": 1380.877500706214,
+    "eth_price_first": 1827.6371081239,
+    "eth_price_last": 1041.53905172414,
+    "etc_price_avg": 17.599847367716897,
+    "etc_price_first": 22.0713559381252,
+    "etc_price_last": 14.6363951123734
+  },
+  {
+    "month": "2022-07",
+    "eth_price_avg": 1360.7493549593726,
+    "eth_price_first": 1066.1029628872,
+    "eth_price_last": 1682.69250409117,
+    "etc_price_avg": 21.811738448793047,
+    "etc_price_first": 14.6581896258203,
+    "etc_price_last": 36.7539527023459
+  },
+  {
+    "month": "2022-08",
+    "eth_price_avg": 1699.1392546388645,
+    "eth_price_first": 1635.83942051432,
+    "eth_price_last": 1551.72922092344,
+    "etc_price_avg": 36.700602244816544,
+    "etc_price_first": 35.0106381198717,
+    "etc_price_last": 32.3416508744119
+  },
+  {
+    "month": "2022-09",
+    "eth_price_avg": 1483.7777664660034,
+    "eth_price_first": 1586.34916686148,
+    "eth_price_last": 1327.0759956166,
+    "etc_price_avg": 32.79209080955648,
+    "etc_price_first": 32.8360178184576,
+    "etc_price_last": 27.7068059986098
+  },
+  {
+    "month": "2022-10",
+    "eth_price_avg": 1367.5799344657908,
+    "eth_price_first": 1311.22253331385,
+    "eth_price_last": 1571.20387054354,
+    "etc_price_avg": 24.786527514202955,
+    "etc_price_first": 27.5440277675735,
+    "etc_price_last": 24.2654145092381
+  },
+  {
+    "month": "2022-11",
+    "eth_price_avg": 1296.841140103254,
+    "eth_price_first": 1580.25594681473,
+    "eth_price_last": 1298.03941963764,
+    "etc_price_avg": 20.999549179180974,
+    "etc_price_first": 24.047603044677,
+    "etc_price_last": 20.3096371597169
+  },
+  {
+    "month": "2022-12",
+    "eth_price_avg": 1236.2342703568938,
+    "eth_price_first": 1275.71093571011,
+    "eth_price_last": 1195.33087931034,
+    "etc_price_avg": 17.491325241015698,
+    "etc_price_first": 19.7268736835295,
+    "etc_price_last": 15.6831222755988
+  },
+  {
+    "month": "2023-01",
+    "eth_price_avg": 1466.1233931392696,
+    "eth_price_first": 1200.00591934541,
+    "eth_price_last": 1584.82108328463,
+    "etc_price_avg": 20.742271445417995,
+    "etc_price_first": 15.7582771456872,
+    "etc_price_last": 21.6832304712681
+  },
+  {
+    "month": "2023-02",
+    "eth_price_avg": 1624.5727817066047,
+    "eth_price_first": 1641.90211075395,
+    "eth_price_last": 1606.66273436587,
+    "etc_price_avg": 22.020080608128076,
+    "etc_price_first": 22.3873387579714,
+    "etc_price_last": 20.7614039951442
+  },
+  {
+    "month": "2023-03",
+    "eth_price_avg": 1675.8599264248417,
+    "eth_price_first": 1661.70797282291,
+    "eth_price_last": 1824.00190356517,
+    "etc_price_avg": 19.770027265794948,
+    "etc_price_first": 21.2485119290814,
+    "etc_price_last": 20.7779938090431
+  },
+  {
+    "month": "2023-04",
+    "eth_price_avg": 1917.651654432106,
+    "eth_price_first": 1822.41595762712,
+    "eth_price_last": 1885.55236995909,
+    "etc_price_avg": 20.711315672384853,
+    "etc_price_first": 21.286621630564,
+    "etc_price_last": 19.5076873081604
+  },
+  {
+    "month": "2023-05",
+    "eth_price_avg": 1846.956427782282,
+    "eth_price_first": 1831.77346551724,
+    "eth_price_last": 1872.94246113384,
+    "etc_price_avg": 18.484168796603193,
+    "etc_price_first": 19.199386518679,
+    "etc_price_last": 17.997655464408
+  },
+  {
+    "month": "2023-06",
+    "eth_price_avg": 1818.460426777713,
+    "eth_price_first": 1861.87719082408,
+    "eth_price_last": 1934.61751548802,
+    "etc_price_avg": 16.944566964089788,
+    "etc_price_first": 17.8184580827656,
+    "etc_price_last": 20.8457047981722
+  },
+  {
+    "month": "2023-07",
+    "eth_price_avg": 1892.9197848928184,
+    "eth_price_first": 1923.13508825248,
+    "eth_price_last": 1856.18514465225,
+    "etc_price_avg": 18.97155787951886,
+    "etc_price_first": 20.838257572777,
+    "etc_price_last": 18.4952002068996
+  },
+  {
+    "month": "2023-08",
+    "eth_price_avg": 1756.5632814143767,
+    "eth_price_first": 1866.98985067212,
+    "eth_price_last": 1645.67690531853,
+    "etc_price_avg": 16.76341446872618,
+    "etc_price_first": 18.4676592679675,
+    "etc_price_last": 15.4909938083938
+  },
+  {
+    "month": "2023-09",
+    "eth_price_avg": 1621.0022349016174,
+    "eth_price_first": 1628.75344476914,
+    "eth_price_last": 1671.13527235535,
+    "etc_price_avg": 15.407173498989737,
+    "etc_price_first": 15.4023003125636,
+    "etc_price_last": 16.3768486652
+  },
+  {
+    "month": "2023-10",
+    "eth_price_avg": 1659.7024431383277,
+    "eth_price_first": 1731.54860958504,
+    "eth_price_last": 1813.54269783752,
+    "etc_price_avg": 15.708423539582396,
+    "etc_price_first": 16.6823836276859,
+    "etc_price_last": 17.4185078332939
+  },
+  {
+    "month": "2023-11",
+    "eth_price_avg": 1989.1647159750626,
+    "eth_price_first": 1846.08104295733,
+    "eth_price_last": 2051.0453308007,
+    "etc_price_avg": 18.962358391267465,
+    "etc_price_first": 17.7847365616656,
+    "etc_price_last": 18.6392955381632
+  },
+  {
+    "month": "2023-12",
+    "eth_price_avg": 2261.1495199562605,
+    "eth_price_first": 2086.10865020456,
+    "eth_price_last": 2279.07572355348,
+    "etc_price_avg": 20.909463729084933,
+    "etc_price_first": 18.876262651032,
+    "etc_price_last": 21.8938776760739
+  },
+  {
+    "month": "2024-01",
+    "eth_price_avg": 2374.754074696933,
+    "eth_price_first": 2347.43826125073,
+    "eth_price_last": 2284.19509848042,
+    "etc_price_avg": 23.94667021953735,
+    "etc_price_first": 22.4695573875658,
+    "etc_price_last": 24.3926775893188
+  },
+  {
+    "month": "2024-02",
+    "eth_price_avg": 2746.176642939196,
+    "eth_price_first": 2300.17150613676,
+    "eth_price_last": 3350.23638281707,
+    "etc_price_avg": 26.317338074196172,
+    "etc_price_first": 24.3633690698822,
+    "etc_price_last": 28.9310244783749
+  },
+  {
+    "month": "2024-03",
+    "eth_price_avg": 3628.213270677401,
+    "eth_price_first": 3438.18769988311,
+    "eth_price_last": 3644.72632057276,
+    "etc_price_avg": 33.50694677680595,
+    "etc_price_first": 30.2931293146636,
+    "etc_price_last": 34.3473710937288
+  },
+  {
+    "month": "2024-04",
+    "eth_price_avg": 3248.1313963958705,
+    "eth_price_first": 3510.49059088252,
+    "eth_price_last": 3012.4375447107,
+    "etc_price_avg": 29.181614614233865,
+    "etc_price_first": 32.7790181550284,
+    "etc_price_last": 25.3912476646895
+  },
+  {
+    "month": "2024-05",
+    "eth_price_avg": 3307.088065713316,
+    "eth_price_first": 2970.35463997662,
+    "eth_price_last": 3755.48389596727,
+    "etc_price_avg": 28.605669752069055,
+    "etc_price_first": 25.4771250933449,
+    "etc_price_last": 29.5944497901307
+  },
+  {
+    "month": "2024-06",
+    "eth_price_avg": 3566.879208981103,
+    "eth_price_first": 3813.36246522501,
+    "eth_price_last": 3437.88873202805,
+    "etc_price_avg": 25.51563466089717,
+    "etc_price_first": 29.5375035309533,
+    "etc_price_last": 23.6840677392788
+  },
+  {
+    "month": "2024-07",
+    "eth_price_avg": 3272.686539016987,
+    "eth_price_first": 3437.63577878434,
+    "eth_price_last": 3231.75860724722,
+    "etc_price_avg": 22.367443996378135,
+    "etc_price_first": 23.2086150210852,
+    "etc_price_last": 21.7944361410058
+  },
+  {
+    "month": "2024-08",
+    "eth_price_avg": 2644.257099093154,
+    "eth_price_first": 3203.2800251315,
+    "eth_price_last": 2513.39798889538,
+    "etc_price_avg": 19.1418143940952,
+    "etc_price_first": 21.5529231013217,
+    "etc_price_last": 18.3866242590679
+  },
+  {
+    "month": "2024-09",
+    "eth_price_avg": 2466.1227318451197,
+    "eth_price_first": 2425.94320368206,
+    "eth_price_last": 2596.25469104617,
+    "etc_price_avg": 18.68824219774048,
+    "etc_price_first": 17.6269634442513,
+    "etc_price_last": 19.4502635627957
+  },
+  {
+    "month": "2024-10",
+    "eth_price_avg": 2517.569075548539,
+    "eth_price_first": 2449.82723258913,
+    "eth_price_last": 2517.78620227937,
+    "etc_price_avg": 18.83076469890583,
+    "etc_price_first": 18.4157765332517,
+    "etc_price_last": 18.5993460894776
+  },
+  {
+    "month": "2024-11",
+    "eth_price_avg": 3116.722200432789,
+    "eth_price_first": 2512.4960977031,
+    "eth_price_last": 3713.2009461017,
+    "etc_price_avg": 24.74189383846503,
+    "etc_price_first": 18.4524481138772,
+    "etc_price_last": 32.8213622276075
+  },
+  {
+    "month": "2024-12",
+    "eth_price_avg": 3642.748669951264,
+    "eth_price_first": 3716.08112306254,
+    "eth_price_last": 3332.45484545295,
+    "etc_price_avg": 30.83450310931108,
+    "etc_price_first": 33.2581201014186,
+    "etc_price_last": 24.9943076471832
+  },
+  {
+    "month": "2025-01",
+    "eth_price_avg": 3328.5724404607754,
+    "eth_price_first": 3350.89031195207,
+    "eth_price_last": 3292.62381677382,
+    "etc_price_avg": 26.51944892468721,
+    "etc_price_first": 25.7572043714406,
+    "etc_price_last": 26.825704569518
+  },
+  {
+    "month": "2025-02",
+    "eth_price_avg": 2666.2091034169666,
+    "eth_price_first": 3119.95137697253,
+    "eth_price_last": 2229.92881355932,
+    "etc_price_avg": 20.549731541891568,
+    "etc_price_first": 24.9855274982816,
+    "etc_price_last": 19.5356868197418
+  },
+  {
+    "month": "2025-03",
+    "eth_price_avg": 2015.8487483361919,
+    "eth_price_first": 2208.95361747516,
+    "eth_price_last": 1823.44348568089,
+    "etc_price_avg": 18.235002561063904,
+    "etc_price_first": 19.014755951182,
+    "etc_price_last": 16.7727497469139
+  },
+  {
+    "month": "2025-04",
+    "eth_price_avg": 1686.11526540035,
+    "eth_price_first": 1908.28501987142,
+    "eth_price_last": 1795.28281034483,
+    "etc_price_avg": 15.810496539204474,
+    "etc_price_first": 16.9086327485861,
+    "etc_price_last": 16.5315492410109
+  },
+  {
+    "month": "2025-05",
+    "eth_price_avg": 2376.1745748006265,
+    "eth_price_first": 1838.20588340152,
+    "eth_price_last": 2532.55873436587,
+    "etc_price_avg": 18.268926858242825,
+    "etc_price_first": 16.8989805234964,
+    "etc_price_last": 16.9610342125457
+  },
+  {
+    "month": "2025-06",
+    "eth_price_avg": 2514.315357987533,
+    "eth_price_first": 2539.24056341321,
+    "eth_price_last": 2488.96316364699,
+    "etc_price_avg": 16.780836649553756,
+    "etc_price_first": 17.1098777811073,
+    "etc_price_last": 16.6038978650037
+  },
+  {
+    "month": "2025-07",
+    "eth_price_avg": 3228.279954940518,
+    "eth_price_first": 2400.70451081239,
+    "eth_price_last": 3701.44796201052,
+    "etc_price_avg": 20.02586914341216,
+    "etc_price_first": 15.9230735254528,
+    "etc_price_last": 20.6422320802667
+  },
+  {
+    "month": "2025-08",
+    "eth_price_avg": 4252.04678588262,
+    "eth_price_first": 3482.30238223261,
+    "eth_price_last": 4396.614606955,
+    "etc_price_avg": 21.79348368691809,
+    "etc_price_first": 19.7868812880408,
+    "etc_price_last": 20.7291402737078
+  },
+  {
+    "month": "2025-09",
+    "eth_price_avg": 4342.266931706605,
+    "eth_price_first": 4300.58149415546,
+    "eth_price_last": 4141.04144243132,
+    "etc_price_avg": 20.04995319430392,
+    "etc_price_first": 20.4155730823906,
+    "etc_price_last": 18.4244889577348
+  },
+  {
+    "month": "2025-10",
+    "eth_price_avg": 4108.446786495352,
+    "eth_price_first": 4338.2852434249,
+    "eth_price_last": 3851.14513091759,
+    "etc_price_avg": 16.995461400490676,
+    "etc_price_first": 19.5019595521452,
+    "etc_price_last": 15.8625703002663
+  },
+  {
+    "month": "2025-11",
+    "eth_price_avg": 3204.4327191018906,
+    "eth_price_first": 3871.69728784337,
+    "eth_price_last": 3002.61025482174,
+    "etc_price_avg": 14.786389438374876,
+    "etc_price_first": 16.3068749981329,
+    "etc_price_last": 13.7639948939793
+  },
+  {
+    "month": "2025-12",
+    "eth_price_avg": 3018.006181105183,
+    "eth_price_first": 2804.79124167154,
+    "eth_price_last": 2968.12801431911,
+    "etc_price_avg": 12.649213737513902,
+    "etc_price_first": 12.9894807491172,
+    "etc_price_last": 11.4682203143301
+  },
+  {
+    "month": "2026-01",
+    "eth_price_avg": 3069.282617635414,
+    "eth_price_first": 3000.88881268264,
+    "eth_price_last": 2444.24318264173,
+    "etc_price_avg": 12.11588588310663,
+    "etc_price_first": 12.05091327488,
+    "etc_price_last": 9.73409998706454
+  },
+  {
+    "month": "2026-02",
+    "eth_price_avg": 2023.8466699924847,
+    "eth_price_first": 2270.22719140853,
+    "eth_price_last": 1963.48860958504,
+    "etc_price_avg": 8.735526762613668,
+    "etc_price_first": 9.5210789857684,
+    "etc_price_last": 8.67236743203103
+  },
+  {
+    "month": "2026-03",
+    "eth_price_avg": 2082.4991455195054,
+    "eth_price_first": 1938.46658766803,
+    "eth_price_last": 2101.43189275278,
+    "etc_price_avg": 8.374413553719725,
+    "etc_price_first": 8.47895197871447,
+    "etc_price_last": 8.17132916434156
+  },
+  {
+    "month": "2026-04",
+    "eth_price_avg": 2258.9548133352814,
+    "eth_price_first": 2140.8786440678,
+    "eth_price_last": 2256.61539976622,
+    "etc_price_avg": 8.437922812324738,
+    "etc_price_first": 8.19101202254358,
+    "etc_price_last": 8.32982990202436
+  },
+  {
+    "month": "2026-05",
+    "eth_price_avg": 2194.1669693924505,
+    "eth_price_first": 2292.81031618936,
+    "eth_price_last": 2003.73374576271,
+    "etc_price_avg": 8.949440811549147,
+    "etc_price_first": 8.40287767384912,
+    "etc_price_last": 8.16442569557758
+  },
+  {
+    "month": "2026-06",
+    "eth_price_avg": 1686.9234418585618,
+    "eth_price_first": 2001.78444284629,
+    "eth_price_last": 1568.20209933372,
+    "etc_price_avg": 7.210109270919659,
+    "etc_price_first": 8.07958787211294,
+    "etc_price_last": 6.88349069269033
+  },
+  {
+    "month": "2026-07",
+    "eth_price_avg": 1835.5647368536602,
+    "eth_price_first": 1610.70403115137,
+    "eth_price_last": 1861.29262390415,
+    "etc_price_avg": 6.941619610816498,
+    "etc_price_first": 7.00808477707607,
+    "etc_price_last": 6.60114482938717
+  },
+  {
+    "month": "2026-08",
+    "eth_price_avg": 2118.763349893855,
+    "eth_price_first": 1843.44827527177,
+    "eth_price_last": 2466.07206344243,
+    "etc_price_avg": 6.867994231859854,
+    "etc_price_first": 6.50628029876615,
+    "etc_price_last": 7.28573547056343
+  },
+  {
+    "month": "2026-09",
+    "eth_price_avg": 2552.895480378121,
+    "eth_price_first": 2418.34781267095,
+    "eth_price_last": 2689.03811857978,
+    "etc_price_avg": 8.177071446104605,
+    "etc_price_first": 7.23552875793422,
+    "etc_price_last": 9.27921792077087
+  }
+]

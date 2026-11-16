@@ -1,0 +1,9 @@
+group,chain,our_crawl_reachable,luke_dashjr_estimate
+Other software,BTC,105,3372
+Bitcoin Core below v30,BTC,3726,39635
+Bitcoin Core v30+,BTC,4117,43924
+Knots without BIP-110,BTC,425,5161
+"BIP-110 without BLAKE2b (stalled at 961,639)",stalled,96,3782
+Knots 29.4.3 or later (180-day rule),XBT,320,1235
+Knots 29.4.2 (45-day rule only),XBT,100,3340
+Knots 29.4.1 and other (no maturity rule),XBT,36,730

@@ -1,0 +1,182 @@
+[
+ {
+  "week_start": "2016-07-20",
+  "etc_tx": 176053,
+  "etc_replayed": 137329
+ },
+ {
+  "week_start": "2016-07-27",
+  "etc_tx": 153498,
+  "etc_replayed": 39795
+ },
+ {
+  "week_start": "2016-08-03",
+  "etc_tx": 134070,
+  "etc_replayed": 14571
+ },
+ {
+  "week_start": "2016-08-10",
+  "etc_tx": 109089,
+  "etc_replayed": 10401
+ },
+ {
+  "week_start": "2016-08-17",
+  "etc_tx": 91993,
+  "etc_replayed": 5945
+ },
+ {
+  "week_start": "2016-08-24",
+  "etc_tx": 86186,
+  "etc_replayed": 7214
+ },
+ {
+  "week_start": "2016-08-31",
+  "etc_tx": 109392,
+  "etc_replayed": 15213
+ },
+ {
+  "week_start": "2016-09-07",
+  "etc_tx": 102302,
+  "etc_replayed": 8100
+ },
+ {
+  "week_start": "2016-09-14",
+  "etc_tx": 98101,
+  "etc_replayed": 7706
+ },
+ {
+  "week_start": "2016-09-21",
+  "etc_tx": 90885,
+  "etc_replayed": 6491
+ },
+ {
+  "week_start": "2016-09-28",
+  "etc_tx": 95753,
+  "etc_replayed": 4958
+ },
+ {
+  "week_start": "2016-10-05",
+  "etc_tx": 102411,
+  "etc_replayed": 8384
+ },
+ {
+  "week_start": "2016-10-12",
+  "etc_tx": 140973,
+  "etc_replayed": 38240
+ },
+ {
+  "week_start": "2016-10-19",
+  "etc_tx": 123832,
+  "etc_replayed": 11994
+ },
+ {
+  "week_start": "2016-10-26",
+  "etc_tx": 106387,
+  "etc_replayed": 7196
+ },
+ {
+  "week_start": "2016-11-02",
+  "etc_tx": 76331,
+  "etc_replayed": 4224
+ },
+ {
+  "week_start": "2016-11-09",
+  "etc_tx": 77856,
+  "etc_replayed": 3361
+ },
+ {
+  "week_start": "2016-11-16",
+  "etc_tx": 73141,
+  "etc_replayed": 2925
+ },
+ {
+  "week_start": "2016-11-23",
+  "etc_tx": 70548,
+  "etc_replayed": 8944
+ },
+ {
+  "week_start": "2016-11-30",
+  "etc_tx": 88491,
+  "etc_replayed": 1728
+ },
+ {
+  "week_start": "2016-12-07",
+  "etc_tx": 106637,
+  "etc_replayed": 1365
+ },
+ {
+  "week_start": "2016-12-14",
+  "etc_tx": 144066,
+  "etc_replayed": 3498
+ },
+ {
+  "week_start": "2016-12-21",
+  "etc_tx": 110250,
+  "etc_replayed": 1913
+ },
+ {
+  "week_start": "2016-12-28",
+  "etc_tx": 123578,
+  "etc_replayed": 1037
+ },
+ {
+  "week_start": "2017-01-04",
+  "etc_tx": 127123,
+  "etc_replayed": 2476
+ },
+ {
+  "week_start": "2017-01-11",
+  "etc_tx": 133227,
+  "etc_replayed": 5418
+ },
+ {
+  "week_start": "2017-01-18",
+  "etc_tx": 136491,
+  "etc_replayed": 1904
+ },
+ {
+  "week_start": "2017-01-25",
+  "etc_tx": 118151,
+  "etc_replayed": 824
+ },
+ {
+  "week_start": "2017-02-01",
+  "etc_tx": 123489,
+  "etc_replayed": 706
+ },
+ {
+  "week_start": "2017-02-08",
+  "etc_tx": 145905,
+  "etc_replayed": 1272
+ },
+ {
+  "week_start": "2017-02-15",
+  "etc_tx": 145396,
+  "etc_replayed": 490
+ },
+ {
+  "week_start": "2017-02-22",
+  "etc_tx": 151722,
+  "etc_replayed": 1097
+ },
+ {
+  "week_start": "2017-03-01",
+  "etc_tx": 146938,
+  "etc_replayed": 2926
+ },
+ {
+  "week_start": "2017-03-08",
+  "etc_tx": 145746,
+  "etc_replayed": 1164
+ },
+ {
+  "week_start": "2017-03-15",
+  "etc_tx": 147791,
+  "etc_replayed": 1845
+ },
+ {
+  "week_start": "2017-03-22",
+  "etc_tx": 150502,
+  "etc_replayed": 1917
+ }
+]
